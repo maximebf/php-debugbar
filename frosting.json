@@ -1,0 +1,10 @@
+{
+    "services": {
+        "debugBar": {
+            "class": "DebugBar\\StandardDebugBar"
+        },
+        "debugBarRenderer": {
+            "class": "DebugBar\\Renderer\\JavascriptRenderer"
+        }
+    }
+}

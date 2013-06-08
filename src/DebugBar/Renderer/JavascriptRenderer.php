@@ -26,6 +26,12 @@ class JavascriptRenderer
 
     protected $toolbarVariableName = 'phpdebugbar';
 
+    /**
+     * @param \DebugBar\DebugBar $debugBar
+     * @param string $baseUrl
+     * 
+     * @Inject(debugBar="debuBar", baseUrl="$[configuration][webDirectory]")
+     */
     public function __construct(DebugBar $debugBar, $baseUrl = '/')
     {
         $this->debugBar = $debugBar;
