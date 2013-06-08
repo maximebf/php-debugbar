@@ -30,7 +30,7 @@ class JavascriptRenderer
      * @param \DebugBar\DebugBar $debugBar
      * @param string $baseUrl
      * 
-     * @Inject(debugBar="debuBar", baseUrl="$[configuration][webDirectory]")
+     * @Inject(debugBar="debuBar", baseUrl="$[debugBarRenderer][baseUrl]")
      */
     public function __construct(DebugBar $debugBar, $baseUrl = '/')
     {

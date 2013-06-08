@@ -4,7 +4,17 @@
             "class": "DebugBar\\StandardDebugBar"
         },
         "debugBarRenderer": {
-            "class": "DebugBar\\Renderer\\JavascriptRenderer"
+            "class": "DebugBar\\Renderer\\JavascriptRenderer",
+            "configuration": {
+                "baseUrl": "/frosting/asset/debugBar"
+            }
+        },
+        "assetCopier": {
+            "configuration": {
+                "toMirror": {
+                    "debugBar": {"source":"<?php echo __DIRNAME__ . '/web' ?>"}
+                }
+            }
         }
     }
 }
