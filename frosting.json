@@ -12,7 +12,7 @@
         "assetCopier": {
             "configuration": {
                 "toMirror": {
-                    "debugBar": {"source":"<?php echo __DIRNAME__ . '/web' ?>"}
+                    "debugBar": {"source":"<?php echo str_replace('\\','/',__DIR__ . '/web') ?>"}
                 }
             }
         }
