@@ -11,7 +11,7 @@
 namespace DebugBar;
 
 use ArrayAccess;
-use DebugBar\DataCollector\DataCollector;
+use DebugBar\DataCollector\DataCollectorInterface;
 
 /**
  * Main DebugBar object
@@ -36,9 +36,9 @@ class DebugBar implements ArrayAccess
     /**
      * Adds a data collector
      * 
-     * @param DataCollector $collector
+     * @param DataCollectorInterface $collector
      */
-    public function addCollector(DataCollector $collector)
+    public function addCollector(DataCollectorInterface $collector)
     {
         if (isset($this->collectors[$collector->getName()])) {
             throw new DebugBarException("'$name' is already a registered collector");
@@ -62,7 +62,7 @@ class DebugBar implements ArrayAccess
      * Returns a data collector
      * 
      * @param string $name
-     * @return DataCollector
+     * @return DataCollectorInterface
      */
     public function getCollector($name)
     {
@@ -75,7 +75,7 @@ class DebugBar implements ArrayAccess
     /**
      * Returns an array of all data collectors
      * 
-     * @return array[DataCollector]
+     * @return array[DataCollectorInterface]
      */
     public function getCollectors()
     {
