@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>PHP Debug Bar</title>
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans&subset=latin">
+    <link type="text/css" rel="stylesheet" href="css/reset.css">
+    <link type="text/css" rel="stylesheet" href="css/docs.css">
+    <link type="text/css" rel="stylesheet" href="css/print.css" media="print">
+    <link type="text/css" rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/sunburst.min.css">
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+    
+    <script type="text/javascript" src="js/viewer.js"></script>
+</head>
+<body>
+    <div id="page">
+        <a name="top" />
+        
+            <header id="header">
+                <h1><a href="">PHP Debug Bar</a></h1>
+            </header>
+        
+        
+
+
+    <div id="sidebar">
+        <nav id="toc">
+            
+    <ol>
+    
+        <li>
+            <a href="readme.html#php-debug-bar">PHP Debug Bar</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="readme.html#installation">Installation</a>
+            
+        </li>
+    
+        <li>
+            <a href="readme.html#quick-start">Quick start</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
+            <a href="data-collectors.html#collecting-data">Collecting Data</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="data-collectors.html#using-collectors">Using collectors</a>
+            
+        </li>
+    
+        <li>
+            <a href="data-collectors.html#creating-collectors">Creating collectors</a>
+            
+        </li>
+    
+        <li>
+            <a href="data-collectors.html#included-collectors">Included collectors</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
+            <a href="rendering.html#rendering">Rendering</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="rendering.html#assets">Assets</a>
+            
+        </li>
+    
+        <li>
+            <a href="rendering.html#the-javascript-object">The javascript object</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
+            <a href="javascript-bar.html#javascript-bar">Javascript Bar</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="javascript-bar.html#tabs-and-indicators">Tabs and indicators</a>
+            
+        </li>
+    
+        <li>
+            <a href="javascript-bar.html#data-mapping">Data mapping</a>
+            
+        </li>
+    
+        <li>
+            <a href="javascript-bar.html#datasets">Datasets</a>
+            
+        </li>
+    
+        <li>
+            <a href="javascript-bar.html#widgets">Widgets</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+</ol>
+
+        </nav>
+    </div>
+
+<article id="content">
+    <a name="collecting-data"></a><h1>Collecting Data</h1>
+<a name="using-collectors"></a><h2>Using collectors</h2>
+<p>Collectors can be added to your debug bar using <code>addCollector()</code>. 
+
+</p>
+<pre><code>$debugbar = new DebugBar();
+$debugbar-&gt;addCollector(new DataCollector\RequestDataCollector());</code></pre>
+<p>Each collector as a unique name as defined by its <code>getName()</code> method. You can 
+access collectors using <code>getCollector($name)</code>.
+
+</p>
+<pre><code>$debugbar-&gt;addCollector(new DataCollector\MessagesCollector());
+$debugbar-&gt;getCollector(&#39;messages&#39;)-&gt;addMessage(&quot;foobar&quot;);
+// or:
+$debugbar[&#39;messages&#39;]-&gt;addMessage(&quot;foobar&quot;);</code></pre>
+<p>Data will be collected from them when the debug bar is rendered. You can however
+collect the data earlier using <code>collect()</code>.
+
+</p>
+<pre><code>$debugbar-&gt;collect();</code></pre>
+<a name="creating-collectors"></a><h2>Creating collectors</h2>
+<p>Collectors must implement the <code>DebugBar\DataCollector\DataCollectorInterface</code>. They
+may subclass <code>DebugBar\DataCollector\DataCollector</code> which provides utility methods.
+
+</p>
+<p>Collectors must provide a <code>getName()</code> function returning their unique name and a
+<code>collect()</code> function returning some json-encodable data. The latter will be called at the
+same time the <code>DebugBar::collect()</code> method is called.
+
+</p>
+<pre><code>class MyDataCollector extends DebugBar\DataCollector\DataCollector
+{
+    public function collect()
+    {
+        return array(&quot;uniqid&quot; =&gt; uniqid());
+    }
+
+    public function getName()
+    {
+        return &#39;mycollector&#39;;
+    }
+}
+
+$debugbar-&gt;addCollector(new MyDataCollector());</code></pre>
+<p>This however won&#39;t show anything in the debug bar as no information are provided
+on how to display these data. You could do that manually as you&#39;ll see in later chapter
+or implement the <code>DebugBar\DataSource\Renderable</code> interface. 
+
+</p>
+<p>To implement it, you must define a <code>getWidgets()</code> function which returns an array
+of key/value pairs where key are control names and values control options as defined
+in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering chapter).
+
+</p>
+<pre><code>class MyDataCollector extends DebugBar\DataCollector\DataCollector implements DebugBar\DataCollector\Renderable
+{
+    // ...
+
+    public function getWidgets()
+    {
+        return array(
+            &quot;mycollector&quot; =&gt; array(
+                &quot;icon&quot; =&gt; &quot;cogs&quot;,
+                &quot;tooltip&quot; =&gt; &quot;uniqid()&quot;,
+                &quot;map&quot; =&gt; &quot;uniqid&quot;,
+                &quot;default&quot; =&gt; &quot;&#39;&#39;&quot;
+            )
+        );
+    }
+}</code></pre>
+<p>This will have the result of adding a new indicator to the debug bar.
+
+</p>
+<a name="included-collectors"></a><h2>Included collectors</h2>
+<ul>
+<li><code>MemoryCollector</code> (<em>memory</em>)</li>
+<li><code>MessagesCollector</code> (<em>messages</em>)</li>
+<li><code>PhpInfoCollector</code> (<em>php</em>)</li>
+<li><code>RequestDataCollector</code> (<em>request</em>)</li>
+<li><code>TimeDataCollector</code> (<em>time</em>)</li>
+</ul>
+
+</article>
+
+        <footer id="footer">
+            Powered by <a href="http://github.com/maximebf/beautiful-docs">beautiful-docs</a> -
+            <a href="#top">Back to top</a> - <a href="all.html">Everything on a single page</a>
+            - <a href="?print=1">Print current page</a> - <a href="all.html?print=1">Print all pages</a>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4em;
+  min-width: 1100px;
+}
+#header {
+  background: #f7f7f7;
+  background: -moz-linear-gradient(top, #f7f7f7 0%, #e0e0e0 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #e0e0e0));
+  border-bottom: 3px solid #bbbbbb;
+  display: block;
+  position: relative;
+  padding: 20px;
+}
+#header h1 {
+  font-family: 'Droid Sans', arial, serif;
+  font-size: 45px;
+  line-height: 50px;
+  text-shadow: #444 1px 1px 2px;
+}
+#header h1 a {
+  color: #333333;
+  text-decoration: none;
+}
+#header #menu {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+}
+#header #menu a {
+  background: #f78d1d;
+  background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+  background: -moz-linear-gradient(top, #faa51a, #f47a20);
+  border: 1px solid #da7c0c;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  color: #444;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0;
+  padding: 5px 10px;
+  position: relative;
+  top: -1px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+}
+#sidebar {
+  border-right: 1px solid #cccccc;
+  float: left;
+  padding: 30px;
+  width: 230px;
+}
+#sidebar input#search {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  padding: 4px 0;
+  width: 100%;
+}
+#sidebar #toc li {
+  font-size: 16px;
+  margin: 14px 0px;
+}
+#sidebar #toc li a {
+  color: #555;
+  text-decoration: none;
+}
+#sidebar #toc > ol > li {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+#sidebar #toc > ol > li li {
+  font-weight: normal;
+  margin-left: 15px;
+}
+#sidebar #toc > ol > li li a {
+  color: #777;
+}
+#content {
+  border-left: 1px solid #cccccc;
+  color: #444;
+  float: left;
+  margin-left: -1px;
+  padding: 10px 40px 80px 30px;
+  width: 700px;
+}
+#content h1 {
+  font-size: 32px;
+  line-height: 35px;
+  margin: 15px 0 25px 0;
+}
+#content h2 {
+  border-bottom: 2px solid #ccc;
+  font-size: 24px;
+  margin: 30px 0 15px 0;
+  padding-bottom: 7px;
+}
+#content p {
+  margin: 15px 0;
+}
+#content a {
+  color: #d08708;
+  text-decoration: none;
+}
+#content a:hover {
+  text-decoration: underline;
+}
+#content ul,
+#content ol {
+  list-style: disc;
+  margin-left: 30px;
+}
+#content ul li,
+#content ol li {
+  margin: 5px 0;
+}
+#content ol {
+  list-style: decimal;
+}
+#content pre {
+  margin: 15px 0;
+}
+#content code {
+  overflow: auto;
+}
+#content .note {
+  background: #f3f3f3;
+  border: 2px solid #ccc;
+  padding: 5px;
+  margin: 20px 0;
+}
+#content .warning {
+  background: #fdeeee;
+  border: 2px solid #d24d4d;
+  padding: 5px;
+  margin: 20px 0;
+}
+#content .tip {
+  background: #fffbe2;
+  border: 2px solid #e5cc24;
+  padding: 5px;
+  margin: 20px 0;
+}
+#content img {
+  max-width: 100%;
+}
+#content table {
+  width: 100%;
+  margin: 20px auto;
+}
+#content table th {
+  color: #555;
+  background: #efefef;
+  padding: 4px;
+  border-bottom: 1px solid #bbb;
+  border-left: 1px solid #bbb;
+}
+#content table th:first-child {
+  border-left: 0;
+}
+#content table td {
+  padding: 4px;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+#content table td:first-child {
+  border-left: 0;
+}
+#footer {
+  border-top: 1px solid #cccccc;
+  clear: both;
+  color: #999;
+  display: block;
+  padding: 10px;
+}
+#footer a {
+  color: #999;
+}
+#fork-me-on-github {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 149px;
+  height: 149px;
+  text-indent: -9999px;
+  background: url(../img/github_forkme.png) no-repeat;
+}
