@@ -11,18 +11,15 @@
 namespace DebugBar\DataCollector;
 
 /**
- * Abstract class for data collectors
+ * Indicates that a DataCollector is renderable using JavascriptRenderer
  */
-abstract class DataCollector implements DataCollectorInterface
+interface Renderable
 {
     /**
-     * Transforms a PHP variable to a string representation
+     * Returns a hash where keys are control names and their values
+     * an array of options as defined in {@see DebugBar\JavascriptRenderer::addControl()}
      * 
-     * @param mixed $var
-     * @return string
+     * @return array
      */
-    public function varToString($var)
-    {
-        return print_r($var, true);
-    }
+    function getWidgets();
 }

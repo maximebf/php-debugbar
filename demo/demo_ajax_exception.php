@@ -11,6 +11,5 @@ try {
 ?>
 error from AJAX
 <?php
-    $debugbar->collect();
-    echo $debugbarRenderer->renderAjaxToolbar();
+    echo $debugbarRenderer->render(false);
 ?>

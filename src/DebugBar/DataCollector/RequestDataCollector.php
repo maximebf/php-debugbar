@@ -1,14 +1,23 @@
 <?php
+/*
+ * This file is part of the DebugBar package.
+ *
+ * (c) 2013 Maxime Bouroumeau-Fuseau
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace DebugBar\DataCollector;
 
-class RequestDataCollector extends DataCollector
+/**
+ * Collects info about the current request
+ */
+class RequestDataCollector extends DataCollector implements Renderable
 {
-    public function getName()
-    {
-        return 'request';
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function collect()
     {
         $vars = array('_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER');
@@ -21,5 +30,27 @@ class RequestDataCollector extends DataCollector
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'request';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWidgets()
+    {
+        return array(
+            "request" => array(
+                "widget" => "PhpDebugBar.Widgets.VariableListWidget", 
+                "map" => "request", 
+                "default" => "{}"
+            )
+        );
     }
 }

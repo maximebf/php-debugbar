@@ -1,0 +1,10 @@
+{
+    "title": "PHP Debug Bar",
+    "home": "../README.md",
+    "files": [
+        "../README.md",
+        "data_collectors.md",
+        "rendering.md",
+        "javascript_bar.md"
+    ]
+}

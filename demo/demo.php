@@ -20,7 +20,7 @@ $debugbar['time']->startMeasure('render');
 ?>
 <html>
     <head>
-        <?php echo $debugbarRenderer->renderIncludes() ?>
+        <?php echo $debugbarRenderer->renderHead() ?>
         <script type="text/javascript">
             $(function() {
                 $('.ajax').click(function() {
@@ -39,8 +39,7 @@ $debugbar['time']->startMeasure('render');
         <p><a href="demo_ajax_exception.php" class="ajax">load ajax content with exception</a></p>
         <?php
             usleep(100);
-            $debugbar->collect();
-            echo $debugbarRenderer->renderToolbar();
+            echo $debugbarRenderer->render();
         ?>
     </body>
 </html>

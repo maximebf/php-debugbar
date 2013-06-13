@@ -1,15 +1,35 @@
 if (typeof(PhpDebugBar) == 'undefined') {
+    // namespace
     var PhpDebugBar = {};
 }
 
+/**
+ * @namespace
+ */
 PhpDebugBar.Widgets = (function($) {
 
     var widgets = {};
 
+    /**
+     * Replaces spaces with &nbsp; and line breaks with <br>
+     * 
+     * @param {String} text
+     * @return {String}
+     */
     var htmlize = function(text) {
         return text.replace(/\n/g, '<br>').replace(/\s/g, "&nbsp;")
     };
 
+    widgets.htmlize = htmlize;
+
+    /**
+     * Returns a string representation of value, using JSON.stringify
+     * if it's an object.
+     * 
+     * @param {Object} value
+     * @param {Boolean} prettify Uses htmlize() if true
+     * @return {String}
+     */
     var renderValue = function(value, prettify) {
         if (typeof(value) !== 'string') {
             if (prettify) {
@@ -20,8 +40,21 @@ PhpDebugBar.Widgets = (function($) {
         return value;
     };
 
-    // ------------------------------------------
+    widgets.renderValue = renderValue;
 
+
+    // ------------------------------------------------------------------
+    // Generic widgets
+    // ------------------------------------------------------------------
+
+    /**
+     * Displays array element in a <ul> list
+     *
+     * @this {ListWidget}
+     * @constructor
+     * @param {Array} data
+     * @param {Function} itemRenderer Optional
+     */
     var ListWidget = function(data, itemRenderer) {
         this.element = $('<ul class="phpdebugbar-widgets-list" />');
         if (itemRenderer) {
@@ -32,6 +65,12 @@ PhpDebugBar.Widgets = (function($) {
         }
     };
 
+    /**
+     * Sets the data and updates the list
+     *
+     * @this {ListWidget}
+     * @param {Array} data
+     */
     ListWidget.prototype.setData = function(data) {
         this.element.empty();
         for (var i = 0; i < data.length; i++) {
@@ -40,14 +79,154 @@ PhpDebugBar.Widgets = (function($) {
         }
     };
 
+    /**
+     * Renders the content of a <li> element
+     *
+     * @this {ListWidget}
+     * @param {jQuery} li The <li> element as a jQuery Object
+     * @param {Object} value An item from the data array
+     */
     ListWidget.prototype.itemRenderer = function(li, value) {
         li.html(renderValue(value));
     };
 
     widgets.ListWidget = ListWidget;
 
-    // ------------------------------------------
+    // ------------------------------------------------------------------
 
+    /**
+     * Displays object property/value paris in a <dl> list
+     *
+     * @this {KVListWidget}
+     * @constructor
+     * @param {Object} data
+     * @param {Function} itemRenderer Optional
+     */
+    var KVListWidget = function(data, itemRenderer) {
+        this.element = $('<dl class="phpdebugbar-widgets-kvlist" />');
+        if (itemRenderer) {
+            this.itemRenderer = itemRenderer;
+        }
+        if (data) {
+            this.setData(data);
+        }
+    };
+
+    /**
+     * Sets the data and updates the list
+     *
+     * @this {KVListWidget}
+     * @param {Object} data
+     */
+    KVListWidget.prototype.setData = function(data) {
+        var self = this;
+        this.element.empty();
+        $.each(data, function(key, value) {
+            var dt = $('<dt class="key" />').appendTo(self.element);
+            var dd = $('<dd class="value" />').appendTo(self.element);
+            self.itemRenderer(dt, dd, key, value);
+        });
+    };
+
+    /**
+     * Renders the content of the <dt> and <dd> elements
+     *
+     * @this {KVListWidget}
+     * @param {jQuery} dt The <dt> element as a jQuery Object
+     * @param {jQuery} dd The <dd> element as a jQuery Object
+     * @param {String} key Property name
+     * @param {Object} value Property value
+     */
+    KVListWidget.prototype.itemRenderer = function(dt, dd, key, value) {
+        dt.text(key);
+        dd.html(htmlize(value));
+    };
+
+    widgets.KVListWidget = KVListWidget;
+
+    // ------------------------------------------------------------------
+    
+    /**
+     * An extension of KVListWidget where the data represents a list
+     * of variables
+     * 
+     * @this {VariableListWidget}
+     * @constructor
+     * @param {Object} data
+     */
+    var VariableListWidget = function(data) {
+        KVListWidget.apply(this, [data]);
+        this.element.addClass('phpdebugbar-widgets-varlist');
+    };
+
+    VariableListWidget.prototype = new KVListWidget();
+    VariableListWidget.constructor = VariableListWidget;
+
+    VariableListWidget.prototype.itemRenderer = function(dt, dd, key, value) {
+        dt.text(key);
+
+        var v = value;
+        if (v.length > 100) {
+            v = v.substr(0, 100) + "...";
+        }
+        dd.text(v).click(function() {
+            if (dd.hasClass('pretty')) {
+                dd.text(v).removeClass('pretty');
+            } else {
+                dd.html(htmlize(value)).addClass('pretty');
+            }
+        });
+    };
+
+    widgets.VariableListWidget = VariableListWidget;
+
+    // ------------------------------------------------------------------
+    
+    /**
+     * Iframe widget
+     *
+     * @this {IFrameWidget}
+     * @constructor
+     * @param {String} url
+     */
+    var IFrameWidget = function(url) {
+        this.element = $('<iframe src="" class="phpdebugbar-widgets-iframe" seamless="seamless" border="0" width="100%" height="100%" />');
+        if (url) {
+            this.setData(url);
+        }
+    };
+
+    /**
+     * Sets the iframe url
+     *
+     * @this {IFrameWidget}
+     * @param {String} url
+     */
+    IFrameWidget.prototype.setUrl = function(url) {
+        this.element.attr('src', url);
+    };
+
+    // for compatibility with data mapping
+    IFrameWidget.prototype.setData = function(url) {
+        this.setUrl(url);
+    };
+
+    widgets.IFrameWidget = IFrameWidget;
+
+
+    // ------------------------------------------------------------------
+    // Collector specific widgets
+    // ------------------------------------------------------------------
+
+    /**
+     * Widget for the MessagesCollector
+     *
+     * Uses ListWidget under the hood
+     *
+     * @this {MessagesWidget}
+     * @constructor
+     * @param {Array} data
+     */
     var MessagesWidget = function(data) {
         this.element = $('<div class="phpdebugbar-widgets-messages" />');
 
@@ -142,80 +321,15 @@ PhpDebugBar.Widgets = (function($) {
 
     widgets.MessagesWidget = MessagesWidget;
 
-    // ------------------------------------------
+    // ------------------------------------------------------------------
 
-    var KVListWidget = function(data, itemRenderer) {
-        this.element = $('<dl class="phpdebugbar-widgets-kvlist" />');
-        if (itemRenderer) {
-            this.itemRenderer = itemRenderer;
-        }
-        if (data) {
-            this.setData(data);
-        }
-    };
-
-    KVListWidget.prototype.setData = function(data) {
-        var self = this;
-        this.element.empty();
-        $.each(data, function(key, value) {
-            var dt = $('<dt class="key" />').appendTo(self.element);
-            var dd = $('<dd class="value" />').appendTo(self.element);
-            self.itemRenderer(dt, dd, key, value);
-        });
-    };
-
-    KVListWidget.prototype.itemRenderer = function(dt, dd, key, value) {
-        dt.text(key);
-        dd.html(htmlize(value));
-    };
-
-    widgets.KVListWidget = KVListWidget;
-
-    // ------------------------------------------
-    
-    var VariableListWidget = function(data) {
-        KVListWidget.apply(this, [data]);
-        this.element.addClass('phpdebugbar-widgets-varlist');
-    };
-
-    VariableListWidget.prototype = new KVListWidget();
-    VariableListWidget.constructor = VariableListWidget;
-
-    VariableListWidget.prototype.itemRenderer = function(dt, dd, key, value) {
-        dt.text(key);
-
-        var v = value;
-        if (v.length > 100) {
-            v = v.substr(0, 100) + "...";
-        }
-        dd.text(v).click(function() {
-            if (dd.hasClass('pretty')) {
-                dd.text(v).removeClass('pretty');
-            } else {
-                dd.html(htmlize(value)).addClass('pretty');
-            }
-        });
-    };
-
-    widgets.VariableListWidget = VariableListWidget;
-
-    // ------------------------------------------
-    
-    var IFrameWidget = function(url) {
-        this.element = $('<iframe src="" class="phpdebugbar-widgets-iframe" seamless="seamless" border="0" width="100%" height="100%" />');
-        if (url) {
-            this.setData(url);
-        }
-    };
-
-    IFrameWidget.prototype.setData = function(url) {
-        this.element.attr('src', url);
-    };
-
-    widgets.IFrameWidget = IFrameWidget;
-
-    // ------------------------------------------
-
+    /**
+     * Widget for the TimeDataCollector
+     *
+     * @this {TimelineWidget}
+     * @constructor
+     * @param {Object} data
+     */
     var TimelineWidget = function(data) {
         this.element = $('<ul class="phpdebugbar-widgets-timeline" />');
         if (data) {
@@ -240,7 +354,7 @@ PhpDebugBar.Widgets = (function($) {
 
     widgets.TimelineWidget = TimelineWidget;
 
-    // ------------------------------------------
+    // ------------------------------------------------------------------
 
     return widgets;
 
