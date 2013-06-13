@@ -12,7 +12,7 @@ $debugbar['time']->stopMeasure('op1');
 usleep(200);
 $debugbar['time']->stopMeasure('op2');
 
-$debugbar['messages']->addMessage('world', 'warn');
+$debugbar['messages']->addMessage('world', 'warning');
 $debugbar['messages']->addMessage(array('toto' => array('titi', 'tata')));
 $debugbar['messages']->addMessage('oups', 'error');
 

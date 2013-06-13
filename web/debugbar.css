@@ -137,7 +137,7 @@
   position: relative;
   height: 100%;
 }
-  .phpdebugbar-widgets-messages .list-item .value.warn:before {
+  .phpdebugbar-widgets-messages .list-item .value.warning:before {
     font-family: FontAwesome;
     content: "\f071";
     margin-right: 8px;
