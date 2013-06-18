@@ -63,7 +63,7 @@ class TraceablePDOStatement extends PDOStatement
         $preparedId = spl_object_hash($this);
         $boundParameters = array_merge($this->boundParameters, $params);
         $duration = microtime(true) - $start;
-        $memoryUsage = memory_get_peak_usage(true);
+        $memoryUsage = memory_get_usage(true);
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
             $error = $this->errorInfo();
             $ex = new PDOException($error[2], $error[0]);
