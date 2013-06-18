@@ -237,7 +237,7 @@ PhpDebugBar.Widgets = (function($) {
             }
 
             var val = $('<span class="value" />').addClass(value.label).text(m).appendTo(li);
-            if (!value.is_string) {
+            if (!value.is_string || value.message.length > 100) {
                 li.css('cursor', 'pointer').click(function() {
                     if (val.hasClass('pretty')) {
                         val.text(m).removeClass('pretty');
@@ -416,10 +416,10 @@ PhpDebugBar.Widgets = (function($) {
             if (!stmt.is_success) {
                 li.addClass('error');
                 li.append($('<span class="error" />').text("[" + stmt.error_code + "] " + stmt.error_message));
-            } else {
+            } else if (typeof(stmt.row_count) != 'undefined') {
                 $('<span class="row-count" title="Row count" />').text(stmt.row_count).appendTo(li);
             }
-            if (stmt.stmt_id) {
+            if (typeof(stmt.stmt_id) != 'undefined' && stmt.stmt_id) {
                 $('<span class="stmt-id" title="Prepared statement ID" />').text(stmt.stmt_id).appendTo(li);
             }
         });
