@@ -2,7 +2,7 @@
  * -------------------------- */
 
 /* Stacked and layered icon */
-.icon-stack();
+@include icon-stack();
 
 /* Animated rotating icon */
 .icon-spin {
