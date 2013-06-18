@@ -48,8 +48,6 @@ class JavascriptRenderer
     protected $controls = array();
 
     /**
-     * @Inject(debugBar="debugBar", baseUrl="$[debugBarRenderer][baseUrl]")
-     * 
      * @param \DebugBar\DebugBar $debugBar
      * @param string $baseUrl
      * @param string $basePath
