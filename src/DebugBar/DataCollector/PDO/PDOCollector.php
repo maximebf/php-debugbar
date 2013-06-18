@@ -5,13 +5,24 @@ namespace DebugBar\DataCollector\PDO;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
 
+/**
+ * Collects data about SQL statements executed with PDO
+ */
 class PDOCollector extends DataCollector implements Renderable
 {
+    protected $pdo;
+    
+    /**
+     * @param TraceablePDO $pdo
+     */
     public function __construct(TraceablePDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function collect()
     {
         $stmts = array();
@@ -43,11 +54,17 @@ class PDOCollector extends DataCollector implements Renderable
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'pdo';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getWidgets()
     {
         return array(
