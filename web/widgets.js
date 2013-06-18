@@ -355,6 +355,92 @@ PhpDebugBar.Widgets = (function($) {
     widgets.TimelineWidget = TimelineWidget;
 
     // ------------------------------------------------------------------
+    
+    /**
+     * Widget for the displaying exceptions
+     *
+     * @this {ExceptionsWidget}
+     * @constructor
+     * @param {Object} data
+     */
+    var ExceptionsWidget = function(data) {
+        this.element = $('<div class="phpdebugbar-widgets-exceptions" />');
+
+        this.list = new ListWidget(null, function(li, e) {
+            $('<span class="message" />').text(e.message).appendTo(li);
+            $('<span class="filename" />').text(e.file + "#" + e.line).appendTo(li);
+            $('<span class="type" />').text(e.type).appendTo(li);
+            var file = $('<div class="file" />').html(htmlize(e.surrounding_lines.join(""))).appendTo(li);
+
+            li.click(function() {
+                if (file.is(':visible')) {
+                    file.hide();
+                } else {
+                    file.show();
+                }
+            });
+        });
+        this.element.append(this.list.element);
+
+        if (data) {
+            this.setData(data);
+        }
+    };
+
+    ExceptionsWidget.prototype.setData = function(data) {
+        this.list.setData(data);
+        if (data.length == 1) {
+            this.list.element.children().first().find('.file').show();
+        }
+    };
+
+    widgets.ExceptionsWidget = ExceptionsWidget;
+
+    // ------------------------------------------------------------------
+    
+    /**
+     * Widget for the displaying sql queries
+     *
+     * @this {SQLQueriesWidget}
+     * @constructor
+     * @param {Object} data
+     */
+    var SQLQueriesWidget = function(data) {
+        this.element = $('<div class="phpdebugbar-widgets-sqlqueries" />');
+        this.status = $('<div class="status" />').appendTo(this.element);
+
+        this.list = new ListWidget(null, function(li, stmt) {
+            $('<span class="sql" />').text(stmt.sql).appendTo(li);
+            $('<span class="duration" title="Duration (s)" />').text(stmt.duration_str).appendTo(li);
+            $('<span class="memory" title="Peak memory usage" />').text(stmt.memory_str).appendTo(li);
+            if (!stmt.is_success) {
+                li.addClass('error');
+                li.append($('<span class="error" />').text("[" + stmt.error_code + "] " + stmt.error_message));
+            } else {
+                $('<span class="row-count" title="Row count" />').text(stmt.row_count).appendTo(li);
+            }
+            if (stmt.stmt_id) {
+                $('<span class="stmt-id" title="Prepared statement ID" />').text(stmt.stmt_id).appendTo(li);
+            }
+        });
+        this.element.append(this.list.element);
+
+        if (data) {
+            this.setData(data);
+        }
+    };
+
+    SQLQueriesWidget.prototype.setData = function(data) {
+        this.list.setData(data.statements);
+        this.status.empty()
+            .append($('<span />').text(data.nb_statements + " statements were executed" + (data.nb_failed_statements > 0 ? (", " + data.nb_failed_statements + " of which failed") : "")))
+            .append($('<span class="duration" title="Accumulated duration (s)" />').text(data.accumulated_duration_str))
+            .append($('<span class="memory" title="Peak memory usage" />').text(data.peak_memory_usage_str));
+    };
+
+    widgets.SQLQueriesWidget = SQLQueriesWidget;
+
+    // ------------------------------------------------------------------
 
     return widgets;
 

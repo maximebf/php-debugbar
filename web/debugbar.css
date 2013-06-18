@@ -51,6 +51,19 @@
   background-image: -ms-linear-gradient(bottom, rgb(173,173,173) 41%, rgb(209,209,209) 71%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.41, rgb(173,173,173)), color-stop(0.71, rgb(209,209,209)));
 }
+  .phpdebugbar-tab .badge {
+    display: none;
+    margin-left: 5px;
+    font-size: 11px;
+    padding: 1px 6px;
+    background: #ccc;
+    border-radius: 4px;
+    color: #555;
+  }
+  .phpdebugbar-tab .badge.important {
+    background: #ed6868;
+    color: white;
+  }
 
 .phpdebugbar-close-btn {
   display: none;
@@ -126,6 +139,7 @@
   .phpdebugbar-widgets-list .list-item {
     padding: 3px 6px;
     border-bottom: 1px solid #eee;
+    position: relative;
   }
   .phpdebugbar-widgets-list .list-item:hover {
     background: #fafafa;
@@ -249,3 +263,90 @@
       top: 5px;
       border-radius: 2px;
     }
+
+/* -------------------------------------- */
+
+.phpdebugbar-widgets-exceptions .list-item {
+  cursor: pointer;
+}
+  .phpdebugbar-widgets-exceptions .list-item .message {
+    display: block;
+    color: red;
+  }
+
+  .phpdebugbar-widgets-exceptions .list-item .filename {
+    display: block;
+    font-style: italic;
+    color: #555;
+  }
+
+  .phpdebugbar-widgets-exceptions .list-item .type {
+    display: block;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    font-weight: bold;
+  }
+
+  .phpdebugbar-widgets-exceptions .list-item .file {
+    display: none;
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    font-family: monospace;
+  }
+
+/* -------------------------------------- */
+
+.phpdebugbar-widgets-sqlqueries .status {
+  font-family: monospace;
+  padding: 6px 6px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  color: #555;
+  background: #fafafa;
+}
+
+.phpdebugbar-widgets-sqlqueries .list-item.error {
+  color: red;
+}
+
+.phpdebugbar-widgets-sqlqueries .duration,
+.phpdebugbar-widgets-sqlqueries .memory,
+.phpdebugbar-widgets-sqlqueries .row-count,
+.phpdebugbar-widgets-sqlqueries .stmt-id {
+  float: right;
+  margin-left: 8px;
+  color: #888;
+}
+.phpdebugbar-widgets-sqlqueries .status .duration,
+.phpdebugbar-widgets-sqlqueries .status .memory,
+.phpdebugbar-widgets-sqlqueries .status .row-count,
+.phpdebugbar-widgets-sqlqueries .status .stmt-id {
+  color: #555;
+}
+.phpdebugbar-widgets-sqlqueries .duration:before,
+.phpdebugbar-widgets-sqlqueries .memory:before,
+.phpdebugbar-widgets-sqlqueries .row-count:before,
+.phpdebugbar-widgets-sqlqueries .stmt-id:before {
+  font-family: FontAwesome;
+  margin-right: 4px;
+  font-size: 12px;
+}
+.phpdebugbar-widgets-sqlqueries .duration:before {
+  content: "\f017";
+}
+.phpdebugbar-widgets-sqlqueries .memory:before {
+  content: "\f085";
+}
+.phpdebugbar-widgets-sqlqueries .row-count:before {
+  content: "\f0ce";
+}
+.phpdebugbar-widgets-sqlqueries .stmt-id:before {
+  content: "\f08d";
+}
+
+.phpdebugbar-widgets-sqlqueries .list-item .error {
+  display: block;
+  font-weight: bold;
+}

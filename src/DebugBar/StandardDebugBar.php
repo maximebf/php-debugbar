@@ -15,6 +15,7 @@ use DebugBar\DataCollector\MessagesCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\MemoryCollector;
+use DebugBar\DataCollector\ExceptionsCollector;
 
 /**
  * Debug bar subclass which adds all included collectors
@@ -31,5 +32,6 @@ class StandardDebugBar extends DebugBar
         $this->addCollector(new RequestDataCollector());
         $this->addCollector(new TimeDataCollector());
         $this->addCollector(new MemoryCollector());
+        $this->addCollector(new ExceptionsCollector());
     }
 }

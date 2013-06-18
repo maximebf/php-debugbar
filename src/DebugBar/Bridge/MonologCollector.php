@@ -35,7 +35,10 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
 
     public function collect()
     {
-        return $this->records;
+        return array(
+            'count' => count($this->records),
+            'records' => $this->records
+        );
     }
 
     public function getName()
@@ -48,8 +51,12 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
         return array(
             "logs" => array(
                 "widget" => "PhpDebugBar.Widgets.MessagesWidget",
-                "map" => "monolog",
+                "map" => "monolog.records",
                 "default" => "[]"
+            ),
+            "logs:badge" => array(
+                "map" => "monolog.count",
+                "default" => "null"
             )
         );
     }

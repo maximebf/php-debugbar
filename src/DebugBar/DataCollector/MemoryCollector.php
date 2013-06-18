@@ -36,20 +36,6 @@ class MemoryCollector extends DataCollector implements Renderable
     }
 
     /**
-     * Transforms a size in bytes to a human readable string
-     * 
-     * @param string $size
-     * @param integer $precision
-     * @return string
-     */
-    public function toReadableString($size, $precision = 2)
-    {
-        $base = log($size) / log(1024);
-        $suffixes = array('', 'KB', 'MB', 'GB', 'TB');   
-        return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)]; 
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function collect()
@@ -57,7 +43,7 @@ class MemoryCollector extends DataCollector implements Renderable
         $this->updatePeakUsage();
         return array(
             'peak_usage' => $this->peakUsage,
-            'peak_usage_str' => $this->toReadableString($this->peakUsage)
+            'peak_usage_str' => $this->formatBytes($this->peakUsage)
         );
     }
 

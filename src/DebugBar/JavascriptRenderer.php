@@ -205,6 +205,7 @@ class JavascriptRenderer
      *  - icon: icon name
      *  - tooltip: string
      *  - widget: widget class name
+     *  - title: tab title
      *  - map: a property name from the data to map the control to
      *  - default: a js string, default value of the data map
      *
@@ -375,12 +376,13 @@ class JavascriptRenderer
 
         foreach ($controls as $name => $options) {
             if (isset($options['widget'])) {
-                $js .= sprintf("%s.createTab(\"%s\", new %s());\n", 
+                $js .= sprintf("%s.createTab(\"%s\", new %s()%s);\n", 
                     $varname,
                     $name, 
-                    $options['widget']
+                    $options['widget'],
+                    isset($options['title']) ? sprintf(', "%s"', $options['title']) : ''
                 );
-            } else {
+            } else if (strpos($name, ':') === false) {
                 $js .= sprintf("%s.createIndicator(\"%s\", \"%s\", \"%s\");\n", 
                     $varname,
                     $name,

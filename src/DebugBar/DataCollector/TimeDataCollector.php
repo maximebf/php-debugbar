@@ -64,7 +64,7 @@ class TimeDataCollector extends DataCollector implements Renderable
         $this->measures[$name]['end'] = $end;
         $this->measures[$name]['relative_end'] = $end - $this->requestEndTime;
         $this->measures[$name]['duration'] = $end - $this->measures[$name]['start'];
-        $this->measures[$name]['duration_str'] = $this->toReadableString($this->measures[$name]['duration']);
+        $this->measures[$name]['duration_str'] = $this->formatDuration($this->measures[$name]['duration']);
     }
 
     /**
@@ -124,17 +124,6 @@ class TimeDataCollector extends DataCollector implements Renderable
     }
 
     /**
-     * Transforms a duration in seconds in a readable string
-     * 
-     * @param float $value
-     * @return string
-     */
-    public function toReadableString($value)
-    {
-        return round($value * 1000) . 'ms';
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function collect()
@@ -150,7 +139,7 @@ class TimeDataCollector extends DataCollector implements Renderable
             'start' => $this->requestStartTime,
             'end' => $this->requestEndTime,
             'duration' => $this->getRequestDuration(),
-            'duration_str' => $this->toReadableString($this->getRequestDuration()),
+            'duration_str' => $this->formatDuration($this->getRequestDuration()),
             'measures' => array_values($this->measures)
         );
     }

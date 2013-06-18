@@ -28,7 +28,7 @@ class MessagesCollector extends DataCollector implements Renderable
     public function addMessage($message, $label = 'info')
     {
         $this->messages[] = array(
-            'message' => $this->varToString($message),
+            'message' => $this->formatVar($message),
             'is_string' => is_string($message),
             'label' => $label,
             'time' => microtime(true),
@@ -52,7 +52,10 @@ class MessagesCollector extends DataCollector implements Renderable
      */
     public function collect()
     {
-        return $this->messages;
+        return array(
+            'count' => count($this->messages),
+            'messages' => $this->messages
+        );
     }
 
     /**
@@ -71,8 +74,12 @@ class MessagesCollector extends DataCollector implements Renderable
         return array(
             "messages" => array(
                 "widget" => "PhpDebugBar.Widgets.MessagesWidget", 
-                "map" => "messages", 
+                "map" => "messages.messages", 
                 "default" => "[]"
+            ),
+            "messages:badge" => array(
+                "map" => "messages.count",
+                "default" => "null"
             )
         );
     }

@@ -62,7 +62,9 @@ PhpDebugBar.DebugBar = (function($) {
      * @param {Object} widget
      */
     var Tab = function(title, widget) {
-        this.tab = $('<a href="javascript:" class="phpdebugbar-tab" />').text(title);
+        this.tab = $('<a href="javascript:" class="phpdebugbar-tab" />')
+        this.tabText = $('<span class="text" />').text(title).appendTo(this.tab);
+        this.badge = $('<span class="badge" />').appendTo(this.tab);
         this.panel = $('<div class="phpdebugbar-panel" />');
         this.replaceWidget(widget);
     };
@@ -75,6 +77,20 @@ PhpDebugBar.DebugBar = (function($) {
      */
     Tab.prototype.setTitle = function(text) {
         this.tab.text(text);
+    };
+
+    /**
+     * Sets the badge value of the tab
+     * 
+     * @this {Tab}
+     * @param {String} value
+     */
+    Tab.prototype.setBadgeValue = function(value) {
+        if (value === null) {
+            this.badge.hide();
+        } else {
+            this.badge.text(value).show();
+        }
     };
 
     /**
@@ -544,7 +560,10 @@ PhpDebugBar.DebugBar = (function($) {
         var self = this;
         $.each(this.dataMap, function(key, def) {
             var d = getDictValue(data, def[0], def[1]);
-            if (self.isIndicator(key)) {
+            if (key.indexOf(':') != -1) {
+                key = key.split(':')[0];
+                self.getTab(key).setBadgeValue(d);
+            } else if (self.isIndicator(key)) {
                 self.getIndicator(key).setText(d);
             } else {
                 self.getTab(key).widget.setData(d);
