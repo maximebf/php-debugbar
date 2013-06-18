@@ -10,7 +10,7 @@
 
 namespace DebugBar;
 
-class DebugBarException extends Exception
+class DebugBarException extends \Exception
 {
     
 }
