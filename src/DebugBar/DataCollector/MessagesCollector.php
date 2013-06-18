@@ -10,12 +10,22 @@
 
 namespace DebugBar\DataCollector;
 
+use Psr\Log\AbstractLogger;
+
 /**
  * Provides a way to log messages
  */
-class MessagesCollector extends DataCollector implements Renderable
+class MessagesCollector extends AbstractLogger implements DataCollectorInterface, Renderable
 {
     protected $messages = array();
+
+    /**
+     * {@inheritDoc}
+     */
+    public function log($level, $message, array $context = array())
+    {
+        $this->addMessage($message, $level);
+    }
 
     /**
      * Adds a message
@@ -28,7 +38,7 @@ class MessagesCollector extends DataCollector implements Renderable
     public function addMessage($message, $label = 'info')
     {
         $this->messages[] = array(
-            'message' => $this->formatVar($message),
+            'message' => print_r($message, true),
             'is_string' => is_string($message),
             'label' => $label,
             'time' => microtime(true),

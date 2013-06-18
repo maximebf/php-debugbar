@@ -33,6 +33,9 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function collect()
     {
         return array(
@@ -41,11 +44,17 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'monolog';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getWidgets()
     {
         return array(
