@@ -5,6 +5,7 @@
         "../README.md",
         "data_collectors.md",
         "rendering.md",
-        "javascript_bar.md"
+        "javascript_bar.md",
+        "bridge_collectors.md"
     ]
 }

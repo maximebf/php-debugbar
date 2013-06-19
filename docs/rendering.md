@@ -8,20 +8,22 @@ all the useful functions to included the needed assets and generate a debug bar.
 ## Assets
 
 The debug bar relies on some css and javascript files which needs to be included
-into your webpage. This can be done in two ways:
+into your webpage. They are located in the *src/DebugBar/Resources* folder. 
+This can be done in three ways:
 
  - Using `JavascriptRenderer::renderHead()` which will returns a string with
    the needed script and link tags
  - Using [Assetic](https://github.com/kriswallsmith/assetic) and 
    `JavascriptRenderer::getAsseticCollection()`
+ - Dumping the assets yourself using `JavascriptRenderer::dumpCssAssets()` and 
+   `JavascriptRenderer::dumpJsAssets()`
 
 I would recommend using the second method as Assetic is a very powerful asset
-manager but the first method is provided to quickly integrate the debug bar
+manager but the other methods are provided to quickly integrate the debug bar
 into any projets.
 
 You can define the base url of your assets using `setBaseUrl()`. This is needed
-in 99% of cases. If you are using Assetic, you may have to change the base path
-of the assets if you moved the folder. This can be done using `setBasePath()`.
+in 99% of cases.
 
 Using `renderHead()`:
 
@@ -37,6 +39,11 @@ Using `renderHead()`:
 Using Assetic:
 
     list($cssCollection, $jsCollection) = $renderer->getAsseticCollection();
+
+Dumping the assets:
+
+    header('Content-Type', 'text/javascript');
+    $renderer->dumpJsAssets();
 
 Note that you can only use the debug bar assets and manage the dependencies by yourself
 using `$renderer->setIncludeVendors(false)`.

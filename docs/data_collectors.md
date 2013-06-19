@@ -71,10 +71,49 @@ in `JavascriptRenderer::addControl($name, $options)` (see Rendering chapter).
 
 This will have the result of adding a new indicator to the debug bar.
 
-## Included collectors
+## Base collectors
+
+Provided by the `DebugBar\DataCollector` namespace.
+
+### Messages
+
+Provides a way to log messages (compotible with [PSR-3 logger](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)).
+
+    $debugbar->addCollector(new MessagesCollector());
+    $debugbar['message']->info('hello world');
+
+### TimeData
+
+Provides a way to log total execution time as well as taking "measures" (ie. measure the exution time of a particular operation).
+
+    $debugbar->addCollector(new TimeDataCollector());
+    
+    $debugbar['time']->startMeasure('longop', 'My long operation');
+    sleep(2);
+    $debugbar['time']->stopMeasure('longop');
+
+    $debugbar['time']->measure('My long operation', function() {
+        sleep(2);
+    });
+
+Displays the measures on a timeline
+
+### Exceptions
+
+Display exceptions
+
+    $debugbar->addCollector(new ExceptionsCollector());
+
+    try {
+        throw new Exception('foobar');
+    } catch (Exception $e) {
+        $debugbar['exceptions']->addException($e);
+    }
+
+### Others
+
+Misc collectors which you can just register:
 
  - `MemoryCollector` (*memory*)
- - `MessagesCollector` (*messages*)
  - `PhpInfoCollector` (*php*)
  - `RequestDataCollector` (*request*)
- - `TimeDataCollector` (*time*)
