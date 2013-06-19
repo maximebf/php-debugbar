@@ -1,190 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>PHP Debug Bar</title>
-    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans&subset=latin">
-    <link type="text/css" rel="stylesheet" href="css/reset.css">
-    <link type="text/css" rel="stylesheet" href="css/docs.css">
-    <link type="text/css" rel="stylesheet" href="css/print.css" media="print">
-    <link type="text/css" rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/sunburst.min.css">
-    
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
-    
-    <script type="text/javascript" src="js/viewer.js"></script>
-</head>
-<body>
-    <div id="page">
-        <a name="top" />
-        
-            <header id="header">
-                <h1><a href="">PHP Debug Bar</a></h1>
-            </header>
-        
-        
+  <head>
+    <meta charset="utf-8">
+    <title>PHP DebugBar</title>
+    <link rel="stylesheet" type="text/css" href="debugbar/vendor/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="debugbar/debugbar.css">
+    <script type"text/javascript" src="debugbar/vendor/jquery-1.8.3.min.js"></script>
+    <script type"text/javascript" src="debugbar/vendor/jquery.event.drag-2.2.js"></script>
+    <script type"text/javascript" src="debugbar/debugbar.js"></script>
+    <script type"text/javascript" src="debugbar/widgets.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="debugbar.js"></script>
 
-    <div id="sidebar">
-        <nav id="toc">
-            
-    <ol>
-    
-        <li>
-            <a href="readme.html#php-debug-bar">PHP Debug Bar</a>
-            
-                
-    <ol>
-    
-        <li>
-            <a href="readme.html#installation">Installation</a>
-            
-        </li>
-    
-        <li>
-            <a href="readme.html#quick-start">Quick start</a>
-            
-        </li>
-    
-</ol>
-
-            
-        </li>
-    
-        <li>
-            <a href="data-collectors.html#collecting-data">Collecting Data</a>
-            
-                
-    <ol>
-    
-        <li>
-            <a href="data-collectors.html#using-collectors">Using collectors</a>
-            
-        </li>
-    
-        <li>
-            <a href="data-collectors.html#creating-collectors">Creating collectors</a>
-            
-        </li>
-    
-        <li>
-            <a href="data-collectors.html#included-collectors">Included collectors</a>
-            
-        </li>
-    
-</ol>
-
-            
-        </li>
-    
-        <li>
-            <a href="rendering.html#rendering">Rendering</a>
-            
-                
-    <ol>
-    
-        <li>
-            <a href="rendering.html#assets">Assets</a>
-            
-        </li>
-    
-        <li>
-            <a href="rendering.html#the-javascript-object">The javascript object</a>
-            
-        </li>
-    
-</ol>
-
-            
-        </li>
-    
-        <li>
-            <a href="javascript-bar.html#javascript-bar">Javascript Bar</a>
-            
-                
-    <ol>
-    
-        <li>
-            <a href="javascript-bar.html#tabs-and-indicators">Tabs and indicators</a>
-            
-        </li>
-    
-        <li>
-            <a href="javascript-bar.html#data-mapping">Data mapping</a>
-            
-        </li>
-    
-        <li>
-            <a href="javascript-bar.html#datasets">Datasets</a>
-            
-        </li>
-    
-        <li>
-            <a href="javascript-bar.html#widgets">Widgets</a>
-            
-        </li>
-    
-</ol>
-
-            
-        </li>
-    
-</ol>
-
-        </nav>
-    </div>
-
-<article id="content">
-    <a name="php-debug-bar"></a><h1>PHP Debug Bar</h1>
-<p>Displays a debug bar in the browser with information from php.
-No more <code>var_dump()</code> in your code!
-
-</p>
-<p><img src="docs/screenshot.png" alt="Screenshot">
-
-</p>
-<p><strong>Features:</strong>
-
-</p>
-<ul>
-<li>Generic debug bar with no other dependencies</li>
-<li>Easy to integrate with any project</li>
-<li>Clean, fast and easy to use interface</li>
-<li>Handles AJAX request</li>
-<li>Includes generic data collectors and collectors for well known libraries</li>
-<li>The client side bar is 100% coded in javascript</li>
-<li>Easily create your own collectors and their associated view in the bar</li>
-</ul>
-<a name="installation"></a><h2>Installation</h2>
-<p>The easiest way to install DebugBar is using <a href="https://github.com/composer/composer">Composer</a>
-with the following requirement:
-
-</p>
-<pre><code>{
-    &quot;require&quot;: {
-        &quot;maximebf/debugbar&quot;: &quot;&gt;=1.0.0&quot;
-    }
+  </head>
+  <body>
+    <a id="forkme" href="https://github.com/maximebf/php-debugbar"></a>
+    <header id="header">
+      <div class="container">
+        <a class="brand" href="/">PHP DebugBar</a>
+        <ul class="nav">
+          <li><a href="docs">Documentation</a></li>
+          <li><a href="https://github.com/maximebf/debugbar">Code</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+    </header>
+    <div id="main" class="container">
+      <div id="intro">
+        <h1>Debugging in PHP as never been easier</h1>
+        <p>
+          The DebugBar integrates easily in any projects and can display profiling data
+          from any part of your application. It comes built-in with data collectors for
+          standard PHP features and popular projects.
+        </p>
+      </div>
+      <div id="content">
+        <p>
+          Install the debug bar using <a href="http://getcomposer.org">Composer</a>:
+        </p>
+        <pre><code>{
+  "require": {
+    "maximebf/debugbar": "1.*"
+  }
 }</code></pre>
-<p>Alternatively, you can <a href="https://github.com/maximebf/php-debugbar/zipball/master">download the archive</a> 
-and add the src/ folder to PHP&#39;s include path:
-
-</p>
-<pre><code>set_include_path(&#39;/path/to/src&#39; . PATH_SEPARATOR . get_include_path());</code></pre>
-<p>DebugBar does not provide an autoloader but follows the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0 convention</a>.<br>You can use the following snippet to autoload ConsoleKit classes:
-
-</p>
-<pre><code>spl_autoload_register(function($className) {
-    if (substr($className, 0, 8) === &#39;DebugBar&#39;) {
-        $filename = str_replace(&#39;\\&#39;, DIRECTORY_SEPARATOR, trim($className, &#39;\\&#39;)) . &#39;.php&#39;;
-        require_once $filename;
-    }
-});</code></pre>
-<a name="quick-start"></a><h2>Quick start</h2>
-<p>DebugBar is very easy to use and you can add it to any of your projets in no time.
-The easiest way is using the <code>render()</code> functions
-
-</p>
-<pre><code>&lt;?php
+        <pre><code>$ php composer.phar install</code></pre>
+        <p>
+          The DebugBar has two parts: the main <code>DebugBar</code> object with data collectors and the renderer.
+          Data collectors are objects collecting a specific set of data. To makes things easy,
+          the <code>StandardDebugBar</code> has all the built-in collectors activated.
+        </p>
+        <pre><code>&lt;?php
 use DebugBar\StandardDebugBar;
 use DebugBar\Renderer\JavascriptRenderer;
 
@@ -202,33 +68,32 @@ $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
         &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are
-automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
-collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:
-
-</p>
-<pre><code>$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);</code></pre>
-<p><code>StandardDebugBar</code> activates all bundled collectors:
-
-</p>
-<ul>
-<li><code>MemoryCollector</code> (<em>memory</em>)</li>
-<li><code>MessagesCollector</code> (<em>messages</em>)</li>
-<li><code>PhpInfoCollector</code> (<em>php</em>)</li>
-<li><code>RequestDataCollector</code> (<em>request</em>)</li>
-<li><code>TimeDataCollector</code> (<em>time</em>)</li>
-</ul>
-<p>Learn more about DebugBar in the <a href="">docs</a>.
-</p>
-
-</article>
-
-        <footer id="footer">
-            Powered by <a href="http://github.com/maximebf/beautiful-docs">beautiful-docs</a> -
-            <a href="#top">Back to top</a> - <a href="all.html">Everything on a single page</a>
-            - <a href="?print=1">Print current page</a> - <a href="all.html?print=1">Print all pages</a>
-            
-        </footer>
+        <p>
+          Try it below!
+        </p>
+      </div>
+      <div id="sidebar">
+        <p>
+          Features:
+        </p>
+        <ul>
+          <li>Generic debug bar with no other dependencies</li>
+          <li>Easy to integrate with any project</li>
+          <li>Clean, fast and easy to use interface</li>
+          <li>Handles AJAX request</li>
+          <li>Includes generic data collectors and collectors for well known libraries</li>
+          <li>The client side bar is 100% coded in javascript</li>
+          <li>Easily create your own collectors and their associated view in the bar</li>
+        </ul>
+        <div id="tryit">
+          Try it now at the bottom of the page!
+        </div>
+      </div>
+      <div class="clear"></div>
     </div>
-</body>
+    <footer id="footer" class="container">
+      &copy; Maxime Bouroumeau-Fuseau 2013
+    </div>
+  </body>
 </html>
+

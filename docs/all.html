@@ -4,22 +4,24 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>PHP Debug Bar</title>
     <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans&subset=latin">
-    <link type="text/css" rel="stylesheet" href="css/reset.css">
-    <link type="text/css" rel="stylesheet" href="css/docs.css">
-    <link type="text/css" rel="stylesheet" href="css/print.css" media="print">
+    <link type="text/css" rel="stylesheet" href="/docs/css/reset.css">
+    <link type="text/css" rel="stylesheet" href="/docs/css/docs.css">
+    <link type="text/css" rel="stylesheet" href="/docs/css/print.css" media="print">
     <link type="text/css" rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/sunburst.min.css">
+    
+        <link type="text/css" rel="stylesheet" href="style.css">
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
     
-    <script type="text/javascript" src="js/viewer.js"></script>
+    <script type="text/javascript" src="/docs/js/viewer.js"></script>
 </head>
 <body>
     <div id="page">
         <a name="top" />
         
             <header id="header">
-                <h1><a href="">PHP Debug Bar</a></h1>
+                <h1><a href="/docs/">PHP Debug Bar</a></h1>
             </header>
         
         <div id='content'><a name="php-debug-bar"></a><h1>PHP Debug Bar</h1>
@@ -27,7 +29,7 @@
 No more <code>var_dump()</code> in your code!
 
 </p>
-<p><img src="docs/screenshot.png" alt="Screenshot">
+<p><img src="https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png" alt="Screenshot">
 
 </p>
 <p><strong>Features:</strong>
@@ -73,7 +75,7 @@ The easiest way is using the <code>render()</code> functions
 </p>
 <pre><code>&lt;?php
 use DebugBar\StandardDebugBar;
-use DebugBar\Renderer\JavascriptRenderer;
+use DebugBar\JavascriptRenderer;
 
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();
@@ -104,8 +106,9 @@ collector names. In our previous example, we add a message to the <code>Messages
 <li><code>PhpInfoCollector</code> (<em>php</em>)</li>
 <li><code>RequestDataCollector</code> (<em>request</em>)</li>
 <li><code>TimeDataCollector</code> (<em>time</em>)</li>
+<li><code>ExceptionsCollector</code> (<em>exceptions</em>)</li>
 </ul>
-<p>Learn more about DebugBar in the <a href="">docs</a>.
+<p>Learn more about DebugBar in the <a href="http://maximebf.github.io/php-debugbar">docs</a>.
 </p>
 
 <a name="php-debug-bar"></a><h1>PHP Debug Bar</h1>
@@ -113,7 +116,7 @@ collector names. In our previous example, we add a message to the <code>Messages
 No more <code>var_dump()</code> in your code!
 
 </p>
-<p><img src="docs/screenshot.png" alt="Screenshot">
+<p><img src="https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png" alt="Screenshot">
 
 </p>
 <p><strong>Features:</strong>
@@ -159,7 +162,7 @@ The easiest way is using the <code>render()</code> functions
 </p>
 <pre><code>&lt;?php
 use DebugBar\StandardDebugBar;
-use DebugBar\Renderer\JavascriptRenderer;
+use DebugBar\JavascriptRenderer;
 
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();
@@ -190,8 +193,9 @@ collector names. In our previous example, we add a message to the <code>Messages
 <li><code>PhpInfoCollector</code> (<em>php</em>)</li>
 <li><code>RequestDataCollector</code> (<em>request</em>)</li>
 <li><code>TimeDataCollector</code> (<em>time</em>)</li>
+<li><code>ExceptionsCollector</code> (<em>exceptions</em>)</li>
 </ul>
-<p>Learn more about DebugBar in the <a href="">docs</a>.
+<p>Learn more about DebugBar in the <a href="http://maximebf.github.io/php-debugbar">docs</a>.
 </p>
 
 <a name="collecting-data"></a><h1>Collecting Data</h1>
@@ -267,13 +271,57 @@ in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering c
 <p>This will have the result of adding a new indicator to the debug bar.
 
 </p>
-<a name="included-collectors"></a><h2>Included collectors</h2>
+<a name="base-collectors"></a><h2>Base collectors</h2>
+<p>Provided by the <code>DebugBar\DataCollector</code> namespace.
+
+</p>
+<a name="messages"></a><h3>Messages</h3>
+<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).
+
+</p>
+<pre><code>$debugbar-&gt;addCollector(new MessagesCollector());
+$debugbar[&#39;message&#39;]-&gt;info(&#39;hello world&#39;);</code></pre>
+<a name="timedata"></a><h3>TimeData</h3>
+<p>Provides a way to log total execution time as well as taking &quot;measures&quot; (ie. measure the exution time of a particular operation).
+
+</p>
+<pre><code>$debugbar-&gt;addCollector(new TimeDataCollector());
+
+$debugbar[&#39;time&#39;]-&gt;startMeasure(&#39;longop&#39;, &#39;My long operation&#39;);
+sleep(2);
+$debugbar[&#39;time&#39;]-&gt;stopMeasure(&#39;longop&#39;);
+
+$debugbar[&#39;time&#39;]-&gt;measure(&#39;My long operation&#39;, function() {
+    sleep(2);
+});</code></pre>
+<p>Displays the measures on a timeline
+
+</p>
+<a name="exceptions"></a><h3>Exceptions</h3>
+<p>Display exceptions
+
+</p>
+<pre><code>$debugbar-&gt;addCollector(new ExceptionsCollector());
+
+try {
+    throw new Exception(&#39;foobar&#39;);
+} catch (Exception $e) {
+    $debugbar[&#39;exceptions&#39;]-&gt;addException($e);
+}</code></pre>
+<a name="pdo"></a><h3>PDO</h3>
+<p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.
+
+</p>
+<pre><code>$pdo = new PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
+$debugbar-&gt;addCollector(new PDO\PDOCollector($pdo));</code></pre>
+<a name="others"></a><h3>Others</h3>
+<p>Misc collectors which you can just register:
+
+</p>
 <ul>
 <li><code>MemoryCollector</code> (<em>memory</em>)</li>
-<li><code>MessagesCollector</code> (<em>messages</em>)</li>
 <li><code>PhpInfoCollector</code> (<em>php</em>)</li>
 <li><code>RequestDataCollector</code> (<em>request</em>)</li>
-<li><code>TimeDataCollector</code> (<em>time</em>)</li>
 </ul>
 
 <a name="rendering"></a><h1>Rendering</h1>
@@ -284,7 +332,8 @@ all the useful functions to included the needed assets and generate a debug bar.
 <pre><code>$renderer = $debugbar-&gt;getJavascriptRenderer();</code></pre>
 <a name="assets"></a><h2>Assets</h2>
 <p>The debug bar relies on some css and javascript files which needs to be included
-into your webpage. This can be done in two ways:
+into your webpage. They are located in the <em>src/DebugBar/Resources</em> folder. 
+This can be done in three ways:
 
 </p>
 <ul>
@@ -292,15 +341,16 @@ into your webpage. This can be done in two ways:
 the needed script and link tags</li>
 <li>Using <a href="https://github.com/kriswallsmith/assetic">Assetic</a> and 
 <code>JavascriptRenderer::getAsseticCollection()</code></li>
+<li>Dumping the assets yourself using <code>JavascriptRenderer::dumpCssAssets()</code> and 
+<code>JavascriptRenderer::dumpJsAssets()</code></li>
 </ul>
 <p>I would recommend using the second method as Assetic is a very powerful asset
-manager but the first method is provided to quickly integrate the debug bar
+manager but the other methods are provided to quickly integrate the debug bar
 into any projets.
 
 </p>
 <p>You can define the base url of your assets using <code>setBaseUrl()</code>. This is needed
-in 99% of cases. If you are using Assetic, you may have to change the base path
-of the assets if you moved the folder. This can be done using <code>setBasePath()</code>.
+in 99% of cases.
 
 </p>
 <p>Using <code>renderHead()</code>:
@@ -318,6 +368,11 @@ of the assets if you moved the folder. This can be done using <code>setBasePath(
 
 </p>
 <pre><code>list($cssCollection, $jsCollection) = $renderer-&gt;getAsseticCollection();</code></pre>
+<p>Dumping the assets:
+
+</p>
+<pre><code>header(&#39;Content-Type&#39;, &#39;text/javascript&#39;);
+$renderer-&gt;dumpJsAssets();</code></pre>
 <p>Note that you can only use the debug bar assets and manage the dependencies by yourself
 using <code>$renderer-&gt;setIncludeVendors(false)</code>.
 
@@ -542,11 +597,55 @@ the <code>PhpDebugBar.Widgets</code> namespace.
 <li><code>TimelineWidget</code>: for the <code>TimeDataCollector</code></li>
 </ul>
 
+<a name="bridge-collectors"></a><h1>Bridge collectors</h1>
+<p>DebugBar comes with some &quot;bridge&quot; collectors. This collectors provides a way to integrate
+other projets with the DebugBar.
+
+</p>
+<a name="monolog"></a><h2>Monolog</h2>
+<p>Integrates Monolog messages into the messages view.
+
+</p>
+<pre><code>$logger = new Monolog\Logger(&#39;mylogger&#39;);
+$debugbar-&gt;addCollector(new DebugBar\Bridge\MonologCollector($logger));</code></pre>
+<p>Note that multiple logger can be collected:
+
+</p>
+<pre><code>$debugbar[&#39;monolog&#39;]-&gt;addLogger($logger);</code></pre>
+<a name="propel"></a><h2>Propel</h2>
+<p>Logs propel queries into an SQL queries view. You will need to activate
+Propel debug mode.
+
+</p>
+<pre><code>// before Propel::init()
+$debugbar-&gt;addCollector(new DebugBar\Bridge\PropelCollector());
+
+Propel::init(&#39;/path/to/config&#39;);
+
+// after Propel::init()
+// not mandatory if you set config options by yourself
+DebugBar\Bridge\PropelCollector::enablePropelProfiling();</code></pre>
+<p>Queries can be collected on a single connection by providing the <code>PropelPDO</code> object
+to the <code>PropelCollector</code> as first argument.
+
+</p>
+<a name="twig"></a><h2>Twig</h2>
+<p>Collects info about rendered templates. You need to wrap your <code>Twig_Environment</code> object
+into a <code>DebugBar\Bridge\Twig\TraceableTwigEnvironment</code> object.
+
+</p>
+<pre><code>$loader = new Twig_Loader_Filesystem(&#39;.&#39;);
+$env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
+$debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));</code></pre>
+<p>You can provide a <code>DebugBar\DataCollector\TimeDataCollector</code> as the second argument of
+<code>TraceableTwigEnvironment</code> so render operation can be measured.
+</p>
+
 </div>
         <footer id="footer">
             Powered by <a href="http://github.com/maximebf/beautiful-docs">beautiful-docs</a> -
-            <a href="#top">Back to top</a> - <a href="all.html">Everything on a single page</a>
-            - <a href="?print=1">Print current page</a> - <a href="all.html?print=1">Print all pages</a>
+            <a href="#top">Back to top</a> - <a href="/docs/all.html">Everything on a single page</a>
+            - <a href="?print=1">Print current page</a> - <a href="/docs/all.html?print=1">Print all pages</a>
             
         </footer>
     </div>
