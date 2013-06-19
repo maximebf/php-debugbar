@@ -411,7 +411,7 @@ PhpDebugBar.Widgets = (function($) {
 
         this.list = new ListWidget(null, function(li, stmt) {
             $('<span class="sql" />').text(stmt.sql).appendTo(li);
-            $('<span class="duration" title="Duration (s)" />').text(stmt.duration_str).appendTo(li);
+            $('<span class="duration" title="Duration" />').text(stmt.duration_str).appendTo(li);
             $('<span class="memory" title="Peak memory usage" />').text(stmt.memory_str).appendTo(li);
             if (!stmt.is_success) {
                 li.addClass('error');
@@ -434,11 +434,44 @@ PhpDebugBar.Widgets = (function($) {
         this.list.setData(data.statements);
         this.status.empty()
             .append($('<span />').text(data.nb_statements + " statements were executed" + (data.nb_failed_statements > 0 ? (", " + data.nb_failed_statements + " of which failed") : "")))
-            .append($('<span class="duration" title="Accumulated duration (s)" />').text(data.accumulated_duration_str))
+            .append($('<span class="duration" title="Accumulated duration" />').text(data.accumulated_duration_str))
             .append($('<span class="memory" title="Peak memory usage" />').text(data.peak_memory_usage_str));
     };
 
     widgets.SQLQueriesWidget = SQLQueriesWidget;
+
+    // ------------------------------------------------------------------
+    
+    /**
+     * Widget for the displaying templates data
+     *
+     * @this {TemplatesWidget}
+     * @constructor
+     * @param {Object} data
+     */
+    var TemplatesWidget = function(data) {
+        this.element = $('<div class="phpdebugbar-widgets-templates" />');
+        this.status = $('<div class="status" />').appendTo(this.element);
+
+        this.list = new ListWidget(null, function(li, tpl) {
+            $('<span class="name" />').text(tpl.name).appendTo(li);
+            $('<span class="render_time" title="Render time" />').text(tpl.render_time_str).appendTo(li);
+        });
+        this.element.append(this.list.element);
+
+        if (data) {
+            this.setData(data);
+        }
+    };
+
+    TemplatesWidget.prototype.setData = function(data) {
+        this.list.setData(data.templates);
+        this.status.empty()
+            .append($('<span />').text(data.templates.length + " templates were rendered"))
+            .append($('<span class="render_time" title="Accumulated render time" />').text(data.accumulated_render_time_str));
+    };
+
+    widgets.TemplatesWidget = TemplatesWidget;
 
     // ------------------------------------------------------------------
 

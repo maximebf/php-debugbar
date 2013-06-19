@@ -350,3 +350,28 @@
   display: block;
   font-weight: bold;
 }
+
+/* -------------------------------------- */
+
+.phpdebugbar-widgets-templates .status {
+  font-family: monospace;
+  padding: 6px 6px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  color: #555;
+  background: #fafafa;
+}
+
+.phpdebugbar-widgets-templates .render_time {
+  float: right;
+}
+.phpdebugbar-widgets-templates .render_time:before {
+  content: "\f017";
+  font-family: FontAwesome;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.phpdebugbar-widgets-templates .status .render_time {
+  color: #555;
+}
