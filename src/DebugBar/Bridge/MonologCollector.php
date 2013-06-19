@@ -32,6 +32,11 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
         $logger->pushHandler($this);
     }
 
+    public function addLogger(Logger $logger)
+    {
+        $logger->pushHandler($this);
+    }
+
     protected function write(array $record)
     {
         $this->records[] = array(

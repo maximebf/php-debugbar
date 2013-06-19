@@ -94,13 +94,14 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Utility function to measure the execution of a Closure
-     * 
+     *
+     * @param string $label
      * @param Closure $closure
      */
-    public function measure(\Closure $closure)
+    public function measure($label, \Closure $closure)
     {
         $name = spl_object_hash($closure);
-        $this->startMeasure($name, $closure);
+        $this->startMeasure($name, $label);
         $closure();
         $this->stopMeasure($name);
     }
