@@ -1,0 +1,40 @@
+#page {
+    width: 1000px;
+    margin: 0 auto;
+    padding-top: 110px;
+}
+
+#header {
+    background: #4ad7ff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border-bottom: 8px solid #49c5eb;
+    padding: 0;
+}
+    #header h1 {
+        font-size: 45px;
+        line-height: 50px;
+        width: 1000px;
+        margin: 0 auto;
+        display: block;
+        text-shadow: none;
+        line-height: 92px;
+    }
+        #header h1 a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+
+#sidebar {
+    padding: 0;
+    padding-right: 20px;
+}
+
+#content {
+    width: 729px;
+    padding: 0;
+    padding-left: 20px;
+}

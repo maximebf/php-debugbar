@@ -110,6 +110,13 @@ Display exceptions
         $debugbar['exceptions']->addException($e);
     }
 
+### PDO
+
+Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollector\PDO\TraceablePDO` object.
+
+    $pdo = new PDO\TraceablePDO(new PDO('sqlite::memory:'));
+    $debugbar->addCollector(new PDO\PDOCollector($pdo));
+
 ### Others
 
 Misc collectors which you can just register:

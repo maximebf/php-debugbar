@@ -3,7 +3,7 @@
 Displays a debug bar in the browser with information from php.
 No more `var_dump()` in your code!
 
-![Screenshot](docs/screenshot.png)
+![Screenshot](https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png)
 
 **Features:**
 
@@ -49,7 +49,7 @@ The easiest way is using the `render()` functions
 
     <?php
     use DebugBar\StandardDebugBar;
-    use DebugBar\Renderer\JavascriptRenderer;
+    use DebugBar\JavascriptRenderer;
 
     $debugbar = new StandardDebugBar();
     $debugbarRenderer = $debugbar->getJavascriptRenderer();
@@ -79,5 +79,6 @@ collector names. In our previous example, we add a message to the `MessagesColle
  - `PhpInfoCollector` (*php*)
  - `RequestDataCollector` (*request*)
  - `TimeDataCollector` (*time*)
+ - `ExceptionsCollector` (*exceptions*)
 
 Learn more about DebugBar in the [docs](http://maximebf.github.io/php-debugbar).
