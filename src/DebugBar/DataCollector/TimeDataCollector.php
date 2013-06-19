@@ -155,10 +155,8 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function collect()
     {
         $this->requestEndTime = microtime(true);
-        foreach ($this->measures as $name => $data) {
-            if (!isset($data['end'])) {
-                $this->stopMeasure($name);
-            }
+        foreach (array_keys($this->startedMeasures) as $name) {
+            $this->stopMeasure($name);
         }
 
         return array(
