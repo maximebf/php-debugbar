@@ -10,6 +10,8 @@
 
 namespace DebugBar\DataCollector;
 
+use DebugBarException;
+
 /**
  * Collects info about the request duration as well as providing
  * a way to log duration of any operations
@@ -19,6 +21,8 @@ class TimeDataCollector extends DataCollector implements Renderable
     protected $requestStartTime;
 
     protected $requestEndTime;
+
+    protected $startedMeasures = array();
 
     protected $measures = array();
 
@@ -46,10 +50,9 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function startMeasure($name, $label = null)
     {
         $start = microtime(true);
-        $this->measures[$name] = array(
-            'label' => $label ?: $name,
-            'start' => $start,
-            'relative_start' => $start - $this->requestStartTime
+        $this->startedMeasures[$name] = array(
+            'label' => $label,
+            'start' => $start
         );
     }
 
@@ -61,10 +64,32 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function stopMeasure($name)
     {
         $end = microtime(true);
-        $this->measures[$name]['end'] = $end;
-        $this->measures[$name]['relative_end'] = $end - $this->requestEndTime;
-        $this->measures[$name]['duration'] = $end - $this->measures[$name]['start'];
-        $this->measures[$name]['duration_str'] = $this->formatDuration($this->measures[$name]['duration']);
+        if (!isset($this->startedMeasures[$name])) {
+            throw new DebugBarException("Failed stopping measure '$name' because it hasn't been started");
+        }
+        $this->addMeasure($name, $this->startedMeasures[$name]['start'], $end, $this->startedMeasures[$name]['label']);
+        unset($this->startedMeasures[$name]);
+    }
+
+    /**
+     * Adds a measure
+     * 
+     * @param string $name
+     * @param float $start
+     * @param float $end
+     * @param string $label
+     */
+    public function addMeasure($name, $start, $end, $label = null)
+    {
+        $this->measures[$name] = array(
+            'label' => $label ?: $name,
+            'start' => $start,
+            'relative_start' => $start - $this->requestStartTime,
+            'end' => $end,
+            'relative_end' => $end - $this->requestEndTime,
+            'duration' => $end - $start,
+            'duration_str' => $this->formatDuration($end - $start)
+        );
     }
 
     /**

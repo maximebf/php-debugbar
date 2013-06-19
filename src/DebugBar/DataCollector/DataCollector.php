@@ -34,7 +34,10 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function formatDuration($seconds)
     {
-        return round($seconds * 1000) . 'ms';
+        if ($seconds < 1) {
+            return round($seconds * 1000) . 'ms';
+        }
+        return round($seconds, 2) . 's';
     }
 
     /**
