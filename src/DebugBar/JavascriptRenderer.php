@@ -52,13 +52,17 @@ class JavascriptRenderer
      * @param string $baseUrl
      * @param string $basePath
      */
-    public function __construct(DebugBar $debugBar, $baseUrl = '/debugbar', $basePath = null)
+    public function __construct(DebugBar $debugBar, $baseUrl = null, $basePath = null)
     {
         $this->debugBar = $debugBar;
+
+        if ($baseUrl === null) {
+            $baseUrl = '/vendor/maximebf/debugbar/src/DebugBar/Resources';
+        }
         $this->baseUrl = $baseUrl;
 
         if ($basePath === null) {
-            $basePath = __DIR__ . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array('..', '..', '..', 'web'));
+            $basePath = __DIR__ . DIRECTORY_SEPARATOR . 'Resources';
         }
         $this->basePath = $basePath;
 
@@ -224,9 +228,10 @@ class JavascriptRenderer
     /**
      * Returns the list of asset files
      * 
+     * @param string $type Only return css or js files
      * @return array
      */
-    protected function getAssetFiles()
+    protected function getAssetFiles($type = null)
     {
         $cssFiles = $this->cssFiles;
         $jsFiles = $this->jsFiles;
@@ -236,22 +241,42 @@ class JavascriptRenderer
             $jsFiles = array_merge($this->jsVendors, $jsFiles);
         }
 
-        return array($cssFiles, $jsFiles);
+        return $this->filterAssetArray(array($cssFiles, $jsFiles), $type);
+    }
+
+    /**
+     * Filters a tuple of (css, js) assets according to $type
+     * 
+     * @param array $array
+     * @param string $type 'css', 'js' or null for both
+     * @return array
+     */
+    protected function filterAssetArray($array, $type = null)
+    {
+        $type = strtolower($type);
+        if ($type === 'css') {
+            return $array[0];
+        }
+        if ($type === 'js') {
+            return $array[1];
+        }
+        return $array;
     }
 
     /**
      * Returns a tuple where the both items are Assetic AssetCollection,
      * the first one being css files and the second js files
      *
+     * @param string $type Only return css or js collection
      * @return array or \Assetic\Asset\AssetCollection
      */
-    public function getAsseticCollection()
+    public function getAsseticCollection($type = null)
     {
         list($cssFiles, $jsFiles) = $this->getAssetFiles();
-        return array(
+        return $this->filterAssetArray(array(
             $this->createAsseticCollection($cssFiles),
             $this->createAsseticCollection($jsFiles)
-        );
+        ), $type);
     }
 
     /**
@@ -269,6 +294,45 @@ class JavascriptRenderer
             $assets[] = new \Assetic\Asset\FileAsset($this->makeUriRelativeTo($file, $this->basePath));
         }
         return new \Assetic\Asset\AssetCollection($assets);
+    }
+
+    /**
+     * Write all CSS assets to standard output or in a file
+     *
+     * @param string $targetFilename
+     */
+    public function dumpCssAssets($targetFilename = null)
+    {
+        $this->dumpAssets($this->getAssetFiles('css'), $targetFilename);
+    }
+
+    /**
+     * Write all JS assets to standard output or in a file
+     *
+     * @param string $targetFilename
+     */
+    public function dumpJsAssets($targetFilename = null)
+    {
+        $this->dumpAssets($this->getAssetFiles('js'), $targetFilename);
+    }
+
+    /**
+     * Write assets to standard output or in a file
+     *
+     * @param array $files
+     * @param string $targetFilename
+     */
+    protected function dumpAssets($files, $targetFilename = null)
+    {
+        $content = '';
+        foreach ($files as $file) {
+            $content .= file_get_contents($this->makeUriRelativeTo($file, $this->basePath)) . "\n";
+        }
+        if ($targetFilename !== null) {
+            file_put_contents($targetFilename, $content);
+        } else {
+            echo $content;
+        }
     }
 
     /**
