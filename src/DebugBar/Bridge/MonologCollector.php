@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the DebugBar package.
+ *
+ * (c) 2013 Maxime Bouroumeau-Fuseau
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace DebugBar\Bridge;
 
@@ -20,6 +28,7 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
 
     public function __construct(Logger $logger, $level = Logger::DEBUG, $bubble = true)
     {
+        parent::__construct($level, $bubble);
         $logger->pushHandler($this);
     }
 
