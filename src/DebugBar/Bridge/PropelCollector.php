@@ -43,10 +43,14 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
 
     /**
      * Sets the needed configuration option in propel to enable query logging
+     *
+     * @param PropelConfiguration $config Apply profiling on a specific config
      */
-    public static function enablePropelProfiling()
+    public static function enablePropelProfiling(PropelConfiguration $config = null)
     {
-        $config = Propel::getConfiguration(PropelConfiguration::TYPE_OBJECT);
+        if ($config === null) {
+            $config = Propel::getConfiguration(PropelConfiguration::TYPE_OBJECT);
+        }
         $config->setParameter('debugpdo.logging.details.method.enabled', true);
         $config->setParameter('debugpdo.logging.details.time.enabled', true);
         $config->setParameter('debugpdo.logging.details.mem.enabled', true);
