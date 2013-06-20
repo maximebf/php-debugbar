@@ -33,7 +33,7 @@ and add the src/ folder to PHP's include path:
     set_include_path('/path/to/src' . PATH_SEPARATOR . get_include_path());
 
 DebugBar does not provide an autoloader but follows the [PSR-0 convention](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md).  
-You can use the following snippet to autoload ConsoleKit classes:
+You can use the following snippet to autoload DebugBar classes:
 
     spl_autoload_register(function($className) {
         if (substr($className, 0, 8) === 'DebugBar') {
