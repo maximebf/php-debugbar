@@ -81,4 +81,4 @@ collector names. In our previous example, we add a message to the `MessagesColle
  - `TimeDataCollector` (*time*)
  - `ExceptionsCollector` (*exceptions*)
 
-Learn more about DebugBar in the [docs](http://maximebf.github.io/php-debugbar).
+Learn more about DebugBar in the [docs](http://phpdebugbar.com/docs).
