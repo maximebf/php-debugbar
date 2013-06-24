@@ -131,10 +131,8 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
             $timeDataCollector->addMeasure($name, $start, $end);
         }
 
-        $context = $this->template->getEnvironment()->mergeGlobals($context);
         $this->env->addRenderedTemplate(array(
             'name' => $this->template->getTemplateName(),
-            'context' => $context,
             'render_time' => $end - $start
         ));
     }

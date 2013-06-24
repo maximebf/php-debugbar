@@ -79,6 +79,18 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
             Propel::setLogger($this);
         }
         $this->logger = $logger;
+        $this->logQueriesToLogger = false;
+    }
+
+    public function setLogQueriesToLogger($enable = true)
+    {
+        $this->logQueriesToLogger = $enable;
+        return $this;
+    }
+
+    public function isLogQueriesToLogger()
+    {
+        return $this->logQueriesToLogger;
     }
 
     /**
@@ -151,8 +163,14 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
     public function log($message, $severity = null)
     {
         if (strpos($message, 'DebugPDOStatement::execute') !== false) {
-            $this->parseAndLogSqlQuery($message);
-        } else if ($this->logger !== null) {
+            list($sql, $duration_str) = $this->parseAndLogSqlQuery($message);
+            if (!$this->logQueriesToLogger) {
+                return;
+            }
+           $message = "$sql ($duration_str)";
+        }
+
+        if ($this->logger !== null) {
             $this->logger->log($this->convertLogLevel($severity), $message);
         }
     }
@@ -185,6 +203,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
     protected function parseAndLogSqlQuery($message)
     {
         $parts = explode('|', $message, 4);
+        $sql = trim($parts[3]);
 
         $duration = 0;
         if (preg_match('/([0-9]+\.[0-9]+)/', $parts[1], $matches)) {
@@ -202,7 +221,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
         }
 
         $this->statements[] = array(
-            'sql' => trim($parts[3]),
+            'sql' => $sql,
             'is_success' => true,
             'duration' => $duration,
             'duration_str' => $this->formatDuration($duration),
@@ -211,6 +230,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
         );
         $this->accumulatedTime += $duration;
         $this->peakMemory = max($this->peakMemory, $memory);
+        return array($sql, $this->formatDuration($duration));
     }
 
     /**
