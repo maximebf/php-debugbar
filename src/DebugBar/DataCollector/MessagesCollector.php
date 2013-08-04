@@ -42,8 +42,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             'is_string' => is_string($message),
             'label' => $label,
             'time' => microtime(true),
-            'memory_usage' => memory_get_usage(),
-            'backtrace' => debug_backtrace()
+            'memory_usage' => memory_get_usage()
         );
     }
 
