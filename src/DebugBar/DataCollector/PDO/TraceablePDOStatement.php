@@ -49,7 +49,7 @@ class TraceablePDOStatement extends PDOStatement
     /**
      * {@inheritDoc}
      */
-    public function execute($params = array())
+    public function execute(array $params = null)
     {
         $start = microtime(true);
         $ex = null;
@@ -61,7 +61,10 @@ class TraceablePDOStatement extends PDOStatement
         }
 
         $preparedId = spl_object_hash($this);
-        $boundParameters = array_merge($this->boundParameters, $params);
+        $boundParameters = $this->boundParameters;
+        if (is_array($params)) {
+            $boundParameters = array_merge($boundParameters, $params);
+        }
         $duration = microtime(true) - $start;
         $memoryUsage = memory_get_usage(true);
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
@@ -69,7 +72,7 @@ class TraceablePDOStatement extends PDOStatement
             $ex = new PDOException($error[2], $error[0]);
         }
 
-        $tracedStmt = new TracedStatement($this->queryString, $boundParameters, 
+        $tracedStmt = new TracedStatement($this->queryString, $boundParameters,
             $preparedId, $this->rowCount(), $duration, $memoryUsage, $ex);
         $this->pdo->addExecutedStatement($tracedStmt);
 
