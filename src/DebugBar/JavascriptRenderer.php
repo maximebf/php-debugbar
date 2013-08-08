@@ -218,8 +218,8 @@ class JavascriptRenderer
      */
     public function addControl($name, $options)
     {
-        if (!isset($options['icon']) || !isset($options['widget'])) {
-            throw new DebugBarException("Missing 'icon' or 'widget' option for control '$name'");
+        if (count(array_intersect(array_keys($options), array('icon', 'widget', 'tab', 'indicator'))) === 0) {
+            throw new DebugBarException("Not enough options for control '$name'");
         }
         $this->controls[$name] = $options;
         return $this;
@@ -428,6 +428,7 @@ class JavascriptRenderer
         $js = '';
         $dataMap = array();
         $controls = $this->controls;
+        $exludedOptions = array('indicator', 'tab', 'map', 'default', 'widget');
 
         // finds controls provided by collectors
         foreach ($this->debugBar->getCollectors() as $collector) {
@@ -437,19 +438,25 @@ class JavascriptRenderer
         }
 
         foreach ($controls as $name => $options) {
-            if (isset($options['widget'])) {
-                $js .= sprintf("%s.createTab(\"%s\", new %s()%s);\n", 
+            $opts = array_diff_key($options, array_flip($exludedOptions));
+
+            if (isset($options['tab']) || isset($options['widget'])) {
+                if (!isset($opts['title'])) {
+                    $opts['title'] = ucfirst(str_replace('_', ' ', $name));
+                }
+                $js .= sprintf("%s.addTab(\"%s\", new %s({%s%s}));\n",  
                     $varname,
                     $name, 
-                    $options['widget'],
-                    isset($options['title']) ? sprintf(', "%s"', $options['title']) : ''
+                    isset($options['tab']) ? $options['tab'] : 'PhpDebugBar.DebugBar.Tab',
+                    substr(json_encode($opts, JSON_FORCE_OBJECT), 1, -1),
+                    isset($options['widget']) ? sprintf('%s"widget": new %s()', count($opts) ? ', ' : '', $options['widget']) : ''
                 );
-            } else if (strpos($name, ':') === false) {
-                $js .= sprintf("%s.createIndicator(\"%s\", \"%s\", \"%s\");\n", 
+            } else if (isset($options['indicator']) || isset($options['icon'])) {
+                $js .= sprintf("%s.addIndicator(\"%s\", new %s(%s));\n", 
                     $varname,
                     $name,
-                    isset($options['icon']) ? $options['icon'] : 'null', 
-                    isset($options['tooltip']) ? $options['tooltip'] : 'null'
+                    isset($options['indicator']) ? $options['indicator'] : 'PhpDebugBar.DebugBar.Indicator',
+                    json_encode($opts, JSON_FORCE_OBJECT)
                 );
             }
 
