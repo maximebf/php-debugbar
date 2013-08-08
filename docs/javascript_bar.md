@@ -42,7 +42,7 @@ provided.
 
 Indicators can be added using `createIndicator(name, icon, tooltip, position)`.
 Only `name` is required in this case. `icon` should be the name of a FontAwesome
-icon. `position` can either by *right* (default) or *left*.
+icon. `position` can either be *right* (default) or *left*.
 
     debugbar.createIndicator("time", "cogs", "Request duration");
 
@@ -84,19 +84,38 @@ allows to swtich between sets is only displayed if more than one are added.
 
 ## Widgets
 
-A widget is a javascript object which must contain at least an `element`
-property. `element`'s value will be appended to the tab panel.
+Widgets should inherit from the `PhpDebugBar.Widget` class which is used
+as the base of every visual component in the debug bar.
 
-Widgets should provide a `setData()` function so they can be used with
-the data mapper.
+New widgets can be created using `extend()`:
 
-    var MyWidget = function() {
-        this.element = $('<div class="mywidget" />');
-    };
+    var MyWidget = PhpDebugBar.Widget.extend({
+        // class properties
+    });
 
-    MyWidget.prototype.setData = function(text) {
-        this.element.text(text);
-    };
+The Widget class defines a `set(attr, value)` function which can be used
+to set the value of attributes.
+
+Using `bindAttr(attr, callback)`, you can trigger a callback everytime
+the value of the attribute is changed. `callback` can also be a `jQuery`
+object and in that case it will use the `text()` function to fill the element.
+
+Widgets should define a `render()` function which initializes the widget
+elements.
+
+`initiliaze(options)` will always be called after the constructor.
+
+    var MyWidget = PhpDebugBar.Widget.extend({
+
+        tagName: 'div', // optional as 'div' is the default
+
+        className: 'mywidget',
+
+        render: function() {
+            this.bindAttr('data', this.$el);
+        }
+
+    });
 
     // ----
 
@@ -118,3 +137,30 @@ Data collectors related widgets:
 
  - `MessagesWidget`: for the `MessagesCollector`
  - `TimelineWidget`: for the `TimeDataCollector`
+ - `ExceptionWidget`: for the `ExceptionCollector`
+ - `SQLQueriesWidget`: for the `PDOCollector`
+ - `TemplatesWidget`: for the `TwigCollector`
+
+## Custom tabs and indicators
+
+Behind the scene, `createTab()` and `createIndicator()` use `addTab(name, tab)` and 
+`addIndicator(name, indicator)`. Tabs are objects of type `PhpDebugBar.DebugBar.Tab` 
+and indicators of type `PhpDebugBar.DebugBar.Indicator`. These classes subclass 
+`PhpDebugBar.Widget` which makes it easy to create custom tabs or indicators.
+
+    var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({
+
+        tagName: 'a',
+
+        render: function() {
+            LinkIndicator.__super__.render.apply(this);
+            this.bindAttr('href', function(href) {
+                this.$el.attr('href', href);
+            });
+        }
+
+    });
+
+    // ----
+
+    debugbar.addIndicator('phpdoc', new LinkIndicator({ href: 'http://doc.php.com', title: 'PHP doc' }));

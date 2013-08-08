@@ -113,9 +113,12 @@ possible values:
 - *widget*: widget class name
 - *map*: a property name from the data to map the control to
 - *default*: a js string, default value of the data map
+- *tab*: class name of the tab object (to use a custom tab object)
+- *indicator*: class name of the indicator object (to use a custom indicator object)
 
-At least *icon* or *widget* are needed. If *widget* is specified, a tab will be created, otherwise
-an indicator.
+At least *icon* or *widget* are needed (unless *tab* or *indicator* are specified). If *widget* is 
+specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab
+or indicator.
 
     $renderer->addControl('messages', array(
         "widget" => "PhpDebugBar.Widgets.MessagesWidget",
