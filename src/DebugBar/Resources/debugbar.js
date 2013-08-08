@@ -11,19 +11,7 @@ if (typeof(localStorage) == 'undefined') {
     };
 }
 
-/**
- * DebugBar
- *
- * Creates a bar that appends itself to the body of your page
- * and sticks to the bottom.
- *
- * The bar can be customized by adding tabs and indicators.
- * A data map is used to fill those controls with data provided
- * from datasets.
- * 
- * @constructor
- */
-PhpDebugBar.DebugBar = (function($) {
+(function($) {
 
     /**
      * Returns the value from an object property.
@@ -46,6 +34,145 @@ PhpDebugBar.DebugBar = (function($) {
     }
 
     // ------------------------------------------------------------------
+    
+    /**
+     * Base class for all elements with a visual component
+     * 
+     * @param {Object} options
+     * @constructor
+     */
+    var Widget = PhpDebugBar.Widget = function(options) {
+        this._attributes = $.extend({}, this.defaults);
+        this._boundAttributes = {};
+        this.$el = $('<' + this.tagName + ' />');
+        if (this.className) {
+            this.$el.addClass(this.className);
+        }
+        this.initialize.apply(this, [options || {}]);
+        this.render.apply(this);
+    };
+
+    $.extend(Widget.prototype, {
+
+        tagName: 'div',
+
+        className: null,
+
+        defaults: {},
+
+        /**
+         * Called after the constructor
+         * 
+         * @param {Object} options
+         */
+        initialize: function(options) {
+            this.set(options);
+        },
+
+        /**
+         * Called after the constructor to render the element
+         */
+        render: function() {},
+
+        /**
+         * Sets the value of an attribute
+         * 
+         * @param {String} attr Can also be an object to set multiple attributes at once
+         * @param {Object} value
+         */
+        set: function(attr, value) {
+            if (typeof(attr) != 'string') {
+                for (var k in attr) {
+                    this.set(k, attr[k]);
+                }
+                return;
+            }
+
+            this._attributes[attr] = value;
+            if (typeof(this._boundAttributes[attr]) !== 'undefined') {
+                for (var i = 0, c = this._boundAttributes[attr].length; i < c; i++) {
+                    this._boundAttributes[attr][i].apply(this, [value]);
+                }
+            }
+        },
+
+        /**
+         * Checks if an attribute exists and is not null
+         * 
+         * @param {String} attr
+         * @return {[type]} [description]
+         */
+        has: function(attr) {
+            return typeof(this._attributes[attr]) !== 'undefined' && this._attributes[attr] !== null;
+        },
+
+        /**
+         * Returns the value of an attribute
+         * 
+         * @param {String} attr
+         * @return {Object}
+         */
+        get: function(attr) {
+            return this._attributes[attr];
+        },
+
+        /**
+         * Registers a callback function that will be called whenever the value of the attribute changes
+         *
+         * If cb is a jQuery elmenent, text() will be used to fill the element
+         * 
+         * @param {String} attr
+         * @param {Function} cb
+         */
+        bindAttr: function(attr, cb) {
+            if ($.isArray(attr)) {
+                for (var i = 0, c = attr.length; i < c; i++) {
+                    this.bindAttr(attr[i], cb);
+                }
+                return;
+            }
+
+            if (typeof(this._boundAttributes[attr]) == 'undefined') {
+                this._boundAttributes[attr] = [];
+            }
+            if (typeof(cb) == 'object') {
+                var el = cb;
+                cb = function(value) { el.text(value || ''); };
+            }
+            this._boundAttributes[attr].push(cb);
+            if (this.has(attr)) {
+                cb.apply(this, [this._attributes[attr]]);
+            }
+        }
+
+    });
+
+
+    /**
+     * Creates a subclass
+     *
+     * Code from Backbone.js
+     * 
+     * @param {Array} props Prototype properties
+     * @return {Function}
+     */
+    Widget.extend = function(props) {
+        var parent = this;
+
+        var child = function() { return parent.apply(this, arguments); };
+        $.extend(child, parent);
+
+        var Surrogate = function(){ this.constructor = child; };
+        Surrogate.prototype = parent.prototype;
+        child.prototype = new Surrogate;
+        $.extend(child.prototype, props);
+
+        child.__super__ = parent.prototype;
+
+        return child;
+    };
+
+    // ------------------------------------------------------------------
 
     /**
      * Tab
@@ -56,53 +183,42 @@ PhpDebugBar.DebugBar = (function($) {
      * The panel must contain a widget. A widget is an object which has
      * an element property containing something appendable to a jQuery object.
      *
-     * @this {Tab}
-     * @constructor
-     * @param {String} title
-     * @param {Object} widget
+     * Options:
+     *  - title
+     *  - badge
+     *  - widget
+     *  - data: forward data to widget data
      */
-    var Tab = function(title, widget) {
-        this.tab = $('<a href="javascript:" class="phpdebugbar-tab" />')
-        this.tabText = $('<span class="text" />').text(title).appendTo(this.tab);
-        this.badge = $('<span class="badge" />').appendTo(this.tab);
-        this.panel = $('<div class="phpdebugbar-panel" />');
-        this.replaceWidget(widget);
-    };
+    var Tab = Widget.extend({
 
-    /**
-     * Sets the title of the tab
-     *
-     * @this {Tab}
-     * @param {String} text
-     */
-    Tab.prototype.setTitle = function(text) {
-        this.tab.text(text);
-    };
+        className: 'phpdebugbar-panel',
 
-    /**
-     * Sets the badge value of the tab
-     * 
-     * @this {Tab}
-     * @param {String} value
-     */
-    Tab.prototype.setBadgeValue = function(value) {
-        if (value === null) {
-            this.badge.hide();
-        } else {
-            this.badge.text(value).show();
+        render: function() {
+            this.$tab = $('<a href="javascript:" class="phpdebugbar-tab" />');
+            this.bindAttr('title', $('<span class="text" />').appendTo(this.$tab));
+
+            this.$badge = $('<span class="badge" />').appendTo(this.$tab);
+            this.bindAttr('badge', function(value) {
+                if (value !== null) {
+                    this.$badge.text(value);
+                    this.$badge.show();
+                } else {
+                    this.$badge.hide();
+                }
+            });
+
+            this.bindAttr('widget', function(widget) {
+                this.$el.empty().append(widget.$el);
+            });
+
+            this.bindAttr('data', function(data) {
+                if (this.has('widget')) {
+                    this.get('widget').set('data', data);
+                }
+            })
         }
-    };
 
-    /**
-     * Replaces the widget inside the panel
-     * 
-     * @this {Tab}
-     * @param {Object} new_widget
-     */
-    Tab.prototype.replaceWidget = function(new_widget) {
-        this.panel.empty().append(new_widget.element);
-        this.widget = new_widget;
-    };
+    });
 
     // ------------------------------------------------------------------
 
@@ -111,49 +227,49 @@ PhpDebugBar.DebugBar = (function($) {
      *
      * An indicator is a text and an icon to display single value information
      * right inside the always visible part of the debug bar
-     * 
-     * @this {Indicator}
-     * @constructor
-     * @param {String} icon
-     * @param {String} tooltip
-     * @param {String} position "right" or "left", default is "right"
-     */
-    var Indicator = function(icon, tooltip, position) {
-        if (!position) {
-            position = 'right'
-        }
-
-        this.position = position;
-        this.element = $('<span class="phpdebugbar-indicator" />').css('float', position);
-        this.label = $('<span class="text" />').appendTo(this.element);
-
-        if (icon) {
-            $('<i class="icon-' + icon + '" />').insertBefore(this.label);
-        }
-        if (tooltip) {
-            this.element.append($('<span class="tooltip" />').text(tooltip));
-        }
-    };
-
-    /**
-     * Sets the text of the indicator
      *
-     * @this {Indicator}
-     * @param {String} text
+     * Options:
+     *  - icon
+     *  - title
+     *  - tooltip
+     *  - position: "right" or "left"
+     *  - data: alias of title
      */
-    Indicator.prototype.setText = function(text) {
-        this.element.find('.text').text(text);
-    };
+    var Indicator = Widget.extend({
 
-    /**
-     * Sets the tooltip of the indicator
-     *
-     * @this {Indicator}
-     * @param {String} text
-     */
-    Indicator.prototype.setTooltip = function(text) {
-        this.element.find('.tooltip').text(text);
-    };
+        tagName: 'span',
+
+        className: 'phpdebugbar-indicator',
+
+        defaults: {
+            position: "right"
+        },
+
+        render: function() {
+            this.bindAttr('position', function(pos) { this.$el.css('float', pos); });
+
+            this.$icon = $('<i />').appendTo(this.$el);
+            this.bindAttr('icon', function(icon) {
+                if (icon) {
+                    this.$icon.attr('class', 'icon-' + icon);
+                } else {
+                    this.$icon.attr('class', '');
+                }
+            });
+
+            this.bindAttr(['title', 'data'], $('<span class="text" />').appendTo(this.$el));
+
+            this.$tooltip = $('<span class="tooltip disabled" />').appendTo(this.$el);
+            this.bindAttr('tooltip', function(tooltip) {
+                if (tooltip) {
+                    this.$tooltip.text(tooltip).removeClass('disabled');
+                } else {
+                    this.$tooltip.addClass('disabled');
+                }
+            });
+        }
+
+    });
 
     // ------------------------------------------------------------------
 
@@ -161,419 +277,390 @@ PhpDebugBar.DebugBar = (function($) {
     /**
      * DebugBar
      *
-     * @this {DebugBar}
-     * @constructor
-     */
-    var DebugBar = function() {
-        this.controls = {};
-        this.dataMap = {};
-        this.datasets = {};
-        this.initUI();
-        this.init();
-    };
-
-    /**
-     * Initialiazes the UI
+     * Creates a bar that appends itself to the body of your page
+     * and sticks to the bottom.
      *
-     * @this {DebugBar}
+     * The bar can be customized by adding tabs and indicators.
+     * A data map is used to fill those controls with data provided
+     * from datasets.
      */
-    DebugBar.prototype.initUI = function() {
-        var self = this;
-        this.element = $('<div class="phpdebugbar" />').appendTo('body');
-        this.header = $('<div class="phpdebugbar-header" />').appendTo(this.element);
-        this.body = $('<div class="phpdebugbar-body" />').appendTo(this.element);
-        this.resizeHandle = $('<div class="phpdebugbar-resize-handle" />').appendTo(this.body);
-        this.firstPanelName = null;
-        this.activePanelName = null;
+    var DebugBar = PhpDebugBar.DebugBar = Widget.extend({
 
-        // allow resizing by dragging handle
-        this.body.drag('start', function(e, dd) {
-            dd.height = $(this).height();
-        }).drag(function(e, dd) {
-            var h = Math.max(100, dd.height - dd.deltaY);
-            $(this).css('height', h);
-            localStorage.setItem('phpdebugbar-height', h);
-        }, {handle: '.phpdebugbar-resize-handle'});
-        
-        // close button
-        this.closeButton = $('<a class="phpdebugbar-close-btn" href="javascript:"><i class="icon-remove"></i></a>').appendTo(this.header);
-        this.closeButton.click(function() {
-            self.hidePanels();
-        });
+        className: "phpdebugbar",
 
-        // select box for data sets
-        this.datasetSelectBox = $('<select class="phpdebugbar-datasets-switcher" />').appendTo(this.header);
-        this.datasetSelectBox.change(function() {
-            self.dataChangeHandler(self.datasets[this.value]);
-        });
-    };
+        initialize: function() {
+            this.controls = {};
+            this.dataMap = {};
+            this.datasets = {};
+            this.firstTabName = null;
+            this.activePanelName = null;
+        },
 
-    /**
-     * Custom initialiaze function for subsclasses
-     *
-     * @this {DebugBar}
-     */
-    DebugBar.prototype.init = function() {};
+        /**
+         * Initialiazes the UI
+         *
+         * @this {DebugBar}
+         */
+        render: function() {
+            var self = this;
+            this.$el.appendTo('body');
+            this.$header = $('<div class="phpdebugbar-header" />').appendTo(this.$el);
+            this.$body = $('<div class="phpdebugbar-body" />').appendTo(this.$el);
+            this.$resizehdle = $('<div class="phpdebugbar-resize-handle" />').appendTo(this.$body);
 
-    /**
-     * Restores the state of the DebugBar using localStorage
-     * This is not called by default in the constructor and
-     * needs to be called by subclasses in their init() method
-     *
-     * @this {DebugBar}
-     */
-    DebugBar.prototype.restoreState = function() {
-        // bar height
-        var height = localStorage.getItem('phpdebugbar-height');
-        if (height) {
-            this.body.css('height', height);
-        } else {
-            localStorage.setItem('phpdebugbar-height', this.body.height());
-        }
+            // allow resizing by dragging handle
+            this.$body.drag('start', function(e, dd) {
+                dd.height = $(this).height();
+            }).drag(function(e, dd) {
+                var h = Math.max(100, dd.height - dd.deltaY);
+                $(this).css('height', h);
+                localStorage.setItem('phpdebugbar-height', h);
+            }, {handle: '.phpdebugbar-resize-handle'});
+            
+            // minimize button
+            this.$minimizebtn = $('<a class="phpdebugbar-minimize-btn" href="javascript:"><i class="icon-remove"></i></a>').appendTo(this.$header);
+            this.$minimizebtn.click(function() {
+                self.minimize();
+            });
 
-        // bar visibility
-        var visible = localStorage.getItem('phpdebugbar-visible');
-        if (visible && visible == '1') {
-            this.showPanel(localStorage.getItem('phpdebugbar-panel'));
-        }
-    };
+            // select box for data sets
+            this.$datasets = $('<select class="phpdebugbar-datasets-switcher" />').appendTo(this.$header);
+            this.$datasets.change(function() {
+                self.dataChangeHandler(self.datasets[this.value]);
+            });
+        },
 
-    /**
-     * Creates and adds a new tab
-     *
-     * @this {DebugBar}
-     * @param {String} name Internal name
-     * @param {Object} widget A widget object with an element property
-     * @param {String} title The text in the tab, if not specified, name will be used
-     * @return {Tab}
-     */
-    DebugBar.prototype.createTab = function(name, widget, title) {
-        var tab = new Tab(title || (name.replace(/[_\-]/g, ' ').charAt(0).toUpperCase() + name.slice(1)), widget);
-        return this.addTab(name, tab);
-    };
-
-    /**
-     * Adds a new tab
-     *
-     * @this {DebugBar}
-     * @param {String} name Internal name
-     * @param {Tab} tab Tab object
-     * @return {Tab}
-     */
-    DebugBar.prototype.addTab = function(name, tab) {
-        if (this.isControl(name)) {
-            throw new Exception(name + ' already exists');
-        }
-
-        var self = this;
-        tab.tab.appendTo(this.header).click(function() { self.showPanel(name); });
-        tab.panel.appendTo(this.body);
-
-        this.controls[name] = tab;
-        if (this.firstPanelName == null) {
-            this.firstPanelName = name;
-        }
-        return tab;
-    };
-
-    /**
-     * Returns a Tab object
-     * 
-     * @this {DebugBar}
-     * @param {String} name
-     * @return {Tab}
-     */
-    DebugBar.prototype.getTab = function(name) {
-        if (this.isTab(name)) {
-            return this.controls[name];
-        }
-    };
-
-    /**
-     * Creates and adds an indicator
-     *
-     * @this {DebugBar}
-     * @param {String} name Internal name
-     * @param {String} icon
-     * @param {String} tooltip
-     * @param {String} position "right" or "left", default is "right"
-     * @return {Indicator}
-     */
-    DebugBar.prototype.createIndicator = function(name, icon, tooltip, position) {
-        var indicator = new Indicator(icon, tooltip, position);
-        return this.addIndicator(name, indicator);
-    };
-
-    /**
-     * Adds an indicator
-     * 
-     * @this {DebugBar}
-     * @param {String} name Internal name
-     * @param {Indicator} indicator Indicator object
-     * @return {Indicator}
-     */
-    DebugBar.prototype.addIndicator = function(name, indicator) {
-        if (this.isControl(name)) {
-            throw new Exception(name + ' already exists');
-        }
-
-        if (indicator.position == 'right') {
-            indicator.element.appendTo(this.header);
-        } else {
-            indicator.element.insertBefore(this.header.children().first())
-        }
-
-        this.controls[name] = indicator;
-        return indicator;
-    };
-
-    /**
-     * Returns an Indicator object
-     * 
-     * @this {DebugBar}
-     * @param {String} name
-     * @return {Indicator}
-     */
-    DebugBar.prototype.getIndicator = function(name) {
-        if (this.isIndicator(name)) {
-            return this.controls[name];
-        }
-    };
-
-    /**
-     * Adds a control
-     * 
-     * @param {String} name
-     * @param {Object} control
-     * @return {Object}
-     */
-    DebugBar.prototype.addControl = function(name, control) {
-        if (control instanceof Tab) {
-            this.addTab(name, control);
-        } else if (control instanceof Indicator) {
-            this.addIndicator(name, control);
-        } else {
-            throw new Exception("Unknown type of control");
-        }
-        return control;
-    };
-
-    /**
-     * Checks if there's a control under the specified name
-     * 
-     * @this {DebugBar}
-     * @param {String} name
-     * @return {Boolean}
-     */
-    DebugBar.prototype.isControl = function(name) {
-        return typeof(this.controls[name]) != 'undefined';
-    };
-
-    /**
-     * Checks if a tab with the specified name exists
-     * 
-     * @this {DebugBar}
-     * @param {String} name
-     * @return {Boolean}
-     */
-    DebugBar.prototype.isTab = function(name) {
-        return this.isControl(name) && this.controls[name] instanceof Tab;
-    };
-
-    /**
-     * Checks if an indicator with the specified name exists
-     * 
-     * @this {DebugBar}
-     * @param {String} name
-     * @return {Boolean}
-     */
-    DebugBar.prototype.isIndicator = function(name) {
-        return this.isControl(name) && this.controls[name] instanceof Indicator;
-    };
-
-    /**
-     * Removes all tabs and indicators from the debug bar and hides it
-     * 
-     * @this {DebugBar}
-     */
-    DebugBar.prototype.reset = function() {
-        this.hidePanels();
-        this.body.find('.phpdebugbar-panel').remove();
-        this.header.find('.phpdebugbar-tab, .phpdebugbar-indicator').remove();
-        this.controls = {};
-    };
-
-    /**
-     * Open the debug bar and display a specified panel
-     * 
-     * @this {DebugBar}
-     * @param {String} name If not specified, display the first panel
-     */
-    DebugBar.prototype.showPanel = function(name) {
-        this.resizeHandle.show();
-        this.body.show();
-        this.closeButton.show();
-
-        if (!name) {
-            if (this.activePanelName) {
-                name = this.activePanelName;
+        /**
+         * Restores the state of the DebugBar using localStorage
+         * This is not called by default in the constructor and
+         * needs to be called by subclasses in their init() method
+         *
+         * @this {DebugBar}
+         */
+        restoreState: function() {
+            // bar height
+            var height = localStorage.getItem('phpdebugbar-height');
+            if (height) {
+                this.$body.css('height', height);
             } else {
-                name = this.firstPanelName;
+                localStorage.setItem('phpdebugbar-height', this.$body.height());
             }
-        }
 
-        this.header.find('.phpdebugbar-tab.active').removeClass('active');
-        this.body.find('.phpdebugbar-panel.active').removeClass('active');
+            // bar visibility
+            var visible = localStorage.getItem('phpdebugbar-visible');
+            if (visible && visible == '1') {
+                this.showTab(localStorage.getItem('phpdebugbar-tab'));
+            }
+        },
 
-        if (this.isTab(name)) {
-            this.controls[name].tab.addClass('active');
-            this.controls[name].panel.addClass('active').show();
+        /**
+         * Creates and adds a new tab
+         *
+         * @this {DebugBar}
+         * @param {String} name Internal name
+         * @param {Object} widget A widget object with an element property
+         * @param {String} title The text in the tab, if not specified, name will be used
+         * @return {Tab}
+         */
+        createTab: function(name, widget, title) {
+            var tab = new Tab({
+                title: title || (name.replace(/[_\-]/g, ' ').charAt(0).toUpperCase() + name.slice(1)), 
+                widget: widget
+            });
+            return this.addTab(name, tab);
+        },
+
+        /**
+         * Adds a new tab
+         *
+         * @this {DebugBar}
+         * @param {String} name Internal name
+         * @param {Tab} tab Tab object
+         * @return {Tab}
+         */
+        addTab: function(name, tab) {
+            if (this.isControl(name)) {
+                throw new Exception(name + ' already exists');
+            }
+
+            var self = this;
+            tab.$tab.appendTo(this.$header).click(function() { self.showTab(name); });
+            tab.$el.appendTo(this.$body);
+
+            this.controls[name] = tab;
+            if (this.firstTabName == null) {
+                this.firstTabName = name;
+            }
+            return tab;
+        },
+
+        /**
+         * Creates and adds an indicator
+         *
+         * @this {DebugBar}
+         * @param {String} name Internal name
+         * @param {String} icon
+         * @param {String} tooltip
+         * @param {String} position "right" or "left", default is "right"
+         * @return {Indicator}
+         */
+        createIndicator: function(name, icon, tooltip, position) {
+            var indicator = new Indicator({
+                icon: icon, 
+                tooltip: tooltip, 
+                position: position || 'right'
+            });
+            return this.addIndicator(name, indicator);
+        },
+
+        /**
+         * Adds an indicator
+         * 
+         * @this {DebugBar}
+         * @param {String} name Internal name
+         * @param {Indicator} indicator Indicator object
+         * @return {Indicator}
+         */
+        addIndicator: function(name, indicator) {
+            if (this.isControl(name)) {
+                throw new Exception(name + ' already exists');
+            }
+
+            if (indicator.get('position') == 'right') {
+                indicator.$el.appendTo(this.$header);
+            } else {
+                indicator.$el.insertBefore(this.$header.children().first())
+            }
+
+            this.controls[name] = indicator;
+            return indicator;
+        },
+
+        /**
+         * Returns a control
+         * 
+         * @param {String} name
+         * @return {Object}
+         */
+        getControl: function(name) {
+            if (this.isControl(name)) {
+                return this.controls[name];
+            }
+        },
+
+        /**
+         * Checks if there's a control under the specified name
+         * 
+         * @this {DebugBar}
+         * @param {String} name
+         * @return {Boolean}
+         */
+        isControl: function(name) {
+            return typeof(this.controls[name]) != 'undefined';
+        },
+
+        /**
+         * Checks if a tab with the specified name exists
+         * 
+         * @this {DebugBar}
+         * @param {String} name
+         * @return {Boolean}
+         */
+        isTab: function(name) {
+            return this.isControl(name) && this.controls[name] instanceof Tab;
+        },
+
+        /**
+         * Checks if an indicator with the specified name exists
+         * 
+         * @this {DebugBar}
+         * @param {String} name
+         * @return {Boolean}
+         */
+        isIndicator: function(name) {
+            return this.isControl(name) && this.controls[name] instanceof Indicator;
+        },
+
+        /**
+         * Removes all tabs and indicators from the debug bar and hides it
+         * 
+         * @this {DebugBar}
+         */
+        reset: function() {
+            this.minimize();
+            var self = this;
+            $.each(this.controls, function(name, control) {
+                if (self.isTab(name)) {
+                    control.$tab.remove();
+                }
+                control.$el.remove();
+            });
+            this.controls = {};
+        },
+
+        /**
+         * Open the debug bar and display the specified tab
+         * 
+         * @this {DebugBar}
+         * @param {String} name If not specified, display the first tab
+         */
+        showTab: function(name) {
+            if (!name) {
+                if (this.activePanelName) {
+                    name = this.activePanelName;
+                } else {
+                    name = this.firstTabName;
+                }
+            }
+
+            if (!this.isTab(name)) {
+                throw new Exception("Unknown tab '" + name + "'");
+            }
+
+            this.$resizehdle.show();
+            this.$body.show();
+            this.$minimizebtn.show();
+
+            $(this.$header).find('> .active').removeClass('active');
+            $(this.$body).find('> .active').removeClass('active');
+
+            this.controls[name].$tab.addClass('active');
+            this.controls[name].$el.addClass('active');
             this.activePanelName = name;
-        }
-        localStorage.setItem('phpdebugbar-visible', '1');
-        localStorage.setItem('phpdebugbar-panel', name);
-    };
 
-    /**
-     * Shows the first panel
-     * 
-     * @this {DebugBar}
-     */
-    DebugBar.prototype.showFirstPanel = function() {
-        this.showPanel(this.firstPanelName);
-    };
+            localStorage.setItem('phpdebugbar-visible', '1');
+            localStorage.setItem('phpdebugbar-tab', name);
+        },
 
-    /**
-     * Hide panels and "close" the debug bar
-     *
-     * @this {DebugBar}
-     */
-    DebugBar.prototype.hidePanels = function() {
-        this.header.find('.phpdebugbar-tab.active').removeClass('active');
-        this.body.hide();
-        this.closeButton.hide();
-        this.resizeHandle.hide();
-        localStorage.setItem('phpdebugbar-visible', '0');
-    };
+        /**
+         * Hide panels and "close" the debug bar
+         *
+         * @this {DebugBar}
+         */
+        minimize: function() {
+            this.$header.find('> .active').removeClass('active');
+            this.$body.hide();
+            this.$minimizebtn.hide();
+            this.$resizehdle.hide();
+            localStorage.setItem('phpdebugbar-visible', '0');
+        },
 
-    /**
-     * Sets the data map used by dataChangeHandler to populate
-     * indicators and widgets
-     *
-     * A data map is an object where properties are control names.
-     * The value of each property should be an array where the first
-     * item is the name of a property from the data object (nested properties
-     * can be specified) and the second item the default value.
-     *
-     * Example:
-     *     {"memory": ["memory.peak_usage_str", "0B"]}
-     * 
-     * @this {DebugBar}
-     * @param {Object} map
-     */
-    DebugBar.prototype.setDataMap = function(map) {
-        this.dataMap = map;
-    };
+        /**
+         * Sets the data map used by dataChangeHandler to populate
+         * indicators and widgets
+         *
+         * A data map is an object where properties are control names.
+         * The value of each property should be an array where the first
+         * item is the name of a property from the data object (nested properties
+         * can be specified) and the second item the default value.
+         *
+         * Example:
+         *     {"memory": ["memory.peak_usage_str", "0B"]}
+         * 
+         * @this {DebugBar}
+         * @param {Object} map
+         */
+        setDataMap: function(map) {
+            this.dataMap = map;
+        },
 
-    /**
-     * Same as setDataMap() but appends to the existing map
-     * rather than replacing it
-     *
-     * @this {DebugBar}
-     * @param {Object} map
-     */
-    DebugBar.prototype.addDataMap = function(map) {
-        $.extend(this.dataMap, map);
-    };
+        /**
+         * Same as setDataMap() but appends to the existing map
+         * rather than replacing it
+         *
+         * @this {DebugBar}
+         * @param {Object} map
+         */
+        addDataMap: function(map) {
+            $.extend(this.dataMap, map);
+        },
 
-    /**
-     * Resets datasets and add one set of data
-     *
-     * For this method to be usefull, you need to specify
-     * a dataMap using setDataMap()
-     * 
-     * @this {DebugBar}
-     * @param {Object} data
-     * @return {String} Dataset's id
-     */
-    DebugBar.prototype.setData = function(data) {
-        this.datasets = {};
-        return this.addDataSet(data);
-    };
+        /**
+         * Resets datasets and add one set of data
+         *
+         * For this method to be usefull, you need to specify
+         * a dataMap using setDataMap()
+         * 
+         * @this {DebugBar}
+         * @param {Object} data
+         * @return {String} Dataset's id
+         */
+        setData: function(data) {
+            this.datasets = {};
+            return this.addDataSet(data);
+        },
 
-    /**
-     * Adds a dataset
-     *
-     * If more than one dataset are added, the dataset selector
-     * will be displayed.
-     * 
-     * For this method to be usefull, you need to specify
-     * a dataMap using setDataMap()
-     * 
-     * @this {DebugBar}
-     * @param {Object} data
-     * @param {String} id The name of this set, optional
-     * @return {String} Dataset's id
-     */
-    DebugBar.prototype.addDataSet = function(data, id) {
-        id = id || ("Request #" + (Object.keys(this.datasets).length + 1));
-        this.datasets[id] = data;
+        /**
+         * Adds a dataset
+         *
+         * If more than one dataset are added, the dataset selector
+         * will be displayed.
+         * 
+         * For this method to be usefull, you need to specify
+         * a dataMap using setDataMap()
+         * 
+         * @this {DebugBar}
+         * @param {Object} data
+         * @param {String} id The name of this set, optional
+         * @return {String} Dataset's id
+         */
+        addDataSet: function(data, id) {
+            id = id || ("Request #" + (Object.keys(this.datasets).length + 1));
+            this.datasets[id] = data;
 
-        this.datasetSelectBox.append($('<option value="' + id + '">' + id + '</option>'));
-        if (Object.keys(this.datasets).length > 1) {
-            this.datasetSelectBox.show();
-        }
-
-        this.showDataSet(id);
-        return id;
-    };
-
-    /**
-     * Returns the data from a dataset
-     * 
-     * @this {DebugBar}
-     * @param {String} id
-     * @return {Object}
-     */
-    DebugBar.prototype.getDataSet = function(id) {
-        return this.datasets[id];
-    };
-
-    /**
-     * Switch the currently displayed dataset
-     * 
-     * @this {DebugBar}
-     * @param {String} id
-     */
-    DebugBar.prototype.showDataSet = function(id) {
-        this.dataChangeHandler(this.datasets[id]);
-        this.datasetSelectBox.val(id);
-    };
-
-    /**
-     * Called when the current dataset is modified.
-     * 
-     * @this {DebugBar}
-     * @param {Object} data
-     */
-    DebugBar.prototype.dataChangeHandler = function(data) {
-        var self = this;
-        $.each(this.dataMap, function(key, def) {
-            var d = getDictValue(data, def[0], def[1]);
-            if (key.indexOf(':') != -1) {
-                key = key.split(':')[0];
-                self.getTab(key).setBadgeValue(d);
-            } else if (self.isIndicator(key)) {
-                self.getIndicator(key).setText(d);
-            } else {
-                self.getTab(key).widget.setData(d);
+            this.$datasets.append($('<option value="' + id + '">' + id + '</option>'));
+            if (Object.keys(this.datasets).length > 1) {
+                this.$datasets.show();
             }
-        });
-    };
+
+            this.showDataSet(id);
+            return id;
+        },
+
+        /**
+         * Returns the data from a dataset
+         * 
+         * @this {DebugBar}
+         * @param {String} id
+         * @return {Object}
+         */
+        getDataSet: function(id) {
+            return this.datasets[id];
+        },
+
+        /**
+         * Switch the currently displayed dataset
+         * 
+         * @this {DebugBar}
+         * @param {String} id
+         */
+        showDataSet: function(id) {
+            this.dataChangeHandler(this.datasets[id]);
+            this.$datasets.val(id);
+        },
+
+        /**
+         * Called when the current dataset is modified.
+         * 
+         * @this {DebugBar}
+         * @param {Object} data
+         */
+        dataChangeHandler: function(data) {
+            var self = this;
+            $.each(this.dataMap, function(key, def) {
+                var d = getDictValue(data, def[0], def[1]);
+                if (key.indexOf(':') != -1) {
+                    key = key.split(':');
+                    self.getControl(key[0]).set(key[1], d);
+                } else {
+                    self.getControl(key).set('data', d);
+                }
+            });
+        }
+
+    });
 
     DebugBar.Tab = Tab;
     DebugBar.Indicator = Indicator;
-
-    return DebugBar;
 
 })(jQuery);

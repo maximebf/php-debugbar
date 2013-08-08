@@ -29,7 +29,8 @@ div.phpdebugbar-header:after {
 
 a.phpdebugbar-tab,
 span.phpdebugbar-indicator,
-a.phpdebugbar-close-btn {
+a.phpdebugbar-indicator,
+a.phpdebugbar-minimize-btn {
   float: left;
   padding: 5px 8px;
   font-size: 14px;
@@ -37,7 +38,8 @@ a.phpdebugbar-close-btn {
   text-decoration: none;
 }
 span.phpdebugbar-indicator,
-a.phpdebugbar-close-btn {
+a.phpdebugbar-indicator,
+a.phpdebugbar-minimize-btn {
   float: right;
   border-right: 1px solid #ddd;
 }
@@ -66,17 +68,17 @@ a.phpdebugbar-tab.active {
     color: white;
   }
 
-a.phpdebugbar-close-btn {
+a.phpdebugbar-minimize-btn {
   display: none;
 }
 
-span.phpdebugbar-indicator {
+.phpdebugbar-indicator {
   position: relative;
 }
-  span.phpdebugbar-indicator span.text {
+  .phpdebugbar-indicator span.text {
     margin-left: 5px;
   }
-  span.phpdebugbar-indicator span.tooltip {
+  .phpdebugbar-indicator span.tooltip {
     display: none;
     position: absolute;
     top: -30px;
@@ -88,7 +90,7 @@ span.phpdebugbar-indicator {
     padding: 2px 3px;
     z-index: 1000;
   }
-  span.phpdebugbar-indicator:hover span.tooltip {
+  .phpdebugbar-indicator:hover span.tooltip:not(.disabled) {
     display: block;
   }
 
@@ -205,7 +207,7 @@ div.phpdebugbar-widgets-messages {
         color: #fff;
         text-decoration: none;
       }
-      div.phpdebugbar-widgets-messages div.toolbar a.filter.disabled {
+      div.phpdebugbar-widgets-messages div.toolbar a.filter.excluded {
         background: #eee;
         color: #888;
       }
