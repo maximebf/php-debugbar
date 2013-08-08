@@ -5,19 +5,18 @@ body {
   min-width: 1100px;
 }
 #header {
-  background: #f7f7f7;
-  background: -moz-linear-gradient(top, #f7f7f7 0%, #e0e0e0 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #e0e0e0));
-  border-bottom: 3px solid #bbbbbb;
+  background: #f1c40f;
+  background: -moz-linear-gradient(top, #f1c40f 0%, #eaa800 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f1c40f), color-stop(100%, #eaa800));
+  border-bottom: 3px solid #eabb12;
   display: block;
   position: relative;
-  padding: 20px;
+  padding: 10px 20px;
 }
 #header h1 {
-  font-family: 'Droid Sans', arial, serif;
-  font-size: 45px;
-  line-height: 50px;
-  text-shadow: #444 1px 1px 2px;
+  font-size: 37px;
+  line-height: 46px;
+  text-shadow: #aaa 1px 1px 2px;
 }
 #header h1 a {
   color: #333333;
@@ -52,7 +51,7 @@ body {
 #sidebar {
   border-right: 1px solid #cccccc;
   float: left;
-  padding: 30px;
+  padding: 27px 30px 15px;
   width: 230px;
 }
 #sidebar input#search {
@@ -82,6 +81,17 @@ body {
 }
 #sidebar #toc > ol > li li a {
   color: #777;
+}
+#sidebar #links {
+  margin-top: 24px;
+  margin-bottom: 10px;
+  border-top: 1px dotted #ddd;
+  padding-top: 10px;
+}
+#sidebar #links a {
+  font-size: 12px;
+  color: #888;
+  text-decoration: none;
 }
 #content {
   border-left: 1px solid #cccccc;
@@ -172,6 +182,11 @@ body {
 }
 #content table td:first-child {
   border-left: 0;
+}
+#content #disqus_thread {
+  margin-top: 50px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
 }
 #footer {
   border-top: 1px solid #cccccc;

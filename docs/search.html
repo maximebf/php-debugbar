@@ -178,39 +178,32 @@
 </div>
 
         <div id="content">
-            <a name="bridge-collectors"></a><h1>Bridge collectors</h1>
-<p>DebugBar comes with some &quot;bridge&quot; collectors. This collectors provides a way to integrate
-other projets with the DebugBar.</p>
-<a name="monolog"></a><h2>Monolog</h2>
-<p>Integrates Monolog messages into the messages view.</p>
-<pre><code>$logger = new Monolog\Logger(&#39;mylogger&#39;);
-$debugbar-&gt;addCollector(new DebugBar\Bridge\MonologCollector($logger));</code></pre>
-<p>Note that multiple logger can be collected:</p>
-<pre><code>$debugbar[&#39;monolog&#39;]-&gt;addLogger($logger);</code></pre>
-<a name="propel"></a><h2>Propel</h2>
-<p>Logs propel queries into an SQL queries view. You will need to activate
-Propel debug mode.</p>
-<pre><code>// before Propel::init()
-$debugbar-&gt;addCollector(new DebugBar\Bridge\PropelCollector());
+            <h2>Search results for "<span id="search-q"></span>"</h2>
+<ul id="search-results"></ul>
+<script type="text/javascript" src="/docs/lunr-index.js"></script>
+<script type="text/javascript">
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
 
-Propel::init(&#39;/path/to/config&#39;);
+    $(function() {
+        var q = getParameterByName('q'), 
+            ul = $('#search-results').empty(),
+            results = index.search(q);
 
-// after Propel::init()
-// not mandatory if you set config options by yourself
-DebugBar\Bridge\PropelCollector::enablePropelProfiling();</code></pre>
-<p>Queries can be collected on a single connection by providing the <code>PropelPDO</code> object
-to the <code>PropelCollector</code> as first argument.</p>
-<a name="twig"></a><h2>Twig</h2>
-<p>Collects info about rendered templates. You need to wrap your <code>Twig_Environment</code> object
-into a <code>DebugBar\Bridge\Twig\TraceableTwigEnvironment</code> object.</p>
-<pre><code>$loader = new Twig_Loader_Filesystem(&#39;.&#39;);
-$env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
-$debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));</code></pre>
-<p>You can provide a <code>DebugBar\DataCollector\TimeDataCollector</code> as the second argument of
-<code>TraceableTwigEnvironment</code> so render operation can be measured.</p>
-
-
-
+        $('#search-q').text(q);
+        if (results.length > 0) {
+            for (var i = 0; i < results.length; i++) {
+                ul.append($('<li><a href="' + results[i].ref + '">' + documentTitles[results[i].ref] + '</a></li>'));
+            }
+        } else {
+            ul.append($('<li class="no-results">No results found</li>'));
+        }
+    })
+</script>
 
         </div>
         <footer id="footer">

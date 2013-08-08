@@ -3,33 +3,36 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>PHP Debug Bar</title>
-    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans&subset=latin">
-    <link type="text/css" rel="stylesheet" href="/docs/css/reset.css">
-    <link type="text/css" rel="stylesheet" href="/docs/css/docs.css">
-    <link type="text/css" rel="stylesheet" href="/docs/css/print.css" media="print">
+
+    <link type="text/css" rel="stylesheet" href="/docs/assets/css/reset.css">
     <link type="text/css" rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/sunburst.min.css">
-    
-        <link type="text/css" rel="stylesheet" href="style.css">
-    
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/docs/assets/css/docs.css">
+    <link type="text/css" rel="stylesheet" href="/docs/assets/css/print.css" media="print">
+    <link type="text/css" rel="stylesheet" href="style.css">
+
+    <script type="text/javascript" src="/docs/assets/js/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+    <script type="text/javascript" src="/docs/assets/js/lunr.min.js"></script>
+
     
-    <script type="text/javascript" src="/docs/js/viewer.js"></script>
+
+    <script type="text/javascript">var BASE_URL = "/docs/";</script>
+    <script type="text/javascript" src="/docs/assets/js/viewer.js"></script>
+
+    
 </head>
 <body>
     <div id="page">
         <a name="top" />
-        
-            <header id="header">
-                <h1><a href="/docs/">PHP Debug Bar</a></h1>
-            </header>
-        
+        <header id="header">
+            <h1><a href="/docs/">PHP Debug Bar</a></h1>
+        </header>
         
 
-
-    <div id="sidebar">
-        <nav id="toc">
-            
+<div id="sidebar">
+    <form action="/docs/search.html"><input id="search" type="text" placeholder="Search" name="q" /></form>
+    <nav id="toc">
+        
     <ol>
     
         <li>
@@ -126,6 +129,11 @@
             
         </li>
     
+        <li>
+            <a href="/docs/javascript-bar.html#custom-tabs-and-indicators">Custom tabs and indicators</a>
+            
+        </li>
+    
 </ol>
 
             
@@ -159,40 +167,37 @@
     
 </ol>
 
-        </nav>
-    </div>
+    </nav>
+    
+    <nav id="links">
+        <ul>
+            
+        </ul>
+    </nav>
+    
+</div>
 
-<article id="content">
-    <a name="collecting-data"></a><h1>Collecting Data</h1>
+        <div id="content">
+            <a name="collecting-data"></a><h1>Collecting Data</h1>
 <a name="using-collectors"></a><h2>Using collectors</h2>
-<p>Collectors can be added to your debug bar using <code>addCollector()</code>. 
-
-</p>
+<p>Collectors can be added to your debug bar using <code>addCollector()</code>. </p>
 <pre><code>$debugbar = new DebugBar();
 $debugbar-&gt;addCollector(new DataCollector\RequestDataCollector());</code></pre>
 <p>Each collector as a unique name as defined by its <code>getName()</code> method. You can 
-access collectors using <code>getCollector($name)</code>.
-
-</p>
+access collectors using <code>getCollector($name)</code>.</p>
 <pre><code>$debugbar-&gt;addCollector(new DataCollector\MessagesCollector());
 $debugbar-&gt;getCollector(&#39;messages&#39;)-&gt;addMessage(&quot;foobar&quot;);
 // or:
 $debugbar[&#39;messages&#39;]-&gt;addMessage(&quot;foobar&quot;);</code></pre>
 <p>Data will be collected from them when the debug bar is rendered. You can however
-collect the data earlier using <code>collect()</code>.
-
-</p>
+collect the data earlier using <code>collect()</code>.</p>
 <pre><code>$debugbar-&gt;collect();</code></pre>
 <a name="creating-collectors"></a><h2>Creating collectors</h2>
 <p>Collectors must implement the <code>DebugBar\DataCollector\DataCollectorInterface</code>. They
-may subclass <code>DebugBar\DataCollector\DataCollector</code> which provides utility methods.
-
-</p>
+may subclass <code>DebugBar\DataCollector\DataCollector</code> which provides utility methods.</p>
 <p>Collectors must provide a <code>getName()</code> function returning their unique name and a
 <code>collect()</code> function returning some json-encodable data. The latter will be called at the
-same time the <code>DebugBar::collect()</code> method is called.
-
-</p>
+same time the <code>DebugBar::collect()</code> method is called.</p>
 <pre><code>class MyDataCollector extends DebugBar\DataCollector\DataCollector
 {
     public function collect()
@@ -209,14 +214,10 @@ same time the <code>DebugBar::collect()</code> method is called.
 $debugbar-&gt;addCollector(new MyDataCollector());</code></pre>
 <p>This however won&#39;t show anything in the debug bar as no information are provided
 on how to display these data. You could do that manually as you&#39;ll see in later chapter
-or implement the <code>DebugBar\DataSource\Renderable</code> interface. 
-
-</p>
+or implement the <code>DebugBar\DataSource\Renderable</code> interface. </p>
 <p>To implement it, you must define a <code>getWidgets()</code> function which returns an array
 of key/value pairs where key are control names and values control options as defined
-in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering chapter).
-
-</p>
+in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering chapter).</p>
 <pre><code>class MyDataCollector extends DebugBar\DataCollector\DataCollector implements DebugBar\DataCollector\Renderable
 {
     // ...
@@ -233,39 +234,27 @@ in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering c
         );
     }
 }</code></pre>
-<p>This will have the result of adding a new indicator to the debug bar.
-
-</p>
+<p>This will have the result of adding a new indicator to the debug bar.</p>
 <a name="base-collectors"></a><h2>Base collectors</h2>
-<p>Provided by the <code>DebugBar\DataCollector</code> namespace.
-
-</p>
+<p>Provided by the <code>DebugBar\DataCollector</code> namespace.</p>
 <a name="messages"></a><h3>Messages</h3>
-<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).
-
-</p>
+<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).</p>
 <pre><code>$debugbar-&gt;addCollector(new MessagesCollector());
 $debugbar[&#39;message&#39;]-&gt;info(&#39;hello world&#39;);</code></pre>
 <a name="timedata"></a><h3>TimeData</h3>
-<p>Provides a way to log total execution time as well as taking &quot;measures&quot; (ie. measure the exution time of a particular operation).
-
-</p>
+<p>Provides a way to log total execution time as well as taking &quot;measures&quot; (ie. measure the exution time of a particular operation).</p>
 <pre><code>$debugbar-&gt;addCollector(new TimeDataCollector());
 
 $debugbar[&#39;time&#39;]-&gt;startMeasure(&#39;longop&#39;, &#39;My long operation&#39;);
 sleep(2);
 $debugbar[&#39;time&#39;]-&gt;stopMeasure(&#39;longop&#39;);
 
-$debugbar[&#39;time&#39;]-&gt;measure(&#39;My long operation&#39;, function() {
+$debugbar[&#39;time&#39;]-&gt;measure(&#39;My long operation&#39;, function() {
     sleep(2);
 });</code></pre>
-<p>Displays the measures on a timeline
-
-</p>
+<p>Displays the measures on a timeline</p>
 <a name="exceptions"></a><h3>Exceptions</h3>
-<p>Display exceptions
-
-</p>
+<p>Display exceptions</p>
 <pre><code>$debugbar-&gt;addCollector(new ExceptionsCollector());
 
 try {
@@ -274,23 +263,21 @@ try {
     $debugbar[&#39;exceptions&#39;]-&gt;addException($e);
 }</code></pre>
 <a name="pdo"></a><h3>PDO</h3>
-<p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.
-
-</p>
+<p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.</p>
 <pre><code>$pdo = new PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
 $debugbar-&gt;addCollector(new PDO\PDOCollector($pdo));</code></pre>
 <a name="others"></a><h3>Others</h3>
-<p>Misc collectors which you can just register:
-
-</p>
+<p>Misc collectors which you can just register:</p>
 <ul>
 <li><code>MemoryCollector</code> (<em>memory</em>)</li>
 <li><code>PhpInfoCollector</code> (<em>php</em>)</li>
 <li><code>RequestDataCollector</code> (<em>request</em>)</li>
 </ul>
 
-</article>
 
+
+
+        </div>
         <footer id="footer">
             Powered by <a href="http://github.com/maximebf/beautiful-docs">beautiful-docs</a> -
             <a href="#top">Back to top</a> - <a href="/docs/all.html">Everything on a single page</a>

@@ -3,33 +3,36 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>PHP Debug Bar</title>
-    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans&subset=latin">
-    <link type="text/css" rel="stylesheet" href="/docs/css/reset.css">
-    <link type="text/css" rel="stylesheet" href="/docs/css/docs.css">
-    <link type="text/css" rel="stylesheet" href="/docs/css/print.css" media="print">
+
+    <link type="text/css" rel="stylesheet" href="/docs/assets/css/reset.css">
     <link type="text/css" rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/sunburst.min.css">
-    
-        <link type="text/css" rel="stylesheet" href="style.css">
-    
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/docs/assets/css/docs.css">
+    <link type="text/css" rel="stylesheet" href="/docs/assets/css/print.css" media="print">
+    <link type="text/css" rel="stylesheet" href="style.css">
+
+    <script type="text/javascript" src="/docs/assets/js/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+    <script type="text/javascript" src="/docs/assets/js/lunr.min.js"></script>
+
     
-    <script type="text/javascript" src="/docs/js/viewer.js"></script>
+
+    <script type="text/javascript">var BASE_URL = "/docs/";</script>
+    <script type="text/javascript" src="/docs/assets/js/viewer.js"></script>
+
+    
 </head>
 <body>
     <div id="page">
         <a name="top" />
-        
-            <header id="header">
-                <h1><a href="/docs/">PHP Debug Bar</a></h1>
-            </header>
-        
+        <header id="header">
+            <h1><a href="/docs/">PHP Debug Bar</a></h1>
+        </header>
         
 
-
-    <div id="sidebar">
-        <nav id="toc">
-            
+<div id="sidebar">
+    <form action="/docs/search.html"><input id="search" type="text" placeholder="Search" name="q" /></form>
+    <nav id="toc">
+        
     <ol>
     
         <li>
@@ -126,6 +129,11 @@
             
         </li>
     
+        <li>
+            <a href="/docs/javascript-bar.html#custom-tabs-and-indicators">Custom tabs and indicators</a>
+            
+        </li>
+    
 </ol>
 
             
@@ -159,122 +167,101 @@
     
 </ol>
 
-        </nav>
-    </div>
+    </nav>
+    
+    <nav id="links">
+        <ul>
+            
+        </ul>
+    </nav>
+    
+</div>
 
-<article id="content">
-    <a name="javascript-bar"></a><h1>Javascript Bar</h1>
+        <div id="content">
+            <a name="javascript-bar"></a><h1>Javascript Bar</h1>
 <p>The default client side implementation of the debug bar is made
-entirely in Javascript and is located in the <em>debugbar.js</em> file. 
-
-</p>
+entirely in Javascript and is located in the <em>debugbar.js</em> file. </p>
 <p>It adds a bottom-anchored bar which can have tabs and indicators. 
 The bar can be in an open or close state. When open, the tab panel is
 visible.
 An indicator is a piece of information displayed in the always-visible 
-part of the bar.
-
-</p>
+part of the bar.</p>
 <p>The bar handles multiple datasets by displaying a select box
-which allows you to switch between them.
-
-</p>
+which allows you to switch between them.</p>
 <p>The state of the bar (height, visibilty, active panel) can be saved
-between requests (enabled in the standard bar).
-
-</p>
+between requests (enabled in the standard bar).</p>
 <p>Each panel is composed of a widget which is used to display the
 data from a data collector. Some common widgets are provided in
-the <em>widgets.js</em> file.
-
-</p>
+the <em>widgets.js</em> file.</p>
 <p>The <code>PhpDebugBar</code> namespace is used for all objects and the only
-dependencies are <em>jQuery</em>, <em>jquery-drag</em> and <em>FontAwesome</em> (css).
-
-</p>
+dependencies are <em>jQuery</em>, <em>jquery-drag</em> and <em>FontAwesome</em> (css).</p>
 <p>The main class is <code>PhpDebugBar.DebugBar</code>. It provides the infrastructure
-to manage tabs, indicators and datasets.
-
-</p>
+to manage tabs, indicators and datasets.</p>
 <p>When initialized, the <code>DebugBar</code> class adds itself to the <code>&lt;body&gt;</code> of the
-page. It is empty by default.
-
-</p>
+page. It is empty by default.</p>
 <a name="tabs-and-indicators"></a><h2>Tabs and indicators</h2>
 <p>Controls (ie. tabs and indicators) are uniquely named. You can check if
-a control exists using <code>isControl(name)</code>.
-
-</p>
+a control exists using <code>isControl(name)</code>.</p>
 <p>Tabs can be added using the <code>createTab(name, widget, title)</code> function.
 The third argument is optional and will be computed from the name if not
-provided.
-
-</p>
+provided.</p>
 <pre><code>var debugbar = new PhpDebugBar.DebugBar();
 debugbar.createTab(&quot;messages&quot;, new PhpDebugBar.Widgets.MessagesWidget());</code></pre>
 <p>Indicators can be added using <code>createIndicator(name, icon, tooltip, position)</code>.
 Only <code>name</code> is required in this case. <code>icon</code> should be the name of a FontAwesome
-icon. <code>position</code> can either by <em>right</em> (default) or <em>left</em>.
-
-</p>
+icon. <code>position</code> can either be <em>right</em> (default) or <em>left</em>.</p>
 <pre><code>debugbar.createIndicator(&quot;time&quot;, &quot;cogs&quot;, &quot;Request duration&quot;);</code></pre>
 <p>You may have noticed that the data to use inside these controls is not
 specified at the moment. Although it could be specified when initialized, it
-is better to use data mapping to support dynamically changing the data set.
-
-</p>
+is better to use data mapping to support dynamically changing the data set.</p>
 <a name="data-mapping"></a><h2>Data mapping</h2>
 <p>To enable dynamically changing the data sets, we need to specify which values
 should be feed into which controls. This can be done using <code>setDataMap(map)</code>
 which takes as argument an object where properties are control names. Values
 should be arrays where the first item is the property from the data set and 
-the second a default value.
-
-</p>
+the second a default value.</p>
 <pre><code>debugbar.setDataMap({
     &quot;messages&quot;: [&quot;messages&quot;, []],
     &quot;time&quot;: [&quot;time.duration_str&quot;, &quot;0ms&quot;]
 });</code></pre>
 <p>You can notice that nested properties can also be accessed using the dot
-notation.
-
-</p>
+notation.</p>
 <p>In this mapping, <code>data[&quot;messages&quot;]</code> will be fed to the <em>messages</em> tab
-and <code>data[&quot;time&quot;][&quot;duration_str&quot;]</code> will be fed to the <em>time</em> indicator.
-
-</p>
-<p>Note: you can append mapping info using <code>addDataMap(map)</code>
-
-</p>
+and <code>data[&quot;time&quot;][&quot;duration_str&quot;]</code> will be fed to the <em>time</em> indicator.</p>
+<p>Note: you can append mapping info using <code>addDataMap(map)</code></p>
 <a name="datasets"></a><h2>Datasets</h2>
 <p>Although you shouldn&#39;t have to do anything regarding managing datasets,
-it is interesting to know a few functions related to them.
-
-</p>
+it is interesting to know a few functions related to them.</p>
 <p><code>addDataSet(data, id)</code> adds a dataset to the bar. The select box that
 allows to swtich between sets is only displayed if more than one are added.
-<code>id</code> is optional and will be auto-generated if not specified.
-
-</p>
-<p><code>showDataSet(id)</code> allows you to switch to a specific dataset.
-
-</p>
+<code>id</code> is optional and will be auto-generated if not specified.</p>
+<p><code>showDataSet(id)</code> allows you to switch to a specific dataset.</p>
 <a name="widgets"></a><h2>Widgets</h2>
-<p>A widget is a javascript object which must contain at least an <code>element</code>
-property. <code>element</code>&#39;s value will be appended to the tab panel.
+<p>Widgets should inherit from the <code>PhpDebugBar.Widget</code> class which is used
+as the base of every visual component in the debug bar.</p>
+<p>New widgets can be created using <code>extend()</code>:</p>
+<pre><code>var MyWidget = PhpDebugBar.Widget.extend({
+    // class properties
+});</code></pre>
+<p>The Widget class defines a <code>set(attr, value)</code> function which can be used
+to set the value of attributes.</p>
+<p>Using <code>bindAttr(attr, callback)</code>, you can trigger a callback everytime
+the value of the attribute is changed. <code>callback</code> can also be a <code>jQuery</code>
+object and in that case it will use the <code>text()</code> function to fill the element.</p>
+<p>Widgets should define a <code>render()</code> function which initializes the widget
+elements.</p>
+<p><code>initiliaze(options)</code> will always be called after the constructor.</p>
+<pre><code>var MyWidget = PhpDebugBar.Widget.extend({
 
-</p>
-<p>Widgets should provide a <code>setData()</code> function so they can be used with
-the data mapper.
+    tagName: &#39;div&#39;, // optional as &#39;div&#39; is the default
 
-</p>
-<pre><code>var MyWidget = function() {
-    this.element = $(&#39;&lt;div class=&quot;mywidget&quot; /&gt;&#39;);
-};
+    className: &#39;mywidget&#39;,
 
-MyWidget.prototype.setData = function(text) {
-    this.element.text(text);
-};
+    render: function() {
+        this.bindAttr(&#39;data&#39;, this.$el);
+    }
+
+});
 
 // ----
 
@@ -282,28 +269,48 @@ debugbar.createTab(&quot;mytab&quot;, new MyWidget());
 debugbar.addDataMap({&quot;mytab&quot;: [&quot;mydata&quot;, &quot;&quot;]});</code></pre>
 <p>Widgets for bundled data collectors are included as well as more generic
 widgets that you can build on top of. They are located in <em>widgets.js</em> in
-the <code>PhpDebugBar.Widgets</code> namespace.
-
-</p>
-<p>Generic widgets:
-
-</p>
+the <code>PhpDebugBar.Widgets</code> namespace.</p>
+<p>Generic widgets:</p>
 <ul>
 <li><code>ListWidget</code>: renders an array as a UL list</li>
 <li><code>KVListWidget</code>: renders a hash as a DL list</li>
 <li><code>VariablesListWidget</code>: an extension of <code>KVListWidget</code> to display a list of variables</li>
 <li><code>IFrameWidget</code>: renders an iframe</li>
 </ul>
-<p>Data collectors related widgets:
-
-</p>
+<p>Data collectors related widgets:</p>
 <ul>
 <li><code>MessagesWidget</code>: for the <code>MessagesCollector</code></li>
 <li><code>TimelineWidget</code>: for the <code>TimeDataCollector</code></li>
+<li><code>ExceptionWidget</code>: for the <code>ExceptionCollector</code></li>
+<li><code>SQLQueriesWidget</code>: for the <code>PDOCollector</code></li>
+<li><code>TemplatesWidget</code>: for the <code>TwigCollector</code></li>
 </ul>
+<a name="custom-tabs-and-indicators"></a><h2>Custom tabs and indicators</h2>
+<p>Behind the scene, <code>createTab()</code> and <code>createIndicator()</code> use <code>addTab(name, tab)</code> and 
+<code>addIndicator(name, indicator)</code>. Tabs are objects of type <code>PhpDebugBar.DebugBar.Tab</code> 
+and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classes subclass 
+<code>PhpDebugBar.Widget</code> which makes it easy to create custom tabs or indicators.</p>
+<pre><code>var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({
 
-</article>
+    tagName: &#39;a&#39;,
 
+    render: function() {
+        LinkIndicator.__super__.render.apply(this);
+        this.bindAttr(&#39;href&#39;, function(href) {
+            this.$el.attr(&#39;href&#39;, href);
+        });
+    }
+
+});
+
+// ----
+
+debugbar.addIndicator(&#39;phpdoc&#39;, new LinkIndicator({ href: &#39;http://doc.php.com&#39;, title: &#39;PHP doc&#39; }));</code></pre>
+
+
+
+
+        </div>
         <footer id="footer">
             Powered by <a href="http://github.com/maximebf/beautiful-docs">beautiful-docs</a> -
             <a href="#top">Back to top</a> - <a href="/docs/all.html">Everything on a single page</a>
