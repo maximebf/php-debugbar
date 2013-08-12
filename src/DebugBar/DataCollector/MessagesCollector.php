@@ -15,16 +15,20 @@ use Psr\Log\AbstractLogger;
 /**
  * Provides a way to log messages
  */
-class MessagesCollector extends AbstractLogger implements DataCollectorInterface, Renderable
+class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable
 {
+    protected $name;
+
     protected $messages = array();
 
+    protected $aggregates = array();
+
     /**
-     * {@inheritDoc}
+     * @param string $name
      */
-    public function log($level, $message, array $context = array())
+    public function __construct($name = 'messages')
     {
-        $this->addMessage($message, $level);
+        $this->name = $name;
     }
 
     /**
@@ -41,19 +45,51 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             'message' => print_r($message, true),
             'is_string' => is_string($message),
             'label' => $label,
-            'time' => microtime(true),
-            'memory_usage' => memory_get_usage()
+            'time' => microtime(true)
         );
     }
 
     /**
-     * Returns all messages
+     * Aggregates messages from other collectors
      * 
-     * @return array
+     * @param MessagesAggregateInterface $messages
+     */
+    public function aggregate(MessagesAggregateInterface $messages)
+    {
+        $this->aggregates[] = $messages;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function getMessages()
     {
-        return $this->messages;
+        $messages = $this->messages;
+        foreach ($this->aggregates as $collector) {
+            $msgs = array_map(function($m) use ($collector) { 
+                $m['collector'] = $collector->getName(); 
+                return $m; 
+            }, $collector->getMessages());
+            $messages = array_merge($messages, $msgs);
+        }
+
+        // sort messages by their timestamp
+        usort($messages, function($a, $b) {
+            if ($a['time'] === $b['time']) {
+                return 0;
+            }
+            return $a['time'] < $b['time'] ? -1 : 1;
+        });
+
+        return $messages;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function log($level, $message, array $context = array())
+    {
+        $this->addMessage($message, $level);
     }
 
     /**
@@ -61,9 +97,10 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function collect()
     {
+        $messages = $this->getMessages();
         return array(
-            'count' => count($this->messages),
-            'messages' => $this->messages
+            'count' => count($messages),
+            'messages' => $messages
         );
     }
 
@@ -72,7 +109,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function getName()
     {
-        return 'messages';
+        return $this->name;
     }
 
     /**
@@ -80,14 +117,15 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function getWidgets()
     {
+        $name = $this->getName();
         return array(
-            "messages" => array(
+            "$name" => array(
                 "widget" => "PhpDebugBar.Widgets.MessagesWidget", 
-                "map" => "messages.messages", 
+                "map" => "$name.messages", 
                 "default" => "[]"
             ),
-            "messages:badge" => array(
-                "map" => "messages.count",
+            "$name:badge" => array(
+                "map" => "$name.count",
                 "default" => "null"
             )
         );

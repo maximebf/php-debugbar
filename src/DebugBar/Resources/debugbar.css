@@ -174,7 +174,7 @@ div.phpdebugbar-widgets-messages {
     font-size: 11px;
     color: red;
   }
-  div.phpdebugbar-widgets-messages li.list-item a.backtrace,
+  div.phpdebugbar-widgets-messages li.list-item span.collector,
   div.phpdebugbar-widgets-messages li.list-item span.label {
     float: right;
     font-size: 12px;
@@ -182,6 +182,10 @@ div.phpdebugbar-widgets-messages {
     color: #888;
     margin: 0 2px;
     text-decoration: none;
+  }
+  div.phpdebugbar-widgets-messages li.list-item span.collector {
+    color: #555;
+    font-style: italic;
   }
   div.phpdebugbar-widgets-messages div.toolbar {
     position: fixed;

@@ -14,6 +14,7 @@ use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
 use DebugBar\DataCollector\DataCollectorInterface;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\MessagesAggregateInterface;
 
 /**
  * A monolog handler as well as a data collector
@@ -22,21 +23,40 @@ use DebugBar\DataCollector\Renderable;
  * $debugbar->addCollector(new MonologCollector($logger));
  * </code>
  */
-class MonologCollector extends AbstractProcessingHandler implements DataCollectorInterface, Renderable
+class MonologCollector extends AbstractProcessingHandler implements DataCollectorInterface, Renderable, MessagesAggregateInterface
 {
+    protected $name;
+
     protected $records = array();
 
-    public function __construct(Logger $logger, $level = Logger::DEBUG, $bubble = true)
+    /**
+     * @param Logger $logger
+     * @param int $level
+     * @param boolean $bubble
+     * @param string $name
+     */
+    public function __construct(Logger $logger = null, $level = Logger::DEBUG, $bubble = true, $name = 'monolog')
     {
         parent::__construct($level, $bubble);
-        $logger->pushHandler($this);
+        $this->name = $name;
+        if ($logger !== null) {
+            $this->addLogger($logger);
+        }
     }
 
+    /**
+     * Adds logger which messages you want to log
+     * 
+     * @param Logger $logger
+     */
     public function addLogger(Logger $logger)
     {
         $logger->pushHandler($this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function write(array $record)
     {
         $this->records[] = array(
@@ -45,6 +65,14 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
             'label' => strtolower($record['level_name']),
             'time' => $record['datetime']->format('U')
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMessages()
+    {
+        return $this->records;
     }
 
     /**
@@ -63,7 +91,7 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
      */
     public function getName()
     {
-        return 'monolog';
+        return $this->name;
     }
 
     /**
@@ -71,14 +99,15 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
      */
     public function getWidgets()
     {
+        $name = $this->getName();
         return array(
-            "logs" => array(
+            $name => array(
                 "widget" => "PhpDebugBar.Widgets.MessagesWidget",
-                "map" => "monolog.records",
+                "map" => "$name.records",
                 "default" => "[]"
             ),
-            "logs:badge" => array(
-                "map" => "monolog.count",
+            "$name:badge" => array(
+                "map" => "$name.count",
                 "default" => "null"
             )
         );

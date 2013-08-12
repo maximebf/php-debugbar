@@ -231,6 +231,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 }
 
                 $('<span class="label" />').text(value.label).appendTo(li);
+                if (value.collector) {
+                    $('<span class="collector" />').text(value.collector).appendTo(li);
+                }
             }});
 
             this.$list.$el.appendTo(this.$el);
