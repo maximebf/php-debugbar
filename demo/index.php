@@ -1,0 +1,33 @@
+<?php
+
+include 'bootstrap.php';
+
+$debugbar['messages']->addMessage('hello');
+
+$debugbar['time']->startMeasure('op1', 'sleep 500');
+usleep(300);
+$debugbar['time']->startMeasure('op2', 'sleep 400');
+usleep(200);
+$debugbar['time']->stopMeasure('op1');
+usleep(200);
+$debugbar['time']->stopMeasure('op2');
+
+$debugbar['messages']->addMessage('world', 'warning');
+$debugbar['messages']->addMessage(array('toto' => array('titi', 'tata')));
+$debugbar['messages']->addMessage('oups', 'error');
+
+$debugbar['time']->startMeasure('render');
+
+render_demo_page(function() {
+?>
+<h2>AJAX</h2>
+<ul>
+    <li><a href="ajax.php" class="ajax">load ajax content</a></li>
+    <li><a href="ajax_exception.php" class="ajax">load ajax content with exception</a></li>
+</ul>
+<h2>PDO</h2>
+<ul>
+    <li><a href="pdo.php">PDO demo</a></li>
+</ul>
+<?php
+});

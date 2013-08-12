@@ -20,15 +20,4 @@ $foo = $stmt->fetch();
 
 $pdo->exec('delete from titi');
 
-?>
-<html>
-    <head>
-        <?php echo $debugbarRenderer->renderHead() ?>
-    </head>
-    <body>
-        <p>PhpDebugBar PDO Demo</p>
-        <?php
-            echo $debugbarRenderer->render();
-        ?>
-    </body>
-</html>
+render_demo_page();
