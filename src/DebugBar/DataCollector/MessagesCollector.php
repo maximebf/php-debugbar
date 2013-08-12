@@ -93,6 +93,14 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     }
 
     /**
+     * Deletes all messages
+     */
+    public function clear()
+    {
+        $this->messages = array();
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function collect()
