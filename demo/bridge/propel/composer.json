@@ -1,0 +1,5 @@
+{
+    "require": {
+        "propel/propel1": "*"
+    }
+}

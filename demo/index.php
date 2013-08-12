@@ -32,6 +32,7 @@ render_demo_page(function() {
 <h2>Bridges</h2>
 <p>(you need to install needed dependencies first, run <code>composer.phar install</code> in each demo folders)</p>
 <ul>
+    <li><a href="bridge/propel">Propel</a></li>
     <li><a href="bridge/swiftmailer">Swift mailer</a></li>
     <li><a href="bridge/twig">Twig</a></li>
 </ul>
