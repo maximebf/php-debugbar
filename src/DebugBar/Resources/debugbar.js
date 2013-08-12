@@ -380,7 +380,7 @@ if (typeof(localStorage) == 'undefined') {
          */
         addTab: function(name, tab) {
             if (this.isControl(name)) {
-                throw new Exception(name + ' already exists');
+                throw new Error(name + ' already exists');
             }
 
             var self = this;
@@ -423,7 +423,7 @@ if (typeof(localStorage) == 'undefined') {
          */
         addIndicator: function(name, indicator) {
             if (this.isControl(name)) {
-                throw new Exception(name + ' already exists');
+                throw new Error(name + ' already exists');
             }
 
             if (indicator.get('position') == 'right') {
@@ -514,7 +514,7 @@ if (typeof(localStorage) == 'undefined') {
             }
 
             if (!this.isTab(name)) {
-                throw new Exception("Unknown tab '" + name + "'");
+                throw new Error("Unknown tab '" + name + "'");
             }
 
             this.$resizehdle.show();
