@@ -385,3 +385,18 @@ div.phpdebugbar-widgets-templates span.render_time:before {
 div.phpdebugbar-widgets-templates div.status span.render_time {
   color: #555;
 }
+
+
+/* -------------------------------------- */
+
+div.phpdebugbar-widgets-mails span.subject {
+  display: block;
+}
+
+div.phpdebugbar-widgets-mails li.list-item pre.headers {
+  display: none;
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  font-family: monospace;
+}

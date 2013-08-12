@@ -436,4 +436,39 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     });
 
+    // ------------------------------------------------------------------
+    
+    /**
+     * Widget for the displaying mails data
+     *
+     * Options:
+     *  - data
+     */
+    var MailsWidget = PhpDebugBar.Widgets.MailsWidget = PhpDebugBar.Widget.extend({
+
+        className: 'phpdebugbar-widgets-mails',
+
+        render: function() {
+            this.$list = new ListWidget({ itemRenderer: function(li, mail) {
+                $('<span class="subject" />').text(mail.subject).appendTo(li);
+                $('<span class="to" />').text(mail.to).appendTo(li);
+                var headers = $('<pre class="headers" />').appendTo(li);
+                $('<code />').text(mail.headers).appendTo(headers);
+                li.click(function() {
+                    if (headers.is(':visible')) {
+                        headers.hide();
+                    } else {
+                        headers.show();
+                    }
+                });
+            }});
+            this.$list.$el.appendTo(this.$el);
+
+            this.bindAttr('data', function(data) {
+                this.$list.set('data', data);
+            });
+        }
+
+    });
+
 })(jQuery);
