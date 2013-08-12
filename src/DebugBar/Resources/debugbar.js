@@ -349,7 +349,10 @@ if (typeof(localStorage) == 'undefined') {
             // bar visibility
             var visible = localStorage.getItem('phpdebugbar-visible');
             if (visible && visible == '1') {
-                this.showTab(localStorage.getItem('phpdebugbar-tab'));
+                var tab = localStorage.getItem('phpdebugbar-tab');
+                if (this.isTab(tab)) {
+                    this.showTab(tab);
+                }
             }
         },
 
