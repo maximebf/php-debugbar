@@ -125,3 +125,6 @@ or indicator.
         "map" => "messages",
         "default" => "[]"
     ));
+
+You can disable a control using `disableControl($name)` and ignore any controls provided by
+a collector using `ignoreCollector($name)`.

@@ -73,18 +73,27 @@ This will have the result of adding a new indicator to the debug bar.
 
 ## Base collectors
 
-Provided by the `DebugBar\DataCollector` namespace.
+Cpllectors provided in the `DebugBar\DataCollector` namespace.
 
 ### Messages
 
 Provides a way to log messages (compotible with [PSR-3 logger](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)).
 
     $debugbar->addCollector(new MessagesCollector());
-    $debugbar['message']->info('hello world');
+    $debugbar['messages']->info('hello world');
+
+You can have multiple messages collector by naming them:
+
+    $debugbar->addCollector(new MessagesCollector('io_ops'));
+    $debugbar['io_ops']->info('opening files');
+
+You can aggregate messages collector into other to have a unified view:
+
+    $debugbar['messages']->aggregate($debugbar['io_ops']);
 
 ### TimeData
 
-Provides a way to log total execution time as well as taking "measures" (ie. measure the exution time of a particular operation).
+Provides a way to log total execution time as well as taking "measures" (ie. measure the execution time of a particular operation).
 
     $debugbar->addCollector(new TimeDataCollector());
     
@@ -117,10 +126,31 @@ Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollec
     $pdo = new PDO\TraceablePDO(new PDO('sqlite::memory:'));
     $debugbar->addCollector(new PDO\PDOCollector($pdo));
 
+### RequestDataCollector
+
+Collects the data of PHP's global variables
+
+    $debugbar->addCollector(new RequestDataCollector());
+
+### AggregatedCollector
+
+Aggregates multiple collectors. Do not provide any widgets, you have to add your own controls.
+
+    $debugbar->addCollector(new AggregatedCollector('all_messages', 'messages', 'time'));
+    $debugbar['all_messages']->addCollector($debugbar['messages']);
+    $debugbar['all_messages']->addCollector(new MessagesCollector('mails'));
+    $debugbar['all_messages']['mails']->addMessage('sending mail');
+
+    $renderer = $debugbar->getJavascriptRenderer();
+    $renderer->addControl('all_messages', array(
+        'widget' => 'PhpDebugBar.Widgets.MessagesWidget',
+        'map' => 'all_messages',
+        'default' => '[]';
+    ));
+
 ### Others
 
 Misc collectors which you can just register:
 
- - `MemoryCollector` (*memory*)
- - `PhpInfoCollector` (*php*)
- - `RequestDataCollector` (*request*)
+ - `MemoryCollector` (*memory*): Display memory usage
+ - `PhpInfoCollector` (*php*): PHP version number
