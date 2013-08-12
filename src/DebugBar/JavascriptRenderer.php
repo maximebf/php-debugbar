@@ -47,6 +47,8 @@ class JavascriptRenderer
 
     protected $controls = array();
 
+    protected $ignoredCollectors = array();
+
     /**
      * @param \DebugBar\DebugBar $debugBar
      * @param string $baseUrl
@@ -216,12 +218,34 @@ class JavascriptRenderer
      * @param string $name
      * @param array $options
      */
-    public function addControl($name, $options)
+    public function addControl($name, array $options)
     {
         if (count(array_intersect(array_keys($options), array('icon', 'widget', 'tab', 'indicator'))) === 0) {
             throw new DebugBarException("Not enough options for control '$name'");
         }
         $this->controls[$name] = $options;
+        return $this;
+    }
+
+    /**
+     * Disables a control
+     * 
+     * @param string $name
+     */
+    public function disableControl($name)
+    {
+        $this->controls[$name] = null;
+        return $this;
+    }
+
+    /**
+     * Ignores widgets provided by a collector
+     * 
+     * @param string $name
+     */
+    public function ignoreCollector($name)
+    {
+        $this->ignoredCollectors[] = $name;
         return $this;
     }
 
@@ -427,17 +451,21 @@ class JavascriptRenderer
     {
         $js = '';
         $dataMap = array();
-        $controls = $this->controls;
         $exludedOptions = array('indicator', 'tab', 'map', 'default', 'widget');
 
         // finds controls provided by collectors
+        $widgets = array();
         foreach ($this->debugBar->getCollectors() as $collector) {
-            if ($collector instanceof Renderable) {
-                $controls = array_merge($controls, $collector->getWidgets());
+            if (($collector instanceof Renderable) && !in_array($collector->getName(), $this->ignoredCollectors)) {
+                if ($w = $collector->getWidgets()) {
+                    $widgets = array_merge($widgets, $w);
+                }
             }
         }
+        $controls = array_merge($widgets, $this->controls);
 
-        foreach ($controls as $name => $options) {
+
+        foreach (array_filter($controls) as $name => $options) {
             $opts = array_diff_key($options, array_flip($exludedOptions));
 
             if (isset($options['tab']) || isset($options['widget'])) {
