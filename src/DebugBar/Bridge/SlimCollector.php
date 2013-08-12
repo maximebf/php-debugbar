@@ -1,0 +1,62 @@
+<?php
+/*
+ * This file is part of the DebugBar package.
+ *
+ * (c) 2013 Maxime Bouroumeau-Fuseau
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace DebugBar\Bridge;
+
+use DebugBar\DataCollector\MessagesCollector;
+use Slim\Slim;
+use Slim\Log;
+use Psr\Log\LogLevel;
+
+/**
+ * Collects messages from a Slim logger
+ *
+ * http://slimframework.com
+ */
+class SlimCollector extends MessagesCollector
+{
+    protected $slim;
+
+    protected $originalLogWriter;
+
+    public function __construct(Slim $slim)
+    {
+        $this->slim = $slim;
+        if ($log = $slim->getLog()) {
+            $this->originalLogWriter = $log->getWriter();
+            $log->setWriter($this);
+            $log->setEnabled(true);
+        }
+    }
+
+    public function write($message, $level)
+    {
+        if ($this->originalLogWriter) {
+            $this->originalLogWriter->write($message, $level);
+        }
+        $this->addMessage($message, $this->getLevelName($level));
+    }
+
+    protected function getLevelName($level)
+    {
+        $map = array(
+            Log::FATAL => LogLevel::EMERGENCY,
+            Log::ERROR => LogLevel::ERROR,
+            Log::WARN => LogLevel::WARNING,
+            Log::INFO => LogLevel::INFO
+        );
+        return $map[$level];
+    }
+
+    public function getName()
+    {
+        return 'slim';
+    }
+}

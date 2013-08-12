@@ -17,6 +17,8 @@ use Swift_Plugins_MessageLogger;
 
 /**
  * Collects data abotu sent mails
+ *
+ * http://swiftmailer.org/
  */
 class MessagesCollector extends DataCollector implements Renderable
 {

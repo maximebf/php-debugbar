@@ -19,6 +19,8 @@ use DebugBar\DataCollector\MessagesAggregateInterface;
 /**
  * A monolog handler as well as a data collector
  *
+ * https://github.com/Seldaek/monolog
+ *
  * <code>
  * $debugbar->addCollector(new MonologCollector($logger));
  * </code>

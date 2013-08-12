@@ -17,6 +17,8 @@ use Monolog\Logger;
 /**
  * Collects CacheCache operations
  *
+ * http://maximebf.github.io/CacheCache/
+ *
  * Example:
  * <code>
  * $debugbar->addCollector(new CacheCacheCollector(CacheManager::get('default')));

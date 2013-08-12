@@ -17,6 +17,8 @@ use Swift_Plugins_LoggerPlugin;
 
 /**
  * Collects log messages
+ *
+ * http://swiftmailer.org/
  */
 class LogCollector extends MessagesCollector implements Swift_Plugins_Logger
 {

@@ -16,6 +16,8 @@ use DebugBar\DataCollector\Renderable;
 /**
  * Collects data about rendered templates
  *
+ * http://twig.sensiolabs.org/
+ *
  * Your Twig_Environment object needs to be wrapped in a 
  * TraceableTwigEnvironment object
  *

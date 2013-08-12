@@ -22,6 +22,8 @@ use Psr\Log\LogLevel;
 /**
  * A Propel logger which acts as a data collector
  *
+ * http://propelorm.org/
+ *
  * Will log queries and display them using the SQLQueries widget.
  * You can provide a LoggerInterface object to forward non-query related message to.
  *
