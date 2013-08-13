@@ -12,6 +12,8 @@ namespace DebugBar\Bridge;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DebugBarException;
+use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Logging\DebugStack;
 
 /**
@@ -31,9 +33,15 @@ class DoctrineCollector extends DataCollector implements Renderable
 {
     protected $debugStack;
 
-    public function __construct(DebugStack $debugStack)
+    public function __construct($debugStackOrEntityManager)
     {
-        $this->debugStack = $debugStack;
+        if ($debugStackOrEntityManager instanceof EntityManager) {
+            $debugStackOrEntityManager = $debugStackOrEntityManager->getConnection()->getConfiguration()->getSQLLogger();
+        }
+        if (!($debugStackOrEntityManager instanceof DebugStack)) {
+            throw new DebugBarException("'DoctrineCollector' requires an 'EntityManager' or 'DebugStack' object");
+        }
+        $this->debugStack = $debugStackOrEntityManager;
     }
 
     /**
