@@ -73,6 +73,58 @@ class JavascriptRenderer
     }
 
     /**
+     * Sets options from an array
+     *
+     * Options:
+     *  - base_path
+     *  - base_url
+     *  - include_vendors
+     *  - javascript_class
+     *  - variable_name
+     *  - controls
+     *  - disable_controls
+     *  - ignore_collectors
+     * 
+     * @param array $options [description]
+     */
+    public function setOptions(array $options)
+    {
+        if (array_key_exists('base_path', $options)) {
+            $this->setBasePath($options['base_path']);
+        }
+        if (array_key_exists('base_url', $options)) {
+            $this->setBaseUrl($options['base_url']);
+        }
+        if (array_key_exists('include_vendors', $options)) {
+            $this->setIncludeVendors($options['include_vendors']);
+        }
+        if (array_key_exists('javascript_class', $options)) {
+            $this->setJavascriptClass($options['javascript_class']);
+        }
+        if (array_key_exists('variable_name', $options)) {
+            $this->setVariableName($options['variable_name']);
+        }
+        if (array_key_exists('initialization', $options)) {
+            $this->setInitialization($options['initialization']);
+        }
+        if (array_key_exists('controls', $options)) {
+            foreach ($options['controls'] as $name => $control) {
+                $this->addControl($name, $control);
+            }
+        }
+        if (array_key_exists('disable_controls', $options)) {
+            foreach ((array) $options['disable_controls'] as $name) {
+                $this->disableControl($name);
+            }
+        }
+        if (array_key_exists('ignore_collectors', $options)) {
+            foreach ((array) $options['ignore_collectors'] as $name) {
+                $this->ignoreCollector($name);
+            }
+        }
+    }
+
+    /**
      * Sets the path which assets are relative to
      * 
      * @param string $path
