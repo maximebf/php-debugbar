@@ -7,6 +7,7 @@ div.phpdebugbar {
   font-family: arial;
   background: #fff;
   z-index: 10000;
+  font-size: 14px;
 }
 
 /* -------------------------------------- */
@@ -15,6 +16,7 @@ div.phpdebugbar-header {
   background: #efefef url(php-icon.png) no-repeat 5px 4px;
   padding-left: 29px;
   min-height: 26px;
+  line-height: 16px;
 }
 div.phpdebugbar-header:before, div.phpdebugbar-header:after {
   display: table;
@@ -62,6 +64,8 @@ a.phpdebugbar-tab.active {
     background: #ccc;
     border-radius: 4px;
     color: #555;
+    font-weight: normal;
+    text-shadow: none;
   }
   a.phpdebugbar-tab span.badge.important {
     background: #ed6868;
@@ -182,6 +186,9 @@ div.phpdebugbar-widgets-messages {
     color: #888;
     margin: 0 2px;
     text-decoration: none;
+    text-shadow: none;
+    background: none;
+    font-weight: normal;
   }
   div.phpdebugbar-widgets-messages li.list-item span.collector {
     color: #555;
@@ -195,8 +202,10 @@ div.phpdebugbar-widgets-messages {
   }
     div.phpdebugbar-widgets-messages div.toolbar input {
       border: 0;
+      margin: 0;
       margin-left: 7px;
       width: 50%;
+      box-shadow: none;
     }
     div.phpdebugbar-widgets-messages div.toolbar input:focus {
       outline: none;
@@ -264,6 +273,9 @@ ul.phpdebugbar-widgets-timeline {
       color: #555;
       top: 4px;
       left: 5px;
+      background: none;
+      text-shadow: none;
+      font-weight: normal;
     }
     ul.phpdebugbar-widgets-timeline li span.value {
       display: block; 
