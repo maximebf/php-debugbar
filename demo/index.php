@@ -33,6 +33,7 @@ render_demo_page(function() {
 <p>(you need to install needed dependencies first, run <code>composer.phar install</code> in each demo folders)</p>
 <ul>
     <li><a href="bridge/cachecache">CacheCache</a></li>
+    <li><a href="bridge/doctrine">Doctrine</a></li>
     <li><a href="bridge/monolog">Monolog</a></li>
     <li><a href="bridge/propel">Propel</a></li>
     <li><a href="bridge/slim">Slim</a></li>
