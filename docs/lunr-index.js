@@ -12,7 +12,7 @@ documentTitles["/docs/readme.html#php-debug-bar"] = "PHP Debug Bar";
 index.add({
     url: "/docs/readme.html#php-debug-bar",
     title: "PHP Debug Bar",
-    body: "# PHP Debug Bar  Displays a debug bar in the browser with information from php. No more `var_dump()` in your code!  ![Screenshot](https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png)  **Features:**   - Generic debug bar with no other dependencies  - Easy to integrate with any project  - Clean, fast and easy to use interface  - Handles AJAX request  - Includes generic data collectors and collectors for well known libraries  - The client side bar is 100% coded in javascript  - Easily create your own collectors and their associated view in the bar   "
+    body: "# PHP Debug Bar  Displays a debug bar in the browser with information from php. No more `var_dump()` in your code!  ![Screenshot](https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png)  **Features:**   - Generic debug bar with no other dependencies  - Easy to integrate with any project  - Clean, fast and easy to use interface  - Handles AJAX request  - Includes generic data collectors and collectors for well known libraries  - The client side bar is 100% coded in javascript  - Easily create your own collectors and their associated view in the bar  - [Very well documented](http://phpdebugbar.com/docs)  Includes collectors for:    - [PDO](http://php.net/manual/en/book.pdo.php)   - [CacheCache](http://maximebf.github.io/CacheCache/)   - [Doctrine](http://doctrine-project.org)   - [Monolog](https://github.com/Seldaek/monolog)   - [Propel](http://propelorm.org/)   - [Slim](http://slimframework.com)   - [Swift Mailer](http://swiftmailer.org/)   - [Twig](http://twig.sensiolabs.org/)  Checkout the [demo](https://github.com/maximebf/php-debugbar/tree/master/demo) for examples and [phpdebugbar.com](http://phpdebugbar.com) for a live example.  "
 });
 
 documentTitles["/docs/readme.html#installation"] = "Installation";
@@ -26,7 +26,7 @@ documentTitles["/docs/readme.html#quick-start"] = "Quick start";
 index.add({
     url: "/docs/readme.html#quick-start",
     title: "Quick start",
-    body: "## Quick start  DebugBar is very easy to use and you can add it to any of your projets in no time. The easiest way is using the `render()` functions      &lt;?php     use DebugBar\StandardDebugBar;     use DebugBar\JavascriptRenderer;      $debugbar = new StandardDebugBar();     $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);     ?&gt;     &lt;html&gt;         &lt;head&gt;             &lt;?php echo $debugbarRenderer-&gt;renderHead() ?&gt;         &lt;/head&gt;         &lt;body&gt;             ...             &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;         &lt;/body&gt;     &lt;/html&gt;  The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are automated but others are manual. Use the `DebugBar` like an array where keys are the collector names. In our previous example, we add a message to the `MessagesCollector`:      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);  `StandardDebugBar` activates all bundled collectors:   - `MemoryCollector` (*memory*)  - `MessagesCollector` (*messages*)  - `PhpInfoCollector` (*php*)  - `RequestDataCollector` (*request*)  - `TimeDataCollector` (*time*)  - `ExceptionsCollector` (*exceptions*)  Learn more about DebugBar in the [docs](http://phpdebugbar.com/docs). "
+    body: "## Quick start  DebugBar is very easy to use and you can add it to any of your projets in no time. The easiest way is using the `render()` functions      &lt;?php     use DebugBar\StandardDebugBar;     use DebugBar\JavascriptRenderer;      $debugbar = new StandardDebugBar();     $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);     ?&gt;     &lt;html&gt;         &lt;head&gt;             &lt;?php echo $debugbarRenderer-&gt;renderHead() ?&gt;         &lt;/head&gt;         &lt;body&gt;             ...             &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;         &lt;/body&gt;     &lt;/html&gt;  The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are automated but others are manual. Use the `DebugBar` like an array where keys are the collector names. In our previous example, we add a message to the `MessagesCollector`:      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);  `StandardDebugBar` activates the following collectors:   - `MemoryCollector` (*memory*)  - `MessagesCollector` (*messages*)  - `PhpInfoCollector` (*php*)  - `RequestDataCollector` (*request*)  - `TimeDataCollector` (*time*)  - `ExceptionsCollector` (*exceptions*)  Learn more about DebugBar in the [docs](http://phpdebugbar.com/docs). "
 });
 
 
@@ -35,7 +35,7 @@ documentTitles["/docs/readme.html#php-debug-bar"] = "PHP Debug Bar";
 index.add({
     url: "/docs/readme.html#php-debug-bar",
     title: "PHP Debug Bar",
-    body: "# PHP Debug Bar  Displays a debug bar in the browser with information from php. No more `var_dump()` in your code!  ![Screenshot](https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png)  **Features:**   - Generic debug bar with no other dependencies  - Easy to integrate with any project  - Clean, fast and easy to use interface  - Handles AJAX request  - Includes generic data collectors and collectors for well known libraries  - The client side bar is 100% coded in javascript  - Easily create your own collectors and their associated view in the bar   "
+    body: "# PHP Debug Bar  Displays a debug bar in the browser with information from php. No more `var_dump()` in your code!  ![Screenshot](https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png)  **Features:**   - Generic debug bar with no other dependencies  - Easy to integrate with any project  - Clean, fast and easy to use interface  - Handles AJAX request  - Includes generic data collectors and collectors for well known libraries  - The client side bar is 100% coded in javascript  - Easily create your own collectors and their associated view in the bar  - [Very well documented](http://phpdebugbar.com/docs)  Includes collectors for:    - [PDO](http://php.net/manual/en/book.pdo.php)   - [CacheCache](http://maximebf.github.io/CacheCache/)   - [Doctrine](http://doctrine-project.org)   - [Monolog](https://github.com/Seldaek/monolog)   - [Propel](http://propelorm.org/)   - [Slim](http://slimframework.com)   - [Swift Mailer](http://swiftmailer.org/)   - [Twig](http://twig.sensiolabs.org/)  Checkout the [demo](https://github.com/maximebf/php-debugbar/tree/master/demo) for examples and [phpdebugbar.com](http://phpdebugbar.com) for a live example.  "
 });
 
 documentTitles["/docs/readme.html#installation"] = "Installation";
@@ -49,7 +49,7 @@ documentTitles["/docs/readme.html#quick-start"] = "Quick start";
 index.add({
     url: "/docs/readme.html#quick-start",
     title: "Quick start",
-    body: "## Quick start  DebugBar is very easy to use and you can add it to any of your projets in no time. The easiest way is using the `render()` functions      &lt;?php     use DebugBar\StandardDebugBar;     use DebugBar\JavascriptRenderer;      $debugbar = new StandardDebugBar();     $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);     ?&gt;     &lt;html&gt;         &lt;head&gt;             &lt;?php echo $debugbarRenderer-&gt;renderHead() ?&gt;         &lt;/head&gt;         &lt;body&gt;             ...             &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;         &lt;/body&gt;     &lt;/html&gt;  The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are automated but others are manual. Use the `DebugBar` like an array where keys are the collector names. In our previous example, we add a message to the `MessagesCollector`:      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);  `StandardDebugBar` activates all bundled collectors:   - `MemoryCollector` (*memory*)  - `MessagesCollector` (*messages*)  - `PhpInfoCollector` (*php*)  - `RequestDataCollector` (*request*)  - `TimeDataCollector` (*time*)  - `ExceptionsCollector` (*exceptions*)  Learn more about DebugBar in the [docs](http://phpdebugbar.com/docs). "
+    body: "## Quick start  DebugBar is very easy to use and you can add it to any of your projets in no time. The easiest way is using the `render()` functions      &lt;?php     use DebugBar\StandardDebugBar;     use DebugBar\JavascriptRenderer;      $debugbar = new StandardDebugBar();     $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);     ?&gt;     &lt;html&gt;         &lt;head&gt;             &lt;?php echo $debugbarRenderer-&gt;renderHead() ?&gt;         &lt;/head&gt;         &lt;body&gt;             ...             &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;         &lt;/body&gt;     &lt;/html&gt;  The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are automated but others are manual. Use the `DebugBar` like an array where keys are the collector names. In our previous example, we add a message to the `MessagesCollector`:      $debugbar[\&quot;messages\&quot;]-&gt;addMessage(\&quot;hello world!\&quot;);  `StandardDebugBar` activates the following collectors:   - `MemoryCollector` (*memory*)  - `MessagesCollector` (*messages*)  - `PhpInfoCollector` (*php*)  - `RequestDataCollector` (*request*)  - `TimeDataCollector` (*time*)  - `ExceptionsCollector` (*exceptions*)  Learn more about DebugBar in the [docs](http://phpdebugbar.com/docs). "
 });
 
 
@@ -72,49 +72,7 @@ documentTitles["/docs/data-collectors.html#creating-collectors"] = "Creating col
 index.add({
     url: "/docs/data-collectors.html#creating-collectors",
     title: "Creating collectors",
-    body: "## Creating collectors  Collectors must implement the `DebugBar\DataCollector\DataCollectorInterface`. They may subclass `DebugBar\DataCollector\DataCollector` which provides utility methods.  Collectors must provide a `getName()` function returning their unique name and a `collect()` function returning some json-encodable data. The latter will be called at the same time the `DebugBar::collect()` method is called.      class MyDataCollector extends DebugBar\DataCollector\DataCollector     {         public function collect()         {             return array(\&quot;uniqid\&quot; =&gt; uniqid());         }          public function getName()         {             return 'mycollector';         }     }      $debugbar-&gt;addCollector(new MyDataCollector());  This however won't show anything in the debug bar as no information are provided on how to display these data. You could do that manually as you'll see in later chapter or implement the `DebugBar\DataSource\Renderable` interface.   To implement it, you must define a `getWidgets()` function which returns an array of key/value pairs where key are control names and values control options as defined in `JavascriptRenderer::addControl($name, $options)` (see Rendering chapter).      class MyDataCollector extends DebugBar\DataCollector\DataCollector implements DebugBar\DataCollector\Renderable     {         // ...          public function getWidgets()         {             return array(                 \&quot;mycollector\&quot; =&gt; array(                     \&quot;icon\&quot; =&gt; \&quot;cogs\&quot;,                     \&quot;tooltip\&quot; =&gt; \&quot;uniqid()\&quot;,                     \&quot;map\&quot; =&gt; \&quot;uniqid\&quot;,                     \&quot;default\&quot; =&gt; \&quot;''\&quot;                 )             );         }     }  This will have the result of adding a new indicator to the debug bar.  "
-});
-
-documentTitles["/docs/data-collectors.html#base-collectors"] = "Base collectors";
-index.add({
-    url: "/docs/data-collectors.html#base-collectors",
-    title: "Base collectors",
-    body: "## Base collectors  Provided by the `DebugBar\DataCollector` namespace.  "
-});
-
-documentTitles["/docs/data-collectors.html#messages"] = "Messages";
-index.add({
-    url: "/docs/data-collectors.html#messages",
-    title: "Messages",
-    body: "### Messages  Provides a way to log messages (compotible with [PSR-3 logger](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)).      $debugbar-&gt;addCollector(new MessagesCollector());     $debugbar['message']-&gt;info('hello world');  "
-});
-
-documentTitles["/docs/data-collectors.html#timedata"] = "TimeData";
-index.add({
-    url: "/docs/data-collectors.html#timedata",
-    title: "TimeData",
-    body: "### TimeData  Provides a way to log total execution time as well as taking \&quot;measures\&quot; (ie. measure the exution time of a particular operation).      $debugbar-&gt;addCollector(new TimeDataCollector());          $debugbar['time']-&gt;startMeasure('longop', 'My long operation');     sleep(2);     $debugbar['time']-&gt;stopMeasure('longop');      $debugbar['time']-&gt;measure('My long operation', function() {         sleep(2);     });  Displays the measures on a timeline  "
-});
-
-documentTitles["/docs/data-collectors.html#exceptions"] = "Exceptions";
-index.add({
-    url: "/docs/data-collectors.html#exceptions",
-    title: "Exceptions",
-    body: "### Exceptions  Display exceptions      $debugbar-&gt;addCollector(new ExceptionsCollector());      try {         throw new Exception('foobar');     } catch (Exception $e) {         $debugbar['exceptions']-&gt;addException($e);     }  "
-});
-
-documentTitles["/docs/data-collectors.html#pdo"] = "PDO";
-index.add({
-    url: "/docs/data-collectors.html#pdo",
-    title: "PDO",
-    body: "### PDO  Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollector\PDO\TraceablePDO` object.      $pdo = new PDO\TraceablePDO(new PDO('sqlite::memory:'));     $debugbar-&gt;addCollector(new PDO\PDOCollector($pdo));  "
-});
-
-documentTitles["/docs/data-collectors.html#others"] = "Others";
-index.add({
-    url: "/docs/data-collectors.html#others",
-    title: "Others",
-    body: "### Others  Misc collectors which you can just register:   - `MemoryCollector` (*memory*)  - `PhpInfoCollector` (*php*)  - `RequestDataCollector` (*request*) "
+    body: "## Creating collectors  Collectors must implement the `DebugBar\DataCollector\DataCollectorInterface`. They may subclass `DebugBar\DataCollector\DataCollector` which provides utility methods.  Collectors must provide a `getName()` function returning their unique name and a `collect()` function returning some json-encodable data. The latter will be called at the same time the `DebugBar::collect()` method is called.      class MyDataCollector extends DebugBar\DataCollector\DataCollector     {         public function collect()         {             return array(\&quot;uniqid\&quot; =&gt; uniqid());         }          public function getName()         {             return 'mycollector';         }     }      $debugbar-&gt;addCollector(new MyDataCollector());  This however won't show anything in the debug bar as no information are provided on how to display these data. You could do that manually as you'll see in later chapter or implement the `DebugBar\DataSource\Renderable` interface.   To implement it, you must define a `getWidgets()` function which returns an array of key/value pairs where key are control names and values control options as defined in `JavascriptRenderer::addControl($name, $options)` (see Rendering chapter).      class MyDataCollector extends DebugBar\DataCollector\DataCollector implements DebugBar\DataCollector\Renderable     {         // ...          public function getWidgets()         {             return array(                 \&quot;mycollector\&quot; =&gt; array(                     \&quot;icon\&quot; =&gt; \&quot;cogs\&quot;,                     \&quot;tooltip\&quot; =&gt; \&quot;uniqid()\&quot;,                     \&quot;map\&quot; =&gt; \&quot;uniqid\&quot;,                     \&quot;default\&quot; =&gt; \&quot;''\&quot;                 )             );         }     }  This will have the result of adding a new indicator to the debug bar. "
 });
 
 
@@ -151,7 +109,7 @@ documentTitles["/docs/rendering.html#defining-controls"] = "Defining controls";
 index.add({
     url: "/docs/rendering.html#defining-controls",
     title: "Defining controls",
-    body: "### Defining controls  Controls can be manually added to the debug bar using `addControl($name, $options)`. You should read the Javascript bar chapter before this section.  `$name` will be the name of your control and `$options` is a key/value pair array with these possible values:  - *icon*: icon name - *tooltip*: string - *widget*: widget class name - *map*: a property name from the data to map the control to - *default*: a js string, default value of the data map - *tab*: class name of the tab object (to use a custom tab object) - *indicator*: class name of the indicator object (to use a custom indicator object)  At least *icon* or *widget* are needed (unless *tab* or *indicator* are specified). If *widget* is  specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab or indicator.      $renderer-&gt;addControl('messages', array(         \&quot;widget\&quot; =&gt; \&quot;PhpDebugBar.Widgets.MessagesWidget\&quot;,         \&quot;map\&quot; =&gt; \&quot;messages\&quot;,         \&quot;default\&quot; =&gt; \&quot;[]\&quot;     )); "
+    body: "### Defining controls  Controls can be manually added to the debug bar using `addControl($name, $options)`. You should read the Javascript bar chapter before this section.  `$name` will be the name of your control and `$options` is a key/value pair array with these possible values:  - *icon*: icon name - *tooltip*: string - *widget*: widget class name - *map*: a property name from the data to map the control to - *default*: a js string, default value of the data map - *tab*: class name of the tab object (to use a custom tab object) - *indicator*: class name of the indicator object (to use a custom indicator object)  At least *icon* or *widget* are needed (unless *tab* or *indicator* are specified). If *widget* is  specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab or indicator.      $renderer-&gt;addControl('messages', array(         \&quot;widget\&quot; =&gt; \&quot;PhpDebugBar.Widgets.MessagesWidget\&quot;,         \&quot;map\&quot; =&gt; \&quot;messages\&quot;,         \&quot;default\&quot; =&gt; \&quot;[]\&quot;     ));  You can disable a control using `disableControl($name)` and ignore any controls provided by a collector using `ignoreCollector($name)`."
 });
 
 
@@ -200,6 +158,64 @@ index.add({
 
 
 
+documentTitles["/docs/base-collectors.html#base-collectors"] = "Base collectors";
+index.add({
+    url: "/docs/base-collectors.html#base-collectors",
+    title: "Base collectors",
+    body: "# Base collectors  Collectors provided in the `DebugBar\DataCollector` namespace.  "
+});
+
+documentTitles["/docs/base-collectors.html#messages"] = "Messages";
+index.add({
+    url: "/docs/base-collectors.html#messages",
+    title: "Messages",
+    body: "## Messages  Provides a way to log messages (compotible with [PSR-3 logger](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)).      $debugbar-&gt;addCollector(new DebugBar\DataCollector\MessagesCollector());     $debugbar['messages']-&gt;info('hello world');  You can have multiple messages collector by naming them:      $debugbar-&gt;addCollector(new MessagesCollector('io_ops'));     $debugbar['io_ops']-&gt;info('opening files');  You can aggregate messages collector into other to have a unified view:      $debugbar['messages']-&gt;aggregate($debugbar['io_ops']);  If you don't want to create a standalone tab in the debug bar but still be able to log messages from a different collector, you don't have to add the collector to the debug bar:      $debugbar['messages']-&gt;aggregate(new MessagesCollector('io_ops'));  "
+});
+
+documentTitles["/docs/base-collectors.html#timedata"] = "TimeData";
+index.add({
+    url: "/docs/base-collectors.html#timedata",
+    title: "TimeData",
+    body: "## TimeData  Provides a way to log total execution time as well as taking \&quot;measures\&quot; (ie. measure the execution time of a particular operation).      $debugbar-&gt;addCollector(new DebugBar\DataCollector\TimeDataCollector());          $debugbar['time']-&gt;startMeasure('longop', 'My long operation');     sleep(2);     $debugbar['time']-&gt;stopMeasure('longop');      $debugbar['time']-&gt;measure('My long operation', function() {         sleep(2);     });  Displays the measures on a timeline  "
+});
+
+documentTitles["/docs/base-collectors.html#exceptions"] = "Exceptions";
+index.add({
+    url: "/docs/base-collectors.html#exceptions",
+    title: "Exceptions",
+    body: "## Exceptions  Display exceptions      $debugbar-&gt;addCollector(new DebugBar\DataCollector\ExceptionsCollector());      try {         throw new Exception('foobar');     } catch (Exception $e) {         $debugbar['exceptions']-&gt;addException($e);     }  "
+});
+
+documentTitles["/docs/base-collectors.html#pdo"] = "PDO";
+index.add({
+    url: "/docs/base-collectors.html#pdo",
+    title: "PDO",
+    body: "## PDO  Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollector\PDO\TraceablePDO` object.      $pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));     $debugbar-&gt;addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));  "
+});
+
+documentTitles["/docs/base-collectors.html#requestdatacollector"] = "RequestDataCollector";
+index.add({
+    url: "/docs/base-collectors.html#requestdatacollector",
+    title: "RequestDataCollector",
+    body: "## RequestDataCollector  Collects the data of PHP's global variables      $debugbar-&gt;addCollector(new DebugBar\DataCollector\RequestDataCollector());  "
+});
+
+documentTitles["/docs/base-collectors.html#aggregatedcollector"] = "AggregatedCollector";
+index.add({
+    url: "/docs/base-collectors.html#aggregatedcollector",
+    title: "AggregatedCollector",
+    body: "## AggregatedCollector  Aggregates multiple collectors. Do not provide any widgets, you have to add your own controls.      $debugbar-&gt;addCollector(new DebugBar\DataCollector\AggregatedCollector('all_messages', 'messages', 'time'));     $debugbar['all_messages']-&gt;addCollector($debugbar['messages']);     $debugbar['all_messages']-&gt;addCollector(new MessagesCollector('mails'));     $debugbar['all_messages']['mails']-&gt;addMessage('sending mail');      $renderer = $debugbar-&gt;getJavascriptRenderer();     $renderer-&gt;addControl('all_messages', array(         'widget' =&gt; 'PhpDebugBar.Widgets.MessagesWidget',         'map' =&gt; 'all_messages',         'default' =&gt; '[]';     ));  "
+});
+
+documentTitles["/docs/base-collectors.html#others"] = "Others";
+index.add({
+    url: "/docs/base-collectors.html#others",
+    title: "Others",
+    body: "## Others  Misc collectors which you can just register:   - `MemoryCollector` (*memory*): Display memory usage  - `PhpInfoCollector` (*php*): PHP version number "
+});
+
+
+
 documentTitles["/docs/bridge-collectors.html#bridge-collectors"] = "Bridge collectors";
 index.add({
     url: "/docs/bridge-collectors.html#bridge-collectors",
@@ -207,25 +223,53 @@ index.add({
     body: "# Bridge collectors  DebugBar comes with some \&quot;bridge\&quot; collectors. This collectors provides a way to integrate other projets with the DebugBar.  "
 });
 
+documentTitles["/docs/bridge-collectors.html#cachecache"] = "CacheCache";
+index.add({
+    url: "/docs/bridge-collectors.html#cachecache",
+    title: "CacheCache",
+    body: "## CacheCache  http://maximebf.github.io/CacheCache/  Displays cache operations using `DebugBar\Bridge\CacheCacheCollector`      $cache = new CacheCache\Cache(new CacheCache\Backends\Memory());     $debugbar-&gt;addCollector(new DebugBar\Bridge\CacheCacheCollector($cache));  CacheCache uses [Monolog](https://github.com/Seldaek/monolog) for logging,  thus it is required to collect data.  `CacheCacheCollector` subclasses `MonologCollector`, thus it can be  [aggregated in the messages view](base-collectors.html#messages).  "
+});
+
+documentTitles["/docs/bridge-collectors.html#doctrine"] = "Doctrine";
+index.add({
+    url: "/docs/bridge-collectors.html#doctrine",
+    title: "Doctrine",
+    body: "## Doctrine  http://doctrine-project.org  Displays sql queries into an SQL queries view using `DebugBar\Bridge\DoctrineCollector`.  You will need to set a `Doctrine\DBAL\Logging\DebugStack` logger on your connection.      $debugStack = new Doctrine\DBAL\Logging\DebugStack();     $entityManager-&gt;getConnection()-&gt;getConfiguration()-&gt;setSQLLogger($debugStack);     $debugbar-&gt;addCollector(new DebugBar\Bridge\DoctrineCollector($debugStack));  `DoctrineCollector` also accepts an `Doctrine\ORM\EntityManager` as argument provided the `SQLLogger` is a ̀DebugStack`.  "
+});
+
 documentTitles["/docs/bridge-collectors.html#monolog"] = "Monolog";
 index.add({
     url: "/docs/bridge-collectors.html#monolog",
     title: "Monolog",
-    body: "## Monolog  Integrates Monolog messages into the messages view.      $logger = new Monolog\Logger('mylogger');     $debugbar-&gt;addCollector(new DebugBar\Bridge\MonologCollector($logger));  Note that multiple logger can be collected:      $debugbar['monolog']-&gt;addLogger($logger);  "
+    body: "## Monolog  https://github.com/Seldaek/monolog  Integrates Monolog messages into a message view using `DebugBar\Bridge\MonologCollector`.      $logger = new Monolog\Logger('mylogger');     $debugbar-&gt;addCollector(new DebugBar\Bridge\MonologCollector($logger));  Note that multiple logger can be collected:      $debugbar['monolog']-&gt;addLogger($logger);  `MonologCollector` can be [aggregated](base-collectors.html#messages) into the `MessagesCollector`.  "
 });
 
 documentTitles["/docs/bridge-collectors.html#propel"] = "Propel";
 index.add({
     url: "/docs/bridge-collectors.html#propel",
     title: "Propel",
-    body: "## Propel  Logs propel queries into an SQL queries view. You will need to activate Propel debug mode.      // before Propel::init()     $debugbar-&gt;addCollector(new DebugBar\Bridge\PropelCollector());      Propel::init('/path/to/config');      // after Propel::init()     // not mandatory if you set config options by yourself     DebugBar\Bridge\PropelCollector::enablePropelProfiling();  Queries can be collected on a single connection by providing the `PropelPDO` object to the `PropelCollector` as first argument.  "
+    body: "## Propel  http://propelorm.org/  Displays propel queries into an SQL queries view using `DebugBar\Bridge\PropelCollector`.  You will need to activate Propel debug mode.      // before Propel::init()     $debugbar-&gt;addCollector(new DebugBar\Bridge\PropelCollector());      Propel::init('/path/to/config');      // after Propel::init()     // not mandatory if you set config options by yourself     DebugBar\Bridge\PropelCollector::enablePropelProfiling();  Queries can be collected on a single connection by providing the `PropelPDO` object to the `PropelCollector` as first argument.  "
+});
+
+documentTitles["/docs/bridge-collectors.html#slim"] = "Slim";
+index.add({
+    url: "/docs/bridge-collectors.html#slim",
+    title: "Slim",
+    body: "## Slim  http://slimframework.com  Displays message from the Slim logger into a message view using `DebugBar\Bridge\SlimCollector`.      $app = new Slim\Slim();     $debugbar-&gt;addCollector(new DebugBar\Bridge\SlimCollector($app));  "
+});
+
+documentTitles["/docs/bridge-collectors.html#swift-mailer"] = "Swift Mailer";
+index.add({
+    url: "/docs/bridge-collectors.html#swift-mailer",
+    title: "Swift Mailer",
+    body: "## Swift Mailer  http://swiftmailer.org/  Display log messages and sent mail using `DebugBar\Bridge\SwiftMailer\SwiftLogCollector` and `DebugBar\Bridge\SwiftMailer\SwiftMailCollector`.      $mailer = Swift_Mailer::newInstance(Swift_NullTransport::newInstance());     $debugbar['messages']-&gt;aggregate(new DebugBar\Bridge\SwiftMailer\SwiftLogCollector($mailer));     $debugbar-&gt;addCollector(new DebugBar\Bridge\SwiftMailer\SwiftMailCollector($mailer));  "
 });
 
 documentTitles["/docs/bridge-collectors.html#twig"] = "Twig";
 index.add({
     url: "/docs/bridge-collectors.html#twig",
     title: "Twig",
-    body: "## Twig  Collects info about rendered templates. You need to wrap your `Twig_Environment` object into a `DebugBar\Bridge\Twig\TraceableTwigEnvironment` object.      $loader = new Twig_Loader_Filesystem('.');     $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));     $debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));  You can provide a `DebugBar\DataCollector\TimeDataCollector` as the second argument of `TraceableTwigEnvironment` so render operation can be measured. "
+    body: "## Twig  http://twig.sensiolabs.org/  Collects info about rendered templates using `DebugBar\Bridge\Twig\TwigCollector`.  You need to wrap your `Twig_Environment` object into a `DebugBar\Bridge\Twig\TraceableTwigEnvironment` object.      $loader = new Twig_Loader_Filesystem('.');     $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));     $debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));  You can provide a `DebugBar\DataCollector\TimeDataCollector` as the second argument of `TraceableTwigEnvironment` so render operation can be measured. "
 });
 
 

@@ -72,11 +72,6 @@
             
         </li>
     
-        <li>
-            <a href="/docs/data-collectors.html#base-collectors">Base collectors</a>
-            
-        </li>
-    
 </ol>
 
             
@@ -140,10 +135,66 @@
         </li>
     
         <li>
+            <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/base-collectors.html#messages">Messages</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#timedata">TimeData</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#exceptions">Exceptions</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#pdo">PDO</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#requestdatacollector">RequestDataCollector</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#aggregatedcollector">AggregatedCollector</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#others">Others</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/bridge-collectors.html#bridge-collectors">Bridge collectors</a>
             
                 
     <ol>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#cachecache">CacheCache</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#doctrine">Doctrine</a>
+            
+        </li>
     
         <li>
             <a href="/docs/bridge-collectors.html#monolog">Monolog</a>
@@ -152,6 +203,16 @@
     
         <li>
             <a href="/docs/bridge-collectors.html#propel">Propel</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#slim">Slim</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#swift-mailer">Swift Mailer</a>
             
         </li>
     
@@ -235,44 +296,6 @@ in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering c
     }
 }</code></pre>
 <p>This will have the result of adding a new indicator to the debug bar.</p>
-<a name="base-collectors"></a><h2>Base collectors</h2>
-<p>Provided by the <code>DebugBar\DataCollector</code> namespace.</p>
-<a name="messages"></a><h3>Messages</h3>
-<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).</p>
-<pre><code>$debugbar-&gt;addCollector(new MessagesCollector());
-$debugbar[&#39;message&#39;]-&gt;info(&#39;hello world&#39;);</code></pre>
-<a name="timedata"></a><h3>TimeData</h3>
-<p>Provides a way to log total execution time as well as taking &quot;measures&quot; (ie. measure the exution time of a particular operation).</p>
-<pre><code>$debugbar-&gt;addCollector(new TimeDataCollector());
-
-$debugbar[&#39;time&#39;]-&gt;startMeasure(&#39;longop&#39;, &#39;My long operation&#39;);
-sleep(2);
-$debugbar[&#39;time&#39;]-&gt;stopMeasure(&#39;longop&#39;);
-
-$debugbar[&#39;time&#39;]-&gt;measure(&#39;My long operation&#39;, function() {
-    sleep(2);
-});</code></pre>
-<p>Displays the measures on a timeline</p>
-<a name="exceptions"></a><h3>Exceptions</h3>
-<p>Display exceptions</p>
-<pre><code>$debugbar-&gt;addCollector(new ExceptionsCollector());
-
-try {
-    throw new Exception(&#39;foobar&#39;);
-} catch (Exception $e) {
-    $debugbar[&#39;exceptions&#39;]-&gt;addException($e);
-}</code></pre>
-<a name="pdo"></a><h3>PDO</h3>
-<p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.</p>
-<pre><code>$pdo = new PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
-$debugbar-&gt;addCollector(new PDO\PDOCollector($pdo));</code></pre>
-<a name="others"></a><h3>Others</h3>
-<p>Misc collectors which you can just register:</p>
-<ul>
-<li><code>MemoryCollector</code> (<em>memory</em>)</li>
-<li><code>PhpInfoCollector</code> (<em>php</em>)</li>
-<li><code>RequestDataCollector</code> (<em>request</em>)</li>
-</ul>
 
 
 

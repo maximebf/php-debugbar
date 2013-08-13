@@ -72,11 +72,6 @@
             
         </li>
     
-        <li>
-            <a href="/docs/data-collectors.html#base-collectors">Base collectors</a>
-            
-        </li>
-    
 </ol>
 
             
@@ -140,10 +135,66 @@
         </li>
     
         <li>
+            <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/base-collectors.html#messages">Messages</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#timedata">TimeData</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#exceptions">Exceptions</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#pdo">PDO</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#requestdatacollector">RequestDataCollector</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#aggregatedcollector">AggregatedCollector</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#others">Others</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/bridge-collectors.html#bridge-collectors">Bridge collectors</a>
             
                 
     <ol>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#cachecache">CacheCache</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#doctrine">Doctrine</a>
+            
+        </li>
     
         <li>
             <a href="/docs/bridge-collectors.html#monolog">Monolog</a>
@@ -152,6 +203,16 @@
     
         <li>
             <a href="/docs/bridge-collectors.html#propel">Propel</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#slim">Slim</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#swift-mailer">Swift Mailer</a>
             
         </li>
     
@@ -191,7 +252,21 @@ No more <code>var_dump()</code> in your code!</p>
 <li>Includes generic data collectors and collectors for well known libraries</li>
 <li>The client side bar is 100% coded in javascript</li>
 <li>Easily create your own collectors and their associated view in the bar</li>
+<li><a href="http://phpdebugbar.com/docs">Very well documented</a></li>
 </ul>
+<p>Includes collectors for:</p>
+<ul>
+<li><a href="http://php.net/manual/en/book.pdo.php">PDO</a></li>
+<li><a href="http://maximebf.github.io/CacheCache/">CacheCache</a></li>
+<li><a href="http://doctrine-project.org">Doctrine</a></li>
+<li><a href="https://github.com/Seldaek/monolog">Monolog</a></li>
+<li><a href="http://propelorm.org/">Propel</a></li>
+<li><a href="http://slimframework.com">Slim</a></li>
+<li><a href="http://swiftmailer.org/">Swift Mailer</a></li>
+<li><a href="http://twig.sensiolabs.org/">Twig</a></li>
+</ul>
+<p>Checkout the <a href="https://github.com/maximebf/php-debugbar/tree/master/demo">demo</a> for
+examples and <a href="http://phpdebugbar.com">phpdebugbar.com</a> for a live example.</p>
 <a name="installation"></a><h2>Installation</h2>
 <p>The easiest way to install DebugBar is using <a href="https://github.com/composer/composer">Composer</a>
 with the following requirement:</p>
@@ -235,7 +310,7 @@ $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
 automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
 collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:</p>
 <pre><code>$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);</code></pre>
-<p><code>StandardDebugBar</code> activates all bundled collectors:</p>
+<p><code>StandardDebugBar</code> activates the following collectors:</p>
 <ul>
 <li><code>MemoryCollector</code> (<em>memory</em>)</li>
 <li><code>MessagesCollector</code> (<em>messages</em>)</li>
@@ -259,7 +334,21 @@ No more <code>var_dump()</code> in your code!</p>
 <li>Includes generic data collectors and collectors for well known libraries</li>
 <li>The client side bar is 100% coded in javascript</li>
 <li>Easily create your own collectors and their associated view in the bar</li>
+<li><a href="http://phpdebugbar.com/docs">Very well documented</a></li>
 </ul>
+<p>Includes collectors for:</p>
+<ul>
+<li><a href="http://php.net/manual/en/book.pdo.php">PDO</a></li>
+<li><a href="http://maximebf.github.io/CacheCache/">CacheCache</a></li>
+<li><a href="http://doctrine-project.org">Doctrine</a></li>
+<li><a href="https://github.com/Seldaek/monolog">Monolog</a></li>
+<li><a href="http://propelorm.org/">Propel</a></li>
+<li><a href="http://slimframework.com">Slim</a></li>
+<li><a href="http://swiftmailer.org/">Swift Mailer</a></li>
+<li><a href="http://twig.sensiolabs.org/">Twig</a></li>
+</ul>
+<p>Checkout the <a href="https://github.com/maximebf/php-debugbar/tree/master/demo">demo</a> for
+examples and <a href="http://phpdebugbar.com">phpdebugbar.com</a> for a live example.</p>
 <a name="installation"></a><h2>Installation</h2>
 <p>The easiest way to install DebugBar is using <a href="https://github.com/composer/composer">Composer</a>
 with the following requirement:</p>
@@ -303,7 +392,7 @@ $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
 automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
 collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:</p>
 <pre><code>$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);</code></pre>
-<p><code>StandardDebugBar</code> activates all bundled collectors:</p>
+<p><code>StandardDebugBar</code> activates the following collectors:</p>
 <ul>
 <li><code>MemoryCollector</code> (<em>memory</em>)</li>
 <li><code>MessagesCollector</code> (<em>messages</em>)</li>
@@ -371,44 +460,6 @@ in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering c
     }
 }</code></pre>
 <p>This will have the result of adding a new indicator to the debug bar.</p>
-<a name="base-collectors"></a><h2>Base collectors</h2>
-<p>Provided by the <code>DebugBar\DataCollector</code> namespace.</p>
-<a name="messages"></a><h3>Messages</h3>
-<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).</p>
-<pre><code>$debugbar-&gt;addCollector(new MessagesCollector());
-$debugbar[&#39;message&#39;]-&gt;info(&#39;hello world&#39;);</code></pre>
-<a name="timedata"></a><h3>TimeData</h3>
-<p>Provides a way to log total execution time as well as taking &quot;measures&quot; (ie. measure the exution time of a particular operation).</p>
-<pre><code>$debugbar-&gt;addCollector(new TimeDataCollector());
-
-$debugbar[&#39;time&#39;]-&gt;startMeasure(&#39;longop&#39;, &#39;My long operation&#39;);
-sleep(2);
-$debugbar[&#39;time&#39;]-&gt;stopMeasure(&#39;longop&#39;);
-
-$debugbar[&#39;time&#39;]-&gt;measure(&#39;My long operation&#39;, function() {
-    sleep(2);
-});</code></pre>
-<p>Displays the measures on a timeline</p>
-<a name="exceptions"></a><h3>Exceptions</h3>
-<p>Display exceptions</p>
-<pre><code>$debugbar-&gt;addCollector(new ExceptionsCollector());
-
-try {
-    throw new Exception(&#39;foobar&#39;);
-} catch (Exception $e) {
-    $debugbar[&#39;exceptions&#39;]-&gt;addException($e);
-}</code></pre>
-<a name="pdo"></a><h3>PDO</h3>
-<p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.</p>
-<pre><code>$pdo = new PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
-$debugbar-&gt;addCollector(new PDO\PDOCollector($pdo));</code></pre>
-<a name="others"></a><h3>Others</h3>
-<p>Misc collectors which you can just register:</p>
-<ul>
-<li><code>MemoryCollector</code> (<em>memory</em>)</li>
-<li><code>PhpInfoCollector</code> (<em>php</em>)</li>
-<li><code>RequestDataCollector</code> (<em>request</em>)</li>
-</ul>
 
 <a name="rendering"></a><h1>Rendering</h1>
 <p>Rendering is performed using the `DebugBar\JavascriptRenderer̀ class. It contains
@@ -506,6 +557,8 @@ or indicator.</p>
     &quot;map&quot; =&gt; &quot;messages&quot;,
     &quot;default&quot; =&gt; &quot;[]&quot;
 ));</code></pre>
+<p>You can disable a control using <code>disableControl($name)</code> and ignore any controls provided by
+a collector using <code>ignoreCollector($name)</code>.</p>
 
 <a name="javascript-bar"></a><h1>Javascript Bar</h1>
 <p>The default client side implementation of the debug bar is made
@@ -636,18 +689,102 @@ and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classe
 
 debugbar.addIndicator(&#39;phpdoc&#39;, new LinkIndicator({ href: &#39;http://doc.php.com&#39;, title: &#39;PHP doc&#39; }));</code></pre>
 
+<a name="base-collectors"></a><h1>Base collectors</h1>
+<p>Collectors provided in the <code>DebugBar\DataCollector</code> namespace.</p>
+<a name="messages"></a><h2>Messages</h2>
+<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\MessagesCollector());
+$debugbar[&#39;messages&#39;]-&gt;info(&#39;hello world&#39;);</code></pre>
+<p>You can have multiple messages collector by naming them:</p>
+<pre><code>$debugbar-&gt;addCollector(new MessagesCollector(&#39;io_ops&#39;));
+$debugbar[&#39;io_ops&#39;]-&gt;info(&#39;opening files&#39;);</code></pre>
+<p>You can aggregate messages collector into other to have a unified view:</p>
+<pre><code>$debugbar[&#39;messages&#39;]-&gt;aggregate($debugbar[&#39;io_ops&#39;]);</code></pre>
+<p>If you don&#39;t want to create a standalone tab in the debug bar but still be able
+to log messages from a different collector, you don&#39;t have to add the collector
+to the debug bar:</p>
+<pre><code>$debugbar[&#39;messages&#39;]-&gt;aggregate(new MessagesCollector(&#39;io_ops&#39;));</code></pre>
+<a name="timedata"></a><h2>TimeData</h2>
+<p>Provides a way to log total execution time as well as taking &quot;measures&quot; (ie. measure the execution time of a particular operation).</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\TimeDataCollector());
+
+$debugbar[&#39;time&#39;]-&gt;startMeasure(&#39;longop&#39;, &#39;My long operation&#39;);
+sleep(2);
+$debugbar[&#39;time&#39;]-&gt;stopMeasure(&#39;longop&#39;);
+
+$debugbar[&#39;time&#39;]-&gt;measure(&#39;My long operation&#39;, function() {
+    sleep(2);
+});</code></pre>
+<p>Displays the measures on a timeline</p>
+<a name="exceptions"></a><h2>Exceptions</h2>
+<p>Display exceptions</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\ExceptionsCollector());
+
+try {
+    throw new Exception(&#39;foobar&#39;);
+} catch (Exception $e) {
+    $debugbar[&#39;exceptions&#39;]-&gt;addException($e);
+}</code></pre>
+<a name="pdo"></a><h2>PDO</h2>
+<p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.</p>
+<pre><code>$pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
+$debugbar-&gt;addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));</code></pre>
+<a name="requestdatacollector"></a><h2>RequestDataCollector</h2>
+<p>Collects the data of PHP&#39;s global variables</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\RequestDataCollector());</code></pre>
+<a name="aggregatedcollector"></a><h2>AggregatedCollector</h2>
+<p>Aggregates multiple collectors. Do not provide any widgets, you have to add your own controls.</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\AggregatedCollector(&#39;all_messages&#39;, &#39;messages&#39;, &#39;time&#39;));
+$debugbar[&#39;all_messages&#39;]-&gt;addCollector($debugbar[&#39;messages&#39;]);
+$debugbar[&#39;all_messages&#39;]-&gt;addCollector(new MessagesCollector(&#39;mails&#39;));
+$debugbar[&#39;all_messages&#39;][&#39;mails&#39;]-&gt;addMessage(&#39;sending mail&#39;);
+
+$renderer = $debugbar-&gt;getJavascriptRenderer();
+$renderer-&gt;addControl(&#39;all_messages&#39;, array(
+    &#39;widget&#39; =&gt; &#39;PhpDebugBar.Widgets.MessagesWidget&#39;,
+    &#39;map&#39; =&gt; &#39;all_messages&#39;,
+    &#39;default&#39; =&gt; &#39;[]&#39;;
+));</code></pre>
+<a name="others"></a><h2>Others</h2>
+<p>Misc collectors which you can just register:</p>
+<ul>
+<li><code>MemoryCollector</code> (<em>memory</em>): Display memory usage</li>
+<li><code>PhpInfoCollector</code> (<em>php</em>): PHP version number</li>
+</ul>
+
 <a name="bridge-collectors"></a><h1>Bridge collectors</h1>
 <p>DebugBar comes with some &quot;bridge&quot; collectors. This collectors provides a way to integrate
 other projets with the DebugBar.</p>
+<a name="cachecache"></a><h2>CacheCache</h2>
+<p><a href="http://maximebf.github.io/CacheCache/">http://maximebf.github.io/CacheCache/</a></p>
+<p>Displays cache operations using <code>DebugBar\Bridge\CacheCacheCollector</code></p>
+<pre><code>$cache = new CacheCache\Cache(new CacheCache\Backends\Memory());
+$debugbar-&gt;addCollector(new DebugBar\Bridge\CacheCacheCollector($cache));</code></pre>
+<p>CacheCache uses <a href="https://github.com/Seldaek/monolog">Monolog</a> for logging, 
+thus it is required to collect data.</p>
+<p><code>CacheCacheCollector</code> subclasses <code>MonologCollector</code>, thus it can be 
+<a href="base-collectors.html#messages">aggregated in the messages view</a>.</p>
+<a name="doctrine"></a><h2>Doctrine</h2>
+<p><a href="http://doctrine-project.org">http://doctrine-project.org</a></p>
+<p>Displays sql queries into an SQL queries view using <code>DebugBar\Bridge\DoctrineCollector</code>. 
+You will need to set a <code>Doctrine\DBAL\Logging\DebugStack</code> logger on your connection.</p>
+<pre><code>$debugStack = new Doctrine\DBAL\Logging\DebugStack();
+$entityManager-&gt;getConnection()-&gt;getConfiguration()-&gt;setSQLLogger($debugStack);
+$debugbar-&gt;addCollector(new DebugBar\Bridge\DoctrineCollector($debugStack));</code></pre>
+<p><code>DoctrineCollector</code> also accepts an <code>Doctrine\ORM\EntityManager</code> as argument
+provided the <code>SQLLogger</code> is a ̀DebugStack`.</p>
 <a name="monolog"></a><h2>Monolog</h2>
-<p>Integrates Monolog messages into the messages view.</p>
+<p><a href="https://github.com/Seldaek/monolog">https://github.com/Seldaek/monolog</a></p>
+<p>Integrates Monolog messages into a message view using <code>DebugBar\Bridge\MonologCollector</code>.</p>
 <pre><code>$logger = new Monolog\Logger(&#39;mylogger&#39;);
 $debugbar-&gt;addCollector(new DebugBar\Bridge\MonologCollector($logger));</code></pre>
 <p>Note that multiple logger can be collected:</p>
 <pre><code>$debugbar[&#39;monolog&#39;]-&gt;addLogger($logger);</code></pre>
+<p><code>MonologCollector</code> can be <a href="base-collectors.html#messages">aggregated</a> into the <code>MessagesCollector</code>.</p>
 <a name="propel"></a><h2>Propel</h2>
-<p>Logs propel queries into an SQL queries view. You will need to activate
-Propel debug mode.</p>
+<p><a href="http://propelorm.org/">http://propelorm.org/</a></p>
+<p>Displays propel queries into an SQL queries view using <code>DebugBar\Bridge\PropelCollector</code>. 
+You will need to activate Propel debug mode.</p>
 <pre><code>// before Propel::init()
 $debugbar-&gt;addCollector(new DebugBar\Bridge\PropelCollector());
 
@@ -658,9 +795,22 @@ Propel::init(&#39;/path/to/config&#39;);
 DebugBar\Bridge\PropelCollector::enablePropelProfiling();</code></pre>
 <p>Queries can be collected on a single connection by providing the <code>PropelPDO</code> object
 to the <code>PropelCollector</code> as first argument.</p>
+<a name="slim"></a><h2>Slim</h2>
+<p><a href="http://slimframework.com">http://slimframework.com</a></p>
+<p>Displays message from the Slim logger into a message view using <code>DebugBar\Bridge\SlimCollector</code>.</p>
+<pre><code>$app = new Slim\Slim();
+$debugbar-&gt;addCollector(new DebugBar\Bridge\SlimCollector($app));</code></pre>
+<a name="swift-mailer"></a><h2>Swift Mailer</h2>
+<p><a href="http://swiftmailer.org/">http://swiftmailer.org/</a></p>
+<p>Display log messages and sent mail using <code>DebugBar\Bridge\SwiftMailer\SwiftLogCollector</code> and
+<code>DebugBar\Bridge\SwiftMailer\SwiftMailCollector</code>.</p>
+<pre><code>$mailer = Swift_Mailer::newInstance(Swift_NullTransport::newInstance());
+$debugbar[&#39;messages&#39;]-&gt;aggregate(new DebugBar\Bridge\SwiftMailer\SwiftLogCollector($mailer));
+$debugbar-&gt;addCollector(new DebugBar\Bridge\SwiftMailer\SwiftMailCollector($mailer));</code></pre>
 <a name="twig"></a><h2>Twig</h2>
-<p>Collects info about rendered templates. You need to wrap your <code>Twig_Environment</code> object
-into a <code>DebugBar\Bridge\Twig\TraceableTwigEnvironment</code> object.</p>
+<p><a href="http://twig.sensiolabs.org/">http://twig.sensiolabs.org/</a></p>
+<p>Collects info about rendered templates using <code>DebugBar\Bridge\Twig\TwigCollector</code>. 
+You need to wrap your <code>Twig_Environment</code> object into a <code>DebugBar\Bridge\Twig\TraceableTwigEnvironment</code> object.</p>
 <pre><code>$loader = new Twig_Loader_Filesystem(&#39;.&#39;);
 $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
 $debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));</code></pre>

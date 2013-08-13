@@ -72,11 +72,6 @@
             
         </li>
     
-        <li>
-            <a href="/docs/data-collectors.html#base-collectors">Base collectors</a>
-            
-        </li>
-    
 </ol>
 
             
@@ -140,10 +135,66 @@
         </li>
     
         <li>
+            <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/base-collectors.html#messages">Messages</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#timedata">TimeData</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#exceptions">Exceptions</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#pdo">PDO</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#requestdatacollector">RequestDataCollector</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#aggregatedcollector">AggregatedCollector</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#others">Others</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/bridge-collectors.html#bridge-collectors">Bridge collectors</a>
             
                 
     <ol>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#cachecache">CacheCache</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#doctrine">Doctrine</a>
+            
+        </li>
     
         <li>
             <a href="/docs/bridge-collectors.html#monolog">Monolog</a>
@@ -152,6 +203,16 @@
     
         <li>
             <a href="/docs/bridge-collectors.html#propel">Propel</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#slim">Slim</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/bridge-collectors.html#swift-mailer">Swift Mailer</a>
             
         </li>
     
@@ -191,7 +252,21 @@ No more <code>var_dump()</code> in your code!</p>
 <li>Includes generic data collectors and collectors for well known libraries</li>
 <li>The client side bar is 100% coded in javascript</li>
 <li>Easily create your own collectors and their associated view in the bar</li>
+<li><a href="http://phpdebugbar.com/docs">Very well documented</a></li>
 </ul>
+<p>Includes collectors for:</p>
+<ul>
+<li><a href="http://php.net/manual/en/book.pdo.php">PDO</a></li>
+<li><a href="http://maximebf.github.io/CacheCache/">CacheCache</a></li>
+<li><a href="http://doctrine-project.org">Doctrine</a></li>
+<li><a href="https://github.com/Seldaek/monolog">Monolog</a></li>
+<li><a href="http://propelorm.org/">Propel</a></li>
+<li><a href="http://slimframework.com">Slim</a></li>
+<li><a href="http://swiftmailer.org/">Swift Mailer</a></li>
+<li><a href="http://twig.sensiolabs.org/">Twig</a></li>
+</ul>
+<p>Checkout the <a href="https://github.com/maximebf/php-debugbar/tree/master/demo">demo</a> for
+examples and <a href="http://phpdebugbar.com">phpdebugbar.com</a> for a live example.</p>
 <a name="installation"></a><h2>Installation</h2>
 <p>The easiest way to install DebugBar is using <a href="https://github.com/composer/composer">Composer</a>
 with the following requirement:</p>
@@ -235,7 +310,7 @@ $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
 automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
 collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:</p>
 <pre><code>$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);</code></pre>
-<p><code>StandardDebugBar</code> activates all bundled collectors:</p>
+<p><code>StandardDebugBar</code> activates the following collectors:</p>
 <ul>
 <li><code>MemoryCollector</code> (<em>memory</em>)</li>
 <li><code>MessagesCollector</code> (<em>messages</em>)</li>

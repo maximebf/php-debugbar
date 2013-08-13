@@ -239,87 +239,68 @@
 </div>
 
         <div id="content">
-            <a name="php-debug-bar"></a><h1>PHP Debug Bar</h1>
-<p>Displays a debug bar in the browser with information from php.
-No more <code>var_dump()</code> in your code!</p>
-<p><img src="https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png" alt="Screenshot"></p>
-<p><strong>Features:</strong></p>
-<ul>
-<li>Generic debug bar with no other dependencies</li>
-<li>Easy to integrate with any project</li>
-<li>Clean, fast and easy to use interface</li>
-<li>Handles AJAX request</li>
-<li>Includes generic data collectors and collectors for well known libraries</li>
-<li>The client side bar is 100% coded in javascript</li>
-<li>Easily create your own collectors and their associated view in the bar</li>
-<li><a href="http://phpdebugbar.com/docs">Very well documented</a></li>
-</ul>
-<p>Includes collectors for:</p>
-<ul>
-<li><a href="http://php.net/manual/en/book.pdo.php">PDO</a></li>
-<li><a href="http://maximebf.github.io/CacheCache/">CacheCache</a></li>
-<li><a href="http://doctrine-project.org">Doctrine</a></li>
-<li><a href="https://github.com/Seldaek/monolog">Monolog</a></li>
-<li><a href="http://propelorm.org/">Propel</a></li>
-<li><a href="http://slimframework.com">Slim</a></li>
-<li><a href="http://swiftmailer.org/">Swift Mailer</a></li>
-<li><a href="http://twig.sensiolabs.org/">Twig</a></li>
-</ul>
-<p>Checkout the <a href="https://github.com/maximebf/php-debugbar/tree/master/demo">demo</a> for
-examples and <a href="http://phpdebugbar.com">phpdebugbar.com</a> for a live example.</p>
-<a name="installation"></a><h2>Installation</h2>
-<p>The easiest way to install DebugBar is using <a href="https://github.com/composer/composer">Composer</a>
-with the following requirement:</p>
-<pre><code>{
-    &quot;require&quot;: {
-        &quot;maximebf/debugbar&quot;: &quot;&gt;=1.0.0&quot;
-    }
-}</code></pre>
-<p>Alternatively, you can <a href="https://github.com/maximebf/php-debugbar/zipball/master">download the archive</a> 
-and add the src/ folder to PHP&#39;s include path:</p>
-<pre><code>set_include_path(&#39;/path/to/src&#39; . PATH_SEPARATOR . get_include_path());</code></pre>
-<p>DebugBar does not provide an autoloader but follows the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0 convention</a>.<br>You can use the following snippet to autoload DebugBar classes:</p>
-<pre><code>spl_autoload_register(function($className) {
-    if (substr($className, 0, 8) === &#39;DebugBar&#39;) {
-        $filename = str_replace(&#39;\\&#39;, DIRECTORY_SEPARATOR, trim($className, &#39;\\&#39;)) . &#39;.php&#39;;
-        require_once $filename;
-    }
+            <a name="base-collectors"></a><h1>Base collectors</h1>
+<p>Collectors provided in the <code>DebugBar\DataCollector</code> namespace.</p>
+<a name="messages"></a><h2>Messages</h2>
+<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\MessagesCollector());
+$debugbar[&#39;messages&#39;]-&gt;info(&#39;hello world&#39;);</code></pre>
+<p>You can have multiple messages collector by naming them:</p>
+<pre><code>$debugbar-&gt;addCollector(new MessagesCollector(&#39;io_ops&#39;));
+$debugbar[&#39;io_ops&#39;]-&gt;info(&#39;opening files&#39;);</code></pre>
+<p>You can aggregate messages collector into other to have a unified view:</p>
+<pre><code>$debugbar[&#39;messages&#39;]-&gt;aggregate($debugbar[&#39;io_ops&#39;]);</code></pre>
+<p>If you don&#39;t want to create a standalone tab in the debug bar but still be able
+to log messages from a different collector, you don&#39;t have to add the collector
+to the debug bar:</p>
+<pre><code>$debugbar[&#39;messages&#39;]-&gt;aggregate(new MessagesCollector(&#39;io_ops&#39;));</code></pre>
+<a name="timedata"></a><h2>TimeData</h2>
+<p>Provides a way to log total execution time as well as taking &quot;measures&quot; (ie. measure the execution time of a particular operation).</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\TimeDataCollector());
+
+$debugbar[&#39;time&#39;]-&gt;startMeasure(&#39;longop&#39;, &#39;My long operation&#39;);
+sleep(2);
+$debugbar[&#39;time&#39;]-&gt;stopMeasure(&#39;longop&#39;);
+
+$debugbar[&#39;time&#39;]-&gt;measure(&#39;My long operation&#39;, function() {
+    sleep(2);
 });</code></pre>
-<a name="quick-start"></a><h2>Quick start</h2>
-<p>DebugBar is very easy to use and you can add it to any of your projets in no time.
-The easiest way is using the <code>render()</code> functions</p>
-<pre><code>&lt;?php
-use DebugBar\StandardDebugBar;
-use DebugBar\JavascriptRenderer;
+<p>Displays the measures on a timeline</p>
+<a name="exceptions"></a><h2>Exceptions</h2>
+<p>Display exceptions</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\ExceptionsCollector());
 
-$debugbar = new StandardDebugBar();
-$debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();
+try {
+    throw new Exception(&#39;foobar&#39;);
+} catch (Exception $e) {
+    $debugbar[&#39;exceptions&#39;]-&gt;addException($e);
+}</code></pre>
+<a name="pdo"></a><h2>PDO</h2>
+<p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.</p>
+<pre><code>$pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
+$debugbar-&gt;addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));</code></pre>
+<a name="requestdatacollector"></a><h2>RequestDataCollector</h2>
+<p>Collects the data of PHP&#39;s global variables</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\RequestDataCollector());</code></pre>
+<a name="aggregatedcollector"></a><h2>AggregatedCollector</h2>
+<p>Aggregates multiple collectors. Do not provide any widgets, you have to add your own controls.</p>
+<pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\AggregatedCollector(&#39;all_messages&#39;, &#39;messages&#39;, &#39;time&#39;));
+$debugbar[&#39;all_messages&#39;]-&gt;addCollector($debugbar[&#39;messages&#39;]);
+$debugbar[&#39;all_messages&#39;]-&gt;addCollector(new MessagesCollector(&#39;mails&#39;));
+$debugbar[&#39;all_messages&#39;][&#39;mails&#39;]-&gt;addMessage(&#39;sending mail&#39;);
 
-$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
-?&gt;
-&lt;html&gt;
-    &lt;head&gt;
-        &lt;?php echo $debugbarRenderer-&gt;renderHead() ?&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        ...
-        &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;
-    &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-<p>The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are
-automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
-collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:</p>
-<pre><code>$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);</code></pre>
-<p><code>StandardDebugBar</code> activates the following collectors:</p>
+$renderer = $debugbar-&gt;getJavascriptRenderer();
+$renderer-&gt;addControl(&#39;all_messages&#39;, array(
+    &#39;widget&#39; =&gt; &#39;PhpDebugBar.Widgets.MessagesWidget&#39;,
+    &#39;map&#39; =&gt; &#39;all_messages&#39;,
+    &#39;default&#39; =&gt; &#39;[]&#39;;
+));</code></pre>
+<a name="others"></a><h2>Others</h2>
+<p>Misc collectors which you can just register:</p>
 <ul>
-<li><code>MemoryCollector</code> (<em>memory</em>)</li>
-<li><code>MessagesCollector</code> (<em>messages</em>)</li>
-<li><code>PhpInfoCollector</code> (<em>php</em>)</li>
-<li><code>RequestDataCollector</code> (<em>request</em>)</li>
-<li><code>TimeDataCollector</code> (<em>time</em>)</li>
-<li><code>ExceptionsCollector</code> (<em>exceptions</em>)</li>
+<li><code>MemoryCollector</code> (<em>memory</em>): Display memory usage</li>
+<li><code>PhpInfoCollector</code> (<em>php</em>): PHP version number</li>
 </ul>
-<p>Learn more about DebugBar in the <a href="http://phpdebugbar.com/docs">docs</a>.</p>
 
 
 
