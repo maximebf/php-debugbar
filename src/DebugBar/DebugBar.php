@@ -12,6 +12,7 @@ namespace DebugBar;
 
 use ArrayAccess;
 use DebugBar\DataCollector\DataCollectorInterface;
+use DebugBar\Storage\StorageInterface;
 
 /**
  * Main DebugBar object
@@ -33,6 +34,12 @@ class DebugBar implements ArrayAccess
     
     protected $jsRenderer;
 
+    protected $requestIdGenerator;
+
+    protected $requestId;
+
+    protected $storage;
+
     /**
      * Adds a data collector
      *
@@ -43,6 +50,9 @@ class DebugBar implements ArrayAccess
      */
     public function addCollector(DataCollectorInterface $collector)
     {
+        if ($collector->getName() === '__meta') {
+            throw new DebugBarException("'__meta' is a reserved name and cannot be used as a collector name");
+        }
         if (isset($this->collectors[$collector->getName()])) {
             throw new DebugBarException("'{$collector->getName()}' is already a registered collector");
         }
@@ -86,16 +96,94 @@ class DebugBar implements ArrayAccess
     }
 
     /**
+     * Sets the request id generator
+     * 
+     * @param RequestIdGeneratorInterface $generator
+     */
+    public function setRequestIdGenerator(RequestIdGeneratorInterface $generator)
+    {
+        $this->requestIdGenerator = $generator;
+        return $this;
+    }
+
+    /**
+     * @return RequestIdGeneratorInterface
+     */
+    public function getRequestIdGenerator()
+    {
+        if ($this->requestIdGenerator === null) {
+            $this->requestIdGenerator = new RequestIdGenerator();
+        }
+        return $this->requestIdGenerator;
+    }
+
+    /**
+     * Returns the id of the current request
+     * 
+     * @return string
+     */
+    public function getCurrentRequestId()
+    {
+        if ($this->requestId === null) {
+            $this->requestId = $this->getRequestIdGenerator()->generate();
+        }
+        return $this->requestId;
+    }
+
+    /**
+     * Sets the storage backend to use to store the collected data
+     * 
+     * @param StorageInterface $storage
+     */
+    public function setStorage(StorageInterface $storage = null)
+    {
+        $this->storage = $storage;
+        return $this;
+    }
+
+    /**
+     * @return StorageInterface
+     */
+    public function getStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * Checks if the data will be persisted
+     * 
+     * @return boolean
+     */
+    public function isDataPersisted()
+    {
+        return $this->storage !== null;
+    }
+
+    /**
      * Collects the data from the collectors
      * 
      * @return array
      */
     public function collect()
     {
-        $this->data = array();
+        $this->data = array(
+            '__meta' => array(
+                'id' => $this->getCurrentRequestId(),
+                'datetime' => date('Y-m-d H:i:s'),
+                'utime' => microtime(true),
+                'uri' => $_SERVER['REQUEST_URI'],
+                'ip' => $_SERVER['REMOTE_ADDR']
+            )
+        );
+
         foreach ($this->collectors as $name => $collector) {
             $this->data[$name] = $collector->collect();
         }
+
+        if ($this->storage !== null) {
+            $this->storage->save($this->getCurrentRequestId(), $this->data);
+        }
+
         return $this->data;
     }
 

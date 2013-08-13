@@ -522,7 +522,10 @@ class JavascriptRenderer
             $js = $this->getJsInitializationCode();
         }
         
-        $js .= sprintf("%s.addDataSet(%s);\n", $this->variableName, json_encode($this->debugBar->getData()));
+        $js .= sprintf("%s.addDataSet(%s, \"%s\");\n", 
+            $this->variableName, 
+            json_encode($this->debugBar->getData()),
+            $this->debugBar->getCurrentRequestId());
         return "<script type=\"text/javascript\">\n$js\n</script>\n";
     }
 
