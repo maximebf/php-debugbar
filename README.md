@@ -14,7 +14,21 @@ No more `var_dump()` in your code!
  - Includes generic data collectors and collectors for well known libraries
  - The client side bar is 100% coded in javascript
  - Easily create your own collectors and their associated view in the bar
+ - [Very well documented](http://phpdebugbar.com/docs)
 
+Includes collectors for:
+
+  - [PDO](http://php.net/manual/en/book.pdo.php)
+  - [CacheCache](http://maximebf.github.io/CacheCache/)
+  - [Doctrine](http://doctrine-project.org)
+  - [Monolog](https://github.com/Seldaek/monolog)
+  - [Propel](http://propelorm.org/)
+  - [Slim](http://slimframework.com)
+  - [Swift Mailer](http://swiftmailer.org/)
+  - [Twig](http://twig.sensiolabs.org/)
+
+Checkout the [demo](https://github.com/maximebf/php-debugbar/tree/master/demo) for
+examples and [phpdebugbar.com](http://phpdebugbar.com) for a live example.
 
 ## Installation
 
@@ -72,7 +86,7 @@ collector names. In our previous example, we add a message to the `MessagesColle
 
     $debugbar["messages"]->addMessage("hello world!");
 
-`StandardDebugBar` activates all bundled collectors:
+`StandardDebugBar` activates the following collectors:
 
  - `MemoryCollector` (*memory*)
  - `MessagesCollector` (*messages*)
