@@ -60,11 +60,20 @@ Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollec
     $pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
     $debugbar->addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));
 
-## RequestDataCollector
+## RequestData
 
 Collects the data of PHP's global variables
 
     $debugbar->addCollector(new DebugBar\DataCollector\RequestDataCollector());
+
+## Config
+
+Used to display any key/value pairs array
+
+    $data = array('foo' => 'bar');
+    $debugbar->addCollector(new DebugBar\DataCollector\ConfigCollector($data));
+
+You can provide a different name for this collector in the second argument of the constructor.
 
 ## AggregatedCollector
 
