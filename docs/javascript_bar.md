@@ -20,7 +20,8 @@ data from a data collector. Some common widgets are provided in
 the *widgets.js* file.
 
 The `PhpDebugBar` namespace is used for all objects and the only
-dependencies are *jQuery*, *jquery-drag* and *FontAwesome* (css).
+dependencies are *jQuery* and *FontAwesome* (css). *FontAwesome* is
+optional but is used to add nice icons!
 
 The main class is `PhpDebugBar.DebugBar`. It provides the infrastructure
 to manage tabs, indicators and datasets.

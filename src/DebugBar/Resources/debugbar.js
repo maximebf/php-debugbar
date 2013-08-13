@@ -305,17 +305,27 @@ if (typeof(localStorage) == 'undefined') {
             var self = this;
             this.$el.appendTo('body');
             this.$header = $('<div class="phpdebugbar-header" />').appendTo(this.$el);
-            this.$body = $('<div class="phpdebugbar-body" />').appendTo(this.$el);
+            var $body = this.$body = $('<div class="phpdebugbar-body" />').appendTo(this.$el);
             this.$resizehdle = $('<div class="phpdebugbar-resize-handle" />').appendTo(this.$body);
 
-            // allow resizing by dragging handle
-            this.$body.drag('start', function(e, dd) {
-                dd.height = $(this).height();
-            }).drag(function(e, dd) {
-                var h = Math.max(100, dd.height - dd.deltaY);
-                $(this).css('height', h);
-                localStorage.setItem('phpdebugbar-height', h);
-            }, {handle: '.phpdebugbar-resize-handle'});
+            // dragging of resize handle
+            var dragging = false;
+            this.$resizehdle.on('mousedown', function(e) {
+                var orig_h = $body.height(), pos_y = e.pageY;
+                dragging = true;
+
+                $body.parents().on('mousemove', function(e) {
+                    if (dragging) {
+                        var h = orig_h + (pos_y - e.pageY);
+                        $body.css('height', h);
+                        localStorage.setItem('phpdebugbar-height', h);
+                    }
+                }).on('mouseup', function() {
+                    dragging = false;
+                });
+
+                e.preventDefault();
+            });
             
             // minimize button
             this.$minimizebtn = $('<a class="phpdebugbar-minimize-btn" href="javascript:"><i class="icon-remove"></i></a>').appendTo(this.$header);

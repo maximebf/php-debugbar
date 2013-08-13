@@ -31,7 +31,7 @@ class JavascriptRenderer
 
     protected $cssVendors = array('vendor/font-awesome/css/font-awesome.css');
 
-    protected $jsVendors = array('vendor/jquery-1.8.3.min.js', 'vendor/jquery.event.drag-2.2.js');
+    protected $jsVendors = array('vendor/jquery-1.8.3.min.js');
 
     protected $includeVendors = true;
 
@@ -116,11 +116,17 @@ class JavascriptRenderer
 
     /**
      * Whether to include vendor assets
+     *
+     * You can only include js or css vendors using
+     * setIncludeVendors('css') or setIncludeVendors('js')
      * 
      * @param boolean $enabled
      */
     public function setIncludeVendors($enabled = true)
     {
+        if (is_string($enabled)) {
+            $enabled = array($enabled);
+        }
         $this->includeVendors = $enabled;
         return $this;
     }
@@ -132,7 +138,7 @@ class JavascriptRenderer
      */
     public function areVendorsIncluded()
     {
-        return $this->includeVendors;
+        return $this->includeVendors !== false;
     }
 
     /**
@@ -260,9 +266,13 @@ class JavascriptRenderer
         $cssFiles = $this->cssFiles;
         $jsFiles = $this->jsFiles;
 
-        if ($this->includeVendors) {
-            $cssFiles = array_merge($this->cssVendors, $cssFiles);
-            $jsFiles = array_merge($this->jsVendors, $jsFiles);
+        if ($this->includeVendors !== false) {
+            if ($this->includeVendors === true || in_array('css', $this->includeVendors)) {
+                $cssFiles = array_merge($this->cssVendors, $cssFiles);
+            }
+            if ($this->includeVendors === true || in_array('js', $this->includeVendors)) {
+                $jsFiles = array_merge($this->jsVendors, $jsFiles);
+            }
         }
 
         return $this->filterAssetArray(array($cssFiles, $jsFiles), $type);
