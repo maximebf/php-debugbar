@@ -20,7 +20,7 @@ use Swift_Plugins_MessageLogger;
  *
  * http://swiftmailer.org/
  */
-class MessagesCollector extends DataCollector implements Renderable
+class SwiftMailCollector extends DataCollector implements Renderable
 {
     protected $messagesLogger;
 
@@ -63,7 +63,7 @@ class MessagesCollector extends DataCollector implements Renderable
      */
     public function getName()
     {
-        return 'swiftmailer_messages';
+        return 'swiftmailer_mails';
     }
 
     /**
@@ -72,14 +72,14 @@ class MessagesCollector extends DataCollector implements Renderable
     public function getWidgets()
     {
         return array(
-            'swiftmailer_messages' => array(
+            'emails' => array(
                 'widget' => 'PhpDebugBar.Widgets.MailsWidget',
-                'map' => 'swiftmailer_messages.mails',
+                'map' => 'swiftmailer_mails.mails',
                 'default' => '[]',
                 'title' => 'Mails'
             ),
-            'swiftmailer_messages:badge' => array(
-                'map' => 'swiftmailer_messages.count',
+            'emails:badge' => array(
+                'map' => 'swiftmailer_mails.count',
                 'default' => 0
             )
         );

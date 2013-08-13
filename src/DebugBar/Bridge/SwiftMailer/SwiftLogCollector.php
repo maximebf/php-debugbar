@@ -20,7 +20,7 @@ use Swift_Plugins_LoggerPlugin;
  *
  * http://swiftmailer.org/
  */
-class LogCollector extends MessagesCollector implements Swift_Plugins_Logger
+class SwiftLogCollector extends MessagesCollector implements Swift_Plugins_Logger
 {
     public function __construct(Swift_Mailer $mailer)
     {
