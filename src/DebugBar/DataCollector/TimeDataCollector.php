@@ -10,7 +10,7 @@
 
 namespace DebugBar\DataCollector;
 
-use DebugBarException;
+use DebugBar\DebugBarException;
 
 /**
  * Collects info about the request duration as well as providing
@@ -51,7 +51,7 @@ class TimeDataCollector extends DataCollector implements Renderable
     {
         $start = microtime(true);
         $this->startedMeasures[$name] = array(
-            'label' => $label,
+            'label' => $label ?: $name,
             'start' => $start
         );
     }
@@ -67,22 +67,21 @@ class TimeDataCollector extends DataCollector implements Renderable
         if (!isset($this->startedMeasures[$name])) {
             throw new DebugBarException("Failed stopping measure '$name' because it hasn't been started");
         }
-        $this->addMeasure($name, $this->startedMeasures[$name]['start'], $end, $this->startedMeasures[$name]['label']);
+        $this->addMeasure($this->startedMeasures[$name]['label'], $this->startedMeasures[$name]['start'], $end);
         unset($this->startedMeasures[$name]);
     }
 
     /**
      * Adds a measure
      * 
-     * @param string $name
+     * @param string $label
      * @param float $start
      * @param float $end
-     * @param string $label
      */
-    public function addMeasure($name, $start, $end, $label = null)
+    public function addMeasure($label, $start, $end)
     {
-        $this->measures[$name] = array(
-            'label' => $label ?: $name,
+        $this->measures[] = array(
+            'label' => $label,
             'start' => $start,
             'relative_start' => $start - $this->requestStartTime,
             'end' => $end,
