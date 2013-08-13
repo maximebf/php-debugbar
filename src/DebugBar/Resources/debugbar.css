@@ -355,6 +355,22 @@ div.phpdebugbar-widgets-sqlqueries span.row-count:before {
 div.phpdebugbar-widgets-sqlqueries span.stmt-id:before {
   content: "\f08d";
 }
+div.phpdebugbar-widgets-sqlqueries table.params {
+  display: none;
+  width: 70%;
+  margin: 10px;
+  border: 1px solid #ddd;
+  font-family: monospace;
+  border-collapse: collapse;
+}
+  div.phpdebugbar-widgets-sqlqueries table.params td {
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  div.phpdebugbar-widgets-sqlqueries table.params .name {
+    width: 20%;
+    font-weight: bold;
+  }
 
 div.phpdebugbar-widgets-sqlqueries li.list-item span.error {
   display: block;

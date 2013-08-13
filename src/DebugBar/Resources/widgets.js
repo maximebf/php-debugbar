@@ -219,7 +219,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     m = m.substr(0, 100) + "...";
                 }
 
-                var val = $('<span class="value" />').addClass(value.label).text(m).appendTo(li);
+                var val = $('<span class="value" />').text(m).appendTo(li);
                 if (!value.is_string || value.message.length > 100) {
                     li.css('cursor', 'pointer').click(function() {
                         if (val.hasClass('pretty')) {
@@ -230,7 +230,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     });
                 }
 
-                $('<span class="label" />').text(value.label).appendTo(li);
+                if (value.label) {
+                    val.addClass(value.label);
+                    $('<span class="label" />').text(value.label).appendTo(li);
+                }
                 if (value.collector) {
                     $('<span class="collector" />').text(value.collector).appendTo(li);
                 }
@@ -249,7 +252,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 var filters = [], self = this;
                 for (var i = 0; i < data.length; i++) {
-                    if ($.inArray(data[i].label, filters) > -1) {
+                    if (!data[i].label || $.inArray(data[i].label, filters) > -1) {
                         continue;
                     }
                     filters.push(data[i].label);
@@ -268,7 +271,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     fdata = [];
 
                 for (var i = 0; i < data.length; i++) {
-                    if ($.inArray(data[i].label, exclude) === -1 && (!search || data[i].message.indexOf(search) > -1)) {
+                    if ((!data[i].label || $.inArray(data[i].label, exclude) === -1) && (!search || data[i].message.indexOf(search) > -1)) {
                         fdata.push(data[i]);
                     }
                 }
@@ -338,17 +341,22 @@ if (typeof(PhpDebugBar) == 'undefined') {
         render: function() {
             this.$list = new ListWidget({ itemRenderer: function(li, e) {
                 $('<span class="message" />').text(e.message).appendTo(li);
-                $('<span class="filename" />').text(e.file + "#" + e.line).appendTo(li);
-                $('<span class="type" />').text(e.type).appendTo(li);
-                var file = $('<div class="file" />').html(htmlize(e.surrounding_lines.join(""))).appendTo(li);
-
-                li.click(function() {
-                    if (file.is(':visible')) {
-                        file.hide();
-                    } else {
-                        file.show();
-                    }
-                });
+                if (e.filename) {
+                    $('<span class="filename" />').text(e.file + "#" + e.line).appendTo(li);
+                }
+                if (e.type) {
+                    $('<span class="type" />').text(e.type).appendTo(li);
+                }
+                if (e.surrounding_lines) {
+                    var file = $('<div class="file" />').html(htmlize(e.surrounding_lines.join(""))).appendTo(li);
+                    li.click(function() {
+                        if (file.is(':visible')) {
+                            file.hide();
+                        } else {
+                            file.show();
+                        }
+                    });
+                }
             }});
             this.$list.$el.appendTo(this.$el);
 
@@ -380,9 +388,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.$list = new ListWidget({ itemRenderer: function(li, stmt) {
                 $('<span class="sql" />').text(stmt.sql).appendTo(li);
-                $('<span class="duration" title="Duration" />').text(stmt.duration_str).appendTo(li);
-                $('<span class="memory" title="Peak memory usage" />').text(stmt.memory_str).appendTo(li);
-                if (!stmt.is_success) {
+                if (stmt.duration_str) {
+                    $('<span class="duration" title="Duration" />').text(stmt.duration_str).appendTo(li);
+                }
+                if (stmt.memory_str) {
+                    $('<span class="memory" title="Peak memory usage" />').text(stmt.memory_str).appendTo(li);
+                }
+                if (typeof(stmt.is_success) != 'undefined' && !stmt.is_success) {
                     li.addClass('error');
                     li.append($('<span class="error" />').text("[" + stmt.error_code + "] " + stmt.error_message));
                 } else if (typeof(stmt.row_count) != 'undefined') {
@@ -391,15 +403,38 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (typeof(stmt.stmt_id) != 'undefined' && stmt.stmt_id) {
                     $('<span class="stmt-id" title="Prepared statement ID" />').text(stmt.stmt_id).appendTo(li);
                 }
+                if (stmt.params && !$.isEmptyObject(stmt.params)) {
+                    var table = '<table class="params"><tr><th colspan="2">Params</th></tr>';
+                    for (var key in stmt.params) {
+                        table += '<tr><td class="name">' + key + '</td><td class="value">' + stmt.params[key] + '</td></tr>';
+                    }
+                    table += '</table>';
+                    table = $(table).appendTo(li);
+                    li.css('cursor', 'pointer').click(function() {
+                        if (table.is(':visible')) {
+                            table.hide();
+                        } else {
+                            table.show();
+                        }
+                    });
+                }
             }});
             this.$list.$el.appendTo(this.$el);
 
             this.bindAttr('data', function(data) {
                 this.$list.set('data', data.statements);
-                this.$status.empty()
-                    .append($('<span />').text(data.nb_statements + " statements were executed" + (data.nb_failed_statements > 0 ? (", " + data.nb_failed_statements + " of which failed") : "")))
-                    .append($('<span class="duration" title="Accumulated duration" />').text(data.accumulated_duration_str))
-                    .append($('<span class="memory" title="Peak memory usage" />').text(data.peak_memory_usage_str));
+                this.$status.empty();
+
+                var t = $('<span />').text(data.nb_statements + " statements were executed").appendTo(this.$status);
+                if (data.nb_failed_statements) {
+                    t.append(", " + data.nb_failed_statements + " of which failed");
+                }
+                if (data.accumulated_duration_str) {
+                    this.$status.append($('<span class="duration" title="Accumulated duration" />').text(data.accumulated_duration_str));
+                }
+                if (data.peak_memory_usage_str) {
+                    this.$status.append($('<span class="memory" title="Peak memory usage" />').text(data.peak_memory_usage_str));
+                }
             });
         }
 
@@ -422,15 +457,18 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.$list = new ListWidget({ itemRenderer: function(li, tpl) {
                 $('<span class="name" />').text(tpl.name).appendTo(li);
-                $('<span class="render_time" title="Render time" />').text(tpl.render_time_str).appendTo(li);
+                if (tpl.render_time_str) {
+                    $('<span class="render_time" title="Render time" />').text(tpl.render_time_str).appendTo(li);
+                }
             }});
             this.$list.$el.appendTo(this.$el);
 
             this.bindAttr('data', function(data) {
                 this.$list.set('data', data.templates);
-                this.$status.empty()
-                    .append($('<span />').text(data.templates.length + " templates were rendered"))
-                    .append($('<span class="render_time" title="Accumulated render time" />').text(data.accumulated_render_time_str));
+                this.$status.empty().append($('<span />').text(data.templates.length + " templates were rendered"));
+                if (data.accumulated_render_time_str) {
+                    this.$status.append($('<span class="render_time" title="Accumulated render time" />').text(data.accumulated_render_time_str));
+                }
             });
         }
 
@@ -452,15 +490,17 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$list = new ListWidget({ itemRenderer: function(li, mail) {
                 $('<span class="subject" />').text(mail.subject).appendTo(li);
                 $('<span class="to" />').text(mail.to).appendTo(li);
-                var headers = $('<pre class="headers" />').appendTo(li);
-                $('<code />').text(mail.headers).appendTo(headers);
-                li.click(function() {
-                    if (headers.is(':visible')) {
-                        headers.hide();
-                    } else {
-                        headers.show();
-                    }
-                });
+                if (mail.headers) {
+                    var headers = $('<pre class="headers" />').appendTo(li);
+                    $('<code />').text(mail.headers).appendTo(headers);
+                    li.click(function() {
+                        if (headers.is(':visible')) {
+                            headers.hide();
+                        } else {
+                            headers.show();
+                        }
+                    });
+                }
             }});
             this.$list.$el.appendTo(this.$el);
 

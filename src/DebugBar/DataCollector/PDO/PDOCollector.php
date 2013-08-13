@@ -28,11 +28,11 @@ class PDOCollector extends DataCollector implements Renderable
         $stmts = array();
         foreach ($this->pdo->getExecutedStatements() as $stmt) {
             $stmts[] = array(
-                'sql' => $stmt->getSqlWithParams(),
+                'sql' => $stmt->getSql(),
                 'row_count' => $stmt->getRowCount(),
                 'stmt_id' => $stmt->getPreparedId(),
                 'prepared_stmt' => $stmt->getSql(),
-                'params' => $stmt->getParameters(),
+                'params' => (object) $stmt->getParameters(),
                 'duration' => $stmt->getDuration(),
                 'duration_str' => $this->formatDuration($stmt->getDuration()),
                 'memory' => $stmt->getMemoryUsage(),
