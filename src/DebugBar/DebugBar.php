@@ -35,13 +35,16 @@ class DebugBar implements ArrayAccess
 
     /**
      * Adds a data collector
-     * 
+     *
      * @param DataCollectorInterface $collector
+     *
+     * @throws DebugBarException
+     * @return $this
      */
     public function addCollector(DataCollectorInterface $collector)
     {
         if (isset($this->collectors[$collector->getName()])) {
-            throw new DebugBarException("'$name' is already a registered collector");
+            throw new DebugBarException("'{$collector->getName()}' is already a registered collector");
         }
         $this->collectors[$collector->getName()] = $collector;
         return $this;
