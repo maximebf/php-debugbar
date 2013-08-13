@@ -161,7 +161,12 @@
         </li>
     
         <li>
-            <a href="/docs/base-collectors.html#requestdatacollector">RequestDataCollector</a>
+            <a href="/docs/base-collectors.html#requestdata">RequestData</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/base-collectors.html#config">Config</a>
             
         </li>
     
@@ -730,9 +735,14 @@ try {
 <p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.</p>
 <pre><code>$pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
 $debugbar-&gt;addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));</code></pre>
-<a name="requestdatacollector"></a><h2>RequestDataCollector</h2>
+<a name="requestdata"></a><h2>RequestData</h2>
 <p>Collects the data of PHP&#39;s global variables</p>
 <pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\RequestDataCollector());</code></pre>
+<a name="config"></a><h2>Config</h2>
+<p>Used to display any key/value pairs array</p>
+<pre><code>$data = array(&#39;foo&#39; =&gt; &#39;bar&#39;);
+$debugbar-&gt;addCollector(new DebugBar\DataCollector\ConfigCollector($data));</code></pre>
+<p>You can provide a different name for this collector in the second argument of the constructor.</p>
 <a name="aggregatedcollector"></a><h2>AggregatedCollector</h2>
 <p>Aggregates multiple collectors. Do not provide any widgets, you have to add your own controls.</p>
 <pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\AggregatedCollector(&#39;all_messages&#39;, &#39;messages&#39;, &#39;time&#39;));

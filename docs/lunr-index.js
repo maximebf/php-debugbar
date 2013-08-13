@@ -193,11 +193,18 @@ index.add({
     body: "## PDO  Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollector\PDO\TraceablePDO` object.      $pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));     $debugbar-&gt;addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));  "
 });
 
-documentTitles["/docs/base-collectors.html#requestdatacollector"] = "RequestDataCollector";
+documentTitles["/docs/base-collectors.html#requestdata"] = "RequestData";
 index.add({
-    url: "/docs/base-collectors.html#requestdatacollector",
-    title: "RequestDataCollector",
-    body: "## RequestDataCollector  Collects the data of PHP's global variables      $debugbar-&gt;addCollector(new DebugBar\DataCollector\RequestDataCollector());  "
+    url: "/docs/base-collectors.html#requestdata",
+    title: "RequestData",
+    body: "## RequestData  Collects the data of PHP's global variables      $debugbar-&gt;addCollector(new DebugBar\DataCollector\RequestDataCollector());  "
+});
+
+documentTitles["/docs/base-collectors.html#config"] = "Config";
+index.add({
+    url: "/docs/base-collectors.html#config",
+    title: "Config",
+    body: "## Config  Used to display any key/value pairs array      $data = array('foo' =&gt; 'bar');     $debugbar-&gt;addCollector(new DebugBar\DataCollector\ConfigCollector($data));  You can provide a different name for this collector in the second argument of the constructor.  "
 });
 
 documentTitles["/docs/base-collectors.html#aggregatedcollector"] = "AggregatedCollector";
