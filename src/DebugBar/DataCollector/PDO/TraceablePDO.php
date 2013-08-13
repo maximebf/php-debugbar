@@ -143,14 +143,14 @@ class TraceablePDO extends PDO
             $ex = $e;
         }
 
-        $duration = microtime(true) - $start;
+        $end = microtime(true);
         $memoryUsage = memory_get_usage(true);
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
             $error = $this->pdo->errorInfo();
             $ex = new PDOException($error[2], $error[0]);
         }
 
-        $tracedStmt = new TracedStatement($sql, array(), null, 0, $duration, $memoryUsage, $ex);
+        $tracedStmt = new TracedStatement($sql, array(), null, 0, $start, $end, $memoryUsage, $ex);
         $this->addExecutedStatement($tracedStmt);
 
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) === PDO::ERRMODE_EXCEPTION && $ex !== null) {

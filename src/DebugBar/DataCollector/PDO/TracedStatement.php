@@ -46,13 +46,15 @@ class TracedStatement
      * @param integer $memoryUsage
      * @param \Exception $e
      */
-    public function __construct($sql, array $params = array(), $preparedId = null, $rowCount = 0, $duration = 0, $memoryUsage = 0, \Exception $e = null)
+    public function __construct($sql, array $params = array(), $preparedId = null, $rowCount = 0, $startTime = 0, $endTime = 0, $memoryUsage = 0, \Exception $e = null)
     {
         $this->sql = $sql;
         $this->rowCount = $rowCount;
         $this->parameters = $params;
         $this->preparedId = $preparedId;
-        $this->duration = $duration;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+        $this->duration = $endTime - $startTime;
         $this->memoryUsage = $memoryUsage;
         $this->exception = $e;
     }
@@ -125,6 +127,16 @@ class TracedStatement
     public function isPrepared()
     {
         return $this->preparedId !== null;
+    }
+
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
+
+    public function getEndTime()
+    {
+        return $this->endTime;
     }
 
     /**

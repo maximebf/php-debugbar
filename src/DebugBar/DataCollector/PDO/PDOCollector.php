@@ -4,6 +4,7 @@ namespace DebugBar\DataCollector\PDO;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\TimeDataCollector;
 
 /**
  * Collects data about SQL statements executed with PDO
@@ -12,12 +13,15 @@ class PDOCollector extends DataCollector implements Renderable
 {
     protected $pdo;
     
+    protected $timeCollector;
+
     /**
      * @param TraceablePDO $pdo
      */
-    public function __construct(TraceablePDO $pdo)
+    public function __construct(TraceablePDO $pdo, TimeDataCollector $timeCollector = null)
     {
         $this->pdo = $pdo;
+        $this->timeCollector = $timeCollector;
     }
 
     /**
@@ -41,6 +45,9 @@ class PDOCollector extends DataCollector implements Renderable
                 'error_code' => $stmt->getErrorCode(),
                 'error_message' => $stmt->getErrorMessage()
             );
+            if ($this->timeCollector !== null) {
+                $this->timeCollector->addMeasure($stmt->getSql(), $stmt->getStartTime(), $stmt->getEndTime());
+            }
         }
 
         return array(
