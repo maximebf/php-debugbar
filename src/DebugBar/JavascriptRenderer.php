@@ -49,7 +49,7 @@ class JavascriptRenderer
 
     protected $ignoredCollectors = array();
 
-    protected $openHandlerClassName = 'PhpDebugBar.OpenHandler';
+    protected $openHandlerClass = 'PhpDebugBar.OpenHandler';
 
     protected $openHandlerUrl;
 
@@ -127,7 +127,7 @@ class JavascriptRenderer
             }
         }
         if (array_key_exists('open_handler_classname', $options)) {
-            $this->setOpenHandlerClassName($options['open_handler_classname']);
+            $this->setOpenHandlerClass($options['open_handler_classname']);
         }
         if (array_key_exists('open_handler_url', $options)) {
             $this->setOpenHandlerUrl($options['open_handler_url']);
@@ -359,9 +359,9 @@ class JavascriptRenderer
      * 
      * @param string $className
      */
-    public function setOpenHandlerClassName($className)
+    public function setOpenHandlerClass($className)
     {
-        $this->openHandlerClassName = $className;
+        $this->openHandlerClass = $className;
         return $this;
     }
 
@@ -370,9 +370,9 @@ class JavascriptRenderer
      * 
      * @return string
      */
-    public function getOpenHandlerClassName()
+    public function getOpenHandlerClass()
     {
-        return $this->openHandlerClassName;
+        return $this->openHandlerClass;
     }
 
     /**
@@ -600,7 +600,7 @@ class JavascriptRenderer
 
         if ($this->openHandlerUrl !== null) {
             $js .= sprintf("%s.setOpenHandler(new %s(%s));\n", $this->variableName, 
-                $this->openHandlerClassName, 
+                $this->openHandlerClass, 
                 json_encode(array("url" => $this->openHandlerUrl)));
         }
 
