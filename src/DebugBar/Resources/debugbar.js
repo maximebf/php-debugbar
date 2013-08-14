@@ -337,7 +337,7 @@ if (typeof(localStorage) == 'undefined') {
             this.$openbtn = $('<a class="phpdebugbar-open-btn" href="javascript:"><i class="icon-folder-open"></i></a>').appendTo(this.$header).hide();
             this.$openbtn.click(function() {
                 self.openHandler.show(function(id, dataset) {
-                    self.addDataSet(dataset, id);
+                    self.addDataSet(dataset, id, id + " (opened)");
                 });
             });
 
@@ -623,13 +623,15 @@ if (typeof(localStorage) == 'undefined') {
          * @this {DebugBar}
          * @param {Object} data
          * @param {String} id The name of this set, optional
+         * @param {String} label
          * @return {String} Dataset's id
          */
-        addDataSet: function(data, id) {
+        addDataSet: function(data, id, label) {
             id = id || ("Request #" + (Object.keys(this.datasets).length + 1));
+            label = label || id;
             this.datasets[id] = data;
 
-            this.$datasets.append($('<option value="' + id + '">' + id + '</option>'));
+            this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
             if (Object.keys(this.datasets).length > 1) {
                 this.$datasets.show();
             }
