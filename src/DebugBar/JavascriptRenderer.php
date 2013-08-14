@@ -297,6 +297,18 @@ class JavascriptRenderer
     }
 
     /**
+     * Returns the list of controls
+     *
+     * This does not include controls provided by collectors
+     * 
+     * @return array
+     */
+    public function getControls()
+    {
+        return $this->controls;
+    }
+
+    /**
      * Ignores widgets provided by a collector
      * 
      * @param string $name
@@ -305,6 +317,16 @@ class JavascriptRenderer
     {
         $this->ignoredCollectors[] = $name;
         return $this;
+    }
+
+    /**
+     * Returns the list of ignored collectors
+     * 
+     * @return array
+     */
+    public function getIgnoredCollectors()
+    {
+        return $this->ignoredCollectors;
     }
 
     /**
