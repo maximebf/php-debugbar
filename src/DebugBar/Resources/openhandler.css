@@ -1,0 +1,24 @@
+div.phpdebugbar-openhandler-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .3;
+    z-index: 20000;
+}
+
+div.phpdebugbar-openhandler {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: auto;
+    width: 500px;
+    height: 300px;
+    padding: 10px;
+    background: #fff;
+    border: 2px solid #ccc;
+    overflow: scroll;
+    z-index: 20001;
+}

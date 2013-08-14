@@ -7,7 +7,8 @@ use DebugBar\StandardDebugBar;
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar->getJavascriptRenderer()->setBaseUrl('../src/DebugBar/Resources');
 
-//$debugbar->setStorage(new DebugBar\Storage\FileStorage(__DIR__ . '/profiles'));
+$debugbar->setStorage(new DebugBar\Storage\FileStorage(__DIR__ . '/profiles'));
+$debugbarRenderer->setOpenHandlerUrl('open.php');
 
 function render_demo_page(Closure $callback = null)
 {

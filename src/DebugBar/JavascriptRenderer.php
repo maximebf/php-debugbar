@@ -35,9 +35,9 @@ class JavascriptRenderer
 
     protected $includeVendors = true;
 
-    protected $cssFiles = array('debugbar.css');
+    protected $cssFiles = array('debugbar.css', 'widgets.css', 'openhandler.css');
 
-    protected $jsFiles = array('debugbar.js', 'widgets.js');
+    protected $jsFiles = array('debugbar.js', 'widgets.js', 'openhandler.js');
 
     protected $javascriptClass = 'PhpDebugBar.DebugBar';
 
@@ -48,6 +48,10 @@ class JavascriptRenderer
     protected $controls = array();
 
     protected $ignoredCollectors = array();
+
+    protected $openHandlerClassName = 'PhpDebugBar.OpenHandler';
+
+    protected $openHandlerUrl;
 
     /**
      * @param \DebugBar\DebugBar $debugBar
@@ -121,6 +125,12 @@ class JavascriptRenderer
             foreach ((array) $options['ignore_collectors'] as $name) {
                 $this->ignoreCollector($name);
             }
+        }
+        if (array_key_exists('open_handler_classname', $options)) {
+            $this->setOpenHandlerClassName($options['open_handler_classname']);
+        }
+        if (array_key_exists('open_handler_url', $options)) {
+            $this->setOpenHandlerUrl($options['open_handler_url']);
         }
     }
 
@@ -345,6 +355,48 @@ class JavascriptRenderer
     }
 
     /**
+     * Sets the class name of the js open handler
+     * 
+     * @param string $className
+     */
+    public function setOpenHandlerClassName($className)
+    {
+        $this->openHandlerClassName = $className;
+        return $this;
+    }
+
+    /**
+     * Returns the class name of the js open handler
+     * 
+     * @return string
+     */
+    public function getOpenHandlerClassName()
+    {
+        return $this->openHandlerClassName;
+    }
+
+    /**
+     * Sets the url of the open handler
+     * 
+     * @param string $url
+     */
+    public function setOpenHandlerUrl($url)
+    {
+        $this->openHandlerUrl = $url;
+        return $this;
+    }
+
+    /**
+     * Returns the url for the open handler
+     * 
+     * @return string
+     */
+    public function getOpenHandlerUrl()
+    {
+        return $this->openHandlerUrl;
+    }
+
+    /**
      * Returns the list of asset files
      * 
      * @param string $type Only return css or js files
@@ -544,6 +596,12 @@ class JavascriptRenderer
 
         if (($this->initialization & self::INITIALIZE_CONTROLS) === self::INITIALIZE_CONTROLS) {
             $js .= $this->getJsControlsDefinitionCode($this->variableName);
+        }
+
+        if ($this->openHandlerUrl !== null) {
+            $js .= sprintf("%s.setOpenHandler(new %s(%s));\n", $this->variableName, 
+                $this->openHandlerClassName, 
+                json_encode(array("url" => $this->openHandlerUrl)));
         }
 
         return $js;

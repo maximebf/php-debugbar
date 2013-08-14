@@ -333,6 +333,14 @@ if (typeof(localStorage) == 'undefined') {
                 self.minimize();
             });
 
+            // open button
+            this.$openbtn = $('<a class="phpdebugbar-open-btn" href="javascript:"><i class="icon-folder-open"></i></a>').appendTo(this.$header).hide();
+            this.$openbtn.click(function() {
+                self.openHandler.show(function(id, dataset) {
+                    self.addDataSet(dataset, id);
+                });
+            });
+
             // select box for data sets
             this.$datasets = $('<select class="phpdebugbar-datasets-switcher" />').appendTo(this.$header);
             this.$datasets.change(function() {
@@ -669,6 +677,31 @@ if (typeof(localStorage) == 'undefined') {
                     self.getControl(key).set('data', d);
                 }
             });
+        },
+
+        /**
+         * Sets the handler to open past dataset
+         * 
+         * @this {DebugBar}
+         * @param {object} handler
+         */
+        setOpenHandler: function(handler) {
+            this.openHandler = handler;
+            if (handler !== null) {
+                this.$openbtn.show();
+            } else {
+                this.$openbtn.hide();
+            }
+        },
+
+        /**
+         * Returns the handler to open past dataset
+         * 
+         * @this {DebugBar}
+         * @return {object}
+         */
+        getOpenHandler: function() {
+            return this.openHandler;
         }
 
     });
