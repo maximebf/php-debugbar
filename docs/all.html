@@ -99,42 +99,6 @@
         </li>
     
         <li>
-            <a href="/docs/javascript-bar.html#javascript-bar">Javascript Bar</a>
-            
-                
-    <ol>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#tabs-and-indicators">Tabs and indicators</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#data-mapping">Data mapping</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#datasets">Datasets</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#widgets">Widgets</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#custom-tabs-and-indicators">Custom tabs and indicators</a>
-            
-        </li>
-    
-</ol>
-
-            
-        </li>
-    
-        <li>
             <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
             
                 
@@ -231,6 +195,84 @@
             
         </li>
     
+        <li>
+            <a href="/docs/storage.html#storage">Storage</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/storage.html#available-storage">Available storage</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/storage.html#creating-your-own-storage">Creating your own storage</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/storage.html#request-id-generator">Request ID generator</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
+            <a href="/docs/openhandler.html#open-handler">Open handler</a>
+            
+                
+    <ol>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#javascript-bar">Javascript Bar</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#tabs-and-indicators">Tabs and indicators</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#data-mapping">Data mapping</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#datasets">Datasets</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#widgets">Widgets</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#custom-tabs-and-indicators">Custom tabs and indicators</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#openhandler">OpenHandler</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
 </ol>
 
     </nav>
@@ -245,6 +287,7 @@
 
         <div id="content">
             <a name="php-debug-bar"></a><h1>PHP Debug Bar</h1>
+<p><a href="https://packagist.org/packages/maximebf/debugbar"><img src="https://poser.pugx.org/maximebf/debugbar/v/stable.png" alt="Latest Stable Version"></a> <a href="https://travis-ci.org/maximebf/php-debugbar"><img src="https://travis-ci.org/maximebf/php-debugbar.png?branch=master" alt="Build Status"></a></p>
 <p>Displays a debug bar in the browser with information from php.
 No more <code>var_dump()</code> in your code!</p>
 <p><img src="https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png" alt="Screenshot"></p>
@@ -257,6 +300,7 @@ No more <code>var_dump()</code> in your code!</p>
 <li>Includes generic data collectors and collectors for well known libraries</li>
 <li>The client side bar is 100% coded in javascript</li>
 <li>Easily create your own collectors and their associated view in the bar</li>
+<li>Save and re-open previews requests</li>
 <li><a href="http://phpdebugbar.com/docs">Very well documented</a></li>
 </ul>
 <p>Includes collectors for:</p>
@@ -327,6 +371,7 @@ collector names. In our previous example, we add a message to the <code>Messages
 <p>Learn more about DebugBar in the <a href="http://phpdebugbar.com/docs">docs</a>.</p>
 
 <a name="php-debug-bar"></a><h1>PHP Debug Bar</h1>
+<p><a href="https://packagist.org/packages/maximebf/debugbar"><img src="https://poser.pugx.org/maximebf/debugbar/v/stable.png" alt="Latest Stable Version"></a> <a href="https://travis-ci.org/maximebf/php-debugbar"><img src="https://travis-ci.org/maximebf/php-debugbar.png?branch=master" alt="Build Status"></a></p>
 <p>Displays a debug bar in the browser with information from php.
 No more <code>var_dump()</code> in your code!</p>
 <p><img src="https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png" alt="Screenshot"></p>
@@ -339,6 +384,7 @@ No more <code>var_dump()</code> in your code!</p>
 <li>Includes generic data collectors and collectors for well known libraries</li>
 <li>The client side bar is 100% coded in javascript</li>
 <li>Easily create your own collectors and their associated view in the bar</li>
+<li>Save and re-open previews requests</li>
 <li><a href="http://phpdebugbar.com/docs">Very well documented</a></li>
 </ul>
 <p>Includes collectors for:</p>
@@ -473,7 +519,7 @@ all the useful functions to included the needed assets and generate a debug bar.
 <a name="assets"></a><h2>Assets</h2>
 <p>The debug bar relies on some css and javascript files which needs to be included
 into your webpage. They are located in the <em>src/DebugBar/Resources</em> folder. 
-This can be done in three ways:</p>
+This can be done in four ways:</p>
 <ul>
 <li>Using <code>JavascriptRenderer::renderHead()</code> which will returns a string with
 the needed script and link tags</li>
@@ -481,10 +527,12 @@ the needed script and link tags</li>
 <code>JavascriptRenderer::getAsseticCollection()</code></li>
 <li>Dumping the assets yourself using <code>JavascriptRenderer::dumpCssAssets()</code> and 
 <code>JavascriptRenderer::dumpJsAssets()</code></li>
+<li>Retrieving the list filenames of assets using <code>JavascriptRenderer::getAssets()</code>
+and doing something with it</li>
 </ul>
 <p>I would recommend using the second method as Assetic is a very powerful asset
 manager but the other methods are provided to quickly integrate the debug bar
-into any projets.</p>
+into any projects.</p>
 <p>You can define the base url of your assets using <code>setBaseUrl()</code>. This is needed
 in 99% of cases.</p>
 <p>Using <code>renderHead()</code>:</p>
@@ -501,8 +549,11 @@ in 99% of cases.</p>
 <p>Dumping the assets:</p>
 <pre><code>header(&#39;Content-Type&#39;, &#39;text/javascript&#39;);
 $renderer-&gt;dumpJsAssets();</code></pre>
+<p>Retrieving the assets:</p>
+<pre><code>list($cssFiles, $jsFiles) = $renderer-&gt;getAssets();</code></pre>
 <p>Note that you can only use the debug bar assets and manage the dependencies by yourself
-using <code>$renderer-&gt;setIncludeVendors(false)</code>.</p>
+using <code>$renderer-&gt;setIncludeVendors(false)</code>. Instead of false, <em>css</em> or <em>js</em> may be used
+to only include css or js assets of vendors.</p>
 <a name="the-javascript-object"></a><h2>The javascript object</h2>
 <p>The renderer will generate all the needed code for your debug bar. This means
 initializing the DebugBar js object, adding tabs and indicators, defining a data map, etc...</p>
@@ -528,7 +579,7 @@ The first one controls whether to initialize the variable (ie.</code>var debugba
 second one whether to initialize all the controls (ie. adding tab and indicators as well as data mapping).</p>
 <p>You can also control the class name of the object using <code>setJavascriptClass()</code> and the name of
 the instance variable using <code>setVariableName()</code>.</p>
-<p>Let&#39;s say you have subclassed <code>PhpDebugBar.DebugBar</code> in javascript to do your own initilization.
+<p>Let&#39;s say you have subclassed <code>PhpDebugBar.DebugBar</code> in javascript to do your own initialization.
 Your new object is called <code>MyDebugBar</code>.</p>
 <pre><code>$renderer-&gt;setJavascriptClass(&quot;MyDebugBar&quot;);
 $renderer-&gt;setInitialization(JavascriptRenderer::INITIALIZE_CONSTRUCTOR);
@@ -564,136 +615,6 @@ or indicator.</p>
 ));</code></pre>
 <p>You can disable a control using <code>disableControl($name)</code> and ignore any controls provided by
 a collector using <code>ignoreCollector($name)</code>.</p>
-
-<a name="javascript-bar"></a><h1>Javascript Bar</h1>
-<p>The default client side implementation of the debug bar is made
-entirely in Javascript and is located in the <em>debugbar.js</em> file. </p>
-<p>It adds a bottom-anchored bar which can have tabs and indicators. 
-The bar can be in an open or close state. When open, the tab panel is
-visible.
-An indicator is a piece of information displayed in the always-visible 
-part of the bar.</p>
-<p>The bar handles multiple datasets by displaying a select box
-which allows you to switch between them.</p>
-<p>The state of the bar (height, visibilty, active panel) can be saved
-between requests (enabled in the standard bar).</p>
-<p>Each panel is composed of a widget which is used to display the
-data from a data collector. Some common widgets are provided in
-the <em>widgets.js</em> file.</p>
-<p>The <code>PhpDebugBar</code> namespace is used for all objects and the only
-dependencies are <em>jQuery</em> and <em>FontAwesome</em> (css). <em>FontAwesome</em> is
-optional but is used to add nice icons!</p>
-<p>The main class is <code>PhpDebugBar.DebugBar</code>. It provides the infrastructure
-to manage tabs, indicators and datasets.</p>
-<p>When initialized, the <code>DebugBar</code> class adds itself to the <code>&lt;body&gt;</code> of the
-page. It is empty by default.</p>
-<a name="tabs-and-indicators"></a><h2>Tabs and indicators</h2>
-<p>Controls (ie. tabs and indicators) are uniquely named. You can check if
-a control exists using <code>isControl(name)</code>.</p>
-<p>Tabs can be added using the <code>createTab(name, widget, title)</code> function.
-The third argument is optional and will be computed from the name if not
-provided.</p>
-<pre><code>var debugbar = new PhpDebugBar.DebugBar();
-debugbar.createTab(&quot;messages&quot;, new PhpDebugBar.Widgets.MessagesWidget());</code></pre>
-<p>Indicators can be added using <code>createIndicator(name, icon, tooltip, position)</code>.
-Only <code>name</code> is required in this case. <code>icon</code> should be the name of a FontAwesome
-icon. <code>position</code> can either be <em>right</em> (default) or <em>left</em>.</p>
-<pre><code>debugbar.createIndicator(&quot;time&quot;, &quot;cogs&quot;, &quot;Request duration&quot;);</code></pre>
-<p>You may have noticed that the data to use inside these controls is not
-specified at the moment. Although it could be specified when initialized, it
-is better to use data mapping to support dynamically changing the data set.</p>
-<a name="data-mapping"></a><h2>Data mapping</h2>
-<p>To enable dynamically changing the data sets, we need to specify which values
-should be feed into which controls. This can be done using <code>setDataMap(map)</code>
-which takes as argument an object where properties are control names. Values
-should be arrays where the first item is the property from the data set and 
-the second a default value.</p>
-<pre><code>debugbar.setDataMap({
-    &quot;messages&quot;: [&quot;messages&quot;, []],
-    &quot;time&quot;: [&quot;time.duration_str&quot;, &quot;0ms&quot;]
-});</code></pre>
-<p>You can notice that nested properties can also be accessed using the dot
-notation.</p>
-<p>In this mapping, <code>data[&quot;messages&quot;]</code> will be fed to the <em>messages</em> tab
-and <code>data[&quot;time&quot;][&quot;duration_str&quot;]</code> will be fed to the <em>time</em> indicator.</p>
-<p>Note: you can append mapping info using <code>addDataMap(map)</code></p>
-<a name="datasets"></a><h2>Datasets</h2>
-<p>Although you shouldn&#39;t have to do anything regarding managing datasets,
-it is interesting to know a few functions related to them.</p>
-<p><code>addDataSet(data, id)</code> adds a dataset to the bar. The select box that
-allows to swtich between sets is only displayed if more than one are added.
-<code>id</code> is optional and will be auto-generated if not specified.</p>
-<p><code>showDataSet(id)</code> allows you to switch to a specific dataset.</p>
-<a name="widgets"></a><h2>Widgets</h2>
-<p>Widgets should inherit from the <code>PhpDebugBar.Widget</code> class which is used
-as the base of every visual component in the debug bar.</p>
-<p>New widgets can be created using <code>extend()</code>:</p>
-<pre><code>var MyWidget = PhpDebugBar.Widget.extend({
-    // class properties
-});</code></pre>
-<p>The Widget class defines a <code>set(attr, value)</code> function which can be used
-to set the value of attributes.</p>
-<p>Using <code>bindAttr(attr, callback)</code>, you can trigger a callback everytime
-the value of the attribute is changed. <code>callback</code> can also be a <code>jQuery</code>
-object and in that case it will use the <code>text()</code> function to fill the element.</p>
-<p>Widgets should define a <code>render()</code> function which initializes the widget
-elements.</p>
-<p><code>initiliaze(options)</code> will always be called after the constructor.</p>
-<pre><code>var MyWidget = PhpDebugBar.Widget.extend({
-
-    tagName: &#39;div&#39;, // optional as &#39;div&#39; is the default
-
-    className: &#39;mywidget&#39;,
-
-    render: function() {
-        this.bindAttr(&#39;data&#39;, this.$el);
-    }
-
-});
-
-// ----
-
-debugbar.createTab(&quot;mytab&quot;, new MyWidget());
-debugbar.addDataMap({&quot;mytab&quot;: [&quot;mydata&quot;, &quot;&quot;]});</code></pre>
-<p>Widgets for bundled data collectors are included as well as more generic
-widgets that you can build on top of. They are located in <em>widgets.js</em> in
-the <code>PhpDebugBar.Widgets</code> namespace.</p>
-<p>Generic widgets:</p>
-<ul>
-<li><code>ListWidget</code>: renders an array as a UL list</li>
-<li><code>KVListWidget</code>: renders a hash as a DL list</li>
-<li><code>VariablesListWidget</code>: an extension of <code>KVListWidget</code> to display a list of variables</li>
-<li><code>IFrameWidget</code>: renders an iframe</li>
-</ul>
-<p>Data collectors related widgets:</p>
-<ul>
-<li><code>MessagesWidget</code>: for the <code>MessagesCollector</code></li>
-<li><code>TimelineWidget</code>: for the <code>TimeDataCollector</code></li>
-<li><code>ExceptionWidget</code>: for the <code>ExceptionCollector</code></li>
-<li><code>SQLQueriesWidget</code>: for the <code>PDOCollector</code></li>
-<li><code>TemplatesWidget</code>: for the <code>TwigCollector</code></li>
-</ul>
-<a name="custom-tabs-and-indicators"></a><h2>Custom tabs and indicators</h2>
-<p>Behind the scene, <code>createTab()</code> and <code>createIndicator()</code> use <code>addTab(name, tab)</code> and 
-<code>addIndicator(name, indicator)</code>. Tabs are objects of type <code>PhpDebugBar.DebugBar.Tab</code> 
-and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classes subclass 
-<code>PhpDebugBar.Widget</code> which makes it easy to create custom tabs or indicators.</p>
-<pre><code>var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({
-
-    tagName: &#39;a&#39;,
-
-    render: function() {
-        LinkIndicator.__super__.render.apply(this);
-        this.bindAttr(&#39;href&#39;, function(href) {
-            this.$el.attr(&#39;href&#39;, href);
-        });
-    }
-
-});
-
-// ----
-
-debugbar.addIndicator(&#39;phpdoc&#39;, new LinkIndicator({ href: &#39;http://doc.php.com&#39;, title: &#39;PHP doc&#39; }));</code></pre>
 
 <a name="base-collectors"></a><h1>Base collectors</h1>
 <p>Collectors provided in the <code>DebugBar\DataCollector</code> namespace.</p>
@@ -827,6 +748,180 @@ $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($l
 $debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));</code></pre>
 <p>You can provide a <code>DebugBar\DataCollector\TimeDataCollector</code> as the second argument of
 <code>TraceableTwigEnvironment</code> so render operation can be measured.</p>
+
+<a name="storage"></a><h1>Storage</h1>
+<p>DebugBar supports storing collected data for later analysis.
+You&#39;ll need to set a storage handler using <code>setStorage()</code> on your <code>DebugBar</code> instance.</p>
+<pre><code>$debugbar-&gt;setStorage(new DebugBar\Storage\FileStorage(&#39;/path/to/dir&#39;));</code></pre>
+<p>Each time <code>DebugBar::collect()</code> is called, the data will be persisted.</p>
+<a name="available-storage"></a><h2>Available storage</h2>
+<p>Only file storage is provided at the moment. It will collected data as json files
+under the specified directory (which as to be writable).</p>
+<pre><code>$storage = new DebugBar\Storage\FileStorage($directory);</code></pre>
+<a name="creating-your-own-storage"></a><h2>Creating your own storage</h2>
+<p>You can easily create your own storage handler by implementing the
+<code>DebugBar\Storage\StorageInterface</code>.</p>
+<a name="request-id-generator"></a><h2>Request ID generator</h2>
+<p>For each request, the debug bar will generate a unique id under which to store the 
+collected data. This is perform using a <code>DebugBar\RequestIdGeneratorInterface</code> object.</p>
+<p>If none are defined, the debug bar will automatically use <code>DebugBar\RequestIdGenerator</code>
+which uses the <code>$_SERVER</code> array to generate the id.</p>
+
+<a name="open-handler"></a><h1>Open handler</h1>
+<p>The debug bar can open previous sets of collected data which were stored using
+a storage handler (see previous section). To do so, it needs to be provided an
+url to an open handler.</p>
+<p>An open handler must respect a very simple protocol. The default implementation
+is <code>DebugBar\OpenHandler</code>.</p>
+<pre><code>$openHandler = new DebugBar\OpenHandler($debugbar);
+$openHandler-&gt;handle();</code></pre>
+<p>Calling <code>handle()</code> will use data from the <code>$_REQUEST</code> array and echo the output.
+The function also supports input from other source if you provide an array as
+first argument. It can also return the data instead of echoing (use false as
+second argument) and not send the content-type header (use false as third argument).</p>
+<p>One you have setup your open handler, tell the <code>JavascriptRenderer</code> its url.</p>
+<pre><code>$renderer-&gt;setOpenHandlerUrl(&#39;open.php&#39;);</code></pre>
+<p>This adds a button in the top right corner of the debug bar which allows you
+to browse and open previous sets of collected data.</p>
+
+<a name="javascript-bar"></a><h1>Javascript Bar</h1>
+<p><strong>This section is here to document the inner workings of the client side debug bar.
+Nothing described below is needed to run the debug bar in a normal way.</strong></p>
+<p>The default client side implementation of the debug bar is made
+entirely in Javascript and is located in the <em>debugbar.js</em> file. </p>
+<p>It adds a bottom-anchored bar which can have tabs and indicators. 
+The bar can be in an open or close state. When open, the tab panel is
+visible.
+An indicator is a piece of information displayed in the always-visible 
+part of the bar.</p>
+<p>The bar handles multiple datasets by displaying a select box
+which allows you to switch between them.</p>
+<p>The state of the bar (height, visibilty, active panel) can be saved
+between requests (enabled in the standard bar).</p>
+<p>Each panel is composed of a widget which is used to display the
+data from a data collector. Some common widgets are provided in
+the <em>widgets.js</em> file.</p>
+<p>The <code>PhpDebugBar</code> namespace is used for all objects and the only
+dependencies are <em>jQuery</em> and <em>FontAwesome</em> (css). <em>FontAwesome</em> is
+optional but is used to add nice icons!</p>
+<p>The main class is <code>PhpDebugBar.DebugBar</code>. It provides the infrastructure
+to manage tabs, indicators and datasets.</p>
+<p>When initialized, the <code>DebugBar</code> class adds itself to the <code>&lt;body&gt;</code> of the
+page. It is empty by default.</p>
+<a name="tabs-and-indicators"></a><h2>Tabs and indicators</h2>
+<p>Controls (ie. tabs and indicators) are uniquely named. You can check if
+a control exists using <code>isControl(name)</code>.</p>
+<p>Tabs can be added using the <code>createTab(name, widget, title)</code> function.
+The third argument is optional and will be computed from the name if not
+provided.</p>
+<pre><code>var debugbar = new PhpDebugBar.DebugBar();
+debugbar.createTab(&quot;messages&quot;, new PhpDebugBar.Widgets.MessagesWidget());</code></pre>
+<p>Indicators can be added using <code>createIndicator(name, icon, tooltip, position)</code>.
+Only <code>name</code> is required in this case. <code>icon</code> should be the name of a FontAwesome
+icon. <code>position</code> can either be <em>right</em> (default) or <em>left</em>.</p>
+<pre><code>debugbar.createIndicator(&quot;time&quot;, &quot;cogs&quot;, &quot;Request duration&quot;);</code></pre>
+<p>You may have noticed that the data to use inside these controls is not
+specified at the moment. Although it could be specified when initialized, it
+is better to use data mapping to support dynamically changing the data set.</p>
+<a name="data-mapping"></a><h2>Data mapping</h2>
+<p>To enable dynamically changing the data sets, we need to specify which values
+should be feed into which controls. This can be done using <code>setDataMap(map)</code>
+which takes as argument an object where properties are control names. Values
+should be arrays where the first item is the property from the data set and 
+the second a default value.</p>
+<pre><code>debugbar.setDataMap({
+    &quot;messages&quot;: [&quot;messages&quot;, []],
+    &quot;time&quot;: [&quot;time.duration_str&quot;, &quot;0ms&quot;]
+});</code></pre>
+<p>You can notice that nested properties can also be accessed using the dot
+notation.</p>
+<p>In this mapping, <code>data[&quot;messages&quot;]</code> will be fed to the <em>messages</em> tab
+and <code>data[&quot;time&quot;][&quot;duration_str&quot;]</code> will be fed to the <em>time</em> indicator.</p>
+<p>Note: you can append mapping info using <code>addDataMap(map)</code></p>
+<a name="datasets"></a><h2>Datasets</h2>
+<p>Although you shouldn&#39;t have to do anything regarding managing datasets,
+it is interesting to know a few functions related to them.</p>
+<p><code>addDataSet(data, id)</code> adds a dataset to the bar. The select box that
+allows to swtich between sets is only displayed if more than one are added.
+<code>id</code> is optional and will be auto-generated if not specified.</p>
+<p><code>showDataSet(id)</code> allows you to switch to a specific dataset.</p>
+<a name="widgets"></a><h2>Widgets</h2>
+<p>Widgets should inherit from the <code>PhpDebugBar.Widget</code> class which is used
+as the base of every visual component in the debug bar.</p>
+<p>New widgets can be created using <code>extend()</code>:</p>
+<pre><code>var MyWidget = PhpDebugBar.Widget.extend({
+    // class properties
+});</code></pre>
+<p>The Widget class defines a <code>set(attr, value)</code> function which can be used
+to set the value of attributes.</p>
+<p>Using <code>bindAttr(attr, callback)</code>, you can trigger a callback everytime
+the value of the attribute is changed. <code>callback</code> can also be a <code>jQuery</code>
+object and in that case it will use the <code>text()</code> function to fill the element.</p>
+<p>Widgets should define a <code>render()</code> function which initializes the widget
+elements.</p>
+<p><code>initiliaze(options)</code> will always be called after the constructor.</p>
+<pre><code>var MyWidget = PhpDebugBar.Widget.extend({
+
+    tagName: &#39;div&#39;, // optional as &#39;div&#39; is the default
+
+    className: &#39;mywidget&#39;,
+
+    render: function() {
+        this.bindAttr(&#39;data&#39;, this.$el);
+    }
+
+});
+
+// ----
+
+debugbar.createTab(&quot;mytab&quot;, new MyWidget());
+debugbar.addDataMap({&quot;mytab&quot;: [&quot;mydata&quot;, &quot;&quot;]});</code></pre>
+<p>Widgets for bundled data collectors are included as well as more generic
+widgets that you can build on top of. They are located in <em>widgets.js</em> in
+the <code>PhpDebugBar.Widgets</code> namespace.</p>
+<p>Generic widgets:</p>
+<ul>
+<li><code>ListWidget</code>: renders an array as a UL list</li>
+<li><code>KVListWidget</code>: renders a hash as a DL list</li>
+<li><code>VariablesListWidget</code>: an extension of <code>KVListWidget</code> to display a list of variables</li>
+<li><code>IFrameWidget</code>: renders an iframe</li>
+</ul>
+<p>Data collectors related widgets:</p>
+<ul>
+<li><code>MessagesWidget</code>: for the <code>MessagesCollector</code></li>
+<li><code>TimelineWidget</code>: for the <code>TimeDataCollector</code></li>
+<li><code>ExceptionWidget</code>: for the <code>ExceptionCollector</code></li>
+<li><code>SQLQueriesWidget</code>: for the <code>PDOCollector</code></li>
+<li><code>TemplatesWidget</code>: for the <code>TwigCollector</code></li>
+</ul>
+<a name="custom-tabs-and-indicators"></a><h2>Custom tabs and indicators</h2>
+<p>Behind the scene, <code>createTab()</code> and <code>createIndicator()</code> use <code>addTab(name, tab)</code> and 
+<code>addIndicator(name, indicator)</code>. Tabs are objects of type <code>PhpDebugBar.DebugBar.Tab</code> 
+and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classes subclass 
+<code>PhpDebugBar.Widget</code> which makes it easy to create custom tabs or indicators.</p>
+<pre><code>var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({
+
+    tagName: &#39;a&#39;,
+
+    render: function() {
+        LinkIndicator.__super__.render.apply(this);
+        this.bindAttr(&#39;href&#39;, function(href) {
+            this.$el.attr(&#39;href&#39;, href);
+        });
+    }
+
+});
+
+// ----
+
+debugbar.addIndicator(&#39;phpdoc&#39;, new LinkIndicator({ href: &#39;http://doc.php.com&#39;, title: &#39;PHP doc&#39; }));</code></pre>
+<a name="openhandler"></a><h2>OpenHandler</h2>
+<p>An OpenHandler object can be provided using <code>setOpenHandler()</code>. The object is in charge
+of loading datasets. The only requirement is to provide a <code>show()</code> method which takes
+as only parameter a callback which expects an id and data parameter.</p>
+<p>The default implementation is <code>PhpDebugBar.OpenHandler</code> which must be use in conjonction
+with the server side <code>DebugBar\OpenHandler</code> (see previous section).</p>
+<pre><code>debugbar.setOpenHandler(new PhpDebugBar.OpenHandler({ url: &quot;open.php&quot; }));</code></pre>
 
 
 

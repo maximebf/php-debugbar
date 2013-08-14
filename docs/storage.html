@@ -286,32 +286,26 @@
 </div>
 
         <div id="content">
-            <h2>Search results for "<span id="search-q"></span>"</h2>
-<ul id="search-results"></ul>
-<script type="text/javascript" src="/docs/lunr-index.js"></script>
-<script type="text/javascript">
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
+            <a name="storage"></a><h1>Storage</h1>
+<p>DebugBar supports storing collected data for later analysis.
+You&#39;ll need to set a storage handler using <code>setStorage()</code> on your <code>DebugBar</code> instance.</p>
+<pre><code>$debugbar-&gt;setStorage(new DebugBar\Storage\FileStorage(&#39;/path/to/dir&#39;));</code></pre>
+<p>Each time <code>DebugBar::collect()</code> is called, the data will be persisted.</p>
+<a name="available-storage"></a><h2>Available storage</h2>
+<p>Only file storage is provided at the moment. It will collected data as json files
+under the specified directory (which as to be writable).</p>
+<pre><code>$storage = new DebugBar\Storage\FileStorage($directory);</code></pre>
+<a name="creating-your-own-storage"></a><h2>Creating your own storage</h2>
+<p>You can easily create your own storage handler by implementing the
+<code>DebugBar\Storage\StorageInterface</code>.</p>
+<a name="request-id-generator"></a><h2>Request ID generator</h2>
+<p>For each request, the debug bar will generate a unique id under which to store the 
+collected data. This is perform using a <code>DebugBar\RequestIdGeneratorInterface</code> object.</p>
+<p>If none are defined, the debug bar will automatically use <code>DebugBar\RequestIdGenerator</code>
+which uses the <code>$_SERVER</code> array to generate the id.</p>
 
-    $(function() {
-        var q = getParameterByName('q'), 
-            ul = $('#search-results').empty(),
-            results = index.search(q);
 
-        $('#search-q').text(q);
-        if (results.length > 0) {
-            for (var i = 0; i < results.length; i++) {
-                ul.append($('<li><a href="' + results[i].ref + '">' + documentTitles[results[i].ref] + '</a></li>'));
-            }
-        } else {
-            ul.append($('<li class="no-results">No results found</li>'));
-        }
-    })
-</script>
+
 
         </div>
         <footer id="footer">

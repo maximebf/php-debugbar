@@ -99,42 +99,6 @@
         </li>
     
         <li>
-            <a href="/docs/javascript-bar.html#javascript-bar">Javascript Bar</a>
-            
-                
-    <ol>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#tabs-and-indicators">Tabs and indicators</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#data-mapping">Data mapping</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#datasets">Datasets</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#widgets">Widgets</a>
-            
-        </li>
-    
-        <li>
-            <a href="/docs/javascript-bar.html#custom-tabs-and-indicators">Custom tabs and indicators</a>
-            
-        </li>
-    
-</ol>
-
-            
-        </li>
-    
-        <li>
             <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
             
                 
@@ -231,6 +195,84 @@
             
         </li>
     
+        <li>
+            <a href="/docs/storage.html#storage">Storage</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/storage.html#available-storage">Available storage</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/storage.html#creating-your-own-storage">Creating your own storage</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/storage.html#request-id-generator">Request ID generator</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
+            <a href="/docs/openhandler.html#open-handler">Open handler</a>
+            
+                
+    <ol>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#javascript-bar">Javascript Bar</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#tabs-and-indicators">Tabs and indicators</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#data-mapping">Data mapping</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#datasets">Datasets</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#widgets">Widgets</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#custom-tabs-and-indicators">Custom tabs and indicators</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/javascript-bar.html#openhandler">OpenHandler</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
 </ol>
 
     </nav>
@@ -245,6 +287,8 @@
 
         <div id="content">
             <a name="javascript-bar"></a><h1>Javascript Bar</h1>
+<p><strong>This section is here to document the inner workings of the client side debug bar.
+Nothing described below is needed to run the debug bar in a normal way.</strong></p>
 <p>The default client side implementation of the debug bar is made
 entirely in Javascript and is located in the <em>debugbar.js</em> file. </p>
 <p>It adds a bottom-anchored bar which can have tabs and indicators. 
@@ -373,6 +417,13 @@ and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classe
 // ----
 
 debugbar.addIndicator(&#39;phpdoc&#39;, new LinkIndicator({ href: &#39;http://doc.php.com&#39;, title: &#39;PHP doc&#39; }));</code></pre>
+<a name="openhandler"></a><h2>OpenHandler</h2>
+<p>An OpenHandler object can be provided using <code>setOpenHandler()</code>. The object is in charge
+of loading datasets. The only requirement is to provide a <code>show()</code> method which takes
+as only parameter a callback which expects an id and data parameter.</p>
+<p>The default implementation is <code>PhpDebugBar.OpenHandler</code> which must be use in conjonction
+with the server side <code>DebugBar\OpenHandler</code> (see previous section).</p>
+<pre><code>debugbar.setOpenHandler(new PhpDebugBar.OpenHandler({ url: &quot;open.php&quot; }));</code></pre>
 
 
 
