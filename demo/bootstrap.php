@@ -7,8 +7,11 @@ use DebugBar\StandardDebugBar;
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar->getJavascriptRenderer()->setBaseUrl('../src/DebugBar/Resources');
 
-$debugbar->setStorage(new DebugBar\Storage\FileStorage(__DIR__ . '/profiles'));
-$debugbarRenderer->setOpenHandlerUrl('open.php');
+//
+// create a writable profiles folder in the demo directory to uncomment the following lines
+// 
+//$debugbar->setStorage(new DebugBar\Storage\FileStorage(__DIR__ . '/profiles'));
+//$debugbarRenderer->setOpenHandlerUrl('open.php');
 
 function render_demo_page(Closure $callback = null)
 {

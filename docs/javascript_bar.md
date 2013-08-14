@@ -1,5 +1,8 @@
 # Javascript Bar
 
+**This section is here to document the inner workings of the client side debug bar.
+Nothing described below is needed to run the debug bar in a normal way.**
+
 The default client side implementation of the debug bar is made
 entirely in Javascript and is located in the *debugbar.js* file. 
 
@@ -165,3 +168,14 @@ and indicators of type `PhpDebugBar.DebugBar.Indicator`. These classes subclass
     // ----
 
     debugbar.addIndicator('phpdoc', new LinkIndicator({ href: 'http://doc.php.com', title: 'PHP doc' }));
+
+## OpenHandler
+
+An OpenHandler object can be provided using `setOpenHandler()`. The object is in charge
+of loading datasets. The only requirement is to provide a `show()` method which takes
+as only parameter a callback which expects an id and data parameter.
+
+The default implementation is `PhpDebugBar.OpenHandler` which must be use in conjonction
+with the server side `DebugBar\OpenHandler` (see previous section).
+
+    debugbar.setOpenHandler(new PhpDebugBar.OpenHandler({ url: "open.php" }));
