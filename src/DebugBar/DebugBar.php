@@ -171,8 +171,8 @@ class DebugBar implements ArrayAccess
                 'id' => $this->getCurrentRequestId(),
                 'datetime' => date('Y-m-d H:i:s'),
                 'utime' => microtime(true),
-                'uri' => $_SERVER['REQUEST_URI'],
-                'ip' => $_SERVER['REMOTE_ADDR']
+                'uri' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null,
+                'ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null
             )
         );
 
