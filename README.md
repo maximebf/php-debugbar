@@ -14,6 +14,7 @@ No more `var_dump()` in your code!
  - Includes generic data collectors and collectors for well known libraries
  - The client side bar is 100% coded in javascript
  - Easily create your own collectors and their associated view in the bar
+ - Save and re-open previews requests
  - [Very well documented](http://phpdebugbar.com/docs)
 
 Includes collectors for:
