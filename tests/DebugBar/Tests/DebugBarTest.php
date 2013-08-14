@@ -4,14 +4,11 @@ namespace DebugBar\Tests;
 
 use DebugBar\DebugBar;
 use DebugBar\Tests\DataCollector\MockCollector;
+use DebugBar\Tests\Storage\MockStorage;
+use DebugBar\RandomRequestIdGenerator;
 
 class DebugBarTest extends DebugBarTestCase
 {
-    public function setUp()
-    {
-        $this->debugbar = new DebugBar();
-    }
-
     public function testAddCollector()
     {
         $this->debugbar->addCollector($c = new MockCollector());
@@ -46,5 +43,14 @@ class DebugBarTest extends DebugBarTestCase
         $this->assertEquals($c, $this->debugbar['mock']);
         $this->assertTrue(isset($this->debugbar['mock']));
         $this->assertFalse(isset($this->debugbar['foo']));
+    }
+
+    public function testStorage()
+    {
+        $s = new MockStorage();
+        $this->debugbar->setStorage($s);
+        $this->debugbar->addCollector(new MockCollector(array('foo')));
+        $data = $this->debugbar->collect();
+        $this->assertEquals($s->data[$this->debugbar->getCurrentRequestId()], $data);
     }
 }
