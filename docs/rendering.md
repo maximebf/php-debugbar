@@ -9,7 +9,7 @@ all the useful functions to included the needed assets and generate a debug bar.
 
 The debug bar relies on some css and javascript files which needs to be included
 into your webpage. They are located in the *src/DebugBar/Resources* folder. 
-This can be done in three ways:
+This can be done in four ways:
 
  - Using `JavascriptRenderer::renderHead()` which will returns a string with
    the needed script and link tags
@@ -17,10 +17,12 @@ This can be done in three ways:
    `JavascriptRenderer::getAsseticCollection()`
  - Dumping the assets yourself using `JavascriptRenderer::dumpCssAssets()` and 
    `JavascriptRenderer::dumpJsAssets()`
+ - Retrieving the list filenames of assets using `JavascriptRenderer::getAssets()`
+   and doing something with it
 
 I would recommend using the second method as Assetic is a very powerful asset
 manager but the other methods are provided to quickly integrate the debug bar
-into any projets.
+into any projects.
 
 You can define the base url of your assets using `setBaseUrl()`. This is needed
 in 99% of cases.
@@ -45,8 +47,13 @@ Dumping the assets:
     header('Content-Type', 'text/javascript');
     $renderer->dumpJsAssets();
 
+Retrieving the assets:
+
+    list($cssFiles, $jsFiles) = $renderer->getAssets();
+
 Note that you can only use the debug bar assets and manage the dependencies by yourself
-using `$renderer->setIncludeVendors(false)`.
+using `$renderer->setIncludeVendors(false)`. Instead of false, *css* or *js* may be used
+to only include css or js assets of vendors.
 
 ## The javascript object
 
@@ -83,7 +90,7 @@ second one whether to initialize all the controls (ie. adding tab and indicators
 You can also control the class name of the object using `setJavascriptClass()` and the name of
 the instance variable using `setVariableName()`.
 
-Let's say you have subclassed `PhpDebugBar.DebugBar` in javascript to do your own initilization.
+Let's say you have subclassed `PhpDebugBar.DebugBar` in javascript to do your own initialization.
 Your new object is called `MyDebugBar`.
 
     $renderer->setJavascriptClass("MyDebugBar");

@@ -308,6 +308,21 @@ class JavascriptRenderer
     }
 
     /**
+     * Returns needed asset files relative to the base path
+     * 
+     * @param string $type 'css', 'js' or null for both
+     * @return array
+     */
+    public function getAssets($type = null)
+    {
+        list($cssFiles, $jsFiles) = $this->getAssetFiles();
+        return $this->filterAssetArray(array(
+            $this->makeUriRelativeTo($cssFiles, $this->basePath),
+            $this->makeUriRelativeTo($jsFiles, $this->basePath)
+        ), $type);
+    }
+
+    /**
      * Returns the list of asset files
      * 
      * @param string $type Only return css or js files
@@ -389,7 +404,7 @@ class JavascriptRenderer
      */
     public function dumpCssAssets($targetFilename = null)
     {
-        $this->dumpAssets($this->getAssetFiles('css'), $targetFilename);
+        $this->dumpAssets($this->getAssets('css'), $targetFilename);
     }
 
     /**
@@ -399,7 +414,7 @@ class JavascriptRenderer
      */
     public function dumpJsAssets($targetFilename = null)
     {
-        $this->dumpAssets($this->getAssetFiles('js'), $targetFilename);
+        $this->dumpAssets($this->getAssets('js'), $targetFilename);
     }
 
     /**
@@ -412,7 +427,7 @@ class JavascriptRenderer
     {
         $content = '';
         foreach ($files as $file) {
-            $content .= file_get_contents($this->makeUriRelativeTo($file, $this->basePath)) . "\n";
+            $content .= file_get_contents($file) . "\n";
         }
         if ($targetFilename !== null) {
             file_put_contents($targetFilename, $content);
@@ -449,12 +464,20 @@ class JavascriptRenderer
     /**
      * Makes a URI relative to another
      * 
-     * @param string $uri
+     * @param string|array $uri
      * @param string $root
      * @return string
      */
     protected function makeUriRelativeTo($uri, $root)
     {
+        if (is_array($uri)) {
+            $uris = array();
+            foreach ($uri as $u) {
+                $uris[] = $this->makeUriRelativeTo($u, $root);
+            }
+            return $uris;
+        }
+
         if (substr($uri, 0, 1) === '/' || preg_match('/^([a-z]+:\/\/|[a-zA-Z]:\/)/', $uri)) {
             return $uri;
         }

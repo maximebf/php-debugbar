@@ -23,7 +23,7 @@ class ConfigCollector extends DataCollector implements Renderable
      * @param array  $data
      * @param string $name
      */
-    public function __construct(array $data, $name = 'config')
+    public function __construct(array $data = array(), $name = 'config')
     {
         $this->name = $name;
         $this->data = $data;
