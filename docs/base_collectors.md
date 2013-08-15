@@ -60,6 +60,17 @@ Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollec
     $pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
     $debugbar->addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));
 
+You can even log queries from multiple `PDO` connections:
+
+    $pdoRead  = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
+    $pdoWrite = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
+
+    $pdoCollector = new DebugBar\DataCollector\PDO\PDOCollector();
+    $pdoCollector->addConnection($pdoRead, 'read-db');
+    $pdoCollector->addConnection($pdoWrite, 'write-db');
+
+    $debugbar->addCollector($pdoCollector);
+
 ## RequestData
 
 Collects the data of PHP's global variables
