@@ -38,7 +38,7 @@ abstract class DataCollector implements DataCollectorInterface
     /**
      * Transforms a duration in seconds in a readable string
      * 
-     * @param float $value
+     * @param float $seconds
      * @return string
      */
     public function formatDuration($seconds)
@@ -62,7 +62,7 @@ abstract class DataCollector implements DataCollectorInterface
             return "0B";
         }
         $base = log($size) / log(1024);
-        $suffixes = array('', 'KB', 'MB', 'GB', 'TB');   
-        return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)]; 
+        $suffixes = array('', 'KB', 'MB', 'GB', 'TB');
+        return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
     }
 }

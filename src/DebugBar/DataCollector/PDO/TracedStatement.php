@@ -42,7 +42,8 @@ class TracedStatement
      * @param array $params
      * @param string $preparedId
      * @param integer $rowCount
-     * @param integer $duration
+     * @param integer $startTime
+     * @param integer $endTime
      * @param integer $memoryUsage
      * @param \Exception $e
      */

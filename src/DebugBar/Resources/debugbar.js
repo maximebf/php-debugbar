@@ -15,7 +15,7 @@ if (typeof(localStorage) == 'undefined') {
 
     /**
      * Returns the value from an object property.
-     * Using dots in the key, it is possible to retreive nested property values
+     * Using dots in the key, it is possible to retrieve nested property values
      * 
      * @param {Object} dict
      * @param {String} key
@@ -119,7 +119,7 @@ if (typeof(localStorage) == 'undefined') {
         /**
          * Registers a callback function that will be called whenever the value of the attribute changes
          *
-         * If cb is a jQuery elmenent, text() will be used to fill the element
+         * If cb is a jQuery element, text() will be used to fill the element
          * 
          * @param {String} attr
          * @param {Function} cb

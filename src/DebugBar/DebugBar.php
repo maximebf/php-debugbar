@@ -17,7 +17,7 @@ use DebugBar\Storage\StorageInterface;
 /**
  * Main DebugBar object
  *
- * Mananges data collectors. DebugBar provides an array-like access
+ * Manages data collectors. DebugBar provides an array-like access
  * to collectors by name.
  *
  * <code>

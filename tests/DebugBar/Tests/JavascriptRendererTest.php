@@ -25,8 +25,8 @@ class JavascriptRendererTest extends DebugBarTestCase
             'initialization' => JavascriptRenderer::INITIALIZE_CONTROLS,
             'controls' => array(
                 'memory' => array(
-                    "icon" => "cogs", 
-                    "map" => "memory.peak_usage_str", 
+                    "icon" => "cogs",
+                    "map" => "memory.peak_usage_str",
                     "default" => "'0B'"
                 )
             ),

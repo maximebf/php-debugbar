@@ -5,7 +5,7 @@ Collectors provided in the `DebugBar\DataCollector` namespace.
 
 ## Messages
 
-Provides a way to log messages (compotible with [PSR-3 logger](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)).
+Provides a way to log messages (compatible with [PSR-3 logger](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)).
 
     $debugbar->addCollector(new DebugBar\DataCollector\MessagesCollector());
     $debugbar['messages']->info('hello world');
