@@ -47,8 +47,8 @@ class RequestDataCollector extends DataCollector implements Renderable
     {
         return array(
             "request" => array(
-                "widget" => "PhpDebugBar.Widgets.VariableListWidget", 
-                "map" => "request", 
+                "widget" => "PhpDebugBar.Widgets.VariableListWidget",
+                "map" => "request",
                 "default" => "{}"
             )
         );

@@ -72,7 +72,7 @@ Thus in almost all cases, you should only have to use `render()` right away:
         </body>
     </html>
 
-This will print the initilization code for the toolbar and the dataset for the request.
+This will print the initialization code for the toolbar and the dataset for the request.
 When you are performing AJAX requests, you do not want to initialize a new toolbar but
 add the dataset to the existing one. You can disable initialization using ̀false` as
 the first argument of ̀render()`.

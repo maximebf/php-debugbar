@@ -169,7 +169,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
             if (!$this->logQueriesToLogger) {
                 return;
             }
-           $message = "$sql ($duration_str)";
+            $message = "$sql ($duration_str)";
         }
 
         if ($this->logger !== null) {

@@ -17,6 +17,7 @@ class PDOCollector extends DataCollector implements Renderable
 
     /**
      * @param TraceablePDO $pdo
+     * @param TimeDataCollector $timeCollector
      */
     public function __construct(TraceablePDO $pdo = null, TimeDataCollector $timeCollector = null)
     {
@@ -30,7 +31,7 @@ class PDOCollector extends DataCollector implements Renderable
      * Adds a new PDO instance to be collector
      * 
      * @param TraceablePDO $pdo
-     * @param $name Optional connection name
+     * @param string $name Optional connection name
      */
     public function addConnection(TraceablePDO $pdo, $name = null)
     {
@@ -43,7 +44,7 @@ class PDOCollector extends DataCollector implements Renderable
     /**
      * Returns PDO instances to be collected
      * 
-     * @return arrah
+     * @return array
      */
     public function getConnections()
     {
@@ -69,7 +70,7 @@ class PDOCollector extends DataCollector implements Renderable
             $data['nb_failed_statements'] += $pdodata['nb_failed_statements'];
             $data['accumulated_duration'] += $pdodata['accumulated_duration'];
             $data['peak_memory_usage'] = max($data['peak_memory_usage'], $pdodata['peak_memory_usage']);
-            $data['statements'] = array_merge($data['statements'], 
+            $data['statements'] = array_merge($data['statements'],
                 array_map(function($s) use ($name) { $s['connection'] = $name; return $s; }, $pdodata['statements']));
         }
 

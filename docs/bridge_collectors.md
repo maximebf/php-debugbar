@@ -1,7 +1,7 @@
 # Bridge collectors
 
 DebugBar comes with some "bridge" collectors. This collectors provides a way to integrate
-other projets with the DebugBar.
+other projects with the DebugBar.
 
 ## CacheCache
 

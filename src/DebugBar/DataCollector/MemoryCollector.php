@@ -62,9 +62,9 @@ class MemoryCollector extends DataCollector implements Renderable
     {
         return array(
             "memory" => array(
-                "icon" => "cogs", 
-                "tooltip" => "Memory Usage", 
-                "map" => "memory.peak_usage_str", 
+                "icon" => "cogs",
+                "tooltip" => "Memory Usage",
+                "map" => "memory.peak_usage_str",
                 "default" => "'0B'"
             )
         );
