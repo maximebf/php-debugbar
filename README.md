@@ -9,7 +9,7 @@ No more `var_dump()` in your code!
 
 **Features:**
 
- - Generic debug bar with no other dependencies
+ - Generic debug bar
  - Easy to integrate with any project
  - Clean, fast and easy to use interface
  - Handles AJAX request
@@ -99,3 +99,16 @@ collector names. In our previous example, we add a message to the `MessagesColle
  - `ExceptionsCollector` (*exceptions*)
 
 Learn more about DebugBar in the [docs](http://phpdebugbar.com/docs).
+
+## Changelog
+
+1.6:
+
+ - extracted TraceablePDO as a separate package: maximebf/TraceablePDO
+ - DebugBar\DataCollector\PDO\TracrablePDO becomes TraceablePDO from the maximebf/TraceablePDO package
+ - DebugBar\DataCollector\PDO\PDOCollector renamed as DebugBar\DataCollector\PDOCollector
+
+1.5:
+
+ - added storage
+ - added open handler

@@ -55,17 +55,19 @@ Display exceptions
 
 ## PDO
 
-Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollector\PDO\TraceablePDO` object.
+Logs SQL queries. You need to wrap your `PDO` object into a `TraceablePDO` object.
+This collector uses the [*maximebf/traceable-pdo*](http://packagist.org/maximebf/traceable-pdo)
+package which is a dependency of the debug bar (no need to install it by yourself).
 
-    $pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
-    $debugbar->addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));
+    $pdo = new TraceablePDO(new PDO('sqlite::memory:'));
+    $debugbar->addCollector(new DebugBar\DataCollector\PDOCollector($pdo));
 
 You can even log queries from multiple `PDO` connections:
 
-    $pdoRead  = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
-    $pdoWrite = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
+    $pdoRead  = new TraceablePDO(new PDO('sqlite::memory:'));
+    $pdoWrite = new TraceablePDO(new PDO('sqlite::memory:'));
 
-    $pdoCollector = new DebugBar\DataCollector\PDO\PDOCollector();
+    $pdoCollector = new DebugBar\DataCollector\PDOCollector();
     $pdoCollector->addConnection($pdoRead, 'read-db');
     $pdoCollector->addConnection($pdoWrite, 'write-db');
 

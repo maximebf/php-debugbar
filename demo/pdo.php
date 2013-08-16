@@ -2,8 +2,7 @@
 
 include 'bootstrap.php';
 
-use DebugBar\DataCollector\PDO\TraceablePDO;
-use DebugBar\DataCollector\PDO\PDOCollector;
+use DebugBar\DataCollector\PDOCollector;
 
 $pdo = new TraceablePDO(new PDO('sqlite::memory:'));
 $debugbar->addCollector(new PDOCollector($pdo));

@@ -1,10 +1,11 @@
 <?php
 
-namespace DebugBar\DataCollector\PDO;
+namespace DebugBar\DataCollector;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
 use DebugBar\DataCollector\TimeDataCollector;
+use TraceablePDO;
 
 /**
  * Collects data about SQL statements executed with PDO
@@ -90,7 +91,7 @@ class PDOCollector extends DataCollector implements Renderable
     protected function collectPDO(TraceablePDO $pdo, TimeDataCollector $timeCollector = null)
     {
         $stmts = array();
-        foreach ($pdo->getExecutedStatements() as $stmt) {
+        foreach ($pdo->getTracedStatements() as $stmt) {
             $stmts[] = array(
                 'sql' => $stmt->getSql(),
                 'row_count' => $stmt->getRowCount(),
@@ -112,7 +113,7 @@ class PDOCollector extends DataCollector implements Renderable
 
         return array(
             'nb_statements' => count($stmts),
-            'nb_failed_statements' => count($pdo->getFailedExecutedStatements()),
+            'nb_failed_statements' => count($pdo->getFailedTracedStatements()),
             'accumulated_duration' => $pdo->getAccumulatedStatementsDuration(),
             'accumulated_duration_str' => $this->formatDuration($pdo->getAccumulatedStatementsDuration()),
             'peak_memory_usage' => $pdo->getPeakMemoryUsage(),

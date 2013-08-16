@@ -12,7 +12,8 @@
     }],
     "require": {
         "php": ">=5.3.0",
-        "psr/log": "~1.0"
+        "psr/log": "~1.0",
+        "maximebf/traceable-pdo": "1.*"
     },
     "require-dev": {
         "php": ">=5.3.0"
