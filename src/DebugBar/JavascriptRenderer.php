@@ -528,7 +528,7 @@ class JavascriptRenderer
         }
 
         foreach ($jsFiles as $file) {
-            $html .= sprintf('<script type"text/javascript" src="%s"></script>' . "\n",
+            $html .= sprintf('<script type="text/javascript" src="%s"></script>' . "\n",
                 $this->makeUriRelativeTo($file, $this->baseUrl));
         }
 
