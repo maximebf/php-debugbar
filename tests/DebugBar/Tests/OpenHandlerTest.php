@@ -37,7 +37,7 @@ class OpenHandlerTest extends DebugBarTestCase
      */
     public function testGetMissingId()
     {
-        $this->openHandler->handle(array('op' => 'get'), false, false);   
+        $this->openHandler->handle(array('op' => 'get'), false, false);
     }
 
     public function testClear()

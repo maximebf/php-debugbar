@@ -66,9 +66,9 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     {
         $messages = $this->messages;
         foreach ($this->aggregates as $collector) {
-            $msgs = array_map(function($m) use ($collector) { 
-                $m['collector'] = $collector->getName(); 
-                return $m; 
+            $msgs = array_map(function($m) use ($collector) {
+                $m['collector'] = $collector->getName();
+                return $m;
             }, $collector->getMessages());
             $messages = array_merge($messages, $msgs);
         }
@@ -128,8 +128,8 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
         $name = $this->getName();
         return array(
             "$name" => array(
-                "widget" => "PhpDebugBar.Widgets.MessagesWidget", 
-                "map" => "$name.messages", 
+                "widget" => "PhpDebugBar.Widgets.MessagesWidget",
+                "map" => "$name.messages",
                 "default" => "[]"
             ),
             "$name:badge" => array(

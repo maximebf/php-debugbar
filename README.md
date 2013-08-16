@@ -61,7 +61,7 @@ You can use the following snippet to autoload DebugBar classes:
 
 ## Quick start
 
-DebugBar is very easy to use and you can add it to any of your projets in no time.
+DebugBar is very easy to use and you can add it to any of your projects in no time.
 The easiest way is using the `render()` functions
 
     <?php

@@ -67,8 +67,8 @@ class ConfigCollector extends DataCollector implements Renderable
         $name = $this->getName();
         return array(
             "$name" => array(
-                "widget" => "PhpDebugBar.Widgets.VariableListWidget", 
-                "map" => "$name", 
+                "widget" => "PhpDebugBar.Widgets.VariableListWidget",
+                "map" => "$name",
                 "default" => "{}"
             )
         );

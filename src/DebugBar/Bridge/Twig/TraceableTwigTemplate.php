@@ -21,6 +21,7 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
     protected $template;
 
     /**
+     * @param TraceableTwigEnvironment $env
      * @param Twig_Template $template
      */
     public function __construct(TraceableTwigEnvironment $env, Twig_Template $template)

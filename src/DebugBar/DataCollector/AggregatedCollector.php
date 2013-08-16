@@ -47,7 +47,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
 
     /**
      * @param DataCollectorInterface $collector
-     */ 
+     */
     public function addCollector(DataCollectorInterface $collector)
     {
         $this->collectors[$collector->getName()] = $collector;
@@ -152,7 +152,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
 
     public function offsetSet($key, $value)
     {
-        throw new DebugBarException("AgrgegatedCollector[] is read-only");
+        throw new DebugBarException("AggregatedCollector[] is read-only");
     }
 
     public function offsetGet($key)
@@ -167,6 +167,6 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
 
     public function offsetUnset($key)
     {
-        throw new DebugBarException("AgrgegatedCollector[] is read-only");
+        throw new DebugBarException("AggregatedCollector[] is read-only");
     }
 }

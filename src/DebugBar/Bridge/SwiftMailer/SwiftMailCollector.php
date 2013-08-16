@@ -16,7 +16,7 @@ use Swift_Mailer;
 use Swift_Plugins_MessageLogger;
 
 /**
- * Collects data abotu sent mails
+ * Collects data about sent mails
  *
  * http://swiftmailer.org/
  */

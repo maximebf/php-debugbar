@@ -15,7 +15,7 @@ part of the bar.
 The bar handles multiple datasets by displaying a select box
 which allows you to switch between them.
 
-The state of the bar (height, visibilty, active panel) can be saved
+The state of the bar (height, visibility, active panel) can be saved
 between requests (enabled in the standard bar).
 
 Each panel is composed of a widget which is used to display the
@@ -81,7 +81,7 @@ Although you shouldn't have to do anything regarding managing datasets,
 it is interesting to know a few functions related to them.
 
 `addDataSet(data, id)` adds a dataset to the bar. The select box that
-allows to swtich between sets is only displayed if more than one are added.
+allows to switch between sets is only displayed if more than one are added.
 `id` is optional and will be auto-generated if not specified.
 
 `showDataSet(id)` allows you to switch to a specific dataset.
@@ -100,14 +100,14 @@ New widgets can be created using `extend()`:
 The Widget class defines a `set(attr, value)` function which can be used
 to set the value of attributes.
 
-Using `bindAttr(attr, callback)`, you can trigger a callback everytime
+Using `bindAttr(attr, callback)`, you can trigger a callback every time
 the value of the attribute is changed. `callback` can also be a `jQuery`
 object and in that case it will use the `text()` function to fill the element.
 
 Widgets should define a `render()` function which initializes the widget
 elements.
 
-`initiliaze(options)` will always be called after the constructor.
+`initialize(options)` will always be called after the constructor.
 
     var MyWidget = PhpDebugBar.Widget.extend({
 
@@ -175,7 +175,7 @@ An OpenHandler object can be provided using `setOpenHandler()`. The object is in
 of loading datasets. The only requirement is to provide a `show()` method which takes
 as only parameter a callback which expects an id and data parameter.
 
-The default implementation is `PhpDebugBar.OpenHandler` which must be use in conjonction
+The default implementation is `PhpDebugBar.OpenHandler` which must be use in conjunction
 with the server side `DebugBar\OpenHandler` (see previous section).
 
     debugbar.setOpenHandler(new PhpDebugBar.OpenHandler({ url: "open.php" }));

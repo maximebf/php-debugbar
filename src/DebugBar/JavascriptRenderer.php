@@ -523,12 +523,12 @@ class JavascriptRenderer
         $html = '';
 
         foreach ($cssFiles as $file) {
-            $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s">' . "\n", 
+            $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s">' . "\n",
                 $this->makeUriRelativeTo($file, $this->baseUrl));
         }
 
         foreach ($jsFiles as $file) {
-            $html .= sprintf('<script type"text/javascript" src="%s"></script>' . "\n", 
+            $html .= sprintf('<script type"text/javascript" src="%s"></script>' . "\n",
                 $this->makeUriRelativeTo($file, $this->baseUrl));
         }
 
@@ -574,8 +574,8 @@ class JavascriptRenderer
             $js = $this->getJsInitializationCode();
         }
         
-        $js .= sprintf("%s.addDataSet(%s, \"%s\");\n", 
-            $this->variableName, 
+        $js .= sprintf("%s.addDataSet(%s, \"%s\");\n",
+            $this->variableName,
             json_encode($this->debugBar->getData()),
             $this->debugBar->getCurrentRequestId());
         return "<script type=\"text/javascript\">\n$js\n</script>\n";
@@ -599,8 +599,8 @@ class JavascriptRenderer
         }
 
         if ($this->openHandlerUrl !== null) {
-            $js .= sprintf("%s.setOpenHandler(new %s(%s));\n", $this->variableName, 
-                $this->openHandlerClass, 
+            $js .= sprintf("%s.setOpenHandler(new %s(%s));\n", $this->variableName,
+                $this->openHandlerClass,
                 json_encode(array("url" => $this->openHandlerUrl)));
         }
 
@@ -619,7 +619,7 @@ class JavascriptRenderer
     {
         $js = '';
         $dataMap = array();
-        $exludedOptions = array('indicator', 'tab', 'map', 'default', 'widget');
+        $excludedOptions = array('indicator', 'tab', 'map', 'default', 'widget');
 
         // finds controls provided by collectors
         $widgets = array();
@@ -634,21 +634,21 @@ class JavascriptRenderer
 
 
         foreach (array_filter($controls) as $name => $options) {
-            $opts = array_diff_key($options, array_flip($exludedOptions));
+            $opts = array_diff_key($options, array_flip($excludedOptions));
 
             if (isset($options['tab']) || isset($options['widget'])) {
                 if (!isset($opts['title'])) {
                     $opts['title'] = ucfirst(str_replace('_', ' ', $name));
                 }
-                $js .= sprintf("%s.addTab(\"%s\", new %s({%s%s}));\n",  
+                $js .= sprintf("%s.addTab(\"%s\", new %s({%s%s}));\n",
                     $varname,
-                    $name, 
+                    $name,
                     isset($options['tab']) ? $options['tab'] : 'PhpDebugBar.DebugBar.Tab',
                     substr(json_encode($opts, JSON_FORCE_OBJECT), 1, -1),
                     isset($options['widget']) ? sprintf('%s"widget": new %s()', count($opts) ? ', ' : '', $options['widget']) : ''
                 );
             } else if (isset($options['indicator']) || isset($options['icon'])) {
-                $js .= sprintf("%s.addIndicator(\"%s\", new %s(%s));\n", 
+                $js .= sprintf("%s.addIndicator(\"%s\", new %s(%s));\n",
                     $varname,
                     $name,
                     isset($options['indicator']) ? $options['indicator'] : 'PhpDebugBar.DebugBar.Indicator',
@@ -668,7 +668,7 @@ class JavascriptRenderer
         }
         $js .= sprintf("%s.setDataMap({\n%s\n});\n", $varname, implode(",\n", $mapJson));
 
-        // activate state restauration
+        // activate state restoration
         $js .= sprintf("%s.restoreState();\n", $varname);
 
         return $js;
