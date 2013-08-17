@@ -288,6 +288,10 @@ if (typeof(localStorage) == 'undefined') {
 
         className: "phpdebugbar",
 
+        options: {
+            bodyPaddingBottom: true
+        },
+
         initialize: function() {
             this.controls = {};
             this.dataMap = {};
@@ -307,6 +311,7 @@ if (typeof(localStorage) == 'undefined') {
             this.$header = $('<div class="phpdebugbar-header" />').appendTo(this.$el);
             var $body = this.$body = $('<div class="phpdebugbar-body" />').appendTo(this.$el);
             this.$resizehdle = $('<div class="phpdebugbar-resize-handle" />').appendTo(this.$body);
+            this.recomputeBottomOffset();
 
             // dragging of resize handle
             var dragging = false;
@@ -319,6 +324,7 @@ if (typeof(localStorage) == 'undefined') {
                         var h = orig_h + (pos_y - e.pageY);
                         $body.css('height', h);
                         localStorage.setItem('phpdebugbar-height', h);
+                        self.recomputeBottomOffset();
                     }
                 }).on('mouseup', function() {
                     dragging = false;
@@ -541,6 +547,7 @@ if (typeof(localStorage) == 'undefined') {
             this.$resizehdle.show();
             this.$body.show();
             this.$minimizebtn.show();
+            this.recomputeBottomOffset();
 
             $(this.$header).find('> .active').removeClass('active');
             $(this.$body).find('> .active').removeClass('active');
@@ -563,7 +570,18 @@ if (typeof(localStorage) == 'undefined') {
             this.$body.hide();
             this.$minimizebtn.hide();
             this.$resizehdle.hide();
+            this.recomputeBottomOffset();
             localStorage.setItem('phpdebugbar-visible', '0');
+        },
+
+        /**
+         * Recomputes the padding-bottom css property of the body so
+         * that the debug bar never hides any content
+         */
+        recomputeBottomOffset: function() {
+            if (this.options.bodyPaddingBottom) {
+                $('body').css('padding-bottom', this.$el.height());
+            }
         },
 
         /**
