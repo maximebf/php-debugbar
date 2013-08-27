@@ -341,7 +341,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         render: function() {
             this.$list = new ListWidget({ itemRenderer: function(li, e) {
                 $('<span class="message" />').text(e.message).appendTo(li);
-                if (e.filename) {
+                if (e.file) {
                     $('<span class="filename" />').text(e.file + "#" + e.line).appendTo(li);
                 }
                 if (e.type) {
