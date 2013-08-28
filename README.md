@@ -38,11 +38,13 @@ examples and [phpdebugbar.com](http://phpdebugbar.com) for a live example.
 The best way to install DebugBar is using [Composer](http://getcomposer.org)
 with the following requirement:
 
-    {
-        "require": {
-            "maximebf/debugbar": ">=1.0.0"
-        }
+```JSON
+{
+    "require": {
+        "maximebf/debugbar": ">=1.0.0"
     }
+}
+```
 
 If you are cloning the repository, you'll need to run `composer install`.
 
@@ -52,30 +54,34 @@ If you are cloning the repository, you'll need to run `composer install`.
 DebugBar is very easy to use and you can add it to any of your projects in no time.
 The easiest way is using the `render()` functions
 
-    <?php
-    use DebugBar\StandardDebugBar;
-    use DebugBar\JavascriptRenderer;
+```PHP
+<?php
+use DebugBar\StandardDebugBar;
+use DebugBar\JavascriptRenderer;
 
-    $debugbar = new StandardDebugBar();
-    $debugbarRenderer = $debugbar->getJavascriptRenderer();
+$debugbar = new StandardDebugBar();
+$debugbarRenderer = $debugbar->getJavascriptRenderer();
 
-    $debugbar["messages"]->addMessage("hello world!");
-    ?>
-    <html>
-        <head>
-            <?php echo $debugbarRenderer->renderHead() ?>
-        </head>
-        <body>
-            ...
-            <?php echo $debugbarRenderer->render() ?>
-        </body>
-    </html>
+$debugbar["messages"]->addMessage("hello world!");
+?>
+<html>
+    <head>
+        <?php echo $debugbarRenderer->renderHead() ?>
+    </head>
+    <body>
+        ...
+        <?php echo $debugbarRenderer->render() ?>
+    </body>
+</html>+6
+```
 
 The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are
 automated but others are manual. Use the `DebugBar` like an array where keys are the
 collector names. In our previous example, we add a message to the `MessagesCollector`:
 
-    $debugbar["messages"]->addMessage("hello world!");
+```PHP
+$debugbar["messages"]->addMessage("hello world!");
+```
 
 `StandardDebugBar` activates the following collectors:
 
