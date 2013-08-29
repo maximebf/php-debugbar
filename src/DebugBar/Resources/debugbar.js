@@ -5,7 +5,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
 if (typeof(localStorage) == 'undefined') {
     // provide mock localStorage object for dumb browsers
-    var localStorage = {
+    localStorage = {
         setItem: function(key, value) {},
         getItem: function(key) { return null; }
     };
