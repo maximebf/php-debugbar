@@ -58,7 +58,7 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function formatBytes($size, $precision = 2)
     {
-        if ($size === 0) {
+        if ($size === 0 or is_null($size)) {
             return "0B";
         }
         $base = log($size) / log(1024);
