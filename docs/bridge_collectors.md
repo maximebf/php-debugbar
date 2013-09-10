@@ -95,7 +95,7 @@ You need to wrap your `Twig_Environment` object into a `DebugBar\Bridge\Twig\Tra
 
     $loader = new Twig_Loader_Filesystem('.');
     $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
-    $debugbar->addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));
+    $debugbar->addCollector(new DebugBar\Bridge\Twig\TwigCollector($env));
 
 You can provide a `DebugBar\DataCollector\TimeDataCollector` as the second argument of
 `TraceableTwigEnvironment` so render operation can be measured.
