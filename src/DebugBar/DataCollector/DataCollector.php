@@ -23,16 +23,25 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function formatVar($var)
     {
+        $var = $this->flattenVar($var);
+        return print_r($var, true);
+    }
+
+    /**
+     * Flatten a var recursively
+     *
+     * @param $var
+     * @return mixed
+     */
+    public function flattenVar($var){
         if (is_array($var)) {
             foreach ($var as &$v) {
-                if (is_object($v)) {
-                    $v = "Object(" . get_class($v) . ")";
-                }
+                $v = $this->flattenVar($v);
             }
         } else if (is_object($var)) {
             $var = "Object(" . get_class($var) . ")";
         }
-        return print_r($var, true);
+        return $var;
     }
 
     /**
