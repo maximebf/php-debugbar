@@ -645,12 +645,24 @@ if (typeof(localStorage) == 'undefined') {
          * @return {String} Dataset's id
          */
         addDataSet: function(data, id, label) {
-            id = id || ("Request #" + (Object.keys(this.datasets).length + 1));
+            var count = 0;
+            if (!Object.keys) {
+                for (var k in this.datasets) {
+                    if (this.datasets.hasOwnProperty(k)) {
+                        count++;
+                    }
+                }
+            } else {
+                count = Object.keys(this.datasets).length;
+            }
+
+            id = id || ("Request #" + (count + 1));
             label = label || id;
             this.datasets[id] = data;
+            count++;
 
             this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
-            if (Object.keys(this.datasets).length > 1) {
+            if (count > 1) {
                 this.$datasets.show();
             }
 
