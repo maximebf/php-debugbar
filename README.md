@@ -36,6 +36,7 @@ examples and [phpdebugbar.com](http://phpdebugbar.com) for a live example.
 Integrations with other frameworks:
 
   - [Laravel](https://github.com/barryvdh/laravel-debugbar) (project by barryvdh)
+  - [Atomik](http://atomikframework.com/docs/error-log-debug.html#debug-bar)
 
 *(drop me a message or submit a PR to add your DebugBar related project here)*
 
@@ -63,7 +64,6 @@ The easiest way is using the `render()` functions
 ```PHP
 <?php
 use DebugBar\StandardDebugBar;
-use DebugBar\JavascriptRenderer;
 
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar->getJavascriptRenderer();

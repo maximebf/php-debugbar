@@ -49,6 +49,10 @@ class JavascriptRenderer
 
     protected $ignoredCollectors = array();
 
+    protected $ajaxHandlerClass = 'PhpDebugBar.AjaxHandler';
+
+    protected $ajaxHandlerBindToJquery = true;
+
     protected $openHandlerClass = 'PhpDebugBar.OpenHandler';
 
     protected $openHandlerUrl;
@@ -355,6 +359,50 @@ class JavascriptRenderer
     }
 
     /**
+     * Sets the class name of the ajax handler
+     *
+     * Set to false to disable
+     * 
+     * @param string $className
+     */
+    public function setAjaxHandlerClass($className)
+    {
+        $this->ajaxHandlerClass = $className;
+        return $this;
+    }
+
+    /**
+     * Returns the class name of the ajax handler
+     * 
+     * @return string
+     */
+    public function getAjaxHandlerClass()
+    {
+        return $this->ajaxHandlerClass;
+    }
+
+    /**
+     * Sets whether to call bindToJquery() on the ajax handler
+     * 
+     * @param boolean $bind
+     */
+    public function setBindAjaxHandlerToJquery($bind = true)
+    {
+        $this->ajaxHandlerBindToJquery = $bind;
+        return $this;
+    }
+
+    /**
+     * Checks whether bindToJquery() will be called on the ajax handler
+     * 
+     * @return boolean
+     */
+    public function isAjaxHandlerBoundToJquery()
+    {
+        return $this->ajaxHandlerBindToJquery;
+    }
+
+    /**
      * Sets the class name of the js open handler
      * 
      * @param string $className
@@ -596,6 +644,13 @@ class JavascriptRenderer
 
         if (($this->initialization & self::INITIALIZE_CONTROLS) === self::INITIALIZE_CONTROLS) {
             $js .= $this->getJsControlsDefinitionCode($this->variableName);
+        }
+
+        if ($this->ajaxHandlerClass) {
+            $js .= sprintf("%s.ajaxHandler = new %s(%s);\n", $this->variableName, $this->ajaxHandlerClass, $this->variableName);
+            if ($this->ajaxHandlerBindToJquery) {
+                 $js .= sprintf("%s.ajaxHandler.bindToJquery();\n", $this->variableName);
+             }
         }
 
         if ($this->openHandlerUrl !== null) {

@@ -741,4 +741,79 @@ if (typeof(localStorage) == 'undefined') {
     DebugBar.Tab = Tab;
     DebugBar.Indicator = Indicator;
 
+    // ------------------------------------------------------------------
+    
+    /**
+     * AjaxHandler
+     *
+     * Extract data from headers of an XMLHttpRequest and adds a new dataset
+     */
+    var AjaxHandler = PhpDebugBar.AjaxHandler = function(debugbar, headerName) {
+        this.debugbar = debugbar;
+        this.headerName = headerName || 'phpdebugbar';
+    };
+
+    $.extend(AjaxHandler.prototype, {
+
+        /**
+         * Handles an XMLHttpRequest
+         * 
+         * @this {AjaxHandler}
+         * @param {XMLHttpRequest} xhr
+         */
+        handle: function(xhr) {
+            var raw = this.extractDataFromHeaders(xhr);
+            if (!raw) {
+                return;
+            }
+
+            var data = this.parseHeaders(raw);
+            this.debugbar.addDataSet(data.data, data.id);
+        },
+
+        /**
+         * Extract the data as a string from headers of an XMLHttpRequest
+         * 
+         * @this {AjaxHandler}
+         * @param {XMLHttpRequest} xhr
+         * @return {string}
+         */
+        extractDataFromHeaders: function(xhr) {
+            var data = xhr.getResponseHeader(this.headerName);
+            if (!data) {
+                return;
+            }
+            for (var i = 1;; i++) {
+                var header = xhr.getResponseHeader(this.headerName + '-' + i);
+                if (!header) {
+                    break;
+                }
+                data += header;
+            }
+            return decodeURIComponent(data);
+        },
+
+        /**
+         * Parses the string data into an object
+         * 
+         * @this {AjaxHandler}
+         * @param {string} data
+         * @return {string}
+         */
+        parseHeaders: function(data) {
+            return JSON.parse(data);
+        },
+
+        /**
+         * Attaches an event listener to jQuery.ajaxComplete()
+         */
+        bindToJquery: function() {
+            var self = this;
+            $(document).ajaxComplete(function(e, xhr, settings) {
+                self.handle(xhr);
+            });
+        }
+
+    });
+
 })(jQuery);

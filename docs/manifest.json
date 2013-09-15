@@ -6,6 +6,7 @@
         "../README.md",
         "data_collectors.md",
         "rendering.md",
+        "ajax.md",
         "base_collectors.md",
         "bridge_collectors.md",
         "storage.md",
