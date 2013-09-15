@@ -99,6 +99,27 @@
         </li>
     
         <li>
+            <a href="/docs/ajax-and-stack.html#ajax-and-stacked-data">AJAX and Stacked data</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#ajax">AJAX</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#stacked-data">Stacked data</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
             
                 
@@ -288,7 +309,7 @@
         <div id="content">
             <a name="bridge-collectors"></a><h1>Bridge collectors</h1>
 <p>DebugBar comes with some &quot;bridge&quot; collectors. This collectors provides a way to integrate
-other projets with the DebugBar.</p>
+other projects with the DebugBar.</p>
 <a name="cachecache"></a><h2>CacheCache</h2>
 <p><a href="http://maximebf.github.io/CacheCache/">http://maximebf.github.io/CacheCache/</a></p>
 <p>Displays cache operations using <code>DebugBar\Bridge\CacheCacheCollector</code></p>
@@ -347,7 +368,7 @@ $debugbar-&gt;addCollector(new DebugBar\Bridge\SwiftMailer\SwiftMailCollector($m
 You need to wrap your <code>Twig_Environment</code> object into a <code>DebugBar\Bridge\Twig\TraceableTwigEnvironment</code> object.</p>
 <pre><code>$loader = new Twig_Loader_Filesystem(&#39;.&#39;);
 $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
-$debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigDataCollector($env));</code></pre>
+$debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigCollector($env));</code></pre>
 <p>You can provide a <code>DebugBar\DataCollector\TimeDataCollector</code> as the second argument of
 <code>TraceableTwigEnvironment</code> so render operation can be measured.</p>
 

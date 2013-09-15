@@ -99,6 +99,27 @@
         </li>
     
         <li>
+            <a href="/docs/ajax-and-stack.html#ajax-and-stacked-data">AJAX and Stacked data</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#ajax">AJAX</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#stacked-data">Stacked data</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
             
                 
@@ -289,7 +310,7 @@
             <a name="base-collectors"></a><h1>Base collectors</h1>
 <p>Collectors provided in the <code>DebugBar\DataCollector</code> namespace.</p>
 <a name="messages"></a><h2>Messages</h2>
-<p>Provides a way to log messages (compotible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).</p>
+<p>Provides a way to log messages (compatible with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 logger</a>).</p>
 <pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\MessagesCollector());
 $debugbar[&#39;messages&#39;]-&gt;info(&#39;hello world&#39;);</code></pre>
 <p>You can have multiple messages collector by naming them:</p>
@@ -326,6 +347,15 @@ try {
 <p>Logs SQL queries. You need to wrap your <code>PDO</code> object into a <code>DebugBar\DataCollector\PDO\TraceablePDO</code> object.</p>
 <pre><code>$pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
 $debugbar-&gt;addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));</code></pre>
+<p>You can even log queries from multiple <code>PDO</code> connections:</p>
+<pre><code>$pdoRead  = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
+$pdoWrite = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO(&#39;sqlite::memory:&#39;));
+
+$pdoCollector = new DebugBar\DataCollector\PDO\PDOCollector();
+$pdoCollector-&gt;addConnection($pdoRead, &#39;read-db&#39;);
+$pdoCollector-&gt;addConnection($pdoWrite, &#39;write-db&#39;);
+
+$debugbar-&gt;addCollector($pdoCollector);</code></pre>
 <a name="requestdata"></a><h2>RequestData</h2>
 <p>Collects the data of PHP&#39;s global variables</p>
 <pre><code>$debugbar-&gt;addCollector(new DebugBar\DataCollector\RequestDataCollector());</code></pre>

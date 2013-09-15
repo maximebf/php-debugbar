@@ -99,6 +99,27 @@
         </li>
     
         <li>
+            <a href="/docs/ajax-and-stack.html#ajax-and-stacked-data">AJAX and Stacked data</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#ajax">AJAX</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#stacked-data">Stacked data</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
             
                 
@@ -293,14 +314,14 @@ No more <code>var_dump()</code> in your code!</p>
 <p><img src="https://raw.github.com/maximebf/php-debugbar/master/docs/screenshot.png" alt="Screenshot"></p>
 <p><strong>Features:</strong></p>
 <ul>
-<li>Generic debug bar with no other dependencies</li>
+<li>Generic debug bar</li>
 <li>Easy to integrate with any project</li>
 <li>Clean, fast and easy to use interface</li>
 <li>Handles AJAX request</li>
 <li>Includes generic data collectors and collectors for well known libraries</li>
 <li>The client side bar is 100% coded in javascript</li>
 <li>Easily create your own collectors and their associated view in the bar</li>
-<li>Save and re-open previews requests</li>
+<li>Save and re-open previous requests</li>
 <li><a href="http://phpdebugbar.com/docs">Very well documented</a></li>
 </ul>
 <p>Includes collectors for:</p>
@@ -316,30 +337,26 @@ No more <code>var_dump()</code> in your code!</p>
 </ul>
 <p>Checkout the <a href="https://github.com/maximebf/php-debugbar/tree/master/demo">demo</a> for
 examples and <a href="http://phpdebugbar.com">phpdebugbar.com</a> for a live example.</p>
+<p>Integrations with other frameworks:</p>
+<ul>
+<li><a href="https://github.com/barryvdh/laravel-debugbar">Laravel</a> (project by barryvdh)</li>
+<li><a href="http://atomikframework.com/docs/error-log-debug.html#debug-bar">Atomik</a></li>
+</ul>
+<p><em>(drop me a message or submit a PR to add your DebugBar related project here)</em></p>
 <a name="installation"></a><h2>Installation</h2>
-<p>The easiest way to install DebugBar is using <a href="https://github.com/composer/composer">Composer</a>
+<p>The best way to install DebugBar is using <a href="http://getcomposer.org">Composer</a>
 with the following requirement:</p>
-<pre><code>{
+<pre><code class="lang-JSON">{
     &quot;require&quot;: {
         &quot;maximebf/debugbar&quot;: &quot;&gt;=1.0.0&quot;
     }
 }</code></pre>
-<p>Alternatively, you can <a href="https://github.com/maximebf/php-debugbar/zipball/master">download the archive</a> 
-and add the src/ folder to PHP&#39;s include path:</p>
-<pre><code>set_include_path(&#39;/path/to/src&#39; . PATH_SEPARATOR . get_include_path());</code></pre>
-<p>DebugBar does not provide an autoloader but follows the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0 convention</a>.<br>You can use the following snippet to autoload DebugBar classes:</p>
-<pre><code>spl_autoload_register(function($className) {
-    if (substr($className, 0, 8) === &#39;DebugBar&#39;) {
-        $filename = str_replace(&#39;\\&#39;, DIRECTORY_SEPARATOR, trim($className, &#39;\\&#39;)) . &#39;.php&#39;;
-        require_once $filename;
-    }
-});</code></pre>
+<p>If you are cloning the repository, you&#39;ll need to run <code>composer install</code>.</p>
 <a name="quick-start"></a><h2>Quick start</h2>
-<p>DebugBar is very easy to use and you can add it to any of your projets in no time.
+<p>DebugBar is very easy to use and you can add it to any of your projects in no time.
 The easiest way is using the <code>render()</code> functions</p>
-<pre><code>&lt;?php
+<pre><code class="lang-PHP">&lt;?php
 use DebugBar\StandardDebugBar;
-use DebugBar\JavascriptRenderer;
 
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();
@@ -354,11 +371,11 @@ $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
         ...
         &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;
     &lt;/body&gt;
-&lt;/html&gt;</code></pre>
+&lt;/html&gt;+6</code></pre>
 <p>The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are
 automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
 collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:</p>
-<pre><code>$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);</code></pre>
+<pre><code class="lang-PHP">$debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);</code></pre>
 <p><code>StandardDebugBar</code> activates the following collectors:</p>
 <ul>
 <li><code>MemoryCollector</code> (<em>memory</em>)</li>

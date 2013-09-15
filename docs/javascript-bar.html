@@ -99,6 +99,27 @@
         </li>
     
         <li>
+            <a href="/docs/ajax-and-stack.html#ajax-and-stacked-data">AJAX and Stacked data</a>
+            
+                
+    <ol>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#ajax">AJAX</a>
+            
+        </li>
+    
+        <li>
+            <a href="/docs/ajax-and-stack.html#stacked-data">Stacked data</a>
+            
+        </li>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/base-collectors.html#base-collectors">Base collectors</a>
             
                 
@@ -298,7 +319,7 @@ An indicator is a piece of information displayed in the always-visible
 part of the bar.</p>
 <p>The bar handles multiple datasets by displaying a select box
 which allows you to switch between them.</p>
-<p>The state of the bar (height, visibilty, active panel) can be saved
+<p>The state of the bar (height, visibility, active panel) can be saved
 between requests (enabled in the standard bar).</p>
 <p>Each panel is composed of a widget which is used to display the
 data from a data collector. Some common widgets are provided in
@@ -344,7 +365,7 @@ and <code>data[&quot;time&quot;][&quot;duration_str&quot;]</code> will be fed to
 <p>Although you shouldn&#39;t have to do anything regarding managing datasets,
 it is interesting to know a few functions related to them.</p>
 <p><code>addDataSet(data, id)</code> adds a dataset to the bar. The select box that
-allows to swtich between sets is only displayed if more than one are added.
+allows to switch between sets is only displayed if more than one are added.
 <code>id</code> is optional and will be auto-generated if not specified.</p>
 <p><code>showDataSet(id)</code> allows you to switch to a specific dataset.</p>
 <a name="widgets"></a><h2>Widgets</h2>
@@ -356,12 +377,12 @@ as the base of every visual component in the debug bar.</p>
 });</code></pre>
 <p>The Widget class defines a <code>set(attr, value)</code> function which can be used
 to set the value of attributes.</p>
-<p>Using <code>bindAttr(attr, callback)</code>, you can trigger a callback everytime
+<p>Using <code>bindAttr(attr, callback)</code>, you can trigger a callback every time
 the value of the attribute is changed. <code>callback</code> can also be a <code>jQuery</code>
 object and in that case it will use the <code>text()</code> function to fill the element.</p>
 <p>Widgets should define a <code>render()</code> function which initializes the widget
 elements.</p>
-<p><code>initiliaze(options)</code> will always be called after the constructor.</p>
+<p><code>initialize(options)</code> will always be called after the constructor.</p>
 <pre><code>var MyWidget = PhpDebugBar.Widget.extend({
 
     tagName: &#39;div&#39;, // optional as &#39;div&#39; is the default
@@ -421,7 +442,7 @@ debugbar.addIndicator(&#39;phpdoc&#39;, new LinkIndicator({ href: &#39;http://do
 <p>An OpenHandler object can be provided using <code>setOpenHandler()</code>. The object is in charge
 of loading datasets. The only requirement is to provide a <code>show()</code> method which takes
 as only parameter a callback which expects an id and data parameter.</p>
-<p>The default implementation is <code>PhpDebugBar.OpenHandler</code> which must be use in conjonction
+<p>The default implementation is <code>PhpDebugBar.OpenHandler</code> which must be use in conjunction
 with the server side <code>DebugBar\OpenHandler</code> (see previous section).</p>
 <pre><code>debugbar.setOpenHandler(new PhpDebugBar.OpenHandler({ url: &quot;open.php&quot; }));</code></pre>
 
