@@ -82,6 +82,7 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setInitialization(JavascriptRenderer::INITIALIZE_CONSTRUCTOR);
         $this->r->setJavascriptClass('Foobar');
         $this->r->setVariableName('foovar');
+        $this->r->setAjaxHandlerClass(false);
         $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
     }
 }
