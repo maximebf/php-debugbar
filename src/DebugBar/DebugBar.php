@@ -338,7 +338,7 @@ class DebugBar implements ArrayAccess
      */
     protected function initStackSession()
     {
-        if ((function_exists('session_status') && session_status() == PHP_SESSION_NONE) || !isset($_SESSION)) {
+        if (!isset($_SESSION)) {
             throw new DebugBarException("Session must be started before using stack data in the debug bar");
         }
 

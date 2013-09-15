@@ -76,6 +76,7 @@ class DebugBarTest extends DebugBarTestCase
 
     public function testStackedDataWithStorage()
     {
+        $_SESSION = array();
         $s = new MockStorage();
         $this->debugbar->setStorage($s);
         $this->debugbar->addCollector($c = new MockCollector(array('foo')));
