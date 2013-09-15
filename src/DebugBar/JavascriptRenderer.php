@@ -614,18 +614,22 @@ class JavascriptRenderer
      * @param boolean $initialize Whether to render the de bug bar initialization code
      * @return string
      */
-    public function render($initialize = true)
+    public function render($initialize = true, $renderStackedData = true)
     {
         $js = '';
 
         if ($initialize) {
             $js = $this->getJsInitializationCode();
         }
+
+        if ($renderStackedData && $this->debugBar->hasStackedData()) {
+            foreach ($this->debugBar->getStackedData() as $id => $data) {
+                $js .= $this->getAddDatasetCode($id, $data);
+            }
+        }
         
-        $js .= sprintf("%s.addDataSet(%s, \"%s\");\n",
-            $this->variableName,
-            json_encode($this->debugBar->getData()),
-            $this->debugBar->getCurrentRequestId());
+        $js .= $this->getAddDatasetCode($this->debugBar->getCurrentRequestId(), $this->debugBar->getData());
+
         return "<script type=\"text/javascript\">\n$js\n</script>\n";
     }
 
@@ -726,6 +730,22 @@ class JavascriptRenderer
         // activate state restoration
         $js .= sprintf("%s.restoreState();\n", $varname);
 
+        return $js;
+    }
+
+    /**
+     * Returns the js code needed to add a dataset
+     * 
+     * @param string $requestId
+     * @param array $data
+     * @return string
+     */
+    protected function getAddDatasetCode($requestId, $data)
+    {
+        $js = sprintf("%s.addDataSet(%s, \"%s\");\n",
+            $this->variableName,
+            json_encode($data),
+            $requestId);
         return $js;
     }
 }

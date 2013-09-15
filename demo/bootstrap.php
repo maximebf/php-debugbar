@@ -2,6 +2,9 @@
 
 include __DIR__ . '/../tests/bootstrap.php';
 
+// for stack data
+session_start();
+
 use DebugBar\StandardDebugBar;
 
 $debugbar = new StandardDebugBar();

@@ -25,6 +25,10 @@ render_demo_page(function() {
     <li><a href="ajax.php" class="ajax">load ajax content</a></li>
     <li><a href="ajax_exception.php" class="ajax">load ajax content with exception</a></li>
 </ul>
+<h2>Stack</h2>
+<ul>
+    <li><a href="stack.php">perform a redirect</a></li>
+</ul>
 <h2>PDO</h2>
 <ul>
     <li><a href="pdo.php">PDO demo</a></li>

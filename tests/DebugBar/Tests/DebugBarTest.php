@@ -53,4 +53,38 @@ class DebugBarTest extends DebugBarTestCase
         $data = $this->debugbar->collect();
         $this->assertEquals($s->data[$this->debugbar->getCurrentRequestId()], $data);
     }
+
+    public function testStackedData()
+    {
+        $_SESSION = array();
+        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $this->debugbar->stackData();
+
+        $this->assertArrayHasKey($ns = $this->debugbar->getStackDataSessionNamespace(), $_SESSION);
+        $this->assertArrayHasKey($id = $this->debugbar->getCurrentRequestId(), $_SESSION[$ns]);
+        $this->assertArrayHasKey('mock', $_SESSION[$ns][$id]);
+        $this->assertEquals($c->collect(), $_SESSION[$ns][$id]['mock']);
+        $this->assertTrue($this->debugbar->hasStackedData());
+
+        $data = $this->debugbar->getStackedData();
+        $this->assertArrayNotHasKey($ns, $_SESSION);
+        $this->assertArrayHasKey($id, $data);
+        $this->assertEquals(1, count($data));
+        $this->assertArrayHasKey('mock', $data[$id]);
+        $this->assertEquals($c->collect(), $data[$id]['mock']);
+    }
+
+    public function testStackedDataWithStorage()
+    {
+        $s = new MockStorage();
+        $this->debugbar->setStorage($s);
+        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $this->debugbar->stackData();
+
+        $id = $this->debugbar->getCurrentRequestId();
+        $this->assertNull($_SESSION[$this->debugbar->getStackDataSessionNamespace()][$id]);
+
+        $data = $this->debugbar->getStackedData();
+        $this->assertEquals($c->collect(), $data[$id]['mock']);
+    }
 }

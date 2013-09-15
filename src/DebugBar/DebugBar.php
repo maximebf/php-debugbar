@@ -40,6 +40,10 @@ class DebugBar implements ArrayAccess
 
     protected $storage;
 
+    protected $stackSessionNamespace = 'PHPDEBUGBAR_STACK_DATA';
+
+    protected $stackAlwaysUseSessionStorage = false;
+
     /**
      * Adds a data collector
      *
@@ -228,6 +232,120 @@ class DebugBar implements ArrayAccess
         }
         
         return $this;
+    }
+
+    /**
+     * Stacks the data in the session for later rendering
+     */
+    public function stackData()
+    {
+        $this->initStackSession();
+
+        $data = null;
+        if (!$this->isDataPersisted() || $this->stackAlwaysUseSessionStorage) {
+            $data = $this->getData();
+        } else if ($this->data === null) {
+            $this->collect();
+        }
+
+        $_SESSION[$this->stackSessionNamespace][$this->getCurrentRequestId()] = $data;
+        return $this;
+    }
+
+    /**
+     * Checks if there is stacked data in the session
+     * 
+     * @return boolean
+     */
+    public function hasStackedData()
+    {
+        $this->initStackSession();
+        return count($_SESSION[$this->stackSessionNamespace]) > 0;
+    }
+
+    /**
+     * Returns the data stacked in the session
+     * 
+     * @param boolean $delete Whether to delete the data in the session
+     * @return array
+     */
+    public function getStackedData($delete = true)
+    {
+        $this->initStackSession();
+        $stackedData = $_SESSION[$this->stackSessionNamespace];
+        if ($delete) {
+            unset($_SESSION[$this->stackSessionNamespace]);
+        }
+
+        $datasets = array();
+        if ($this->isDataPersisted() && !$this->stackAlwaysUseSessionStorage) {
+            foreach ($stackedData as $id => $data) {
+                $datasets[$id] = $this->getStorage()->get($id);
+            }
+        } else {
+            $datasets = $stackedData;
+        }
+
+        return $datasets;
+    }
+
+    /**
+     * Sets the key to use in the $_SESSION array
+     * 
+     * @param string $ns
+     */
+    public function setStackDataSessionNamespace($ns)
+    {
+        $this->stackSessionNamespace = $ns;
+        return $this;
+    }
+
+    /**
+     * Returns the key used in the $_SESSION array
+     * 
+     * @return string
+     */
+    public function getStackDataSessionNamespace()
+    {
+        return $this->stackSessionNamespace;
+    }
+
+    /**
+     * Sets whether to only use the session to store stacked data even 
+     * if a storage is enabled
+     * 
+     * @param boolean $enabled
+     */
+    public function setStackAlwaysUseSessionStorage($enabled = true)
+    {
+        $this->stackAlwaysUseSessionStorage = $enabled;
+        return $this;
+    }
+
+    /**
+     * Checks if the session is always used to store stacked data
+     * even if a storage is enabled
+     * 
+     * @return boolean
+     */
+    public function isStackAlwaysUseSessionStorage()
+    {
+        return $this->stackAlwaysUseSessionStorage;
+    }
+
+    /**
+     * Initializes the session for stacked data
+     */
+    protected function initStackSession()
+    {
+        if ((function_exists('session_status') && session_status() == PHP_SESSION_NONE) || !isset($_SESSION)) {
+            throw new DebugBarException("Session must be started before using stack data in the debug bar");
+        }
+
+        $ns = $this->stackSessionNamespace;
+        if (!isset($_SESSION[$ns])) {
+            $_SESSION[$ns] = array();
+        }
     }
 
     /**
