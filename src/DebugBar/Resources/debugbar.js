@@ -287,7 +287,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
      */
     var DebugBar = PhpDebugBar.DebugBar = Widget.extend({
 
-        className: "phpdebugbar",
+        className: "phpdebugbar minimized",
 
         options: {
             bodyPaddingBottom: true
@@ -412,7 +412,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var self = this;
-            tab.$tab.appendTo(this.$header).click(function() { self.showTab(name); });
+            tab.$tab.appendTo(this.$header).click(function() { 
+                if (!self.isMinimized() && self.activePanelName == name) {
+                    self.minimize();
+                } else {
+                    self.showTab(name);
+                }
+            });
             tab.$el.appendTo(this.$body);
 
             this.controls[name] = tab;
@@ -557,6 +563,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.controls[name].$el.addClass('active');
             this.activePanelName = name;
 
+            this.$el.removeClass('minimized');
             localStorage.setItem('phpdebugbar-visible', '1');
             localStorage.setItem('phpdebugbar-tab', name);
         },
@@ -573,6 +580,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$resizehdle.hide();
             this.recomputeBottomOffset();
             localStorage.setItem('phpdebugbar-visible', '0');
+            this.$el.addClass('minimized');
+        },
+
+        /**
+         * Checks if the panel is minimized
+         * 
+         * @return {Boolean}
+         */
+        isMinimized: function() {
+            return this.$el.hasClass('minimized');
         },
 
         /**
