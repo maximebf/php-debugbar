@@ -54,20 +54,29 @@ class DebugBarTest extends DebugBarTestCase
         $this->assertEquals($s->data[$this->debugbar->getCurrentRequestId()], $data);
     }
 
+    public function testSendDataInHeaders()
+    {
+        $http = $this->debugbar->getHttpDriver();
+        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+
+        $this->debugbar->sendDataInHeaders();
+        $this->assertArrayHasKey('phpdebugbar', $http->headers);
+    }
+
     public function testStackedData()
     {
-        $_SESSION = array();
+        $http = $this->debugbar->getHttpDriver();
         $this->debugbar->addCollector($c = new MockCollector(array('foo')));
         $this->debugbar->stackData();
 
-        $this->assertArrayHasKey($ns = $this->debugbar->getStackDataSessionNamespace(), $_SESSION);
-        $this->assertArrayHasKey($id = $this->debugbar->getCurrentRequestId(), $_SESSION[$ns]);
-        $this->assertArrayHasKey('mock', $_SESSION[$ns][$id]);
-        $this->assertEquals($c->collect(), $_SESSION[$ns][$id]['mock']);
+        $this->assertArrayHasKey($ns = $this->debugbar->getStackDataSessionNamespace(), $http->session);
+        $this->assertArrayHasKey($id = $this->debugbar->getCurrentRequestId(), $http->session[$ns]);
+        $this->assertArrayHasKey('mock', $http->session[$ns][$id]);
+        $this->assertEquals($c->collect(), $http->session[$ns][$id]['mock']);
         $this->assertTrue($this->debugbar->hasStackedData());
 
         $data = $this->debugbar->getStackedData();
-        $this->assertArrayNotHasKey($ns, $_SESSION);
+        $this->assertArrayNotHasKey($ns, $http->session);
         $this->assertArrayHasKey($id, $data);
         $this->assertEquals(1, count($data));
         $this->assertArrayHasKey('mock', $data[$id]);
@@ -76,14 +85,13 @@ class DebugBarTest extends DebugBarTestCase
 
     public function testStackedDataWithStorage()
     {
-        $_SESSION = array();
-        $s = new MockStorage();
-        $this->debugbar->setStorage($s);
+        $http = $this->debugbar->getHttpDriver();
+        $this->debugbar->setStorage($s = new MockStorage());
         $this->debugbar->addCollector($c = new MockCollector(array('foo')));
         $this->debugbar->stackData();
 
         $id = $this->debugbar->getCurrentRequestId();
-        $this->assertNull($_SESSION[$this->debugbar->getStackDataSessionNamespace()][$id]);
+        $this->assertNull($http->session[$this->debugbar->getStackDataSessionNamespace()][$id]);
 
         $data = $this->debugbar->getStackedData();
         $this->assertEquals($c->collect(), $data[$id]['mock']);

@@ -40,6 +40,8 @@ class DebugBar implements ArrayAccess
 
     protected $storage;
 
+    protected $httpDriver;
+
     protected $stackSessionNamespace = 'PHPDEBUGBAR_STACK_DATA';
 
     protected $stackAlwaysUseSessionStorage = false;
@@ -164,6 +166,32 @@ class DebugBar implements ArrayAccess
     }
 
     /**
+     * Sets the HTTP driver
+     * 
+     * @param HttpDriverInterface $driver
+     */
+    public function setHttpDriver(HttpDriverInterface $driver)
+    {
+        $this->httpDriver = $driver;
+        return $this;
+    }
+
+    /**
+     * Returns the HTTP driver
+     *
+     * If no http driver where defined, a PhpHttpDriver is automatically created
+     * 
+     * @return HttpDriverInterface
+     */
+    public function getHttpDriver()
+    {
+        if ($this->httpDriver === null) {
+            $this->httpDriver = new PhpHttpDriver();
+        }
+        return $this->httpDriver;
+    }
+
+    /**
      * Collects the data from the collectors
      * 
      * @return array
@@ -226,10 +254,13 @@ class DebugBar implements ArrayAccess
         }
         $chunks[] = $data;
 
+        $headers = array();
         for ($i = 0, $c = count($chunks); $i < $c; $i++) {
             $name = $headerName . ($i > 0 ? "-$i" : '');
-            header("$name: {$chunks[$i]}");
+            $headers[$name] = $chunks[$i];
         }
+
+        $this->getHttpDriver()->setHeaders($headers);
         
         return $this;
     }
@@ -239,7 +270,7 @@ class DebugBar implements ArrayAccess
      */
     public function stackData()
     {
-        $this->initStackSession();
+        $http = $this->initStackSession();
 
         $data = null;
         if (!$this->isDataPersisted() || $this->stackAlwaysUseSessionStorage) {
@@ -248,7 +279,9 @@ class DebugBar implements ArrayAccess
             $this->collect();
         }
 
-        $_SESSION[$this->stackSessionNamespace][$this->getCurrentRequestId()] = $data;
+        $stack = $http->getSessionValue($this->stackSessionNamespace);
+        $stack[$this->getCurrentRequestId()] = $data;
+        $http->setSessionValue($this->stackSessionNamespace, $stack);
         return $this;
     }
 
@@ -259,8 +292,8 @@ class DebugBar implements ArrayAccess
      */
     public function hasStackedData()
     {
-        $this->initStackSession();
-        return count($_SESSION[$this->stackSessionNamespace]) > 0;
+        $http = $this->initStackSession();
+        return count($http->getSessionValue($this->stackSessionNamespace)) > 0;
     }
 
     /**
@@ -271,10 +304,10 @@ class DebugBar implements ArrayAccess
      */
     public function getStackedData($delete = true)
     {
-        $this->initStackSession();
-        $stackedData = $_SESSION[$this->stackSessionNamespace];
+        $http = $this->initStackSession();
+        $stackedData = $http->getSessionValue($this->stackSessionNamespace);
         if ($delete) {
-            unset($_SESSION[$this->stackSessionNamespace]);
+            $http->deleteSessionValue($this->stackSessionNamespace);
         }
 
         $datasets = array();
@@ -335,17 +368,21 @@ class DebugBar implements ArrayAccess
 
     /**
      * Initializes the session for stacked data
+     *
+     * @return HttpDriverInterface
      */
     protected function initStackSession()
     {
-        if (!isset($_SESSION)) {
+        $http = $this->getHttpDriver();
+        if (!$http->isSessionStarted()) {
             throw new DebugBarException("Session must be started before using stack data in the debug bar");
         }
 
-        $ns = $this->stackSessionNamespace;
-        if (!isset($_SESSION[$ns])) {
-            $_SESSION[$ns] = array();
+        if (!$http->hasSessionValue($this->stackSessionNamespace)) {
+            $http->setSessionValue($this->stackSessionNamespace, array());
         }
+
+        return $http;
     }
 
     /**

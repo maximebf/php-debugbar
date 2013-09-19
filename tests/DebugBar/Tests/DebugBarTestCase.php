@@ -10,6 +10,7 @@ abstract class DebugBarTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->debugbar = new DebugBar();
+        $this->debugbar->setHttpDriver($http = new MockHttpDriver());
     }
 
     public function assertJsonIsArray($json)
