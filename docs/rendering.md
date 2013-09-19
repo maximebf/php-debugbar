@@ -55,6 +55,23 @@ Note that you can only use the debug bar assets and manage the dependencies by y
 using `$renderer->setIncludeVendors(false)`. Instead of false, *css* or *js* may be used
 to only include css or js assets of vendors.
 
+## Managing jQuery conflicts
+
+When the debug bar script is included, it will be bound to the current jQuery object.
+The default action is to call `jQuery.noConflict(true)` after this is done.
+
+This has two implications:
+
+ - jQuery won't be available anymore if you didn't include your own version
+   before including the debug bar's vendors
+ - your own version will be restored.
+
+If you use `JavascriptRenderer::setIncludeVendors()` to disable the inclusion of js
+vendors (ie. jquery), `jQuery.noConflict(true)` won't be called.
+
+You can manage whether `jQuery.noConflict(true)` should be called or not using
+`JavascriptRenderer::setEnableJqueryNoConflict()`.
+
 ## The javascript object
 
 The renderer will generate all the needed code for your debug bar. This means

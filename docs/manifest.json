@@ -11,6 +11,7 @@
         "bridge_collectors.md",
         "storage.md",
         "openhandler.md",
+        "http_drivers.md",
         "javascript_bar.md"
     ]
 }
