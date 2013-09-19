@@ -1,6 +1,7 @@
 if (typeof(PhpDebugBar) == 'undefined') {
     // namespace
     var PhpDebugBar = {};
+    PhpDebugBar.$ = jQuery;
 }
 
 (function($) {
@@ -511,4 +512,4 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     });
 
-})(jQuery);
+})(PhpDebugBar.$);

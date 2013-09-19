@@ -1,17 +1,18 @@
 if (typeof(PhpDebugBar) == 'undefined') {
     // namespace
     var PhpDebugBar = {};
-}
-
-if (typeof(localStorage) == 'undefined') {
-    // provide mock localStorage object for dumb browsers
-    localStorage = {
-        setItem: function(key, value) {},
-        getItem: function(key) { return null; }
-    };
+    PhpDebugBar.$ = jQuery;
 }
 
 (function($) {
+
+    if (typeof(localStorage) == 'undefined') {
+        // provide mock localStorage object for dumb browsers
+        localStorage = {
+            setItem: function(key, value) {},
+            getItem: function(key) { return null; }
+        };
+    }
 
     /**
      * Returns the value from an object property.
@@ -816,4 +817,4 @@ if (typeof(localStorage) == 'undefined') {
 
     });
 
-})(jQuery);
+})(PhpDebugBar.$);

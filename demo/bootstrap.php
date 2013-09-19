@@ -8,7 +8,9 @@ session_start();
 use DebugBar\StandardDebugBar;
 
 $debugbar = new StandardDebugBar();
-$debugbarRenderer = $debugbar->getJavascriptRenderer()->setBaseUrl('../src/DebugBar/Resources');
+$debugbarRenderer = $debugbar->getJavascriptRenderer()
+                             ->setBaseUrl('../src/DebugBar/Resources')
+                             ->setEnableJqueryNoConflict(false);
 
 //
 // create a writable profiles folder in the demo directory to uncomment the following lines

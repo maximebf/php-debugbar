@@ -43,6 +43,8 @@ class JavascriptRenderer
 
     protected $variableName = 'phpdebugbar';
 
+    protected $enableJqueryNoConflict = true;
+
     protected $initialization;
 
     protected $controls = array();
@@ -115,6 +117,9 @@ class JavascriptRenderer
         if (array_key_exists('initialization', $options)) {
             $this->setInitialization($options['initialization']);
         }
+        if (array_key_exists('enable_jquery_noconflict', $options)) {
+            $this->setEnableJqueryNoConflict($options['enable_jquery_noconflict']);
+        }
         if (array_key_exists('controls', $options)) {
             foreach ($options['controls'] as $name => $control) {
                 $this->addControl($name, $control);
@@ -129,6 +134,12 @@ class JavascriptRenderer
             foreach ((array) $options['ignore_collectors'] as $name) {
                 $this->ignoreCollector($name);
             }
+        }
+        if (array_key_exists('ajax_handler_classname', $options)) {
+            $this->setAjaxHandlerClass($options['ajax_handler_classname']);
+        }
+        if (array_key_exists('ajax_handler_bind_to_jquery', $options)) {
+            $this->setBindAjaxHandlerToJquery($options['ajax_handler_bind_to_jquery']);
         }
         if (array_key_exists('open_handler_classname', $options)) {
             $this->setOpenHandlerClass($options['open_handler_classname']);
@@ -194,6 +205,12 @@ class JavascriptRenderer
             $enabled = array($enabled);
         }
         $this->includeVendors = $enabled;
+
+        if (!$enabled || (is_array($enabled) && !in_array('js', $enabled))) {
+            // no need to call jQuery.noConflict() if we do not include our own version
+            $this->enableJqueryNoConflict = false;
+        }
+
         return $this;
     }
 
@@ -272,6 +289,27 @@ class JavascriptRenderer
     public function getInitialization()
     {
         return $this->initialization;
+    }
+
+    /**
+     * Sets whether to call jQuery.noConflict()
+     * 
+     * @param boolean $enabled
+     */
+    public function setEnableJqueryNoConflict($enabled = true)
+    {
+        $this->enableJqueryNoConflict = $enabled;
+        return $this;
+    }
+
+    /**
+     * Checks if jQuery.noConflict() will be called
+     * 
+     * @return boolean
+     */
+    public function isJqueryNoConflictEnabled()
+    {
+        return $this->enableJqueryNoConflict;
     }
 
     /**
@@ -642,8 +680,12 @@ class JavascriptRenderer
     {
         $js = '';
 
+        if ($this->enableJqueryNoConflict) {
+            $js .= "jQuery.noConflict(true);\n";
+        }
+
         if (($this->initialization & self::INITIALIZE_CONSTRUCTOR) === self::INITIALIZE_CONSTRUCTOR) {
-            $js = sprintf("var %s = new %s();\n", $this->variableName, $this->javascriptClass);
+            $js .= sprintf("var %s = new %s();\n", $this->variableName, $this->javascriptClass);
         }
 
         if (($this->initialization & self::INITIALIZE_CONTROLS) === self::INITIALIZE_CONTROLS) {

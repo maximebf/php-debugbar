@@ -23,6 +23,7 @@ class JavascriptRendererTest extends DebugBarTestCase
             'javascript_class' => 'Foobar',
             'variable_name' => 'foovar',
             'initialization' => JavascriptRenderer::INITIALIZE_CONTROLS,
+            'enable_jquery_noconflict' => true,
             'controls' => array(
                 'memory' => array(
                     "icon" => "cogs",
@@ -31,7 +32,11 @@ class JavascriptRendererTest extends DebugBarTestCase
                 )
             ),
             'disable_controls' => array('messages'),
-            'ignore_collectors' => 'config'
+            'ignore_collectors' => 'config',
+            'ajax_handler_classname' => 'AjaxFoo',
+            'ajax_handler_bind_to_jquery' => false,
+            'open_handler_classname' => 'OpenFoo',
+            'open_handler_url' => 'open.php'
         ));
 
         $this->assertEquals('/foo', $this->r->getBasePath());
@@ -40,12 +45,17 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertEquals('Foobar', $this->r->getJavascriptClass());
         $this->assertEquals('foovar', $this->r->getVariableName());
         $this->assertEquals(JavascriptRenderer::INITIALIZE_CONTROLS, $this->r->getInitialization());
+        $this->assertTrue($this->r->isJqueryNoConflictEnabled());
         $controls = $this->r->getControls();
         $this->assertCount(2, $controls);
         $this->assertArrayHasKey('memory', $controls);
         $this->assertArrayHasKey('messages', $controls);
         $this->assertNull($controls['messages']);
         $this->assertContains('config', $this->r->getIgnoredCollectors());
+        $this->assertEquals('AjaxFoo', $this->r->getAjaxHandlerClass());
+        $this->assertFalse($this->r->isAjaxHandlerBoundToJquery());
+        $this->assertEquals('OpenFoo', $this->r->getOpenHandlerClass());
+        $this->assertEquals('open.php', $this->r->getOpenHandlerUrl());
     }
 
     public function testGetAssets()
@@ -83,6 +93,20 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setJavascriptClass('Foobar');
         $this->r->setVariableName('foovar');
         $this->r->setAjaxHandlerClass(false);
-        $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+        $this->r->setEnableJqueryNoConflict(true);
+        $this->assertStringStartsWith("<script type=\"text/javascript\">\njQuery.noConflict(true);\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+    }
+
+    public function testJQueryNoConflictAutoDisabling()
+    {
+        $this->assertTrue($this->r->isJqueryNoConflictEnabled());
+        $this->r->setIncludeVendors(false);
+        $this->assertFalse($this->r->isJqueryNoConflictEnabled());
+        $this->r->setEnableJqueryNoConflict(true);
+        $this->r->setIncludeVendors('css');
+        $this->assertFalse($this->r->isJqueryNoConflictEnabled());
+        $this->r->setEnableJqueryNoConflict(true);
+        $this->r->setIncludeVendors(array('css', 'js'));
+        $this->assertTrue($this->r->isJqueryNoConflictEnabled());
     }
 }
