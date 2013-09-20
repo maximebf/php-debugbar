@@ -233,14 +233,15 @@ class DebugBar implements ArrayAccess
         }
         return $this->data;
     }
-
+    
     /**
-     * Sends the data through the HTTP headers
+     * Returns an array of HTTP headers containing the data
      * 
      * @param string $headerName
      * @param integer $maxHeaderLength
+     * @return array
      */
-    public function sendDataInHeaders($headerName = 'phpdebugbar', $maxHeaderLength = 4096)
+    public function getDataAsHeaders($headerName = 'phpdebugbar', $maxHeaderLength = 4096)
     {
         $data = rawurlencode(json_encode(array(
             'id' => $this->getCurrentRequestId(),
@@ -260,8 +261,19 @@ class DebugBar implements ArrayAccess
             $headers[$name] = $chunks[$i];
         }
 
+        return $headers;
+    }
+
+    /**
+     * Sends the data through the HTTP headers
+     * 
+     * @param string $headerName
+     * @param integer $maxHeaderLength
+     */
+    public function sendDataInHeaders($headerName = 'phpdebugbar', $maxHeaderLength = 4096)
+    {
+        $headers = $this->getDataAsHeaders($headerName, $maxHeaderLength);
         $this->getHttpDriver()->setHeaders($headers);
-        
         return $this;
     }
 

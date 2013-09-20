@@ -54,6 +54,13 @@ class DebugBarTest extends DebugBarTestCase
         $this->assertEquals($s->data[$this->debugbar->getCurrentRequestId()], $data);
     }
 
+    public function testGetDataAsHeaders()
+    {
+        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $headers = $this->debugbar->getDataAsHeaders();
+        $this->assertArrayHasKey('phpdebugbar', $headers);
+    }
+
     public function testSendDataInHeaders()
     {
         $http = $this->debugbar->getHttpDriver();
