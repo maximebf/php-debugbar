@@ -34,6 +34,25 @@ if (typeof(PhpDebugBar) == 'undefined') {
         return d;
     }
 
+    /**
+     * Counts the number of properties in an object
+     * 
+     * @param {Object} obj
+     * @return {Integer}
+     */
+    function getObjectSize(obj) {
+        if (Object.keys) {
+            return Object.keys(obj).length;
+        }
+        var count = 0;
+        for (var k in obj) {
+            if (obj.hasOwnProperty(k)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     // ------------------------------------------------------------------
     
     /**
@@ -274,6 +293,48 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     // ------------------------------------------------------------------
 
+    /**
+     * Dataset title formater
+     *
+     * Formats the title of a dataset for the select box
+     */
+    var DatasetTitleFormater = PhpDebugBar.DatasetTitleFormater = function(debugbar) {
+        this.debugbar = debugbar;
+    };
+
+    $.extend(DatasetTitleFormater.prototype, {
+
+        /**
+         * Formats the title of a dataset
+         * 
+         * @this {DatasetTitleFormater}
+         * @param {String} id
+         * @param {Object} data
+         * @param {String} suffix
+         * @return {String}
+         */
+        format: function(id, data, suffix) {
+            if (suffix) {
+                suffix = ' ' + suffix;
+            } else {
+                suffix = '';
+            }
+
+            var nb = getObjectSize(this.debugbar.datasets) + 1;
+
+            if (typeof(data['__meta']) === 'undefined') {
+                return "Request #" + nb + suffix;
+            }
+
+            var filename = data['__meta']['uri'].substr(data['__meta']['uri'].lastIndexOf('/') + 1);
+            var label = "#" + nb + " " + filename + suffix + ' (' + data['__meta']['datetime'] + ')';
+            return label;
+        }
+
+    });
+
+    // ------------------------------------------------------------------
+
 
     /**
      * DebugBar
@@ -299,6 +360,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.datasets = {};
             this.firstTabName = null;
             this.activePanelName = null;
+            this.datesetTitleFormater = new DatasetTitleFormater(this);
         },
 
         /**
@@ -344,7 +406,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$openbtn = $('<a class="phpdebugbar-open-btn" href="javascript:"><i class="icon-folder-open"></i></a>').appendTo(this.$header).hide();
             this.$openbtn.click(function() {
                 self.openHandler.show(function(id, dataset) {
-                    self.addDataSet(dataset, id, id + " (opened)");
+                    self.addDataSet(dataset, id, "(opened)");
+                    self.showTab();
                 });
             });
 
@@ -352,6 +415,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$datasets = $('<select class="phpdebugbar-datasets-switcher" />').appendTo(this.$header);
             this.$datasets.change(function() {
                 self.dataChangeHandler(self.datasets[this.value]);
+                self.showTab();
             });
         },
 
@@ -659,28 +723,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          * @param {Object} data
          * @param {String} id The name of this set, optional
-         * @param {String} label
+         * @param {String} suffix
          * @return {String} Dataset's id
          */
-        addDataSet: function(data, id, label) {
-            var count = 0;
-            if (!Object.keys) {
-                for (var k in this.datasets) {
-                    if (this.datasets.hasOwnProperty(k)) {
-                        count++;
-                    }
-                }
-            } else {
-                count = Object.keys(this.datasets).length;
-            }
-
-            id = id || ("Request #" + (count + 1));
-            label = label || id;
+        addDataSet: function(data, id, suffix) {
+            var label = this.datesetTitleFormater.format(id, data, suffix);
+            id = id || (getObjectSize(this.datasets) + 1);
             this.datasets[id] = data;
-            count++;
 
             this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
-            if (count > 1) {
+            if (this.$datasets.children().length > 1) {
                 this.$datasets.show();
             }
 
@@ -786,7 +838,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var data = this.parseHeaders(raw);
-            this.debugbar.addDataSet(data.data, data.id);
+            this.debugbar.addDataSet(data.data, data.id, "(ajax)");
         },
 
         /**
@@ -824,10 +876,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         /**
          * Attaches an event listener to jQuery.ajaxComplete()
+         * 
+         * @this {AjaxHandler}
+         * @param {jQuery} jq Optional
          */
-        bindToJquery: function() {
+        bindToJquery: function(jq) {
             var self = this;
-            $(document).ajaxComplete(function(e, xhr, settings) {
+            var jq = jq || $;
+            jq(document).ajaxComplete(function(e, xhr, settings) {
                 self.handle(xhr);
             });
         }

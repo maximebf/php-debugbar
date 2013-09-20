@@ -172,7 +172,7 @@ div.phpdebugbar-widgets-exceptions li.list-item {
     font-weight: bold;
   }
 
-  div.phpdebugbar-widgets-exceptions li.list-item span.file {
+  div.phpdebugbar-widgets-exceptions li.list-item div.file {
     display: none;
     margin: 10px;
     padding: 5px;

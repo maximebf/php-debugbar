@@ -662,11 +662,12 @@ class JavascriptRenderer
 
         if ($renderStackedData && $this->debugBar->hasStackedData()) {
             foreach ($this->debugBar->getStackedData() as $id => $data) {
-                $js .= $this->getAddDatasetCode($id, $data);
+                $js .= $this->getAddDatasetCode($id, $data, '(stacked)');
             }
         }
         
-        $js .= $this->getAddDatasetCode($this->debugBar->getCurrentRequestId(), $this->debugBar->getData());
+        $suffix = !$initialize ? '(ajax)' : null;
+        $js .= $this->getAddDatasetCode($this->debugBar->getCurrentRequestId(), $this->debugBar->getData(), $suffix);
 
         return "<script type=\"text/javascript\">\n$js\n</script>\n";
     }
@@ -782,12 +783,14 @@ class JavascriptRenderer
      * @param array $data
      * @return string
      */
-    protected function getAddDatasetCode($requestId, $data)
+    protected function getAddDatasetCode($requestId, $data, $suffix = null)
     {
-        $js = sprintf("%s.addDataSet(%s, \"%s\");\n",
+        $js = sprintf("%s.addDataSet(%s, \"%s\"%s);\n",
             $this->variableName,
             json_encode($data),
-            $requestId);
+            $requestId,
+            $suffix ? ", " . json_encode($suffix) : ''
+        );
         return $js;
     }
 }
