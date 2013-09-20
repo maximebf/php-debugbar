@@ -22,6 +22,7 @@
     },
     "suggest": {
         "kriswallsmith/assetic": "The best way to manage assets",
-        "monolog/monolog": "Log using Monolog"
+        "monolog/monolog": "Log using Monolog",
+        "predis/predis": "Redis storage"
     }
 }

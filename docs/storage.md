@@ -9,10 +9,27 @@ Each time `DebugBar::collect()` is called, the data will be persisted.
 
 ## Available storage
 
-Only file storage is provided at the moment. It will collected data as json files
-under the specified directory (which as to be writable).
+### File
+
+It will collect data as json files under the specified directory 
+(which has to be writable).
 
     $storage = new DebugBar\Storage\FileStorage($directory);
+
+### Redis
+
+Stores data inside a Redis hash. Uses [Predis](http://github.com/nrk/predis).
+
+    $storage = new DebugBar\Storage\RedisStorage($client);
+
+### PDO
+
+Stores data inside a database. 
+
+    $storage = new DebugBar\Storage\PdoStorage($pdo);
+
+The table name can be changed using the second argument and sql queries
+can be changed using `setSqlQueries()`.
 
 ## Creating your own storage
 
