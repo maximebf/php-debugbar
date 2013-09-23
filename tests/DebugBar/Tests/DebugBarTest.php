@@ -46,9 +46,8 @@ class DebugBarTest extends DebugBarTestCase
     }
 
     public function testStorage()
-    {
-        $s = new MockStorage();
-        $this->debugbar->setStorage($s);
+    {   
+        $this->debugbar->setStorage($s = new MockStorage());
         $this->debugbar->addCollector(new MockCollector(array('foo')));
         $data = $this->debugbar->collect();
         $this->assertEquals($s->data[$this->debugbar->getCurrentRequestId()], $data);
@@ -68,6 +67,17 @@ class DebugBarTest extends DebugBarTestCase
 
         $this->debugbar->sendDataInHeaders();
         $this->assertArrayHasKey('phpdebugbar', $http->headers);
+    }
+
+    public function testSendDataInHeadersWithOpenHandler()
+    {
+        $http = $this->debugbar->getHttpDriver();
+        $this->debugbar->setStorage($s = new MockStorage());
+        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+
+        $this->debugbar->sendDataInHeaders(true);
+        $this->assertArrayHasKey('phpdebugbar-id', $http->headers);
+        $this->assertEquals($this->debugbar->getCurrentRequestId(), $http->headers['phpdebugbar-id']);
     }
 
     public function testStackedData()

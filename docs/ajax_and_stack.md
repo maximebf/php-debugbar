@@ -25,6 +25,24 @@ of `AjaxHandler` is stored in the `ajaxHandler` property of the `DebugBar` objec
 
     debugbar.ajaxHandler.handle(xhr);
 
+If you are sending a lot of data through headers, it may cause problems
+with your browser. Instead you can use a storage handler (see Storage chapter) 
+and the open handler (see Open Handler chapter) to load the data after an ajax 
+request. Use true as the first argument of `sendDataInHeaders()`.
+
+    $debugbar = new DebugBar();
+
+    // define a storage
+    $debugbar->setStorage(new DebugBar\Storage\FileStorage('/path/to/storage'));
+
+    // define the open handler url
+    $renderer = $debugbar->getJavascriptRenderer();
+    $renderer->setOpenHandlerUrl('open.php');
+
+    // ...
+
+    $debugbar->sendDataInHeaders(true);
+
 ## Stacked data
 
 Some times you need to collect data about a request but the page won't actually

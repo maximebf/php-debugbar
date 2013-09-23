@@ -28,6 +28,8 @@ use DebugBar\Storage\StorageInterface;
  */
 class DebugBar implements ArrayAccess
 {
+    public static $useOpenHandlerWhenSendingDataHeaders = false;
+
     protected $collectors = array();
 
     protected $data;
@@ -266,13 +268,23 @@ class DebugBar implements ArrayAccess
 
     /**
      * Sends the data through the HTTP headers
-     * 
+     *
+     * @param bool $useOpenHandler
      * @param string $headerName
      * @param integer $maxHeaderLength
      */
-    public function sendDataInHeaders($headerName = 'phpdebugbar', $maxHeaderLength = 4096)
+    public function sendDataInHeaders($useOpenHandler = null, $headerName = 'phpdebugbar', $maxHeaderLength = 4096)
     {
-        $headers = $this->getDataAsHeaders($headerName, $maxHeaderLength);
+        if ($useOpenHandler === null) {
+            $useOpenHandler = self::$useOpenHandlerWhenSendingDataHeaders;
+        }
+        if ($useOpenHandler && $this->storage !== null) {
+            $this->getData();
+            $headerName .= '-id';
+            $headers = array($headerName => $this->getCurrentRequestId());
+        } else {
+            $headers = $this->getDataAsHeaders($headerName, $maxHeaderLength);
+        }
         $this->getHttpDriver()->setHeaders($headers);
         return $this;
     }

@@ -323,7 +323,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var nb = getObjectSize(this.debugbar.datasets) + 1;
 
             if (typeof(data['__meta']) === 'undefined') {
-                return "Request #" + nb + suffix;
+                return "#" + nb + suffix;
             }
 
             var filename = data['__meta']['uri'].substr(data['__meta']['uri'].lastIndexOf('/') + 1);
@@ -741,6 +741,21 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
+         * Loads a dataset using the open handler
+         * 
+         * @param {String} id
+         */
+        loadDataSet: function(id, suffix) {
+            if (!this.openHandler) {
+                throw new Error('loadDataSet() needs an open handler');
+            }
+            var self = this;
+            this.openHandler.load(id, function(data) {
+                self.addDataSet(data, id, suffix);
+            });
+        },
+
+        /**
          * Returns the data from a dataset
          * 
          * @this {DebugBar}
@@ -830,15 +845,55 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * 
          * @this {AjaxHandler}
          * @param {XMLHttpRequest} xhr
+         * @return {Bool}
          */
         handle: function(xhr) {
+            if (!this.loadFromId(xhr)) {
+                return this.loadFromData(xhr);
+            }
+            return true;
+        },
+
+        /**
+         * Checks if the HEADER-id exists and loads the dataset using the open handler
+         * 
+         * @param {XMLHttpRequest} xhr
+         * @return {Bool}
+         */
+        loadFromId: function(xhr) {
+            var id = this.extractIdFromHeaders(xhr);
+            if (id && this.debugbar.openHandler) {
+                this.debugbar.loadDataSet(id, "(ajax)");
+                return true;
+            }
+            return false;
+        },
+
+        /**
+         * Extracts the id from the HEADER-id
+         * 
+         * @param {XMLHttpRequest} xhr
+         * @return {String}
+         */
+        extractIdFromHeaders: function(xhr) {
+            return xhr.getResponseHeader(this.headerName + '-id');
+        },
+
+        /**
+         * Checks if the HEADER exists and loads the dataset
+         * 
+         * @param {XMLHttpRequest} xhr
+         * @return {Bool}
+         */
+        loadFromData: function(xhr) {
             var raw = this.extractDataFromHeaders(xhr);
             if (!raw) {
-                return;
+                return false;
             }
 
             var data = this.parseHeaders(raw);
             this.debugbar.addDataSet(data.data, data.id, "(ajax)");
+            return true;
         },
 
         /**

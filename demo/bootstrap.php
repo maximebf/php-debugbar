@@ -15,8 +15,9 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer()
 //
 // create a writable profiles folder in the demo directory to uncomment the following lines
 // 
-//$debugbar->setStorage(new DebugBar\Storage\FileStorage(__DIR__ . '/profiles'));
-//$debugbarRenderer->setOpenHandlerUrl('open.php');
+// $debugbar->setStorage(new DebugBar\Storage\FileStorage(__DIR__ . '/profiles'));
+// $debugbar->setStorage(new DebugBar\Storage\RedisStorage(new Predis\Client()));
+// $debugbarRenderer->setOpenHandlerUrl('open.php');
 
 function render_demo_page(Closure $callback = null)
 {
