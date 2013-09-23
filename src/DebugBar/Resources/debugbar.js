@@ -745,13 +745,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * 
          * @param {String} id
          */
-        loadDataSet: function(id, suffix) {
+        loadDataSet: function(id, suffix, callback) {
             if (!this.openHandler) {
                 throw new Error('loadDataSet() needs an open handler');
             }
             var self = this;
             this.openHandler.load(id, function(data) {
                 self.addDataSet(data, id, suffix);
+                callback && callback(data);
             });
         },
 
@@ -939,7 +940,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var self = this;
             var jq = jq || $;
             jq(document).ajaxComplete(function(e, xhr, settings) {
-                self.handle(xhr);
+                if (!settings.ignoreDebugBarAjaxHandler) {
+                    self.handle(xhr);
+                }
             });
         }
 

@@ -107,15 +107,25 @@ if (typeof(PhpDebugBar) == 'undefined') {
         find: function(filters, offset, callback) {
             var data = $.extend({}, filters, {max: this.get('items_per_page'), offset: offset || 0});
             this.last_find_request = data;
-            $.getJSON(this.get('url'), data, callback);
+            this.ajax(data, callback);
         },
 
         load: function(id, callback) {
-            $.getJSON(this.get('url'), {op: "get", id: id}, callback);
+            this.ajax({op: "get", id: id}, callback);
         },
 
         clear: function(callback) {
-            $.getJSON(this.get('url'), {op: "clear"}, callback);
+            this.ajax({op: "clear"}, callback);
+        },
+
+        ajax: function(data, callback) {
+            $.ajax({
+                dataType: 'json',
+                url: this.get('url'),
+                data: data,
+                success: callback,
+                ignoreDebugBarAjaxHandler: true
+            });
         }
 
     });
