@@ -33,23 +33,25 @@ class OpenHandler
      * 
      * @param array $request Request data
      */
-    public function handle(array $request = null, $echo = true, $sendHeader = true)
+    public function handle($request = null, $echo = true, $sendHeader = true)
     {
         if ($request === null) {
             $request = $_REQUEST;
         }
-        if (!isset($request['op'])) {
-            $request['op'] = 'find';
-        }
-        if (!in_array($request['op'], array('find', 'get', 'clear'))) {
-            throw new DebugBarException("Invalid operation '{$request['op']}'");
+
+        $op = 'find';
+        if (isset($request['op'])) {
+            $op = $request['op'];
+            if (!in_array($op, array('find', 'get', 'clear'))) {
+                throw new DebugBarException("Invalid operation '{$request['op']}'");
+            }
         }
 
         if ($sendHeader) {
             header('Content-Type: application/json');
         }
         
-        $response = json_encode(call_user_func(array($this, $request['op']), $request));
+        $response = json_encode(call_user_func(array($this, $op), $request));
         if ($echo) {
             echo $response;
         }
@@ -59,7 +61,7 @@ class OpenHandler
     /**
      * Find operation
      */
-    protected function find(array $request)
+    protected function find($request)
     {
         $max = 20;
         if (isset($request['max'])) {
@@ -84,7 +86,7 @@ class OpenHandler
     /**
      * Get operation
      */
-    protected function get(array $request)
+    protected function get($request)
     {
         if (!isset($request['id'])) {
             throw new DebugBarException("Missing 'id' parameter in 'get' operation");
@@ -95,7 +97,7 @@ class OpenHandler
     /**
      * Clear operation
      */
-    protected function clear(array $request)
+    protected function clear($request)
     {
         $this->debugBar->getStorage()->clear();
         return array('success' => true);
