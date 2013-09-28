@@ -1,4 +1,3 @@
-
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
@@ -7,7 +6,7 @@ body {
 }
 
 a {
-  color: #08a3cf;
+  color: #4ad7ff;
 }
 
 pre {
@@ -21,8 +20,13 @@ pre {
   margin: 0 auto;
 }
 
-.clear {
+.clearfix:after {
+  content: ".";
+  display: block;
   clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
 }
 
 #forkme {
@@ -32,28 +36,28 @@ pre {
   right: 0;
   width: 149px;
   height: 149px;
-  background: url(forkme.png) no-repeat;
-  z-index: 1000;
+  background: url(assets/forkme.png) no-repeat;
 }
 
 #header {
-  background: #4ad7ff;
-  color: white;
-  padding: 30px 0;
-  position: relative;
+  padding: 20px 0 30px 0;
 }
   #header .brand {
     float: left;
-    font-size: 24px;
-    font-weight: bold;
     text-decoration: none;
-    color: #fff;
   }
+    #header .brand span {
+      display: block;
+      margin-top: 24px;
+      font-size: 26px;
+      font-weight: bold;
+    }
   #header .nav {
     list-style: none;
     margin: 0;
     padding: 0;
     float: right;
+    margin-top: 24px;
   }
     #header .nav li {
       display: inline;
@@ -62,48 +66,30 @@ pre {
     }
       #header .nav a {
         display: inline-block;
-        padding: 0 13px;
+        padding: 6px 13px;
         font-size: 20px;
         text-decoration: none;
-        color: #fff;
-        line-height: 29px;
       }
-  #header .screenshot {
-    clear: both;
-    padding-top: 30px;
-  }
-    #header .screenshot img {
-      display: block;
-      width: 900px;
-    }
+      #header .nav a:hover {
+        text-decoration: underline;
+      }
 
-#header:after {
-  content: "";
-  display: block;
-  height: 6px;
-  position: absolute;
-  top: auto;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(70, 82, 99, 0.12);
-  z-index: 100;
+#intro {
+  background: #4ad7ff;
+  color: white;
+  padding: 31px 0;
+  font-size: 19px;
 }
+  #intro img {
+    float: right;
+  }
+  #intro h1 {
+    margin: 5px 0;
+  }
 
 #main {
   margin-top: 30px;
 }
-
-  #intro {
-    padding: 0 0 10px 0;
-    font-size: 19px;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 20px;
-  }
-    #intro h1 {
-      margin: 5px 0;
-    }
-
   #content {
     float: left;
     width: 600px;
@@ -114,8 +100,37 @@ pre {
   }
 
 #footer {
-  margin-top: 40px;
-  margin-bottom: 20px;
+  background: #191818;
+  color: #9a9a9a;
+  margin-top: 50px;
+  padding: 15px 0 20px;
+  border-top: 2px solid #403d3d;
+}
+  #footer .column {
+    float: left;
+    width: 400px;
+    margin-right: 50px;
+  }
+    #footer h2 {
+      font-size: 18px;
+    }
+    #footer ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+      #footer li {
+        display: inline;
+        margin-right: 10px;
+      }
+  #footer .copy {
+    text-align: center;
+    font-size: 11px;
+    padding-bottom: 10px;
+  }
+
+body {
+    margin-bottom: 25px;
 }
 
 #tryit {

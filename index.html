@@ -2,57 +2,79 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>PHP DebugBar</title>
-    <link rel="stylesheet" type="text/css" href="debugbar/vendor/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" type="text/css" href="debugbar/debugbar.css">
-    <script type"text/javascript" src="debugbar/vendor/jquery-1.8.3.min.js"></script>
-    <script type"text/javascript" src="debugbar/vendor/jquery.event.drag-2.2.js"></script>
-    <script type"text/javascript" src="debugbar/debugbar.js"></script>
-    <script type"text/javascript" src="debugbar/widgets.js"></script>
-
+    <title>PHP Debug Bar</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="debugbar.js"></script>
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4384243-12']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+    
+    
+        <link rel="stylesheet" href="debugbar/vendor/font-awesome/css/font-awesome.css" type="text/css" />
+    
+        <link rel="stylesheet" href="debugbar/debugbar.css" type="text/css" />
+    
+
+
+    
+        <script type="text/javascript" src="debugbar/vendor/jquery-1.8.3.min.js"></script>
+    
+        <script type="text/javascript" src="debugbar/vendor/jquery.event.drag-2.2.js"></script>
+    
+        <script type="text/javascript" src="debugbar/debugbar.js"></script>
+    
+        <script type="text/javascript" src="debugbar/widgets.js"></script>
+    
+        <script type="text/javascript" src="debugbar.js"></script>
+    
+
 
   </head>
   <body>
     <a id="forkme" href="https://github.com/maximebf/php-debugbar"></a>
-    <header id="header">
-      <div class="container">
-        <a class="brand" href="/">PHP DebugBar</a>
-        <ul class="nav">
-          <li><a href="docs">Documentation</a></li>
-          <li><a href="https://github.com/maximebf/php-debugbar">Code</a></li>
-        </ul>
-        <div class="clear"></div>
-      </div>
-    </header>
-    <div id="main" class="container">
-      <div id="intro">
-        <h1>Debugging in PHP has never been easier</h1>
-        <p>
-          The DebugBar integrates easily in any projects and can display profiling data
-          from any part of your application. It comes built-in with data collectors for
-          standard PHP features and popular projects.
-        </p>
-      </div>
-      <div id="content">
-        <p>
-          Install the debug bar using <a href="http://getcomposer.org">Composer</a>:
-        </p>
-        <pre><code>{
+    <div id="header" class="container clearfix">
+      <a class="brand" href="/"><span>PHP Debug Bar</span></a>
+      <ul class="nav">
+        
+        <li><a href="docs">Documentation</a></li>
+        <li><a href="https://github.com/maximebf/php-debugbar">Code</a></li>
+      </ul>
+    </div>
+    <div id="intro">
+  <div class="container">
+    <h1>Debugging in PHP has never been easier</h1>
+    <p>
+      The DebugBar integrates easily in any projects and can display profiling data
+      from any part of your application. It comes built-in with data collectors for
+      standard PHP features and popular projects.
+    </p>
+  </div>
+</div>
+<div id="main" class="container clearfix">
+  <div id="content">
+    <p>
+      Install the debug bar using <a href="http://getcomposer.org">Composer</a>:
+    </p>
+    <pre><code>{
   "require": {
     "maximebf/debugbar": "1.*"
   }
 }</code></pre>
-        <pre><code>$ php composer.phar install</code></pre>
-        <p>
-          The DebugBar has two parts: the main <code>DebugBar</code> object with data collectors and the renderer.
-          Data collectors are objects collecting a specific set of data. To makes things easy,
-          the <code>StandardDebugBar</code> has all the built-in collectors activated.
-        </p>
-        <pre><code>&lt;?php
+    <pre><code>$ php composer.phar install</code></pre>
+    <p>
+      The DebugBar has two parts: the main <code>DebugBar</code> object with data collectors and the renderer.
+      Data collectors are objects collecting a specific set of data. To makes things easy,
+      the <code>StandardDebugBar</code> has all the built-in collectors activated.
+    </p>
+    <pre><code>&lt;?php
 use DebugBar\StandardDebugBar;
-use DebugBar\Renderer\JavascriptRenderer;
 
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();
@@ -60,55 +82,69 @@ $debugbarRenderer = $debugbar-&gt;getJavascriptRenderer();
 $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
 ?&gt;
 &lt;html&gt;
-    &lt;head&gt;
-        &lt;?php echo $debugbarRenderer-&gt;renderHead() ?&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        ...
-        &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;
-    &lt;/body&gt;
+&lt;head&gt;
+    &lt;?php echo $debugbarRenderer-&gt;renderHead() ?&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    ...
+    &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;
+&lt;/body&gt;
 &lt;/html&gt;</code></pre>
-        <p>
-          Try it below!
-        </p>
-      </div>
-      <div id="sidebar">
-        <p>
-          Features:
-        </p>
-        <ul>
-          <li>Generic debug bar with no other dependencies</li>
-          <li>Easy to integrate with any project</li>
-          <li>Clean, fast and easy to use interface</li>
-          <li>Handles AJAX request</li>
-          <li>Includes generic data collectors and collectors for well known libraries</li>
-          <li>The client side bar is 100% coded in javascript</li>
-          <li>Easily create your own collectors and their associated view in the bar</li>
-          <li>Save and re-open previous requests</li>
-          <li><a href="/docs">Very well documented</a></li>
-        </ul>
-        <div id="tryit">
-          Try it now at the bottom of the page!
+    <p>
+      Try it below!
+    </p>
+  </div>
+  <div id="sidebar">
+    <p>
+      Features:
+    </p>
+    <ul>
+      <li>Generic debug bar with no other dependencies</li>
+      <li>Easy to integrate with any project</li>
+      <li>Clean, fast and easy to use interface</li>
+      <li>Handles AJAX request</li>
+      <li>Includes generic data collectors and collectors for well known libraries</li>
+      <li>The client side bar is 100% coded in javascript</li>
+      <li>Easily create your own collectors and their associated view in the bar</li>
+      <li>Save and re-open previous requests</li>
+      <li><a href="/docs">Very well documented</a></li>
+    </ul>
+    <div id="tryit">
+      Try it now at the bottom of the page!
+    </div>
+  </div>
+</div>
+    <div id="footer">
+      <div class="container clearfix">
+        <div class="column">
+          <h2>An Open Source project by <a href="http://maximebf.com">maximebf</a></h2>
+          <p>
+            I'm a freelance web developer specialized in PHP, Python and Javascript. 
+            I build well crafted components for backend development.
+          </p>
+          <p>
+            <a href="http://maximebf.com/freelancing">Hire me for your next project</a>
+          </p>
+        </div>
+        <div class="column">
+          <h2>Check out all my open source projects</h2>
+          <ul>
+            <li><a href="http://atomikframework.com">Atomik Framework</a></li>
+            <li><a href="http://phpdebugbar.com">PHP Debug Bar</a></li>
+            <li><a href="http://beautifuldocs.com">Beautiful Docs</a></li>
+            <li><a href="http://github.com/maximebf/events">Events</a></li>
+            <li><a href="http://github.com/maximebf/ConsoleKit">ConsoleKit</a></li>
+            <li><a href="http://github.com/maximebf/CacheCache">CacheCache</a></li>
+          </ul>
+          <p>
+            They are all <a href="http://github.com/maximebf">hosted on Github</a>
+          </p>
         </div>
       </div>
-      <div class="clear"></div>
+      <div class="copy container">
+        &copy; Maxime Bouroumeau-Fuseau 2013
+      </div>
     </div>
-    <footer id="footer" class="container">
-      &copy; Maxime Bouroumeau-Fuseau 2013
-    </div>
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-4384243-12']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
   </body>
 </html>
 
