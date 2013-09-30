@@ -147,6 +147,9 @@ class JavascriptRenderer
         if (array_key_exists('open_handler_url', $options)) {
             $this->setOpenHandlerUrl($options['open_handler_url']);
         }
+        if (array_key_exists('js_vendors', $options)) {
+            $this->setJsVendors($options['js_vendors']);
+        }
     }
 
     /**
@@ -480,6 +483,28 @@ class JavascriptRenderer
     public function getOpenHandlerUrl()
     {
         return $this->openHandlerUrl;
+    }
+
+    /**
+     * Set path to jquery library
+     *
+     * @param $jsVendor
+     * @return $this
+     */
+    public function setJsVendors($jsVendor)
+    {
+        $this->jsVendors = $jsVendor;
+        return $this;
+    }
+
+    /**
+     * Return path to jQuery library
+     *
+     * @return array
+     */
+    public function getJsVendors()
+    {
+        return $this->jsVendors;
     }
 
     /**
