@@ -258,7 +258,8 @@ class DebugBar implements ArrayAccess
         $chunks[] = $data;
 
         $headers = array();
-        for ($i = 0, $c = count($chunks); $i < $c; $i++) {
+        $chunksCount = count($chunks);
+        for ($i = 0, $c = $chunksCount; $i < $c; $i++) {
             $name = $headerName . ($i > 0 ? "-$i" : '');
             $headers[$name] = $chunks[$i];
         }
