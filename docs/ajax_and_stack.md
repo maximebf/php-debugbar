@@ -56,7 +56,7 @@ Simply call `DebugBar::stackData()` instead of rendering the debug bar.
 
 PHP's session must be started before using this feature.
 
-Note: The stacked data feature will use the storage mechanism of it's enabled
+Note: The stacked data feature will use the storage mechanism if it's enabled
 instead of storing the data in the session.
 
     $debugbar = new DebugBar();
