@@ -14,6 +14,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
         };
     }
 
+    if (typeof(PhpDebugBar.utils) == 'undefined') {
+        PhpDebugBar.utils = {};
+    }
+
     /**
      * Returns the value from an object property.
      * Using dots in the key, it is possible to retrieve nested property values
@@ -23,7 +27,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
      * @param {Object} default_value
      * @return {Object}
      */
-    function getDictValue(dict, key, default_value) {
+    var getDictValue = PhpDebugBar.utils.getDictValue = function(dict, key, default_value) {
         var d = dict, parts = key.split('.');
         for (var i = 0; i < parts.length; i++) {
             if (!d[parts[i]]) {
@@ -40,7 +44,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
      * @param {Object} obj
      * @return {Integer}
      */
-    function getObjectSize(obj) {
+    var getObjectSize = PhpDebugBar.utils.getObjectSize = function(obj) {
         if (Object.keys) {
             return Object.keys(obj).length;
         }
@@ -52,6 +56,31 @@ if (typeof(PhpDebugBar) == 'undefined') {
         }
         return count;
     }
+
+    /**
+     * Returns a prefixed css class name
+     * 
+     * @param {String} cls
+     * @return {String}
+     */
+    PhpDebugBar.utils.csscls = function(cls, prefix) {
+        if (cls.indexOf(' ') > -1) {
+            var clss = cls.split(' '), out = [];
+            for (var i = 0, c = clss.length; i < c; i++) {
+                out.push(PhpDebugBar.utils.csscls(clss[i], prefix));
+            }
+            return out.join(' ');
+        }
+        if (cls.indexOf('.') === 0) {
+            return '.' + prefix + cls.substr(1);
+        }
+        return prefix + cls;
+    };
+
+    var csscls = function(cls) { 
+        return PhpDebugBar.utils.csscls(cls, 'phpdebugbar-');
+    };
+
 
     // ------------------------------------------------------------------
     
@@ -211,13 +240,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
      */
     var Tab = Widget.extend({
 
-        className: 'phpdebugbar-panel',
+        className: csscls('panel'),
 
         render: function() {
-            this.$tab = $('<a href="javascript:" class="phpdebugbar-tab" />');
-            this.bindAttr('title', $('<span class="text" />').appendTo(this.$tab));
+            this.$tab = $('<a href="javascript:" />').addClass(csscls('tab'));
+            this.bindAttr('title', $('<span />').addClass(csscls('text')).appendTo(this.$tab));
 
-            this.$badge = $('<span class="badge" />').appendTo(this.$tab);
+            this.$badge = $('<span />').addClass(csscls('badge')).appendTo(this.$tab);
             this.bindAttr('badge', function(value) {
                 if (value !== null) {
                     this.$badge.text(value);
@@ -259,7 +288,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         tagName: 'span',
 
-        className: 'phpdebugbar-indicator',
+        className: csscls('indicator'),
 
         defaults: {
             position: "right"
@@ -277,14 +306,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 }
             });
 
-            this.bindAttr(['title', 'data'], $('<span class="text" />').appendTo(this.$el));
+            this.bindAttr(['title', 'data'], $('<span />').addClass(csscls('text')).appendTo(this.$el));
 
-            this.$tooltip = $('<span class="tooltip disabled" />').appendTo(this.$el);
+            this.$tooltip = $('<span />').addClass(csscls('tooltip disabled')).appendTo(this.$el);
             this.bindAttr('tooltip', function(tooltip) {
                 if (tooltip) {
-                    this.$tooltip.text(tooltip).removeClass('disabled');
+                    this.$tooltip.text(tooltip).removeClass(csscls('disabled'));
                 } else {
-                    this.$tooltip.addClass('disabled');
+                    this.$tooltip.addClass(csscls('disabled'));
                 }
             });
         }
@@ -327,7 +356,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var filename = data['__meta']['uri'].substr(data['__meta']['uri'].lastIndexOf('/') + 1);
-            var label = "#" + nb + " " + filename + suffix + ' (' + data['__meta']['datetime'] + ')';
+            var label = "#" + nb + " " + filename + suffix + ' (' + data['__meta']['datetime'].split(' ')[1] + ')';
             return label;
         }
 
@@ -348,7 +377,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
      */
     var DebugBar = PhpDebugBar.DebugBar = Widget.extend({
 
-        className: "phpdebugbar minimized",
+        className: "phpdebugbar " + csscls('minimized'),
 
         options: {
             bodyPaddingBottom: true
@@ -371,9 +400,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
         render: function() {
             var self = this;
             this.$el.appendTo('body');
-            this.$header = $('<div class="phpdebugbar-header" />').appendTo(this.$el);
-            var $body = this.$body = $('<div class="phpdebugbar-body" />').appendTo(this.$el);
-            this.$resizehdle = $('<div class="phpdebugbar-resize-handle" />').appendTo(this.$body);
+            this.$header = $('<div />').addClass(csscls('header')).appendTo(this.$el);
+            var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
+            this.$resizehdle = $('<div />').addClass(csscls('resize-handle')).appendTo(this.$body);
             this.recomputeBottomOffset();
 
             // dragging of resize handle
@@ -397,13 +426,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
             
             // minimize button
-            this.$minimizebtn = $('<a class="phpdebugbar-minimize-btn" href="javascript:"><i class="icon-remove"></i></a>').appendTo(this.$header);
+            this.$minimizebtn = $('<a href="javascript:" />').addClass(csscls('minimize-btn')).appendTo(this.$header);
             this.$minimizebtn.click(function() {
                 self.minimize();
             });
 
             // open button
-            this.$openbtn = $('<a class="phpdebugbar-open-btn" href="javascript:"><i class="icon-folder-open"></i></a>').appendTo(this.$header).hide();
+            this.$openbtn = $('<a href="javascript:" />').addClass(csscls('open-btn')).appendTo(this.$header).hide();
             this.$openbtn.click(function() {
                 self.openHandler.show(function(id, dataset) {
                     self.addDataSet(dataset, id, "(opened)");
@@ -412,7 +441,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // select box for data sets
-            this.$datasets = $('<select class="phpdebugbar-datasets-switcher" />').appendTo(this.$header);
+            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).appendTo(this.$header);
             this.$datasets.change(function() {
                 self.dataChangeHandler(self.datasets[this.value]);
                 self.showTab();
@@ -620,14 +649,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$minimizebtn.show();
             this.recomputeBottomOffset();
 
-            $(this.$header).find('> .active').removeClass('active');
-            $(this.$body).find('> .active').removeClass('active');
+            $(this.$header).find('> .' + csscls('active')).removeClass(csscls('active'));
+            $(this.$body).find('> .' + csscls('active')).removeClass(csscls('active'));
 
-            this.controls[name].$tab.addClass('active');
-            this.controls[name].$el.addClass('active');
+            this.controls[name].$tab.addClass(csscls('active'));
+            this.controls[name].$el.addClass(csscls('active'));
             this.activePanelName = name;
 
-            this.$el.removeClass('minimized');
+            this.$el.removeClass(csscls('minimized'));
             localStorage.setItem('phpdebugbar-visible', '1');
             localStorage.setItem('phpdebugbar-tab', name);
         },
@@ -638,13 +667,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         minimize: function() {
-            this.$header.find('> .active').removeClass('active');
+            this.$header.find('> .' + csscls('active')).removeClass(csscls('active'));
             this.$body.hide();
             this.$minimizebtn.hide();
             this.$resizehdle.hide();
             this.recomputeBottomOffset();
             localStorage.setItem('phpdebugbar-visible', '0');
-            this.$el.addClass('minimized');
+            this.$el.addClass(csscls('minimized'));
         },
 
         /**
@@ -653,7 +682,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @return {Boolean}
          */
         isMinimized: function() {
-            return this.$el.hasClass('minimized');
+            return this.$el.hasClass(csscls('minimized'));
         },
 
         /**

@@ -6,6 +6,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
 (function($) {
 
+    var csscls = function(cls) {
+        return PhpDebugBar.utils.csscls(cls, 'phpdebugbar-openhandler-');
+    };
+
     PhpDebugBar.OpenHandler = PhpDebugBar.Widget.extend({
 
         className: 'phpdebugbar-openhandler',
@@ -20,9 +24,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$el.appendTo('body').hide();
             this.$closebtn = $('<a href="javascript:"><i class="icon-remove"></i></a>');
             this.$table = $('<tbody />');
-            $('<div class="header">PHP DebugBar | Open</div>').append(this.$closebtn).appendTo(this.$el);
+            $('<div>PHP DebugBar | Open</div>').addClass(csscls('header')).append(this.$closebtn).appendTo(this.$el);
             $('<table><thead><tr><th>ID</th><th>URL</th><th>Date</th><th>IP</th></tr></thead></table>').append(this.$table).appendTo(this.$el);
-            this.$actions = $('<div class="actions" />').appendTo(this.$el);
+            this.$actions = $('<div />').addClass(csscls('actions')).appendTo(this.$el);
 
             this.$closebtn.on('click', function() {
                 self.hide();
@@ -55,7 +59,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     });
                 });
 
-            this.$overlay = $('<div class="phpdebugbar-openhandler-overlay" />').hide().appendTo('body');
+            this.$overlay = $('<div />').addClass(csscls('overlay')).hide().appendTo('body');
             this.$overlay.on('click', function() {
                 self.hide();
             });

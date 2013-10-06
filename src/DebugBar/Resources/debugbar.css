@@ -49,7 +49,7 @@ a.phpdebugbar-minimize-btn {
   border-right: 1px solid #ddd;
 }
 
-a.phpdebugbar-tab.active {
+a.phpdebugbar-tab.phpdebugbar-active {
   background: #ccc;
   color: #444;
   background-image: linear-gradient(bottom, rgb(173,173,173) 41%, rgb(209,209,209) 71%);
@@ -59,7 +59,7 @@ a.phpdebugbar-tab.active {
   background-image: -ms-linear-gradient(bottom, rgb(173,173,173) 41%, rgb(209,209,209) 71%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.41, rgb(173,173,173)), color-stop(0.71, rgb(209,209,209)));
 }
-  a.phpdebugbar-tab span.badge {
+  a.phpdebugbar-tab span.phpdebugbar-badge {
     display: none;
     margin-left: 5px;
     font-size: 11px;
@@ -70,22 +70,31 @@ a.phpdebugbar-tab.active {
     font-weight: normal;
     text-shadow: none;
   }
-  a.phpdebugbar-tab span.badge.important {
+  a.phpdebugbar-tab span.phpdebugbar-badge.phpdebugbar-important {
     background: #ed6868;
     color: white;
   }
 
 a.phpdebugbar-minimize-btn {
   display: none;
+  background: url(icons.png) no-repeat 10px 7px;
+  width: 16px;
+  height: 16px;
+}
+
+a.phpdebugbar-open-btn {
+  background: url(icons.png) no-repeat -14px 8px;
+  width: 16px;
+  height: 16px;
 }
 
 .phpdebugbar-indicator {
   position: relative;
 }
-  .phpdebugbar-indicator span.text {
+  .phpdebugbar-indicator span.phpdebugbar-text {
     margin-left: 5px;
   }
-  .phpdebugbar-indicator span.tooltip {
+  .phpdebugbar-indicator span.phpdebugbar-tooltip {
     display: none;
     position: absolute;
     top: -30px;
@@ -97,7 +106,7 @@ a.phpdebugbar-minimize-btn {
     padding: 2px 3px;
     z-index: 1000;
   }
-  .phpdebugbar-indicator:hover span.tooltip:not(.disabled) {
+  .phpdebugbar-indicator:hover span.phpdebugbar-tooltip:not(.phpdebugbar-disabled) {
     display: block;
   }
 
@@ -137,6 +146,6 @@ div.phpdebugbar-panel {
   overflow: auto;
   width: 100%;
 }
-div.phpdebugbar-panel.active {
+div.phpdebugbar-panel.phpdebugbar-active {
   display: block;
 }

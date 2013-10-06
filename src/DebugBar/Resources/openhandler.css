@@ -1,5 +1,5 @@
 div.phpdebugbar-openhandler-overlay {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
@@ -10,7 +10,7 @@ div.phpdebugbar-openhandler-overlay {
 }
 
 div.phpdebugbar-openhandler {
-    position: absolute;
+    position: fixed;
     margin: auto;
     top: 0;
     bottom: 0;
@@ -26,7 +26,7 @@ div.phpdebugbar-openhandler {
     font-size: 14px;
     padding-bottom: 10px;
 }
-    div.phpdebugbar-openhandler .header {
+    div.phpdebugbar-openhandler .phpdebugbar-openhandler-header {
         background: #efefef url(php-icon.png) no-repeat 5px 4px;
         padding-left: 29px;
         min-height: 26px;
@@ -34,7 +34,7 @@ div.phpdebugbar-openhandler {
         color: #555;
         margin-bottom: 10px;
     }
-        div.phpdebugbar-openhandler .header a {
+        div.phpdebugbar-openhandler .phpdebugbar-openhandler-header a {
             font-size: 14px;
             color: #555;
             text-decoration: none;
@@ -50,11 +50,11 @@ div.phpdebugbar-openhandler {
             text-align: center;
             border-bottom: 1px solid #ddd;
         }
-    div.phpdebugbar-openhandler .actions {
+    div.phpdebugbar-openhandler .phpdebugbar-openhandler-actions {
         text-align: center;
         padding: 7px 0;
     }
-        div.phpdebugbar-openhandler .actions a {
+        div.phpdebugbar-openhandler .phpdebugbar-openhandler-actions a {
             margin: 0 10px;
             color: #555;
         }

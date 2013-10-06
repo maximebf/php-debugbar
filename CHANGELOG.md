@@ -1,5 +1,12 @@
 # Changelog
 
+2013-10-06:
+
+ - prefixed all css classes
+ - new PhpDebugBar.utils.csscls() function
+ - changed datetime to time in datasets selector
+ - close and open buttons now uses images instead of font-awesome
+
 2013-09-23:
 
  - send the request id in headers and use the open handler to retreive the dataset
