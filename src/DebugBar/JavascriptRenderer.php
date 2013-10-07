@@ -696,8 +696,8 @@ class JavascriptRenderer
         if ($this->ajaxHandlerClass) {
             $js .= sprintf("%s.ajaxHandler = new %s(%s);\n", $this->variableName, $this->ajaxHandlerClass, $this->variableName);
             if ($this->ajaxHandlerBindToJquery) {
-                 $js .= sprintf("%s.ajaxHandler.bindToJquery();\n", $this->variableName);
-             }
+                $js .= sprintf("if (jQuery) %s.ajaxHandler.bindToJquery(jQuery);\n", $this->variableName);
+            }
         }
 
         if ($this->openHandlerUrl !== null) {

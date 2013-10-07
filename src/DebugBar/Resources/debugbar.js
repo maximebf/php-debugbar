@@ -967,7 +967,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         bindToJquery: function(jq) {
             var self = this;
-            var jq = jq || $;
             jq(document).ajaxComplete(function(e, xhr, settings) {
                 if (!settings.ignoreDebugBarAjaxHandler) {
                     self.handle(xhr);
