@@ -10,5 +10,5 @@ phpdebugbar.setDataMap({
 });
 phpdebugbar.restoreState();
 phpdebugbar.ajaxHandler = new PhpDebugBar.AjaxHandler(phpdebugbar);
-phpdebugbar.ajaxHandler.bindToJquery();
+if (jQuery) phpdebugbar.ajaxHandler.bindToJquery(jQuery);
 phpdebugbar.addDataSet(
