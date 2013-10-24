@@ -1,4 +1,3 @@
-
 ul.phpdebugbar-widgets-list {
   margin: 0;
   padding: 0;
@@ -124,6 +123,7 @@ ul.phpdebugbar-widgets-timeline {
     height: 20px;
     position: relative;
     border-bottom: 1px solid #eee;
+    display: block;
   }
   ul.phpdebugbar-widgets-timeline li:hover {
     background: #fafafa;

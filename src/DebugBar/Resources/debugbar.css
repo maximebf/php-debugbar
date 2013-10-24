@@ -9,6 +9,7 @@ div.phpdebugbar {
   z-index: 10000;
   font-size: 14px;
   color: #000;
+  text-align: left;
 }
 
 /* -------------------------------------- */
