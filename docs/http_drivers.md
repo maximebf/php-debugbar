@@ -4,7 +4,7 @@ Some features of the debug bar requires sending http headers or
 using the session. Many frameworks implement their own mechanism
 on top of PHP native features.
 
-Two make integration with other frameworks as easy as possible,
+To make integration with other frameworks as easy as possible,
 the `DebugBar` object uses an instance of `DebugBar\HttpDriverInterface`
 to access those features.
 
