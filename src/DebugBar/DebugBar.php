@@ -316,7 +316,11 @@ class DebugBar implements ArrayAccess
      */
     public function hasStackedData()
     {
-        $http = $this->initStackSession();
+        try {
+            $http = $this->initStackSession();
+        } catch (DebugBarException $e) {
+            return false;
+        }
         return count($http->getSessionValue($this->stackSessionNamespace)) > 0;
     }
 
