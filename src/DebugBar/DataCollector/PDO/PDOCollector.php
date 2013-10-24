@@ -15,6 +15,8 @@ class PDOCollector extends DataCollector implements Renderable
     
     protected $timeCollector;
 
+    protected $renderSqlWithParams = false;
+
     /**
      * @param TraceablePDO $pdo
      * @param TimeDataCollector $timeCollector
@@ -25,6 +27,21 @@ class PDOCollector extends DataCollector implements Renderable
         if ($pdo !== null) {
             $this->addConnection($pdo, 'default');
         }
+    }
+
+    /**
+     * Renders the SQL of traced statements with params embeded
+     * 
+     * @param boolean $enabled
+     */
+    public function setRenderSqlWithParams($enabled = true)
+    {
+        $this->renderSqlWithParams = $enabled;
+    }
+
+    public function isSqlRenderedWithParams()
+    {
+        return $this->renderSqlWithParams;
     }
 
     /**
@@ -92,7 +109,7 @@ class PDOCollector extends DataCollector implements Renderable
         $stmts = array();
         foreach ($pdo->getExecutedStatements() as $stmt) {
             $stmts[] = array(
-                'sql' => $stmt->getSql(),
+                'sql' => $this->renderSqlWithParams ? $stmt->getSqlWithParams() : $stmt->getSql(),
                 'row_count' => $stmt->getRowCount(),
                 'stmt_id' => $stmt->getPreparedId(),
                 'prepared_stmt' => $stmt->getSql(),
