@@ -79,7 +79,7 @@ $debugbar["messages"]->addMessage("hello world!");
         ...
         <?php echo $debugbarRenderer->render() ?>
     </body>
-</html>+6
+</html>
 ```
 
 The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are
