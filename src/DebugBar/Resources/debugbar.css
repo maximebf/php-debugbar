@@ -12,6 +12,10 @@ div.phpdebugbar {
   text-align: left;
 }
 
+div.phpdebugbar * {
+	box-sizing: content-box;
+}
+
 /* -------------------------------------- */
 
 div.phpdebugbar-header {
