@@ -119,6 +119,7 @@ class TracedStatement
         foreach($this->parameters as $param){
             $params[] = htmlentities($param, ENT_QUOTES, 'UTF-8', false);
         }
+        return $params;
     }
 
     /**
