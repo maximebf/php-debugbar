@@ -72,14 +72,22 @@ class TracedStatement
 
     /**
      * Returns the SQL string with any parameters used embedded
-     * 
+     *
+     * @param string $quotationChar
      * @return string
      */
-    public function getSqlWithParams()
+    public function getSqlWithParams($quotationChar = '<>')
     {
+        if (($l = strlen($quotationChar)) > 1) {
+            $quoteLeft = substr($quotationChar, 0, $l / 2);
+            $quoteRight = substr($quotationChar, $l / 2);
+        } else {
+            $quoteLeft = $quoteRight = $quotationChar;
+        }
+
         $sql = $this->sql;
         foreach ($this->parameters as $k => $v) {
-            $v = sprintf('<%s>', $v);
+            $v = "$quoteLeft$v$quoteRight";
             if (!is_numeric($k)) {
                 $sql = str_replace($k, $v, $sql);
             } else {
