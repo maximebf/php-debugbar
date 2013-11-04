@@ -115,7 +115,10 @@ class TracedStatement
      */
     public function getParameters()
     {
-        return $this->parameters;
+		$params = array();
+        foreach($this->parameters as $param){
+            $params[] = htmlentities($param, ENT_QUOTES, 'UTF-8', false);
+        }
     }
 
     /**
