@@ -8,6 +8,7 @@ ul.phpdebugbar-widgets-list {
     padding: 3px 6px;
     border-bottom: 1px solid #eee;
     position: relative;
+    overflow: hidden;
   }
   ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item:hover {
     background: #fafafa;
