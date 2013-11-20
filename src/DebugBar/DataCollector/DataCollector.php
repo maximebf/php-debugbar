@@ -41,8 +41,10 @@ abstract class DataCollector implements DataCollectorInterface
             }
         } else if (is_object($var)) {
             $var = "Object(" . get_class($var) . ")";
-        } else {
+        } else if (mb_check_encoding($var, 'UTF-8')) {
             $var = htmlentities($var, ENT_QUOTES, 'UTF-8', false);
+        } else {
+            $var = '[Invalid UTF-8 string]';
         }
         return $var;
     }
