@@ -300,7 +300,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$icon = $('<i />').appendTo(this.$el);
             this.bindAttr('icon', function(icon) {
                 if (icon) {
-                    this.$icon.attr('class', 'icon-' + icon);
+                    this.$icon.attr('class', 'fa fa-' + icon);
                 } else {
                     this.$icon.attr('class', '');
                 }
