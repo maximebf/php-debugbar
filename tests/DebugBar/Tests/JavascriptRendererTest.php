@@ -64,12 +64,12 @@ class JavascriptRendererTest extends DebugBarTestCase
         list($css, $js) = $this->r->getAssets();
         $this->assertContains('/foo/debugbar.css', $css);
         $this->assertContains('/foo/widgets.js', $js);
-        $this->assertContains('/foo/vendor/jquery-1.8.3.min.js', $js);
+        $this->assertContains('/foo/vendor/jquery/jquery.min.js', $js);
 
         $this->r->setIncludeVendors(false);
         $js = $this->r->getAssets('js');
         $this->assertContains('/foo/debugbar.js', $js);
-        $this->assertNotContains('/foo/vendor/jquery-1.8.3.min.js', $js);
+        $this->assertNotContains('/foo/vendor/jquery/jquery.min.js', $js);
     }
 
     public function testRenderHead()
