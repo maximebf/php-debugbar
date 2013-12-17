@@ -1,0 +1,6 @@
+{
+  "name": "maximebf/php-debugbar",
+  "dependencies": {
+    "jquery": "~1.*"
+  }
+}
