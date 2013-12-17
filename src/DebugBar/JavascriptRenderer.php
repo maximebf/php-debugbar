@@ -29,9 +29,9 @@ class JavascriptRenderer
 
     protected $basePath;
 
-    protected $cssVendors = array('vendor/font-awesome/css/font-awesome.css');
+    protected $cssVendors = array('vendor/font-awesome/css/font-awesome.min.css');
 
-    protected $jsVendors = array('vendor/jquery-1.8.3.min.js');
+    protected $jsVendors = array('vendor/jquery/jquery.min.js');
 
     protected $includeVendors = true;
 
