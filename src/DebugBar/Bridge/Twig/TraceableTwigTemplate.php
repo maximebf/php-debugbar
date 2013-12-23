@@ -75,7 +75,7 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
      */
     public function displayBlock($name, array $context, array $blocks = array())
     {
-        $this->displayBlock($name, $context, $blocks);
+        $this->template->displayBlock($name, $context, $blocks);
     }
 
     /**
