@@ -645,6 +645,33 @@ class JavascriptRenderer
     }
 
     /**
+     * Register shutdown to display the debug bar
+     * 
+     * @param boolean $here Set position of HTML. True if is to current position or false for end file.
+     * @param boolean $initialize Whether to render the de bug bar initialization code
+     * @return string "{--DEBUGBAR_OB_START_REPLACE_ME--}"
+     */
+    public function register_render($here = true, $initialize = true, $renderStackedData = true) {
+        register_shutdown_function(array($this, "register_shutdown"), $initialize, $renderStackedData);
+
+        if ($here) {
+            return "{--DEBUGBAR_OB_START_REPLACE_ME--}";
+        }
+    }
+
+    /**
+     * Is callback function for register_shutdown_function(...)
+     * 
+     * @param boolean $here Set position of HTML. True if is to current position or false for end file.
+     * @param boolean $initialize Whether to render the de bug bar initialization code
+     */
+    public function register_shutdown($here = true, $initialize = true, $renderStackedData = true) {
+        $render = $this->render($initialize, $renderStackedData);
+
+        echo ($here) ? str_replace("{--DEBUGBAR_OB_START_REPLACE_ME--}", $render, ob_get_clean()) : $render;
+    }
+
+    /**
      * Returns the code needed to display the debug bar
      *
      * AJAX request should not render the initialization code.
