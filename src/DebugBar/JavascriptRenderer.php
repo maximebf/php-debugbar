@@ -652,7 +652,7 @@ class JavascriptRenderer
      * @return string "{--DEBUGBAR_OB_START_REPLACE_ME--}"
      */
     public function register_render($here = true, $initialize = true, $renderStackedData = true) {
-        register_shutdown_function(array($this, "register_shutdown"), $initialize, $renderStackedData);
+        register_shutdown_function(array($this, "register_shutdown"), $here, $initialize, $renderStackedData);
 
         if ($here) {
             return "{--DEBUGBAR_OB_START_REPLACE_ME--}";
