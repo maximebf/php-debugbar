@@ -95,6 +95,7 @@ a.phpdebugbar-open-btn {
 
 .phpdebugbar-indicator {
   position: relative;
+  cursor: pointer;
 }
   .phpdebugbar-indicator span.phpdebugbar-text {
     margin-left: 5px;
@@ -110,6 +111,9 @@ a.phpdebugbar-open-btn {
     font-size: 11px;
     padding: 2px 3px;
     z-index: 1000;
+    text-align: center;
+    width: 200%;
+    right: 0;
   }
   .phpdebugbar-indicator:hover span.phpdebugbar-tooltip:not(.phpdebugbar-disabled) {
     display: block;
@@ -138,7 +142,7 @@ div.phpdebugbar-body {
     width: 100%;
     background: #fff;
     border-top: 1px solid #ccc;
-    cursor: move;
+    cursor: n-resize;
     position: absolute;
     top: -33px;
   }
