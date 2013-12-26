@@ -416,12 +416,14 @@ class DebugBar implements ArrayAccess
     /**
      * Returns a JavascriptRenderer for this instance
      * 
+     * @param stri $baseUrl
+     * @param string $basePathng
      * @return JavascriptRenderer
      */
-    public function getJavascriptRenderer()
+    public function getJavascriptRenderer($baseUrl = null, $basePath = null)
     {
         if ($this->jsRenderer === null) {
-            $this->jsRenderer = new JavascriptRenderer($this);
+            $this->jsRenderer = new JavascriptRenderer($this, $baseUrl, $basePath);
         }
         return $this->jsRenderer;
     }

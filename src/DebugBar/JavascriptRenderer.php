@@ -23,6 +23,8 @@ class JavascriptRenderer
 
     const INITIALIZE_CONTROLS = 4;
 
+    const REPLACEABLE_TAG = "{--DEBUGBAR_OB_START_REPLACE_ME--}";
+
     protected $debugBar;
 
     protected $baseUrl;
@@ -642,6 +644,41 @@ class JavascriptRenderer
             return $uri;
         }
         return rtrim($root, '/') . "/$uri";
+    }
+
+    /**
+     * Register shutdown to display the debug bar
+     * 
+     * @param boolean $here Set position of HTML. True if is to current position or false for end file
+     * @param boolean $initialize Whether to render the de bug bar initialization code
+     * @return string Return "{--DEBUGBAR_OB_START_REPLACE_ME--}" or return an empty string if $here == false
+     */
+    public function renderOnShutdown($here = true, $initialize = true, $renderStackedData = true) {
+        register_shutdown_function(array($this, "replaceTagInBuffer"), $here, $initialize, $renderStackedData);
+
+        if (ob_get_level() === 0) {
+            ob_start();
+        }
+
+        return ($here) ? self::REPLACEABLE_TAG : "";
+    }
+
+    /**
+     * Is callback function for register_shutdown_function(...)
+     * 
+     * @param boolean $here Set position of HTML. True if is to current position or false for end file
+     * @param boolean $initialize Whether to render the de bug bar initialization code
+     */
+    public function replaceTagInBuffer($here = true, $initialize = true, $renderStackedData = true) {
+        $render = $this->render($initialize, $renderStackedData);
+
+        $current = ($here && ob_get_level() > 0) ? ob_get_clean() : self::REPLACEABLE_TAG;
+
+        echo str_replace(self::REPLACEABLE_TAG, $render, $current, $count);
+
+        if ($count === 0) {
+            echo $render;
+        }
     }
 
     /**
