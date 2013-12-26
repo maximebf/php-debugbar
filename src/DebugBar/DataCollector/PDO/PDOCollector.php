@@ -161,6 +161,7 @@ class PDOCollector extends DataCollector implements Renderable
     {
         return array(
             "database" => array(
+                "icon" => "inbox",
                 "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
                 "map" => "pdo",
                 "default" => "[]"

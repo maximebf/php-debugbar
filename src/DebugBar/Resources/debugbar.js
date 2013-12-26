@@ -244,6 +244,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         render: function() {
             this.$tab = $('<a href="javascript:" />').addClass(csscls('tab'));
+
+            this.$icon = $('<i />').appendTo(this.$tab);
+            this.bindAttr('icon', function(icon) {
+                if (icon) {
+                    this.$icon.attr('class', 'fa fa-' + icon);
+                } else {
+                    this.$icon.attr('class', '');
+                }
+            });
+
             this.bindAttr('title', $('<span />').addClass(csscls('text')).appendTo(this.$tab));
 
             this.$badge = $('<span />').addClass(csscls('badge')).appendTo(this.$tab);
@@ -390,6 +400,36 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.firstTabName = null;
             this.activePanelName = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
+            this.responsiveCSS();
+        },
+
+        responsiveCSS: function() {
+            var self = this, f = null;
+            self.$respCSS_size = 0;
+            $(window).resize(f = function () {
+                var $ = PhpDebugBar.$;
+                var header = $(".phpdebugbar-header");
+
+                var contentSize = self.$respCSS_size;
+                if (self.$respCSS_size == 0) {
+                    $(header).find("> *:visible").each(function () {
+                        contentSize += $(this).outerWidth();
+                    });
+                }
+
+                var currentSize = $(header).width();
+
+                var cssClass = "phpdebugbar-mini-design", bool = $(header).hasClass(cssClass);
+                if (currentSize <= contentSize && !bool) {
+                    self.$respCSS_size = contentSize;
+
+                    $(header).addClass(cssClass);
+                } else if (contentSize < currentSize && bool) {
+                    self.$respCSS_size = 0;
+                    $(".phpdebugbar-header").removeClass(cssClass);
+                }
+            });
+            setTimeout(f, 20);
         },
 
         /**

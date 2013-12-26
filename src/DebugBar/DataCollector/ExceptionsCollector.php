@@ -87,6 +87,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
     {
         return array(
             'exceptions' => array(
+                'icon' => 'bug',
                 'widget' => 'PhpDebugBar.Widgets.ExceptionsWidget',
                 'map' => 'exceptions.exceptions',
                 'default' => '[]'

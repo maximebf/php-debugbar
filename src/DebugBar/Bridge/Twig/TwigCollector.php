@@ -73,6 +73,7 @@ class TwigCollector extends DataCollector implements Renderable
     {
         return array(
             'twig' => array(
+                'icon' => 'leaf',
                 'widget' => 'PhpDebugBar.Widgets.TemplatesWidget',
                 'map' => 'twig',
                 'default' => '[]'

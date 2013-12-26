@@ -74,6 +74,11 @@ a.phpdebugbar-tab.phpdebugbar-active {
     color: #555;
     font-weight: normal;
     text-shadow: none;
+    vertical-align: middle;
+  }
+  a.phpdebugbar-tab i {
+    display: none;
+    vertical-align: middle;
   }
   a.phpdebugbar-tab span.phpdebugbar-badge.phpdebugbar-important {
     background: #ed6868;
@@ -158,3 +163,29 @@ div.phpdebugbar-panel {
 div.phpdebugbar-panel.phpdebugbar-active {
   display: block;
 }
+
+/* -------------------------------------- */
+div.phpdebugbar-mini-design a.phpdebugbar-tab {
+  position: relative;
+  border-right: 1px solid #ddd;
+}
+  div.phpdebugbar-mini-design a.phpdebugbar-tab span.phpdebugbar-text {
+    display: none;
+  }
+  div.phpdebugbar-mini-design a.phpdebugbar-tab:hover span.phpdebugbar-text {
+    display: block;
+    position: absolute;
+    top: -30px;
+    background: #efefef;
+    opacity: .7;
+    border: 1px solid #ccc;
+    color: #555;
+    font-size: 11px;
+    padding: 2px 3px;
+    z-index: 1000;
+    text-align: center;
+    right: 0;
+  }
+  div.phpdebugbar-mini-design a.phpdebugbar-tab i {
+    display:inline-block;
+  }

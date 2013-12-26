@@ -266,6 +266,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
     {
         return array(
             "propel" => array(
+                "icon" => "bolt",
                 "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
                 "map" => "propel",
                 "default" => "[]"

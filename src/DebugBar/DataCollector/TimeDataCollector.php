@@ -188,6 +188,7 @@ class TimeDataCollector extends DataCollector implements Renderable
                 "default" => "'0ms'"
             ),
             "timeline" => array(
+                "icon" => "tasks",
                 "widget" => "PhpDebugBar.Widgets.TimelineWidget",
                 "map" => "time",
                 "default" => "{}"
