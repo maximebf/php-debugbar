@@ -400,18 +400,23 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.firstTabName = null;
             this.activePanelName = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
-            this.responsiveCSS();
+            this.registerResizeHandler();
         },
 
-        responsiveCSS: function() {
+        /**
+         * Register resize event, for resize debugbar with reponsive css.
+         *
+         * @this {DebugBar}
+         */
+        registerResizeHandler: function() {
             var self = this, f = null;
-            self.$respCSS_size = 0;
+            self.respCSSSize = 0;
             $(window).resize(f = function () {
                 var $ = PhpDebugBar.$;
                 var header = $(".phpdebugbar-header");
 
-                var contentSize = self.$respCSS_size;
-                if (self.$respCSS_size == 0) {
+                var contentSize = self.respCSSSize;
+                if (self.respCSSSize == 0) {
                     $(header).find("> *:visible").each(function () {
                         contentSize += $(this).outerWidth();
                     });
@@ -421,11 +426,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 var cssClass = "phpdebugbar-mini-design", bool = $(header).hasClass(cssClass);
                 if (currentSize <= contentSize && !bool) {
-                    self.$respCSS_size = contentSize;
+                    self.respCSSSize = contentSize;
 
                     $(header).addClass(cssClass);
                 } else if (contentSize < currentSize && bool) {
-                    self.$respCSS_size = 0;
+                    self.respCSSSize = 0;
                     $(".phpdebugbar-header").removeClass(cssClass);
                 }
             });
