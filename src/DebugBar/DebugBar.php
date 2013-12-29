@@ -251,7 +251,9 @@ class DebugBar implements ArrayAccess
         )));
         
         if (strlen($data) > $maxTotalHeaderLength){
-            return array();
+            $data = rawurlencode(json_encode(array(
+                'error' => 'Maximum header size exceeded'
+            )));
         }
         
         $chunks = array();
