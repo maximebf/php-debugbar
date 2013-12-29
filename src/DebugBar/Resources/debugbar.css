@@ -12,6 +12,10 @@ div.phpdebugbar {
   text-align: left;
 }
 
+div.phpdebugbar-closed {
+    width: auto;
+}
+
 div.phpdebugbar * {
 	box-sizing: content-box;
 }
@@ -39,7 +43,8 @@ a.phpdebugbar-tab,
 span.phpdebugbar-indicator,
 a.phpdebugbar-indicator,
 a.phpdebugbar-open-btn,
-a.phpdebugbar-minimize-btn {
+a.phpdebugbar-restore-btn,
+a.phpdebugbar-close-btn {
   float: left;
   padding: 5px 8px;
   font-size: 14px;
@@ -48,8 +53,8 @@ a.phpdebugbar-minimize-btn {
 }
 span.phpdebugbar-indicator,
 a.phpdebugbar-indicator,
-a.phpdebugbar-open-btn,
-a.phpdebugbar-minimize-btn {
+a.phpdebugbar-restore-btn,
+a.phpdebugbar-close-btn {
   float: right;
   border-right: 1px solid #ddd;
 }
@@ -85,14 +90,13 @@ a.phpdebugbar-tab.phpdebugbar-active {
     color: white;
   }
 
-a.phpdebugbar-minimize-btn {
-  display: none;
+a.phpdebugbar-close-btn {
   background: url(icons.png) no-repeat 10px 7px;
   width: 16px;
   height: 16px;
 }
 
-a.phpdebugbar-open-btn {
+a.phpdebugbar-open-btn, a.phpdebugbar-restore-btn {
   background: url(icons.png) no-repeat -14px 8px;
   width: 16px;
   height: 16px;
