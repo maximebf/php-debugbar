@@ -967,7 +967,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var data = this.parseHeaders(raw);
-            this.debugbar.addDataSet(data.data, data.id, "(ajax)");
+            if(data.error){
+                throw new Error('Error loading debugbar data: '+data.error);
+            }else if(data.data){
+                this.debugbar.addDataSet(data.data, data.id, "(ajax)");
+            }
             return true;
         },
 
