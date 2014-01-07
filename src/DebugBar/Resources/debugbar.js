@@ -471,9 +471,15 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
             
             // minimize button
-            this.$minimizebtn = $('<a href="javascript:" />').addClass(csscls('minimize-btn')).appendTo(this.$header);
-            this.$minimizebtn.click(function() {
-                self.minimize();
+            this.$closebtn = $('<a href="javascript:" />').addClass(csscls('close-btn')).appendTo(this.$header);
+            this.$closebtn.click(function() {
+                self.close();
+            });
+
+            // minimize button
+            this.$restorebtn = $('<a href="javascript:" />').addClass(csscls('restore-btn')).hide().appendTo(this.$el);
+            this.$restorebtn.click(function() {
+                self.restore();
             });
 
             // open button
@@ -509,12 +515,17 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 localStorage.setItem('phpdebugbar-height', this.$body.height());
             }
 
-            // bar visibility
-            var visible = localStorage.getItem('phpdebugbar-visible');
-            if (visible && visible == '1') {
-                var tab = localStorage.getItem('phpdebugbar-tab');
-                if (this.isTab(tab)) {
-                    this.showTab(tab);
+			// bar visibility
+            var open = localStorage.getItem('phpdebugbar-open');
+            if(open && open == '0'){
+                this.close();
+            }else{
+                var visible = localStorage.getItem('phpdebugbar-visible');
+                if (visible && visible == '1') {
+                    var tab = localStorage.getItem('phpdebugbar-tab');
+                    if (this.isTab(tab)) {
+                        this.showTab(tab);
+                    }
                 }
             }
         },
@@ -691,7 +702,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.$resizehdle.show();
             this.$body.show();
-            this.$minimizebtn.show();
             this.recomputeBottomOffset();
 
             $(this.$header).find('> .' + csscls('active')).removeClass(csscls('active'));
@@ -707,14 +717,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
-         * Hide panels and "close" the debug bar
+         * Hide panels and minimize the debug bar
          *
          * @this {DebugBar}
          */
         minimize: function() {
             this.$header.find('> .' + csscls('active')).removeClass(csscls('active'));
             this.$body.hide();
-            this.$minimizebtn.hide();
             this.$resizehdle.hide();
             this.recomputeBottomOffset();
             localStorage.setItem('phpdebugbar-visible', '0');
@@ -728,6 +737,32 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         isMinimized: function() {
             return this.$el.hasClass(csscls('minimized'));
+        },
+		
+        /**
+         * Close the debug bar
+         *
+         * @this {DebugBar}
+         */
+        close: function() {
+            this.$header.hide();
+            this.$body.hide();
+            this.$restorebtn.show();
+            localStorage.setItem('phpdebugbar-open', '0');
+            this.$el.addClass(csscls('closed'));
+        },
+
+        /**
+         * Restore the debug bar
+         *
+         * @this {DebugBar}
+         */
+        restore: function() {
+            this.$header.show();
+            this.$restorebtn.hide();
+            localStorage.setItem('phpdebugbar-open', '1');
+            this.restoreState();
+            this.$el.removeClass(csscls('closed'));
         },
 
         /**
