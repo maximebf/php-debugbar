@@ -84,7 +84,7 @@ class DoctrineCollector extends DataCollector implements Renderable
     {
         return array(
             "database" => array(
-                "icone" => "arrow-right",
+                "icon" => "arrow-right",
                 "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
                 "map" => "doctrine",
                 "default" => "[]"
