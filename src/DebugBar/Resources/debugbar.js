@@ -258,7 +258,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.$badge = $('<span />').addClass(csscls('badge')).appendTo(this.$tab);
             this.bindAttr('badge', function(value) {
-                if (value !== null) {
+                if (value !== null && value > 0) {
                     this.$badge.text(value);
                     this.$badge.show();
                 } else {
