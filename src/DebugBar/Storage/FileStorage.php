@@ -23,6 +23,9 @@ class FileStorage implements StorageInterface
     public function __construct($dirname)
     {
         $this->dirname = rtrim($dirname, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        if (!file_exists($this->dirname)) {
+            mkdir($this->dirname, 0777, true);
+        }
     }
 
     /**
