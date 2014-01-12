@@ -75,6 +75,6 @@ class FileStorage implements StorageInterface
 
     public function makeFilename($id)
     {
-        return $this->dirname . "$id.json";
+        return $this->dirname . basename($id). ".json";
     }
 }
