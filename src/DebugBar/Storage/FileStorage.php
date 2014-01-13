@@ -67,7 +67,13 @@ class FileStorage implements StorageInterface
 
         //Load the metadata and filter the results.
         $results = array();
+        $i = 0;
         foreach ($files as $file) {
+            //When filter is empty, skip loading the offset
+            if($i++ < $offset && empty($filters)){
+                $results[] = null;
+                continue;
+            }
             $data = $this->get($file['id']);
             $meta = $data['__meta'];
             unset($data);
