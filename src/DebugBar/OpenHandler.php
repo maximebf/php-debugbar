@@ -48,7 +48,9 @@ class OpenHandler
         }
 
         if ($sendHeader) {
-            header('Content-Type: application/json');
+            $this->debugBar->getHttpDriver()->setHeaders(array(
+                    'Content-Type'=> 'application/json'
+                ));
         }
         
         $response = json_encode(call_user_func(array($this, $op), $request));
