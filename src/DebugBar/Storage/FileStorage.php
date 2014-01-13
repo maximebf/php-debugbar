@@ -30,6 +30,9 @@ class FileStorage implements StorageInterface
      */
     public function save($id, $data)
     {
+        if (!file_exists($this->dirname)) {
+            mkdir($this->dirname, 0777, true);
+        }
         file_put_contents($this->makeFilename($id), json_encode($data));
     }
 
