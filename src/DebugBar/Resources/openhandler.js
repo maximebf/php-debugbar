@@ -142,7 +142,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     .append($('<td />').append(method))
                     .append($('<td />').append(uri))
                     .append('<td>' + meta['datetime'] + '</td>')
-                    .append('<td>' + meta['ip'] + '</td>')
+                    .append($('<td />').append(ip))
                     .appendTo(self.$table);
             });
             if (data.length < this.get('items_per_page')) {
