@@ -23,9 +23,6 @@ class FileStorage implements StorageInterface
     public function __construct($dirname)
     {
         $this->dirname = rtrim($dirname, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        if (!file_exists($this->dirname)) {
-            mkdir($this->dirname, 0777, true);
-        }
     }
 
     /**
@@ -33,6 +30,9 @@ class FileStorage implements StorageInterface
      */
     public function save($id, $data)
     {
+        if (!file_exists($this->dirname)) {
+            mkdir($this->dirname, 0777, true);
+        }
         file_put_contents($this->makeFilename($id), json_encode($data));
     }
 
