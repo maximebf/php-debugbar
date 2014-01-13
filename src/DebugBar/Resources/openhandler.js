@@ -58,6 +58,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         self.hide();
                     });
                 });
+                
+            this.addSearch();
 
             this.$overlay = $('<div />').addClass(csscls('overlay')).hide().appendTo('body');
             this.$overlay.on('click', function() {
@@ -69,6 +71,33 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$table.empty();
             this.$loadmorebtn.show();
             this.find({}, 0, this.handleFind.bind(this));
+        },
+        
+        addSearch: function(){
+            var self = this;
+            var searchBtn = $('<button />')
+                .text('Search')
+                .on('click', function(e) {
+                    self.$table.empty();
+                    var search = {};
+                    var a = $(this).parent().serializeArray();
+                    $.each(a, function() {
+                        if(this.value){
+                            search[this.name] = this.value;
+                        }
+                    });
+
+                    self.find(search, 0, self.handleFind.bind(self));
+                    e.preventDefault();
+                });
+
+            $('<form />')
+                .append('<br/><b>Filter results</b><br/>')
+                .append('Method: <select name="method"><option></option><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option></select><br/>')
+                .append('Uri: <input type="text" name="uri"><br/>')
+                .append('IP: <input type="text" name="ip"><br/>')
+                .append(searchBtn)
+                .appendTo(this.$actions);
         },
 
         handleFind: function(data) {
