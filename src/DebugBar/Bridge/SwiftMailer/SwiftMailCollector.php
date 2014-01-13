@@ -73,7 +73,7 @@ class SwiftMailCollector extends DataCollector implements Renderable
     {
         return array(
             'emails' => array(
-                'icone' => 'inbox',
+                'icon' => 'inbox',
                 'widget' => 'PhpDebugBar.Widgets.MailsWidget',
                 'map' => 'swiftmailer_mails.mails',
                 'default' => '[]',
