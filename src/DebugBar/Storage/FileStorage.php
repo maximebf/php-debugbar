@@ -49,18 +49,36 @@ class FileStorage implements StorageInterface
      */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
-        $results = array();
+        //Loop through all .json files and remember the modified time and id.
+        $files = array();
         foreach (new \DirectoryIterator($this->dirname) as $file) {
-            if (substr($file->getFilename(), 0, 1) !== '.') {
-                $id = substr($file->getFilename(), 0, strpos($file->getFilename(), '.'));
-                $data = $this->get($id);
-                $meta = $data['__meta'];
-                unset($data);
-                if (array_keys(array_intersect($meta, $filters)) == array_keys($filters)) {
-                    $results[] = $meta;
-                }
+            if ($file->getExtension() == 'json') {
+                $files[] = array(
+                    'time' => $file->getMTime(),
+                    'id' => $file->getBasename('.json')
+                );
             }
         }
+
+        //Sort the files, newest first
+        usort($files, function($a, $b) {
+                return $a['time'] < $b['time'];
+            });
+
+        //Load the metadata and filter the results.
+        $results = array();
+        foreach ($files as $file) {
+            $data = $this->get($file['id']);
+            $meta = $data['__meta'];
+            unset($data);
+            if (array_keys(array_intersect($meta, $filters)) == array_keys($filters)) {
+                $results[] = $meta;
+            }
+            if(count($results) >= ($max + $offset)){
+                break;
+            }
+        }
+
         return array_slice($results, $offset, $max);
     }
 
