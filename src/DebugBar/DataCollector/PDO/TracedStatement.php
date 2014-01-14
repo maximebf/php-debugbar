@@ -59,7 +59,7 @@ class TracedStatement
         $this->memoryUsage = $memoryUsage;
         $this->exception = $e;
     }
-	
+    
     /**
      * Check parameters for illegal (non UTF-8) strings, like Binary data.
      *
