@@ -48,7 +48,7 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
 
     /**
      * Adds logger which messages you want to log
-     * 
+     *
      * @param Logger $logger
      */
     public function addLogger(Logger $logger)

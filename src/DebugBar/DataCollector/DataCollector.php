@@ -17,7 +17,7 @@ abstract class DataCollector implements DataCollectorInterface
 {
     /**
      * Transforms a PHP variable to a string representation
-     * 
+     *
      * @param mixed $var
      * @return string
      */
@@ -51,7 +51,7 @@ abstract class DataCollector implements DataCollectorInterface
 
     /**
      * Transforms a duration in seconds in a readable string
-     * 
+     *
      * @param float $seconds
      * @return string
      */
@@ -67,7 +67,7 @@ abstract class DataCollector implements DataCollectorInterface
 
     /**
      * Transforms a size in bytes to a human readable string
-     * 
+     *
      * @param string $size
      * @param integer $precision
      * @return string

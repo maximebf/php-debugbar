@@ -11,7 +11,7 @@ Each time `DebugBar::collect()` is called, the data will be persisted.
 
 ### File
 
-It will collect data as json files under the specified directory 
+It will collect data as json files under the specified directory
 (which has to be writable).
 
     $storage = new DebugBar\Storage\FileStorage($directory);
@@ -24,7 +24,7 @@ Stores data inside a Redis hash. Uses [Predis](http://github.com/nrk/predis).
 
 ### PDO
 
-Stores data inside a database. 
+Stores data inside a database.
 
     $storage = new DebugBar\Storage\PdoStorage($pdo);
 
@@ -38,7 +38,7 @@ You can easily create your own storage handler by implementing the
 
 ## Request ID generator
 
-For each request, the debug bar will generate a unique id under which to store the 
+For each request, the debug bar will generate a unique id under which to store the
 collected data. This is perform using a `DebugBar\RequestIdGeneratorInterface` object.
 
 If none are defined, the debug bar will automatically use `DebugBar\RequestIdGenerator`

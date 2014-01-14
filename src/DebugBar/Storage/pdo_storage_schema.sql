@@ -1,9 +1,9 @@
 
 CREATE TABLE phpdebugbar (
-    id TEXT PRIMARY KEY, 
-    data TEXT, 
-    meta_utime TEXT, 
-    meta_datetime TEXT, 
+    id TEXT PRIMARY KEY,
+    data TEXT,
+    meta_utime TEXT,
+    meta_datetime TEXT,
     meta_uri TEXT,
     meta_ip TEXT
 );

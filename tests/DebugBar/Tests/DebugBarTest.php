@@ -46,7 +46,7 @@ class DebugBarTest extends DebugBarTestCase
     }
 
     public function testStorage()
-    {   
+    {
         $this->debugbar->setStorage($s = new MockStorage());
         $this->debugbar->addCollector(new MockCollector(array('foo')));
         $data = $this->debugbar->collect();

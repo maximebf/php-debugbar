@@ -8,5 +8,5 @@ To make integration with other frameworks as easy as possible,
 the `DebugBar` object uses an instance of `DebugBar\HttpDriverInterface`
 to access those features.
 
-`DebugBar\PhpHttpDriver`, which uses native PHP mechanisms, is provided 
+`DebugBar\PhpHttpDriver`, which uses native PHP mechanisms, is provided
 and will be used if no other driver are specified.

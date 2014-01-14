@@ -41,7 +41,7 @@ class PdoStorage implements StorageInterface
 
     /**
      * Sets the sql queries to be used
-     * 
+     *
      * @param array $queries
      */
     public function setSqlQueries(array $queries)
@@ -73,7 +73,7 @@ class PdoStorage implements StorageInterface
         }
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */

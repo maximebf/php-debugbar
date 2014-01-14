@@ -31,7 +31,7 @@ class ConfigCollector extends DataCollector implements Renderable
 
     /**
      * Sets the data
-     * 
+     *
      * @param array $data
      */
     public function setData(array $data)

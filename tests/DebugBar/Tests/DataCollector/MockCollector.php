@@ -17,7 +17,7 @@ class MockCollector extends DataCollector implements Renderable
         $this->name = $name;
         $this->widgets = $widgets;
     }
-    
+
     public function collect()
     {
         return $this->data;

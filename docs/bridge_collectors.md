@@ -12,17 +12,17 @@ Displays cache operations using `DebugBar\Bridge\CacheCacheCollector`
     $cache = new CacheCache\Cache(new CacheCache\Backends\Memory());
     $debugbar->addCollector(new DebugBar\Bridge\CacheCacheCollector($cache));
 
-CacheCache uses [Monolog](https://github.com/Seldaek/monolog) for logging, 
+CacheCache uses [Monolog](https://github.com/Seldaek/monolog) for logging,
 thus it is required to collect data.
 
-`CacheCacheCollector` subclasses `MonologCollector`, thus it can be 
+`CacheCacheCollector` subclasses `MonologCollector`, thus it can be
 [aggregated in the messages view](base-collectors.html#messages).
 
 ## Doctrine
 
 http://doctrine-project.org
 
-Displays sql queries into an SQL queries view using `DebugBar\Bridge\DoctrineCollector`. 
+Displays sql queries into an SQL queries view using `DebugBar\Bridge\DoctrineCollector`.
 You will need to set a `Doctrine\DBAL\Logging\DebugStack` logger on your connection.
 
     $debugStack = new Doctrine\DBAL\Logging\DebugStack();
@@ -51,7 +51,7 @@ Note that multiple logger can be collected:
 
 http://propelorm.org/
 
-Displays propel queries into an SQL queries view using `DebugBar\Bridge\PropelCollector`. 
+Displays propel queries into an SQL queries view using `DebugBar\Bridge\PropelCollector`.
 You will need to activate Propel debug mode.
 
     // before Propel::init()
@@ -90,7 +90,7 @@ Display log messages and sent mail using `DebugBar\Bridge\SwiftMailer\SwiftLogCo
 
 http://twig.sensiolabs.org/
 
-Collects info about rendered templates using `DebugBar\Bridge\Twig\TwigCollector`. 
+Collects info about rendered templates using `DebugBar\Bridge\Twig\TwigCollector`.
 You need to wrap your `Twig_Environment` object into a `DebugBar\Bridge\Twig\TraceableTwigEnvironment` object.
 
     $loader = new Twig_Loader_Filesystem('.');

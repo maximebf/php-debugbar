@@ -63,7 +63,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
 
     /**
      * Merge data from one of the key/value pair of the collected data
-     * 
+     *
      * @param string $property
      */
     public function setMergeProperty($property)
@@ -84,7 +84,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
      *
      * If true, sorts using sort()
      * If it is a string, sorts the data using the value from a key/value pair of the array
-     * 
+     *
      * @param bool|string $sort
      */
     public function setSort($sort)
@@ -119,7 +119,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
 
     /**
      * Sorts the collected data
-     * 
+     *
      * @param array $data
      * @return array
      */

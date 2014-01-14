@@ -24,7 +24,7 @@ interface DataCollectorInterface
 
     /**
      * Returns the unique name of the collector
-     * 
+     *
      * @return string
      */
     function getName();
