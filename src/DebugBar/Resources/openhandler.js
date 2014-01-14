@@ -25,7 +25,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$closebtn = $('<a href="javascript:"><i class="fa fa-times"></i></a>');
             this.$table = $('<tbody />');
             $('<div>PHP DebugBar | Open</div>').addClass(csscls('header')).append(this.$closebtn).appendTo(this.$el);
-            $('<table><thead><tr><th>ID</th><th>Method</th><th>URL</th><th>Date</th><th>IP</th></tr></thead></table>').append(this.$table).appendTo(this.$el);
+            $('<table><thead><tr><th>Load</th><th>Method</th><th>URL</th><th>Date</th><th>IP</th></tr></thead></table>').append(this.$table).appendTo(this.$el);
             this.$actions = $('<div />').addClass(csscls('actions')).appendTo(this.$el);
 
             this.$closebtn.on('click', function() {
@@ -58,6 +58,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         self.hide();
                     });
                 });
+                
+            this.addSearch();
 
             this.$overlay = $('<div />').addClass(csscls('overlay')).hide().appendTo('body');
             this.$overlay.on('click', function() {
@@ -70,12 +72,39 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$loadmorebtn.show();
             this.find({}, 0, this.handleFind.bind(this));
         },
+        
+        addSearch: function(){
+            var self = this;
+            var searchBtn = $('<button />')
+                .text('Search')
+                .on('click', function(e) {
+                    self.$table.empty();
+                    var search = {};
+                    var a = $(this).parent().serializeArray();
+                    $.each(a, function() {
+                        if(this.value){
+                            search[this.name] = this.value;
+                        }
+                    });
+
+                    self.find(search, 0, self.handleFind.bind(self));
+                    e.preventDefault();
+                });
+
+            $('<form />')
+                .append('<br/><b>Filter results</b><br/>')
+                .append('Method: <select name="method"><option></option><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option></select><br/>')
+                .append('Uri: <input type="text" name="uri"><br/>')
+                .append('IP: <input type="text" name="ip"><br/>')
+                .append(searchBtn)
+                .appendTo(this.$actions);
+        },
 
         handleFind: function(data) {
             var self = this;
             $.each(data, function(i, meta) {
                var a = $('<a href="javascript:" />')
-                    .text(meta['id'])
+                    .text('Load dataset')
                     .on('click', function(e) {
                         self.hide();
                         self.load(meta['id'], function(data) {
@@ -83,13 +112,37 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         });
                         e.preventDefault();
                     });
+                    
+                var method = $('<a href="javascript:" />')
+                    .text(meta['method'])
+                    .on('click', function(e) {
+                        self.$table.empty();
+                        self.find({method: meta['method']}, 0, self.handleFind.bind(self));
+                        e.preventDefault();
+                    });
 
+                var uri = $('<a href="javascript:" />')
+                    .text(meta['uri'])
+                    .on('click', function(e) {
+                        self.$table.empty();
+                        self.find({uri: meta['uri']}, 0, self.handleFind.bind(self));
+                        e.preventDefault();
+                    });
+
+                var ip = $('<a href="javascript:" />')
+                    .text(meta['ip'])
+                    .on('click', function(e) {
+                        self.$table.empty();
+                        self.find({ip: meta['ip']}, 0, self.handleFind.bind(self));
+                        e.preventDefault();
+                    });
+                    
                 $('<tr />')
                     .append($('<td />').append(a))
-                    .append('<td>' + meta['method'] + '</td>')
-                    .append('<td>' + meta['uri'] + '</td>')
+                    .append($('<td />').append(method))
+                    .append($('<td />').append(uri))
                     .append('<td>' + meta['datetime'] + '</td>')
-                    .append('<td>' + meta['ip'] + '</td>')
+                    .append($('<td />').append(ip))
                     .appendTo(self.$table);
             });
             if (data.length < this.get('items_per_page')) {
