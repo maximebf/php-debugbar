@@ -20,7 +20,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         render: function() {
             var self = this;
-            
+
             this.$el.appendTo('body').hide();
             this.$closebtn = $('<a href="javascript:"><i class="fa fa-times"></i></a>');
             this.$table = $('<tbody />');
@@ -58,7 +58,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         self.hide();
                     });
                 });
-                
+
             this.addSearch();
 
             this.$overlay = $('<div />').addClass(csscls('overlay')).hide().appendTo('body');
@@ -72,7 +72,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$loadmorebtn.show();
             this.find({}, 0, this.handleFind.bind(this));
         },
-        
+
         addSearch: function(){
             var self = this;
             var searchBtn = $('<button />')
@@ -112,7 +112,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         });
                         e.preventDefault();
                     });
-                    
+
                 var method = $('<a href="javascript:" />')
                     .text(meta['method'])
                     .on('click', function(e) {
@@ -136,7 +136,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         self.find({ip: meta['ip']}, 0, self.handleFind.bind(self));
                         e.preventDefault();
                     });
-                    
+
                 $('<tr />')
                     .append($('<td />').append(a))
                     .append($('<td />').append(method))

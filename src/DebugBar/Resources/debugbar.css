@@ -17,7 +17,7 @@ div.phpdebugbar-closed {
 }
 
 div.phpdebugbar * {
-    
+
     -moz-box-sizing: content-box;
          box-sizing: content-box;
 }

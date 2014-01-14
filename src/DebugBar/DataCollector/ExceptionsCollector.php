@@ -21,7 +21,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
 
     /**
      * Adds an exception to be profiled in the debug bar
-     * 
+     *
      * @param Exception $e
      */
     public function addException(Exception $e)
@@ -31,7 +31,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
 
     /**
      * Returns the list of exceptions being profiled
-     * 
+     *
      * @return array[Exception]
      */
     public function getExceptions()
@@ -52,7 +52,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
 
     /**
      * Returns exception data as an array
-     * 
+     *
      * @param Exception $e
      * @return array
      */
@@ -71,7 +71,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             'surrounding_lines' => $lines
         );
     }
-    
+
     /**
      * {@inheritDoc}
      */

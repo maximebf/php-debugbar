@@ -43,7 +43,7 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Starts a measure
-     * 
+     *
      * @param string $name Internal name, used to stop the measure
      * @param string $label Public name
      */
@@ -58,7 +58,7 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Stops a measure
-     * 
+     *
      * @param string $name
      */
     public function stopMeasure($name)
@@ -73,7 +73,7 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Adds a measure
-     * 
+     *
      * @param string $label
      * @param float $start
      * @param float $end
@@ -107,7 +107,7 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Returns an array of all measures
-     * 
+     *
      * @return array
      */
     public function getMeasures()
@@ -117,7 +117,7 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Returns the request start time
-     * 
+     *
      * @return float
      */
     public function getRequestStartTime()
@@ -127,7 +127,7 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Returns the request end time
-     * 
+     *
      * @return float
      */
     public function getRequestEndTime()
@@ -137,7 +137,7 @@ class TimeDataCollector extends DataCollector implements Renderable
 
     /**
      * Returns the duration of a request
-     * 
+     *
      * @return float
      */
     public function getRequestDuration()

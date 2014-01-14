@@ -21,7 +21,7 @@ class TracedStatement
 
     /**
      * Traces a call and returns a TracedStatement
-     * 
+     *
      * @param callback $callback
      * @param array $args Callback args
      * @param string $sql The SQL query string
@@ -59,7 +59,7 @@ class TracedStatement
         $this->memoryUsage = $memoryUsage;
         $this->exception = $e;
     }
-	
+
     /**
      * Check parameters for illegal (non UTF-8) strings, like Binary data.
      *
@@ -78,7 +78,7 @@ class TracedStatement
 
     /**
      * Returns the SQL string used for the query
-     * 
+     *
      * @return string
      */
     public function getSql()
@@ -116,7 +116,7 @@ class TracedStatement
 
     /**
      * Returns the number of rows affected/returned
-     * 
+     *
      * @return int
      */
     public function getRowCount()
@@ -126,7 +126,7 @@ class TracedStatement
 
     /**
      * Returns an array of parameters used with the query
-     * 
+     *
      * @return array
      */
     public function getParameters()
@@ -140,7 +140,7 @@ class TracedStatement
 
     /**
      * Returns the prepared statement id
-     * 
+     *
      * @return string
      */
     public function getPreparedId()
@@ -150,7 +150,7 @@ class TracedStatement
 
     /**
      * Checks if this is a prepared statement
-     * 
+     *
      * @return boolean
      */
     public function isPrepared()
@@ -170,7 +170,7 @@ class TracedStatement
 
     /**
      * Returns the duration in seconds of the execution
-     * 
+     *
      * @return int
      */
     public function getDuration()
@@ -180,7 +180,7 @@ class TracedStatement
 
     /**
      * Returns the peak memory usage during the execution
-     * 
+     *
      * @return int
      */
     public function getMemoryUsage()
@@ -190,7 +190,7 @@ class TracedStatement
 
     /**
      * Checks if the statement was successful
-     * 
+     *
      * @return boolean
      */
     public function isSuccess()
@@ -200,7 +200,7 @@ class TracedStatement
 
     /**
      * Returns the exception triggered
-     * 
+     *
      * @return \Exception
      */
     public function getException()
@@ -210,7 +210,7 @@ class TracedStatement
 
     /**
      * Returns the exception's code
-     * 
+     *
      * @return string
      */
     public function getErrorCode()
@@ -220,7 +220,7 @@ class TracedStatement
 
     /**
      * Returns the exception's message
-     * 
+     *
      * @return string
      */
     public function getErrorMessage()

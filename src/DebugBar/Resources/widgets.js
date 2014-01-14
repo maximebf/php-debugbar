@@ -13,7 +13,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     /**
      * Replaces spaces with &nbsp; and line breaks with <br>
-     * 
+     *
      * @param {String} text
      * @return {String}
      */
@@ -24,7 +24,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     /**
      * Returns a string representation of value, using JSON.stringify
      * if it's an object.
-     * 
+     *
      * @param {Object} value
      * @param {Boolean} prettify Uses htmlize() if true
      * @return {String}
@@ -41,7 +41,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     /**
      * Returns a prefixed css class name
-     * 
+     *
      * @param {String} cls
      * @return {String}
      */
@@ -148,11 +148,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * An extension of KVListWidget where the data represents a list
      * of variables
-     * 
+     *
      * Options:
      *  - data
      */
@@ -179,7 +179,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * Iframe widget
      *
@@ -278,7 +278,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.bindAttr(['exclude', 'search'], function() {
                 var data = this.get('data'),
-                    exclude = this.get('exclude'), 
+                    exclude = this.get('exclude'),
                     search = this.get('search'),
                     fdata = [];
 
@@ -339,7 +339,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * Widget for the displaying exceptions
      *
@@ -384,7 +384,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * Widget for the displaying sql queries
      *
@@ -418,7 +418,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (stmt.params && !$.isEmptyObject(stmt.params)) {
                     var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
                     for (var key in stmt.params) {
-                        table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') + 
+                        table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') +
                                      '">' + stmt.params[key] + '</td></tr>');
                     }
                     li.css('cursor', 'pointer').click(function() {
@@ -452,7 +452,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * Widget for the displaying templates data
      *
@@ -486,7 +486,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * Widget for the displaying mails data
      *

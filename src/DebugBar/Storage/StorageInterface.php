@@ -14,7 +14,7 @@ interface StorageInterface
 {
     /**
      * Saves collected data
-     * 
+     *
      * @param string $id
      * @param string $data
      */
@@ -22,7 +22,7 @@ interface StorageInterface
 
     /**
      * Returns collected data with the specified id
-     * 
+     *
      * @param string $id
      * @return array
      */
@@ -30,7 +30,7 @@ interface StorageInterface
 
     /**
      * Returns a metadata about collected data
-     * 
+     *
      * @param array $filters
      * @param integer $max
      * @param integer $offset
