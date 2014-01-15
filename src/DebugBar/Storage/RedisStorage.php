@@ -63,9 +63,13 @@ class RedisStorage implements StorageInterface
         return array_slice($results, $offset, $max);
     }
     
-    protected function filter($meta, $filters){
-        foreach($filters as $key => $value){
-            if(!isset($meta[$key]) || fnmatch ($value, $meta[$key]) === false){
+    /**
+     * Filter the metadata for matches.
+     */
+    protected function filter($meta, $filters)
+    {
+        foreach ($filters as $key => $value) {
+            if (!isset($meta[$key]) || fnmatch ($value, $meta[$key]) === false) {
                 return false;
             }
         }
