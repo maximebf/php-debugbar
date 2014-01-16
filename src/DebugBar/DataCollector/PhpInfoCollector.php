@@ -24,7 +24,7 @@ class PhpInfoCollector extends DataCollector
             'version' => PHP_VERSION
         );
     }
-    
+
     /**
      * {@inheritDoc}
      */

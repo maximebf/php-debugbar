@@ -4,12 +4,12 @@
 Nothing described below is needed to run the debug bar in a normal way.**
 
 The default client side implementation of the debug bar is made
-entirely in Javascript and is located in the *debugbar.js* file. 
+entirely in Javascript and is located in the *debugbar.js* file.
 
-It adds a bottom-anchored bar which can have tabs and indicators. 
+It adds a bottom-anchored bar which can have tabs and indicators.
 The bar can be in an open or close state. When open, the tab panel is
 visible.
-An indicator is a piece of information displayed in the always-visible 
+An indicator is a piece of information displayed in the always-visible
 part of the bar.
 
 The bar handles multiple datasets by displaying a select box
@@ -59,7 +59,7 @@ is better to use data mapping to support dynamically changing the data set.
 To enable dynamically changing the data sets, we need to specify which values
 should be feed into which controls. This can be done using `setDataMap(map)`
 which takes as argument an object where properties are control names. Values
-should be arrays where the first item is the property from the data set and 
+should be arrays where the first item is the property from the data set and
 the second a default value.
 
     debugbar.setDataMap({
@@ -147,9 +147,9 @@ Data collectors related widgets:
 
 ## Custom tabs and indicators
 
-Behind the scene, `createTab()` and `createIndicator()` use `addTab(name, tab)` and 
-`addIndicator(name, indicator)`. Tabs are objects of type `PhpDebugBar.DebugBar.Tab` 
-and indicators of type `PhpDebugBar.DebugBar.Indicator`. These classes subclass 
+Behind the scene, `createTab()` and `createIndicator()` use `addTab(name, tab)` and
+`addIndicator(name, indicator)`. Tabs are objects of type `PhpDebugBar.DebugBar.Tab`
+and indicators of type `PhpDebugBar.DebugBar.Indicator`. These classes subclass
 `PhpDebugBar.Widget` which makes it easy to create custom tabs or indicators.
 
     var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({

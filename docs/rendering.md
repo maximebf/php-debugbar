@@ -8,14 +8,14 @@ all the useful functions to included the needed assets and generate a debug bar.
 ## Assets
 
 The debug bar relies on some css and javascript files which needs to be included
-into your webpage. They are located in the *src/DebugBar/Resources* folder. 
+into your webpage. They are located in the *src/DebugBar/Resources* folder.
 This can be done in four ways:
 
  - Using `JavascriptRenderer::renderHead()` which will returns a string with
    the needed script and link tags
- - Using [Assetic](https://github.com/kriswallsmith/assetic) and 
+ - Using [Assetic](https://github.com/kriswallsmith/assetic) and
    `JavascriptRenderer::getAsseticCollection()`
- - Dumping the assets yourself using `JavascriptRenderer::dumpCssAssets()` and 
+ - Dumping the assets yourself using `JavascriptRenderer::dumpCssAssets()` and
    `JavascriptRenderer::dumpJsAssets()`
  - Retrieving the list filenames of assets using `JavascriptRenderer::getAssets()`
    and doing something with it
@@ -77,7 +77,7 @@ You can manage whether `jQuery.noConflict(true)` should be called or not using
 The renderer will generate all the needed code for your debug bar. This means
 initializing the DebugBar js object, adding tabs and indicators, defining a data map, etc...
 
-Data collectors can provide their own controls when implementing the 
+Data collectors can provide their own controls when implementing the
 `DebugBar\DataCollector\Renderable` interface as explained in the Collecting Data chapter.
 
 Thus in almost all cases, you should only have to use `render()` right away:
@@ -140,7 +140,7 @@ possible values:
 - *tab*: class name of the tab object (to use a custom tab object)
 - *indicator*: class name of the indicator object (to use a custom indicator object)
 
-At least *icon* or *widget* are needed (unless *tab* or *indicator* are specified). If *widget* is 
+At least *icon* or *widget* are needed (unless *tab* or *indicator* are specified). If *widget* is
 specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab
 or indicator.
 

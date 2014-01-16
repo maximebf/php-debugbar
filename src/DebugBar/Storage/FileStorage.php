@@ -87,7 +87,7 @@ class FileStorage implements StorageInterface
 
         return array_slice($results, $offset, $max);
     }
-	
+
     /**
      * Filter the metadata for matches.
      */

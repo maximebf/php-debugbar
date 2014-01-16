@@ -126,7 +126,7 @@ class TraceablePDO extends PDO
 
     /**
      * Profiles a call to a PDO method
-     * 
+     *
      * @param string $method
      * @param string $sql
      * @param array $args
@@ -161,7 +161,7 @@ class TraceablePDO extends PDO
 
     /**
      * Adds an executed TracedStatement
-     * 
+     *
      * @param TracedStatement $stmt
      */
     public function addExecutedStatement(TracedStatement $stmt)
@@ -171,7 +171,7 @@ class TraceablePDO extends PDO
 
     /**
      * Returns the accumulated execution time of statements
-     * 
+     *
      * @return int
      */
     public function getAccumulatedStatementsDuration()
@@ -181,7 +181,7 @@ class TraceablePDO extends PDO
 
     /**
      * Returns the peak memory usage while performing statements
-     * 
+     *
      * @return int
      */
     public function getPeakMemoryUsage()
@@ -191,7 +191,7 @@ class TraceablePDO extends PDO
 
     /**
      * Returns the list of executed statements as TracedStatement objects
-     * 
+     *
      * @return array
      */
     public function getExecutedStatements()
@@ -201,7 +201,7 @@ class TraceablePDO extends PDO
 
     /**
      * Returns the list of failed statements
-     * 
+     *
      * @return array
      */
     public function getFailedExecutedStatements()

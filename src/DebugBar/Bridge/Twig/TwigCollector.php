@@ -18,7 +18,7 @@ use DebugBar\DataCollector\Renderable;
  *
  * http://twig.sensiolabs.org/
  *
- * Your Twig_Environment object needs to be wrapped in a 
+ * Your Twig_Environment object needs to be wrapped in a
  * TraceableTwigEnvironment object
  *
  * <code>
