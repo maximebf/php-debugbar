@@ -55,12 +55,25 @@ class RedisStorage implements StorageInterface
         foreach ($this->redis->hgetall($this->hash) as $id => $data) {
             if ($data = unserialize($data)) {
                 $meta = $data['__meta'];
-                if (array_keys(array_intersect($meta, $filters)) == array_keys($filters)) {
+                if ($this->filter($meta, $filters)) {
                     $results[] = $meta;
                 }
             }
         }
         return array_slice($results, $offset, $max);
+    }
+    
+    /**
+     * Filter the metadata for matches.
+     */
+    protected function filter($meta, $filters)
+    {
+        foreach ($filters as $key => $value) {
+            if (!isset($meta[$key]) || fnmatch ($value, $meta[$key]) === false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
