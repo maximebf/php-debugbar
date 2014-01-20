@@ -19,7 +19,7 @@ class MemoryCollector extends DataCollector implements Renderable
 
     /**
      * Returns the peak memory usage
-     * 
+     *
      * @return integer
      */
     public function getPeakUsage()

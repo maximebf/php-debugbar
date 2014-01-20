@@ -12,7 +12,7 @@ use DebugBar\DataCollector\TimeDataCollector;
 class PDOCollector extends DataCollector implements Renderable
 {
     protected $connections = array();
-    
+
     protected $timeCollector;
 
     protected $renderSqlWithParams = false;
@@ -33,7 +33,7 @@ class PDOCollector extends DataCollector implements Renderable
 
     /**
      * Renders the SQL of traced statements with params embeded
-     * 
+     *
      * @param boolean $enabled
      */
     public function setRenderSqlWithParams($enabled = true, $quotationChar = '<>')
@@ -54,7 +54,7 @@ class PDOCollector extends DataCollector implements Renderable
 
     /**
      * Adds a new PDO instance to be collector
-     * 
+     *
      * @param TraceablePDO $pdo
      * @param string $name Optional connection name
      */
@@ -68,7 +68,7 @@ class PDOCollector extends DataCollector implements Renderable
 
     /**
      * Returns PDO instances to be collected
-     * 
+     *
      * @return array
      */
     public function getConnections()
@@ -107,7 +107,7 @@ class PDOCollector extends DataCollector implements Renderable
 
     /**
      * Collects data from a single TraceablePDO instance
-     * 
+     *
      * @param TraceablePDO $pdo
      * @param TimeDataCollector $timeCollector
      * @return array

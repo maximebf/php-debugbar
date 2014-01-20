@@ -35,7 +35,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      * Adds a message
      *
      * A message can be anything from an object to a string
-     * 
+     *
      * @param mixed $message
      * @param string $label
      */
@@ -51,7 +51,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
 
     /**
      * Aggregates messages from other collectors
-     * 
+     *
      * @param MessagesAggregateInterface $messages
      */
     public function aggregate(MessagesAggregateInterface $messages)

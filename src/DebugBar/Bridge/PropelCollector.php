@@ -179,7 +179,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
 
     /**
      * Converts Propel log levels to PSR log levels
-     * 
+     *
      * @param int $level
      * @return string
      */
@@ -199,7 +199,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
 
     /**
      * Parse a log line to extract query information
-     * 
+     *
      * @param string $message
      */
     protected function parseAndLogSqlQuery($message)

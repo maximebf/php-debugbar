@@ -515,7 +515,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 localStorage.setItem('phpdebugbar-height', this.$body.height());
             }
 
-			// bar visibility
+            // bar visibility
             var open = localStorage.getItem('phpdebugbar-open');
             if(open && open == '0'){
                 this.close();
@@ -738,7 +738,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         isMinimized: function() {
             return this.$el.hasClass(csscls('minimized'));
         },
-		
+        
         /**
          * Close the debug bar
          *

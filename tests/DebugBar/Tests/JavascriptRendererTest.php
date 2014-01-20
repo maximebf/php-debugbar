@@ -83,7 +83,7 @@ class JavascriptRendererTest extends DebugBarTestCase
     {
         $this->debugbar->addCollector(new \DebugBar\DataCollector\MessagesCollector());
         $this->r->addControl('time', array('icon' => 'time', 'map' => 'time', 'default' => '"0s"'));
-        $expected = file_get_contents(__DIR__ . '/full_init.html');
+        $expected = rtrim(file_get_contents(__DIR__ . '/full_init.html'));
         $this->assertStringStartsWith($expected, $this->r->render());
     }
 

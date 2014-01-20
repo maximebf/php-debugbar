@@ -2,12 +2,12 @@
 
 ## Using collectors
 
-Collectors can be added to your debug bar using `addCollector()`. 
+Collectors can be added to your debug bar using `addCollector()`.
 
     $debugbar = new DebugBar();
     $debugbar->addCollector(new DataCollector\RequestDataCollector());
 
-Each collector as a unique name as defined by its `getName()` method. You can 
+Each collector as a unique name as defined by its `getName()` method. You can
 access collectors using `getCollector($name)`.
 
     $debugbar->addCollector(new DataCollector\MessagesCollector());
@@ -46,7 +46,7 @@ same time the `DebugBar::collect()` method is called.
 
 This however won't show anything in the debug bar as no information are provided
 on how to display these data. You could do that manually as you'll see in later chapter
-or implement the `DebugBar\DataSource\Renderable` interface. 
+or implement the `DebugBar\DataSource\Renderable` interface.
 
 To implement it, you must define a `getWidgets()` function which returns an array
 of key/value pairs where key are control names and values control options as defined

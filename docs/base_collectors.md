@@ -30,7 +30,7 @@ to the debug bar:
 Provides a way to log total execution time as well as taking "measures" (ie. measure the execution time of a particular operation).
 
     $debugbar->addCollector(new DebugBar\DataCollector\TimeDataCollector());
-    
+
     $debugbar['time']->startMeasure('longop', 'My long operation');
     sleep(2);
     $debugbar['time']->stopMeasure('longop');
