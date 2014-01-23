@@ -476,7 +476,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.bindAttr('data', function(data) {
                 this.$list.set('data', data.templates);
-                this.$status.empty().append($('<span />').text(data.templates.length + " templates were rendered"));
+                var sentence = data.sentence || "templates were rendered";
+                this.$status.empty().append($('<span />').text(data.templates.length + " " + sentence));
                 if (data.accumulated_render_time_str) {
                     this.$status.append($('<span title="Accumulated render time" />').addClass(csscls('render_time')).text(data.accumulated_render_time_str));
                 }
