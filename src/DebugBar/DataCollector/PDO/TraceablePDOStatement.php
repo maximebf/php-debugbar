@@ -52,6 +52,7 @@ class TraceablePDOStatement extends PDOStatement
     public function execute($params = null)
     {
         $start = microtime(true);
+        $av = memory_get_usage(true);
         $ex = null;
 
         try {
@@ -66,7 +67,7 @@ class TraceablePDOStatement extends PDOStatement
             $boundParameters = array_merge($boundParameters, $params);
         }
         $end = microtime(true);
-        $memoryUsage = memory_get_usage(true);
+        $memoryUsage = memory_get_usage(true) - $av;
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
             $error = $this->errorInfo();
             $ex = new PDOException($error[2], $error[0]);

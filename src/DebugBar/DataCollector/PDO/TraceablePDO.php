@@ -135,6 +135,7 @@ class TraceablePDO extends PDO
     protected function profileCall($method, $sql, array $args)
     {
         $start = microtime(true);
+        $av = memory_get_usage(true);
         $ex = null;
 
         try {
@@ -144,7 +145,7 @@ class TraceablePDO extends PDO
         }
 
         $end = microtime(true);
-        $memoryUsage = memory_get_usage(true);
+        $memoryUsage = memory_get_usage(true) - $av;
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
             $error = $this->pdo->errorInfo();
             $ex = new PDOException($error[2], $error[0]);
