@@ -750,6 +750,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$restorebtn.show();
             localStorage.setItem('phpdebugbar-open', '0');
             this.$el.addClass(csscls('closed'));
+            this.recomputeBottomOffset();
         },
 
         /**
