@@ -324,10 +324,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 this.$el.empty();
                 if (data.measures) {
                     for (var i = 0; i < data.measures.length; i++) {
-                        var li = $('<li />').addClass(csscls('measure'));
+                        var li = $('<li />').addClass(csscls('measure')),
+                            left = Math.round(data.measures[i].relative_start * 100 / data.duration),
+                            width = Math.min(Math.round(data.measures[i].duration * 100 / data.duration), 100 - left);
+
                         li.append($('<span />').addClass(csscls('value')).css({
-                            left: Math.round(data.measures[i].relative_start * 100 / data.duration) + "%",
-                            width: Math.round(data.measures[i].duration * 100 / data.duration) + "%"
+                            left: left + "%",
+                            width: width + "%"
                         }));
                         li.append($('<span />').addClass(csscls('label')).text(data.measures[i].label + " (" + data.measures[i].duration_str + ")"));
                         this.$el.append(li);
