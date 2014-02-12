@@ -15,7 +15,7 @@ use Predis\Client;
 /**
  * Stores collected data into Redis
  */
-class RedisStorage implements StorageInterface
+class RedisStorage extends BaseStorage implements StorageInterface
 {
     protected $redis;
 
@@ -74,6 +74,13 @@ class RedisStorage implements StorageInterface
             }
         }
         return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function gc($lifetime){
+        //TODO
     }
 
     /**

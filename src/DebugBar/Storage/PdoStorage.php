@@ -15,7 +15,7 @@ use PDO;
 /**
  * Stores collected data into a database using PDO
  */
-class PdoStorage implements StorageInterface
+class PdoStorage extends BaseStorage implements StorageInterface
 {
     protected $pdo;
 
@@ -109,6 +109,13 @@ class PdoStorage implements StorageInterface
         return $results;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function gc($lifetime){
+        //TODO
+    }
+    
     /**
      * {@inheritDoc}
      */
