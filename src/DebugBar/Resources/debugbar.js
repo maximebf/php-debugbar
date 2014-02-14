@@ -410,28 +410,34 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         registerResizeHandler: function() {
             var self = this, f = null;
-            self.respCSSSize = 0;
+            self.respCSSSize = new Array();
+            self.respCSSLevel = 0;
             $(window).resize(f = function () {
                 var $ = PhpDebugBar.$;
-                var header = $(".phpdebugbar-header");
+                var $phpDebugbar = $(".phpdebugbar");
 
-                var contentSize = self.respCSSSize;
-                if (self.respCSSSize == 0) {
-                    $(header).find("> *:visible").each(function () {
+                var _LEVEL = [
+                    "phpdebugbar-mini-design",
+                    "phpdebugbar-ultramini-design"
+                ];
+
+                var currentSize, contentSize, level;
+                for (var i=0;i<_LEVEL.length;i++) {
+                    currentSize = $(header).width();
+                    contentSize = 0;
+                    $phpDebugbar.find(".phpdebugbar-header > *:visible").each(function () {
                         contentSize += $(this).outerWidth();
                     });
-                }
 
-                var currentSize = $(header).width();
-
-                var cssClass = "phpdebugbar-mini-design", bool = $(header).hasClass(cssClass);
-                if (currentSize <= contentSize && !bool) {
-                    self.respCSSSize = contentSize;
-
-                    $(header).addClass(cssClass);
-                } else if (contentSize < currentSize && bool) {
-                    self.respCSSSize = 0;
-                    $(".phpdebugbar-header").removeClass(cssClass);
+                    if (currentSize <= contentSize && _LEVEL[self.respCSSLevel]) {
+                        $phpDebugbar.addClass(_LEVEL[self.respCSSLevel]);
+                        self.respCSSSize[self.respCSSLevel] = contentSize;
+                        self.respCSSLevel++;
+                    } else if (self.respCSSSize[self.respCSSLevel-1] < currentSize) {
+                        self.respCSSSize.splice(self.respCSSLevel-1, 1);
+                        self.respCSSLevel--;
+                        $phpDebugbar.removeClass(_LEVEL[self.respCSSLevel]);
+                    }
                 }
             });
             setTimeout(f, 20);
