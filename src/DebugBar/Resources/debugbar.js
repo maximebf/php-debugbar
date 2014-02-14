@@ -764,6 +764,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             localStorage.setItem('phpdebugbar-open', '1');
             this.restoreState();
             this.$el.removeClass(csscls('closed'));
+            $(window).trigger('resize');
         },
 
         /**
