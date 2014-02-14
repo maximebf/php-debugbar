@@ -94,14 +94,16 @@ dl.phpdebugbar-widgets-kvlist {
 }
   dl.phpdebugbar-widgets-kvlist dt {
     float: left;
-    width: 140px;
+    width: 150px;
     padding: 5px;
     border-top: 1px solid #eee;
     font-weight: bold;
     clear: both;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   dl.phpdebugbar-widgets-kvlist dd {
-    margin-left: 150px;
+    margin-left: 160px;
     padding: 5px;
     border-top: 1px solid #eee;
     cursor: pointer;
