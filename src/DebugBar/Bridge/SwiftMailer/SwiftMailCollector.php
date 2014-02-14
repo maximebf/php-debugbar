@@ -51,6 +51,8 @@ class SwiftMailCollector extends DataCollector implements Renderable
 
     protected function formatTo($to)
     {
+        if (!$to) return '';
+        
         $f = array();
         foreach ($to as $k => $v) {
             $f[] = (empty($v) ? '' : "$v ") . "<$k>";
