@@ -419,26 +419,23 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * Resizes the debugbar to fit the current browser window
          */
         resize: function() {
-            var $ = PhpDebugBar.$;
-            var header = $(".phpdebugbar-header");
-
             var contentSize = this.respCSSSize;
             if (this.respCSSSize == 0) {
-                $(header).find("> *:visible").each(function () {
+                this.$header.find("> *:visible").each(function () {
                     contentSize += $(this).outerWidth();
                 });
             }
 
-            var currentSize = $(header).width();
+            var currentSize = this.$header.width();
+            var cssClass = "phpdebugbar-mini-design";
+            var bool = this.$header.hasClass(cssClass);
 
-            var cssClass = "phpdebugbar-mini-design", bool = $(header).hasClass(cssClass);
             if (currentSize <= contentSize && !bool) {
                 this.respCSSSize = contentSize;
-
-                $(header).addClass(cssClass);
+                this.$header.addClass(cssClass);
             } else if (contentSize < currentSize && bool) {
                 this.respCSSSize = 0;
-                $(".phpdebugbar-header").removeClass(cssClass);
+                this.$header.removeClass(cssClass);
             }
         },
 
@@ -522,9 +519,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             // bar visibility
             var open = localStorage.getItem('phpdebugbar-open');
-            if(open && open == '0'){
+            if (open && open == '0') {
                 this.close();
-            }else{
+            } else {
                 var visible = localStorage.getItem('phpdebugbar-visible');
                 if (visible && visible == '1') {
                     var tab = localStorage.getItem('phpdebugbar-tab');
@@ -719,6 +716,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$el.removeClass(csscls('minimized'));
             localStorage.setItem('phpdebugbar-visible', '1');
             localStorage.setItem('phpdebugbar-tab', name);
+            this.resize();
         },
 
         /**
@@ -733,6 +731,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.recomputeBottomOffset();
             localStorage.setItem('phpdebugbar-visible', '0');
             this.$el.addClass(csscls('minimized'));
+            this.resize();
         },
 
         /**
@@ -1009,9 +1008,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var data = this.parseHeaders(raw);
-            if(data.error){
-                throw new Error('Error loading debugbar data: '+data.error);
-            }else if(data.data){
+            if (data.error) {
+                throw new Error('Error loading debugbar data: ' + data.error);
+            } else if(data.data) {
                 this.debugbar.addDataSet(data.data, data.id, "(ajax)");
             }
             return true;
