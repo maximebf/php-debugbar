@@ -134,24 +134,23 @@ class TraceablePDO extends PDO
      */
     protected function profileCall($method, $sql, array $args)
     {
-        $start = microtime(true);
-        $ex = null;
+        $trace = new TracedStatement($sql);
+        $trace->start();
 
+        $ex = null;
         try {
             $result = call_user_func_array(array($this->pdo, $method), $args);
         } catch (PDOException $e) {
             $ex = $e;
         }
 
-        $end = microtime(true);
-        $memoryUsage = memory_get_usage(true);
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
             $error = $this->pdo->errorInfo();
             $ex = new PDOException($error[2], $error[0]);
         }
 
-        $tracedStmt = new TracedStatement($sql, array(), null, 0, $start, $end, $memoryUsage, $ex);
-        $this->addExecutedStatement($tracedStmt);
+        $trace->end($ex);
+        $this->addExecutedStatement($trace);
 
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) === PDO::ERRMODE_EXCEPTION && $ex !== null) {
             throw $ex;
@@ -184,9 +183,19 @@ class TraceablePDO extends PDO
      *
      * @return int
      */
+    public function getMemoryUsage()
+    {
+        return array_reduce($this->executedStatements, function($v, $s) { return $v + $s->getMemoryUsage(); });
+    }
+
+    /**
+     * Returns the peak memory usage while performing statements
+     *
+     * @return int
+     */
     public function getPeakMemoryUsage()
     {
-        return array_reduce($this->executedStatements, function($v, $s) { $m = $s->getMemoryUsage(); return $m > $v ? $m : $v; });
+        return array_reduce($this->executedStatements, function($v, $s) { $m = $s->getEndMemory(); return $m > $v ? $m : $v; });
     }
 
     /**
@@ -207,5 +216,20 @@ class TraceablePDO extends PDO
     public function getFailedExecutedStatements()
     {
         return array_filter($this->executedStatements, function($s) { return !$s->isSuccess(); });
+    }
+
+    public function __get($name)
+    {
+        return $this->pdo->$name;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->pdo->$name = $value;
+    }
+
+    public function __call($name, $args)
+    {
+        return call_user_func_array(array($this->pdo, $name), $args);
     }
 }

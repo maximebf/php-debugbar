@@ -13,29 +13,19 @@ class TracedStatement
 
     protected $parameters;
 
+    protected $startTime;
+
+    protected $endTime;
+
     protected $duration;
 
-    protected $memoryUsage;
+    protected $startMemory;
+
+    protected $endMemory;
+
+    protected $memoryDelta;
 
     protected $exception;
-
-    /**
-     * Traces a call and returns a TracedStatement
-     *
-     * @param callback $callback
-     * @param array $args Callback args
-     * @param string $sql The SQL query string
-     * @return TracedStatement
-     */
-    public static function traceCall($callback, array $args, $sql = '')
-    {
-        $start = microtime(true);
-        $result = call_user_func_array($callback, $args);
-        $duration = microtime(true) - $start;
-        $memoryUsage = memory_get_peak_usage(true);
-        $tracedStmt = new TracedStatement($sql, array(), null, 0, $duration, $memoryUsage);
-        return array($tracedStmt, $result);
-    }
 
     /**
      * @param string $sql
@@ -47,17 +37,27 @@ class TracedStatement
      * @param integer $memoryUsage
      * @param \Exception $e
      */
-    public function __construct($sql, array $params = array(), $preparedId = null, $rowCount = 0, $startTime = 0, $endTime = 0, $memoryUsage = 0, \Exception $e = null)
+    public function __construct($sql, array $params = array(), $preparedId = null)
     {
         $this->sql = $sql;
-        $this->rowCount = $rowCount;
         $this->parameters = $this->checkParameters($params);
         $this->preparedId = $preparedId;
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
-        $this->duration = $endTime - $startTime;
-        $this->memoryUsage = $memoryUsage;
-        $this->exception = $e;
+    }
+
+    public function start($startTime = null, $startMemory = null)
+    {
+        $this->startTime = $startTime ?: microtime(true);
+        $this->startMemory = $startMemory ?: memory_get_usage(true);
+    }
+
+    public function end(\Exception $exception = null, $rowCount = 0, $endTime = null, $endMemory = null)
+    {
+        $this->endTime = $endTime ?: microtime(true);
+        $this->duration = $this->endTime - $this->startTime;
+        $this->endMemory = $endMemory ?: memory_get_usage(true);
+        $this->memoryDelta = $this->endMemory - $this->startMemory;
+        $this->exception = $exception;
+        $this->rowCount = $rowCount;
     }
 
     /**
@@ -178,14 +178,24 @@ class TracedStatement
         return $this->duration;
     }
 
+    public function getStartMemory()
+    {
+        return $this->startMemory;
+    }
+
+    public function getEndMemory()
+    {
+        return $this->endMemory;
+    }
+
     /**
-     * Returns the peak memory usage during the execution
+     * Returns the memory usage during the execution
      *
      * @return int
      */
     public function getMemoryUsage()
     {
-        return $this->memoryUsage;
+        return $this->memoryDelta;
     }
 
     /**

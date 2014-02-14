@@ -407,7 +407,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     $('<span title="Duration" />').addClass(csscls('duration')).text(stmt.duration_str).appendTo(li);
                 }
                 if (stmt.memory_str) {
-                    $('<span title="Peak memory usage" />').addClass(csscls('memory')).text(stmt.memory_str).appendTo(li);
+                    $('<span title="Memory usage" />').addClass(csscls('memory')).text(stmt.memory_str).appendTo(li);
                 }
                 if (typeof(stmt.is_success) != 'undefined' && !stmt.is_success) {
                     li.addClass(csscls('error'));
@@ -446,8 +446,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (data.accumulated_duration_str) {
                     this.$status.append($('<span title="Accumulated duration" />').addClass(csscls('duration')).text(data.accumulated_duration_str));
                 }
-                if (data.peak_memory_usage_str) {
-                    this.$status.append($('<span title="Peak memory usage" />').addClass(csscls('memory')).text(data.peak_memory_usage_str));
+                if (data.memory_usage_str) {
+                    this.$status.append($('<span title="Memory usage" />').addClass(csscls('memory')).text(data.memory_usage_str));
                 }
             });
         }

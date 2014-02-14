@@ -51,30 +51,29 @@ class TraceablePDOStatement extends PDOStatement
      */
     public function execute($params = null)
     {
-        $start = microtime(true);
-        $ex = null;
+        $preparedId = spl_object_hash($this);
+        $boundParameters = $this->boundParameters;
+        if (is_array($params)) {
+            $boundParameters = array_merge($boundParameters, $params);
+        }
 
+        $trace = new TracedStatement($this->queryString, $boundParameters, $preparedId);
+        $trace->start();
+
+        $ex = null;
         try {
             $result = parent::execute($params);
         } catch (PDOException $e) {
             $ex = $e;
         }
 
-        $preparedId = spl_object_hash($this);
-        $boundParameters = $this->boundParameters;
-        if (is_array($params)) {
-            $boundParameters = array_merge($boundParameters, $params);
-        }
-        $end = microtime(true);
-        $memoryUsage = memory_get_usage(true);
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
             $error = $this->errorInfo();
             $ex = new PDOException($error[2], $error[0]);
         }
 
-        $tracedStmt = new TracedStatement($this->queryString, $boundParameters,
-            $preparedId, $this->rowCount(), $start, $end, $memoryUsage, $ex);
-        $this->pdo->addExecutedStatement($tracedStmt);
+        $trace->end($ex, $this->rowCount());
+        $this->pdo->addExecutedStatement($trace);
 
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) === PDO::ERRMODE_EXCEPTION && $ex !== null) {
             throw $ex;
