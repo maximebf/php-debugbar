@@ -73,6 +73,9 @@ div.phpdebugbar-header-left > * {
 div.phpdebugbar-header-right > * {
   float: right;
 }
+div.phpdebugbar-header-right > select {
+  padding: 0;
+}
 
 /* -------------------------------------- */
 
