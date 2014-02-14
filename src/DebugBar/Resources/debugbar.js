@@ -409,32 +409,37 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         registerResizeHandler: function() {
-            var self = this, f = null;
-            self.respCSSSize = 0;
-            $(window).resize(f = function () {
-                var $ = PhpDebugBar.$;
-                var header = $(".phpdebugbar-header");
-
-                var contentSize = self.respCSSSize;
-                if (self.respCSSSize == 0) {
-                    $(header).find("> *:visible").each(function () {
-                        contentSize += $(this).outerWidth();
-                    });
-                }
-
-                var currentSize = $(header).width();
-
-                var cssClass = "phpdebugbar-mini-design", bool = $(header).hasClass(cssClass);
-                if (currentSize <= contentSize && !bool) {
-                    self.respCSSSize = contentSize;
-
-                    $(header).addClass(cssClass);
-                } else if (contentSize < currentSize && bool) {
-                    self.respCSSSize = 0;
-                    $(".phpdebugbar-header").removeClass(cssClass);
-                }
-            });
+            var f = this.resize.bind(this);
+            this.respCSSSize = 0;
+            $(window).resize(f);
             setTimeout(f, 20);
+        },
+
+        /**
+         * Resizes the debugbar to fit the current browser window
+         */
+        resize: function() {
+            var $ = PhpDebugBar.$;
+            var header = $(".phpdebugbar-header");
+
+            var contentSize = this.respCSSSize;
+            if (this.respCSSSize == 0) {
+                $(header).find("> *:visible").each(function () {
+                    contentSize += $(this).outerWidth();
+                });
+            }
+
+            var currentSize = $(header).width();
+
+            var cssClass = "phpdebugbar-mini-design", bool = $(header).hasClass(cssClass);
+            if (currentSize <= contentSize && !bool) {
+                this.respCSSSize = contentSize;
+
+                $(header).addClass(cssClass);
+            } else if (contentSize < currentSize && bool) {
+                this.respCSSSize = 0;
+                $(".phpdebugbar-header").removeClass(cssClass);
+            }
         },
 
         /**
@@ -764,6 +769,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             localStorage.setItem('phpdebugbar-open', '1');
             this.restoreState();
             this.$el.removeClass(csscls('closed'));
+            this.resize();
         },
 
         /**
