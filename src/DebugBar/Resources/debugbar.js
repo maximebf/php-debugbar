@@ -291,7 +291,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
      *  - icon
      *  - title
      *  - tooltip
-     *  - position: "right" or "left"
      *  - data: alias of title
      */
     var Indicator = Widget.extend({
@@ -300,13 +299,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         className: csscls('indicator'),
 
-        defaults: {
-            position: "right"
-        },
-
         render: function() {
-            this.bindAttr('position', function(pos) { this.$el.css('float', pos); });
-
             this.$icon = $('<i />').appendTo(this.$el);
             this.bindAttr('icon', function(icon) {
                 if (icon) {
@@ -421,7 +414,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         resize: function() {
             var contentSize = this.respCSSSize;
             if (this.respCSSSize == 0) {
-                this.$header.find("> *:visible").each(function () {
+                this.$header.find("> div > *:visible").each(function () {
                     contentSize += $(this).outerWidth();
                 });
             }
@@ -447,9 +440,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
         render: function() {
             var self = this;
             this.$el.appendTo('body');
+            this.$resizehdle = $('<div />').addClass(csscls('resize-handle')).appendTo(this.$el);
             this.$header = $('<div />').addClass(csscls('header')).appendTo(this.$el);
+            this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
+            this.$headerRight = $('<div />').addClass(csscls('header-right')).appendTo(this.$header);
             var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
-            this.$resizehdle = $('<div />').addClass(csscls('resize-handle')).appendTo(this.$body);
             this.recomputeBottomOffset();
 
             // dragging of resize handle
@@ -473,7 +468,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
             
             // minimize button
-            this.$closebtn = $('<a href="javascript:" />').addClass(csscls('close-btn')).appendTo(this.$header);
+            this.$closebtn = $('<a href="javascript:" />').addClass(csscls('close-btn')).appendTo(this.$headerRight);
             this.$closebtn.click(function() {
                 self.close();
             });
@@ -485,7 +480,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // open button
-            this.$openbtn = $('<a href="javascript:" />').addClass(csscls('open-btn')).appendTo(this.$header).hide();
+            this.$openbtn = $('<a href="javascript:" />').addClass(csscls('open-btn')).appendTo(this.$headerRight).hide();
             this.$openbtn.click(function() {
                 self.openHandler.show(function(id, dataset) {
                     self.addDataSet(dataset, id, "(opened)");
@@ -494,7 +489,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // select box for data sets
-            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).appendTo(this.$header);
+            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).appendTo(this.$headerRight);
             this.$datasets.change(function() {
                 self.dataChangeHandler(self.datasets[this.value]);
                 self.showTab();
@@ -563,7 +558,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var self = this;
-            tab.$tab.appendTo(this.$header).click(function() { 
+            tab.$tab.appendTo(this.$headerLeft).click(function() {
                 if (!self.isMinimized() && self.activePanelName == name) {
                     self.minimize();
                 } else {
@@ -591,11 +586,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         createIndicator: function(name, icon, tooltip, position) {
             var indicator = new Indicator({
-                icon: icon, 
-                tooltip: tooltip, 
-                position: position || 'right'
+                icon: icon,
+                tooltip: tooltip
             });
-            return this.addIndicator(name, indicator);
+            return this.addIndicator(name, indicator, position);
         },
 
         /**
@@ -606,15 +600,15 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @param {Indicator} indicator Indicator object
          * @return {Indicator}
          */
-        addIndicator: function(name, indicator) {
+        addIndicator: function(name, indicator, position) {
             if (this.isControl(name)) {
                 throw new Error(name + ' already exists');
             }
 
-            if (indicator.get('position') == 'right') {
-                indicator.$el.appendTo(this.$header);
+            if (position == 'left') {
+                indicator.$el.insertBefore(this.$headerLeft.children().first());
             } else {
-                indicator.$el.insertBefore(this.$header.children().first())
+                indicator.$el.appendTo(this.$headerRight);
             }
 
             this.controls[name] = indicator;
@@ -706,7 +700,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$body.show();
             this.recomputeBottomOffset();
 
-            $(this.$header).find('> .' + csscls('active')).removeClass(csscls('active'));
+            $(this.$header).find('> div > .' + csscls('active')).removeClass(csscls('active'));
             $(this.$body).find('> .' + csscls('active')).removeClass(csscls('active'));
 
             this.controls[name].$tab.addClass(csscls('active'));
@@ -725,7 +719,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         minimize: function() {
-            this.$header.find('> .' + csscls('active')).removeClass(csscls('active'));
+            this.$header.find('> div > .' + csscls('active')).removeClass(csscls('active'));
             this.$body.hide();
             this.$resizehdle.hide();
             this.recomputeBottomOffset();
@@ -749,6 +743,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         close: function() {
+            this.$resizehdle.hide();
             this.$header.hide();
             this.$body.hide();
             this.$restorebtn.show();
@@ -763,10 +758,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         restore: function() {
+            this.$resizehdle.show();
             this.$header.show();
             this.$restorebtn.hide();
             localStorage.setItem('phpdebugbar-open', '1');
-            this.restoreState();
+            var tab = localStorage.getItem('phpdebugbar-tab');
+            if (this.isTab(tab)) {
+                this.showTab(tab);
+            }
             this.$el.removeClass(csscls('closed'));
             this.resize();
         },

@@ -139,6 +139,7 @@ possible values:
 - *default*: a js string, default value of the data map
 - *tab*: class name of the tab object (to use a custom tab object)
 - *indicator*: class name of the indicator object (to use a custom indicator object)
+- *position*: position of the indicator ('left' of 'right', default to 'right')
 
 At least *icon* or *widget* are needed (unless *tab* or *indicator* are specified). If *widget* is
 specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab

@@ -758,7 +758,7 @@ class JavascriptRenderer
     {
         $js = '';
         $dataMap = array();
-        $excludedOptions = array('indicator', 'tab', 'map', 'default', 'widget');
+        $excludedOptions = array('indicator', 'tab', 'map', 'default', 'widget', 'position');
 
         // finds controls provided by collectors
         $widgets = array();
@@ -787,11 +787,12 @@ class JavascriptRenderer
                     isset($options['widget']) ? sprintf('%s"widget": new %s()', count($opts) ? ', ' : '', $options['widget']) : ''
                 );
             } else if (isset($options['indicator']) || isset($options['icon'])) {
-                $js .= sprintf("%s.addIndicator(\"%s\", new %s(%s));\n",
+                $js .= sprintf("%s.addIndicator(\"%s\", new %s(%s), \"%s\");\n",
                     $varname,
                     $name,
                     isset($options['indicator']) ? $options['indicator'] : 'PhpDebugBar.DebugBar.Indicator',
-                    json_encode($opts, JSON_FORCE_OBJECT)
+                    json_encode($opts, JSON_FORCE_OBJECT),
+                    isset($options['position']) ? $options['position'] : 'right'
                 );
             }
 
