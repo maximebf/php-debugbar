@@ -4,6 +4,8 @@
  *
  * (c) 2013 Maxime Bouroumeau-Fuseau
  *
+ * Uses kintLite from raveren/kint by Rokas Šleinius (raveren@gmail.com)
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -24,9 +26,6 @@ class Dumper
 
     /**
      * Formats a variable.
-     *
-     * Copy from raveren/kint, https://github.com/raveren/kint
-     * Copyright (c) 2013 Rokas Šleinius (raveren@gmail.com)
      *
      * @param mixed $var
      * @param int $level
