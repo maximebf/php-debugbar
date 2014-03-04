@@ -334,70 +334,12 @@
 </div>
 
         <div id="content">
-            <a name="bridge-collectors"></a><h1>Bridge collectors</h1>
-<p>DebugBar comes with some &quot;bridge&quot; collectors. This collectors provides a way to integrate
-other projects with the DebugBar.</p>
-<a name="cachecache"></a><h2>CacheCache</h2>
-<p><a href="http://maximebf.github.io/CacheCache/">http://maximebf.github.io/CacheCache/</a></p>
-<p>Displays cache operations using <code>DebugBar\Bridge\CacheCacheCollector</code></p>
-<pre><code>$cache = new CacheCache\Cache(new CacheCache\Backends\Memory());
-$debugbar-&gt;addCollector(new DebugBar\Bridge\CacheCacheCollector($cache));</code></pre>
-<p>CacheCache uses <a href="https://github.com/Seldaek/monolog">Monolog</a> for logging,
-thus it is required to collect data.</p>
-<p><code>CacheCacheCollector</code> subclasses <code>MonologCollector</code>, thus it can be
-<a href="base-collectors.html#messages">aggregated in the messages view</a>.</p>
-<a name="doctrine"></a><h2>Doctrine</h2>
-<p><a href="http://doctrine-project.org">http://doctrine-project.org</a></p>
-<p>Displays sql queries into an SQL queries view using <code>DebugBar\Bridge\DoctrineCollector</code>.
-You will need to set a <code>Doctrine\DBAL\Logging\DebugStack</code> logger on your connection.</p>
-<pre><code>$debugStack = new Doctrine\DBAL\Logging\DebugStack();
-$entityManager-&gt;getConnection()-&gt;getConfiguration()-&gt;setSQLLogger($debugStack);
-$debugbar-&gt;addCollector(new DebugBar\Bridge\DoctrineCollector($debugStack));</code></pre>
-<p><code>DoctrineCollector</code> also accepts an <code>Doctrine\ORM\EntityManager</code> as argument
-provided the <code>SQLLogger</code> is a ̀DebugStack`.</p>
-<a name="monolog"></a><h2>Monolog</h2>
-<p><a href="https://github.com/Seldaek/monolog">https://github.com/Seldaek/monolog</a></p>
-<p>Integrates Monolog messages into a message view using <code>DebugBar\Bridge\MonologCollector</code>.</p>
-<pre><code>$logger = new Monolog\Logger(&#39;mylogger&#39;);
-$debugbar-&gt;addCollector(new DebugBar\Bridge\MonologCollector($logger));</code></pre>
-<p>Note that multiple logger can be collected:</p>
-<pre><code>$debugbar[&#39;monolog&#39;]-&gt;addLogger($logger);</code></pre>
-<p><code>MonologCollector</code> can be <a href="base-collectors.html#messages">aggregated</a> into the <code>MessagesCollector</code>.</p>
-<a name="propel"></a><h2>Propel</h2>
-<p><a href="http://propelorm.org/">http://propelorm.org/</a></p>
-<p>Displays propel queries into an SQL queries view using <code>DebugBar\Bridge\PropelCollector</code>.
-You will need to activate Propel debug mode.</p>
-<pre><code>// before Propel::init()
-$debugbar-&gt;addCollector(new DebugBar\Bridge\PropelCollector());
-
-Propel::init(&#39;/path/to/config&#39;);
-
-// after Propel::init()
-// not mandatory if you set config options by yourself
-DebugBar\Bridge\PropelCollector::enablePropelProfiling();</code></pre>
-<p>Queries can be collected on a single connection by providing the <code>PropelPDO</code> object
-to the <code>PropelCollector</code> as first argument.</p>
-<a name="slim"></a><h2>Slim</h2>
-<p><a href="http://slimframework.com">http://slimframework.com</a></p>
-<p>Displays message from the Slim logger into a message view using <code>DebugBar\Bridge\SlimCollector</code>.</p>
-<pre><code>$app = new Slim\Slim();
-$debugbar-&gt;addCollector(new DebugBar\Bridge\SlimCollector($app));</code></pre>
-<a name="swift-mailer"></a><h2>Swift Mailer</h2>
-<p><a href="http://swiftmailer.org/">http://swiftmailer.org/</a></p>
-<p>Display log messages and sent mail using <code>DebugBar\Bridge\SwiftMailer\SwiftLogCollector</code> and
-<code>DebugBar\Bridge\SwiftMailer\SwiftMailCollector</code>.</p>
-<pre><code>$mailer = Swift_Mailer::newInstance(Swift_NullTransport::newInstance());
-$debugbar[&#39;messages&#39;]-&gt;aggregate(new DebugBar\Bridge\SwiftMailer\SwiftLogCollector($mailer));
-$debugbar-&gt;addCollector(new DebugBar\Bridge\SwiftMailer\SwiftMailCollector($mailer));</code></pre>
-<a name="twig"></a><h2>Twig</h2>
-<p><a href="http://twig.sensiolabs.org/">http://twig.sensiolabs.org/</a></p>
-<p>Collects info about rendered templates using <code>DebugBar\Bridge\Twig\TwigCollector</code>.
-You need to wrap your <code>Twig_Environment</code> object into a <code>DebugBar\Bridge\Twig\TraceableTwigEnvironment</code> object.</p>
-<pre><code>$loader = new Twig_Loader_Filesystem(&#39;.&#39;);
-$env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
-$debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigCollector($env));</code></pre>
-<p>You can provide a <code>DebugBar\DataCollector\TimeDataCollector</code> as the second argument of
-<code>TraceableTwigEnvironment</code> so render operation can be measured.</p>
+            <a name="data-formater"></a><h1>Data Formater</h1>
+<p>An instance of <code>DebugBar\DataFormater\DataFormaterInterface</code> is used by collectors to
+format data.</p>
+<p>The default instance is <code>DebugBar\DataFormater\DataFormater</code>. This can be modified
+using <code>DebugBar\DataCollector\DataCollector::setDefaultDataFormater()</code>.</p>
+<p>You can use a custom formater for each collector using <code>DataCollector::setDataFormater()</code>.</p>
 
 
 

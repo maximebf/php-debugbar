@@ -222,6 +222,17 @@
         </li>
     
         <li>
+            <a href="/docs/data-formater.html#data-formater">Data Formater</a>
+            
+                
+    <ol>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/storage.html#storage">Storage</a>
             
                 
@@ -388,7 +399,7 @@ $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
         ...
         &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;
     &lt;/body&gt;
-&lt;/html&gt;+6</code></pre>
+&lt;/html&gt;</code></pre>
 <p>The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are
 automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
 collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:</p>
@@ -469,7 +480,7 @@ $debugbar[&quot;messages&quot;]-&gt;addMessage(&quot;hello world!&quot;);
         ...
         &lt;?php echo $debugbarRenderer-&gt;render() ?&gt;
     &lt;/body&gt;
-&lt;/html&gt;+6</code></pre>
+&lt;/html&gt;</code></pre>
 <p>The DebugBar uses DataCollectors to collect data from your PHP code. Some of them are
 automated but others are manual. Use the <code>DebugBar</code> like an array where keys are the
 collector names. In our previous example, we add a message to the <code>MessagesCollector</code>:</p>
@@ -487,10 +498,10 @@ collector names. In our previous example, we add a message to the <code>Messages
 
 <a name="collecting-data"></a><h1>Collecting Data</h1>
 <a name="using-collectors"></a><h2>Using collectors</h2>
-<p>Collectors can be added to your debug bar using <code>addCollector()</code>. </p>
+<p>Collectors can be added to your debug bar using <code>addCollector()</code>.</p>
 <pre><code>$debugbar = new DebugBar();
 $debugbar-&gt;addCollector(new DataCollector\RequestDataCollector());</code></pre>
-<p>Each collector as a unique name as defined by its <code>getName()</code> method. You can 
+<p>Each collector as a unique name as defined by its <code>getName()</code> method. You can
 access collectors using <code>getCollector($name)</code>.</p>
 <pre><code>$debugbar-&gt;addCollector(new DataCollector\MessagesCollector());
 $debugbar-&gt;getCollector(&#39;messages&#39;)-&gt;addMessage(&quot;foobar&quot;);
@@ -521,7 +532,7 @@ same time the <code>DebugBar::collect()</code> method is called.</p>
 $debugbar-&gt;addCollector(new MyDataCollector());</code></pre>
 <p>This however won&#39;t show anything in the debug bar as no information are provided
 on how to display these data. You could do that manually as you&#39;ll see in later chapter
-or implement the <code>DebugBar\DataSource\Renderable</code> interface. </p>
+or implement the <code>DebugBar\DataSource\Renderable</code> interface.</p>
 <p>To implement it, you must define a <code>getWidgets()</code> function which returns an array
 of key/value pairs where key are control names and values control options as defined
 in <code>JavascriptRenderer::addControl($name, $options)</code> (see Rendering chapter).</p>
@@ -549,14 +560,14 @@ all the useful functions to included the needed assets and generate a debug bar.
 <pre><code>$renderer = $debugbar-&gt;getJavascriptRenderer();</code></pre>
 <a name="assets"></a><h2>Assets</h2>
 <p>The debug bar relies on some css and javascript files which needs to be included
-into your webpage. They are located in the <em>src/DebugBar/Resources</em> folder. 
+into your webpage. They are located in the <em>src/DebugBar/Resources</em> folder.
 This can be done in four ways:</p>
 <ul>
 <li>Using <code>JavascriptRenderer::renderHead()</code> which will returns a string with
 the needed script and link tags</li>
-<li>Using <a href="https://github.com/kriswallsmith/assetic">Assetic</a> and 
+<li>Using <a href="https://github.com/kriswallsmith/assetic">Assetic</a> and
 <code>JavascriptRenderer::getAsseticCollection()</code></li>
-<li>Dumping the assets yourself using <code>JavascriptRenderer::dumpCssAssets()</code> and 
+<li>Dumping the assets yourself using <code>JavascriptRenderer::dumpCssAssets()</code> and
 <code>JavascriptRenderer::dumpJsAssets()</code></li>
 <li>Retrieving the list filenames of assets using <code>JavascriptRenderer::getAssets()</code>
 and doing something with it</li>
@@ -601,7 +612,7 @@ vendors (ie. jquery), <code>jQuery.noConflict(true)</code> won&#39;t be called.<
 <a name="the-javascript-object"></a><h2>The javascript object</h2>
 <p>The renderer will generate all the needed code for your debug bar. This means
 initializing the DebugBar js object, adding tabs and indicators, defining a data map, etc...</p>
-<p>Data collectors can provide their own controls when implementing the 
+<p>Data collectors can provide their own controls when implementing the
 <code>DebugBar\DataCollector\Renderable</code> interface as explained in the Collecting Data chapter.</p>
 <p>Thus in almost all cases, you should only have to use <code>render()</code> right away:</p>
 <pre><code>&lt;html&gt;
@@ -648,8 +659,9 @@ possible values:</p>
 <li><em>default</em>: a js string, default value of the data map</li>
 <li><em>tab</em>: class name of the tab object (to use a custom tab object)</li>
 <li><em>indicator</em>: class name of the indicator object (to use a custom indicator object)</li>
+<li><em>position</em>: position of the indicator (&#39;left&#39; of &#39;right&#39;, default to &#39;right&#39;)</li>
 </ul>
-<p>At least <em>icon</em> or <em>widget</em> are needed (unless <em>tab</em> or <em>indicator</em> are specified). If <em>widget</em> is 
+<p>At least <em>icon</em> or <em>widget</em> are needed (unless <em>tab</em> or <em>indicator</em> are specified). If <em>widget</em> is
 specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab
 or indicator.</p>
 <pre><code>$renderer-&gt;addControl(&#39;messages&#39;, array(
@@ -664,7 +676,7 @@ a collector using <code>ignoreCollector($name)</code>.</p>
 <a name="ajax"></a><h2>AJAX</h2>
 <p>As mentioned in the previous chapter, if you are performing AJAX requests
 which return HTML content, you can use <code>JavascriptRenderer::render(false)</code>.</p>
-<p>In the case you are sending back non-HTML data (eg: JSON), the DebugBar can 
+<p>In the case you are sending back non-HTML data (eg: JSON), the DebugBar can
 send data to the client using HTTP headers using the <code>sendDataInHeaders()</code> method
 (no need to use the <code>JavascriptRenderer</code>):</p>
 <pre><code>$debugbar = new DebugBar();
@@ -675,12 +687,12 @@ parse the headers and add the dataset to the debugbar.</p>
 <p>The AjaxHandler automatically binds to jQuery&#39;s <em>ajaxComplete</em> event
 so if you are using jQuery, you have nothing to configure.</p>
 <p>If you&#39;re not using jQuery, you can call <code>AjaxHandler.handle(xhr)</code>.
-If you are using the <code>JavascriptRenderer</code> initialization, the instance 
+If you are using the <code>JavascriptRenderer</code> initialization, the instance
 of <code>AjaxHandler</code> is stored in the <code>ajaxHandler</code> property of the <code>DebugBar</code> object.</p>
 <pre><code>debugbar.ajaxHandler.handle(xhr);</code></pre>
 <p>If you are sending a lot of data through headers, it may cause problems
-with your browser. Instead you can use a storage handler (see Storage chapter) 
-and the open handler (see Open Handler chapter) to load the data after an ajax 
+with your browser. Instead you can use a storage handler (see Storage chapter)
+and the open handler (see Open Handler chapter) to load the data after an ajax
 request. Use true as the first argument of <code>sendDataInHeaders()</code>.</p>
 <pre><code>$debugbar = new DebugBar();
 
@@ -699,11 +711,11 @@ $debugbar-&gt;sendDataInHeaders(true);</code></pre>
 be displayed. The best example of that is during a redirect. You can use the
 debug bar storage mechanism to store the data and re-open it later but it can
 be cumbersome while testing a redirect page.</p>
-<p>The solution is to use stacked data. The debug bar can temporarily store the 
+<p>The solution is to use stacked data. The debug bar can temporarily store the
 collected data in the session until the next time it will be displayed.
 Simply call <code>DebugBar::stackData()</code> instead of rendering the debug bar.</p>
 <p>PHP&#39;s session must be started before using this feature.</p>
-<p>Note: The stacked data feature will use the storage mechanism of it&#39;s enabled
+<p>Note: The stacked data feature will use the storage mechanism if it&#39;s enabled
 instead of storing the data in the session.</p>
 <pre><code>$debugbar = new DebugBar();
 // ...
@@ -796,13 +808,13 @@ other projects with the DebugBar.</p>
 <p>Displays cache operations using <code>DebugBar\Bridge\CacheCacheCollector</code></p>
 <pre><code>$cache = new CacheCache\Cache(new CacheCache\Backends\Memory());
 $debugbar-&gt;addCollector(new DebugBar\Bridge\CacheCacheCollector($cache));</code></pre>
-<p>CacheCache uses <a href="https://github.com/Seldaek/monolog">Monolog</a> for logging, 
+<p>CacheCache uses <a href="https://github.com/Seldaek/monolog">Monolog</a> for logging,
 thus it is required to collect data.</p>
-<p><code>CacheCacheCollector</code> subclasses <code>MonologCollector</code>, thus it can be 
+<p><code>CacheCacheCollector</code> subclasses <code>MonologCollector</code>, thus it can be
 <a href="base-collectors.html#messages">aggregated in the messages view</a>.</p>
 <a name="doctrine"></a><h2>Doctrine</h2>
 <p><a href="http://doctrine-project.org">http://doctrine-project.org</a></p>
-<p>Displays sql queries into an SQL queries view using <code>DebugBar\Bridge\DoctrineCollector</code>. 
+<p>Displays sql queries into an SQL queries view using <code>DebugBar\Bridge\DoctrineCollector</code>.
 You will need to set a <code>Doctrine\DBAL\Logging\DebugStack</code> logger on your connection.</p>
 <pre><code>$debugStack = new Doctrine\DBAL\Logging\DebugStack();
 $entityManager-&gt;getConnection()-&gt;getConfiguration()-&gt;setSQLLogger($debugStack);
@@ -819,7 +831,7 @@ $debugbar-&gt;addCollector(new DebugBar\Bridge\MonologCollector($logger));</code
 <p><code>MonologCollector</code> can be <a href="base-collectors.html#messages">aggregated</a> into the <code>MessagesCollector</code>.</p>
 <a name="propel"></a><h2>Propel</h2>
 <p><a href="http://propelorm.org/">http://propelorm.org/</a></p>
-<p>Displays propel queries into an SQL queries view using <code>DebugBar\Bridge\PropelCollector</code>. 
+<p>Displays propel queries into an SQL queries view using <code>DebugBar\Bridge\PropelCollector</code>.
 You will need to activate Propel debug mode.</p>
 <pre><code>// before Propel::init()
 $debugbar-&gt;addCollector(new DebugBar\Bridge\PropelCollector());
@@ -845,13 +857,20 @@ $debugbar[&#39;messages&#39;]-&gt;aggregate(new DebugBar\Bridge\SwiftMailer\Swif
 $debugbar-&gt;addCollector(new DebugBar\Bridge\SwiftMailer\SwiftMailCollector($mailer));</code></pre>
 <a name="twig"></a><h2>Twig</h2>
 <p><a href="http://twig.sensiolabs.org/">http://twig.sensiolabs.org/</a></p>
-<p>Collects info about rendered templates using <code>DebugBar\Bridge\Twig\TwigCollector</code>. 
+<p>Collects info about rendered templates using <code>DebugBar\Bridge\Twig\TwigCollector</code>.
 You need to wrap your <code>Twig_Environment</code> object into a <code>DebugBar\Bridge\Twig\TraceableTwigEnvironment</code> object.</p>
 <pre><code>$loader = new Twig_Loader_Filesystem(&#39;.&#39;);
 $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
 $debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigCollector($env));</code></pre>
 <p>You can provide a <code>DebugBar\DataCollector\TimeDataCollector</code> as the second argument of
 <code>TraceableTwigEnvironment</code> so render operation can be measured.</p>
+
+<a name="data-formater"></a><h1>Data Formater</h1>
+<p>An instance of <code>DebugBar\DataFormater\DataFormaterInterface</code> is used by collectors to
+format data.</p>
+<p>The default instance is <code>DebugBar\DataFormater\DataFormater</code>. This can be modified
+using <code>DebugBar\DataCollector\DataCollector::setDefaultDataFormater()</code>.</p>
+<p>You can use a custom formater for each collector using <code>DataCollector::setDataFormater()</code>.</p>
 
 <a name="storage"></a><h1>Storage</h1>
 <p>DebugBar supports storing collected data for later analysis.
@@ -860,14 +879,14 @@ You&#39;ll need to set a storage handler using <code>setStorage()</code> on your
 <p>Each time <code>DebugBar::collect()</code> is called, the data will be persisted.</p>
 <a name="available-storage"></a><h2>Available storage</h2>
 <a name="file"></a><h3>File</h3>
-<p>It will collect data as json files under the specified directory 
+<p>It will collect data as json files under the specified directory
 (which has to be writable).</p>
 <pre><code>$storage = new DebugBar\Storage\FileStorage($directory);</code></pre>
 <a name="redis"></a><h3>Redis</h3>
 <p>Stores data inside a Redis hash. Uses <a href="http://github.com/nrk/predis">Predis</a>.</p>
 <pre><code>$storage = new DebugBar\Storage\RedisStorage($client);</code></pre>
 <a name="pdo"></a><h3>PDO</h3>
-<p>Stores data inside a database. </p>
+<p>Stores data inside a database.</p>
 <pre><code>$storage = new DebugBar\Storage\PdoStorage($pdo);</code></pre>
 <p>The table name can be changed using the second argument and sql queries
 can be changed using <code>setSqlQueries()</code>.</p>
@@ -875,7 +894,7 @@ can be changed using <code>setSqlQueries()</code>.</p>
 <p>You can easily create your own storage handler by implementing the
 <code>DebugBar\Storage\StorageInterface</code>.</p>
 <a name="request-id-generator"></a><h2>Request ID generator</h2>
-<p>For each request, the debug bar will generate a unique id under which to store the 
+<p>For each request, the debug bar will generate a unique id under which to store the
 collected data. This is perform using a <code>DebugBar\RequestIdGeneratorInterface</code> object.</p>
 <p>If none are defined, the debug bar will automatically use <code>DebugBar\RequestIdGenerator</code>
 which uses the <code>$_SERVER</code> array to generate the id.</p>
@@ -901,21 +920,21 @@ to browse and open previous sets of collected data.</p>
 <p>Some features of the debug bar requires sending http headers or
 using the session. Many frameworks implement their own mechanism
 on top of PHP native features.</p>
-<p>Two make integration with other frameworks as easy as possible,
+<p>To make integration with other frameworks as easy as possible,
 the <code>DebugBar</code> object uses an instance of <code>DebugBar\HttpDriverInterface</code>
 to access those features.</p>
-<p><code>DebugBar\PhpHttpDriver</code>, which uses native PHP mechanisms, is provided 
+<p><code>DebugBar\PhpHttpDriver</code>, which uses native PHP mechanisms, is provided
 and will be used if no other driver are specified.</p>
 
 <a name="javascript-bar"></a><h1>Javascript Bar</h1>
 <p><strong>This section is here to document the inner workings of the client side debug bar.
 Nothing described below is needed to run the debug bar in a normal way.</strong></p>
 <p>The default client side implementation of the debug bar is made
-entirely in Javascript and is located in the <em>debugbar.js</em> file. </p>
-<p>It adds a bottom-anchored bar which can have tabs and indicators. 
+entirely in Javascript and is located in the <em>debugbar.js</em> file.</p>
+<p>It adds a bottom-anchored bar which can have tabs and indicators.
 The bar can be in an open or close state. When open, the tab panel is
 visible.
-An indicator is a piece of information displayed in the always-visible 
+An indicator is a piece of information displayed in the always-visible
 part of the bar.</p>
 <p>The bar handles multiple datasets by displaying a select box
 which allows you to switch between them.</p>
@@ -950,7 +969,7 @@ is better to use data mapping to support dynamically changing the data set.</p>
 <p>To enable dynamically changing the data sets, we need to specify which values
 should be feed into which controls. This can be done using <code>setDataMap(map)</code>
 which takes as argument an object where properties are control names. Values
-should be arrays where the first item is the property from the data set and 
+should be arrays where the first item is the property from the data set and
 the second a default value.</p>
 <pre><code>debugbar.setDataMap({
     &quot;messages&quot;: [&quot;messages&quot;, []],
@@ -1018,9 +1037,9 @@ the <code>PhpDebugBar.Widgets</code> namespace.</p>
 <li><code>TemplatesWidget</code>: for the <code>TwigCollector</code></li>
 </ul>
 <a name="custom-tabs-and-indicators"></a><h2>Custom tabs and indicators</h2>
-<p>Behind the scene, <code>createTab()</code> and <code>createIndicator()</code> use <code>addTab(name, tab)</code> and 
-<code>addIndicator(name, indicator)</code>. Tabs are objects of type <code>PhpDebugBar.DebugBar.Tab</code> 
-and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classes subclass 
+<p>Behind the scene, <code>createTab()</code> and <code>createIndicator()</code> use <code>addTab(name, tab)</code> and
+<code>addIndicator(name, indicator)</code>. Tabs are objects of type <code>PhpDebugBar.DebugBar.Tab</code>
+and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classes subclass
 <code>PhpDebugBar.Widget</code> which makes it easy to create custom tabs or indicators.</p>
 <pre><code>var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({
 

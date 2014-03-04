@@ -222,6 +222,17 @@
         </li>
     
         <li>
+            <a href="/docs/data-formater.html#data-formater">Data Formater</a>
+            
+                
+    <ol>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/storage.html#storage">Storage</a>
             
                 
@@ -329,14 +340,14 @@ all the useful functions to included the needed assets and generate a debug bar.
 <pre><code>$renderer = $debugbar-&gt;getJavascriptRenderer();</code></pre>
 <a name="assets"></a><h2>Assets</h2>
 <p>The debug bar relies on some css and javascript files which needs to be included
-into your webpage. They are located in the <em>src/DebugBar/Resources</em> folder. 
+into your webpage. They are located in the <em>src/DebugBar/Resources</em> folder.
 This can be done in four ways:</p>
 <ul>
 <li>Using <code>JavascriptRenderer::renderHead()</code> which will returns a string with
 the needed script and link tags</li>
-<li>Using <a href="https://github.com/kriswallsmith/assetic">Assetic</a> and 
+<li>Using <a href="https://github.com/kriswallsmith/assetic">Assetic</a> and
 <code>JavascriptRenderer::getAsseticCollection()</code></li>
-<li>Dumping the assets yourself using <code>JavascriptRenderer::dumpCssAssets()</code> and 
+<li>Dumping the assets yourself using <code>JavascriptRenderer::dumpCssAssets()</code> and
 <code>JavascriptRenderer::dumpJsAssets()</code></li>
 <li>Retrieving the list filenames of assets using <code>JavascriptRenderer::getAssets()</code>
 and doing something with it</li>
@@ -381,7 +392,7 @@ vendors (ie. jquery), <code>jQuery.noConflict(true)</code> won&#39;t be called.<
 <a name="the-javascript-object"></a><h2>The javascript object</h2>
 <p>The renderer will generate all the needed code for your debug bar. This means
 initializing the DebugBar js object, adding tabs and indicators, defining a data map, etc...</p>
-<p>Data collectors can provide their own controls when implementing the 
+<p>Data collectors can provide their own controls when implementing the
 <code>DebugBar\DataCollector\Renderable</code> interface as explained in the Collecting Data chapter.</p>
 <p>Thus in almost all cases, you should only have to use <code>render()</code> right away:</p>
 <pre><code>&lt;html&gt;
@@ -428,8 +439,9 @@ possible values:</p>
 <li><em>default</em>: a js string, default value of the data map</li>
 <li><em>tab</em>: class name of the tab object (to use a custom tab object)</li>
 <li><em>indicator</em>: class name of the indicator object (to use a custom indicator object)</li>
+<li><em>position</em>: position of the indicator (&#39;left&#39; of &#39;right&#39;, default to &#39;right&#39;)</li>
 </ul>
-<p>At least <em>icon</em> or <em>widget</em> are needed (unless <em>tab</em> or <em>indicator</em> are specified). If <em>widget</em> is 
+<p>At least <em>icon</em> or <em>widget</em> are needed (unless <em>tab</em> or <em>indicator</em> are specified). If <em>widget</em> is
 specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab
 or indicator.</p>
 <pre><code>$renderer-&gt;addControl(&#39;messages&#39;, array(

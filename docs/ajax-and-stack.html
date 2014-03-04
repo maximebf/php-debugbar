@@ -222,6 +222,17 @@
         </li>
     
         <li>
+            <a href="/docs/data-formater.html#data-formater">Data Formater</a>
+            
+                
+    <ol>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/storage.html#storage">Storage</a>
             
                 
@@ -327,7 +338,7 @@
 <a name="ajax"></a><h2>AJAX</h2>
 <p>As mentioned in the previous chapter, if you are performing AJAX requests
 which return HTML content, you can use <code>JavascriptRenderer::render(false)</code>.</p>
-<p>In the case you are sending back non-HTML data (eg: JSON), the DebugBar can 
+<p>In the case you are sending back non-HTML data (eg: JSON), the DebugBar can
 send data to the client using HTTP headers using the <code>sendDataInHeaders()</code> method
 (no need to use the <code>JavascriptRenderer</code>):</p>
 <pre><code>$debugbar = new DebugBar();
@@ -338,12 +349,12 @@ parse the headers and add the dataset to the debugbar.</p>
 <p>The AjaxHandler automatically binds to jQuery&#39;s <em>ajaxComplete</em> event
 so if you are using jQuery, you have nothing to configure.</p>
 <p>If you&#39;re not using jQuery, you can call <code>AjaxHandler.handle(xhr)</code>.
-If you are using the <code>JavascriptRenderer</code> initialization, the instance 
+If you are using the <code>JavascriptRenderer</code> initialization, the instance
 of <code>AjaxHandler</code> is stored in the <code>ajaxHandler</code> property of the <code>DebugBar</code> object.</p>
 <pre><code>debugbar.ajaxHandler.handle(xhr);</code></pre>
 <p>If you are sending a lot of data through headers, it may cause problems
-with your browser. Instead you can use a storage handler (see Storage chapter) 
-and the open handler (see Open Handler chapter) to load the data after an ajax 
+with your browser. Instead you can use a storage handler (see Storage chapter)
+and the open handler (see Open Handler chapter) to load the data after an ajax
 request. Use true as the first argument of <code>sendDataInHeaders()</code>.</p>
 <pre><code>$debugbar = new DebugBar();
 
@@ -362,11 +373,11 @@ $debugbar-&gt;sendDataInHeaders(true);</code></pre>
 be displayed. The best example of that is during a redirect. You can use the
 debug bar storage mechanism to store the data and re-open it later but it can
 be cumbersome while testing a redirect page.</p>
-<p>The solution is to use stacked data. The debug bar can temporarily store the 
+<p>The solution is to use stacked data. The debug bar can temporarily store the
 collected data in the session until the next time it will be displayed.
 Simply call <code>DebugBar::stackData()</code> instead of rendering the debug bar.</p>
 <p>PHP&#39;s session must be started before using this feature.</p>
-<p>Note: The stacked data feature will use the storage mechanism of it&#39;s enabled
+<p>Note: The stacked data feature will use the storage mechanism if it&#39;s enabled
 instead of storing the data in the session.</p>
 <pre><code>$debugbar = new DebugBar();
 // ...

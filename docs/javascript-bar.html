@@ -222,6 +222,17 @@
         </li>
     
         <li>
+            <a href="/docs/data-formater.html#data-formater">Data Formater</a>
+            
+                
+    <ol>
+    
+</ol>
+
+            
+        </li>
+    
+        <li>
             <a href="/docs/storage.html#storage">Storage</a>
             
                 
@@ -327,11 +338,11 @@
 <p><strong>This section is here to document the inner workings of the client side debug bar.
 Nothing described below is needed to run the debug bar in a normal way.</strong></p>
 <p>The default client side implementation of the debug bar is made
-entirely in Javascript and is located in the <em>debugbar.js</em> file. </p>
-<p>It adds a bottom-anchored bar which can have tabs and indicators. 
+entirely in Javascript and is located in the <em>debugbar.js</em> file.</p>
+<p>It adds a bottom-anchored bar which can have tabs and indicators.
 The bar can be in an open or close state. When open, the tab panel is
 visible.
-An indicator is a piece of information displayed in the always-visible 
+An indicator is a piece of information displayed in the always-visible
 part of the bar.</p>
 <p>The bar handles multiple datasets by displaying a select box
 which allows you to switch between them.</p>
@@ -366,7 +377,7 @@ is better to use data mapping to support dynamically changing the data set.</p>
 <p>To enable dynamically changing the data sets, we need to specify which values
 should be feed into which controls. This can be done using <code>setDataMap(map)</code>
 which takes as argument an object where properties are control names. Values
-should be arrays where the first item is the property from the data set and 
+should be arrays where the first item is the property from the data set and
 the second a default value.</p>
 <pre><code>debugbar.setDataMap({
     &quot;messages&quot;: [&quot;messages&quot;, []],
@@ -434,9 +445,9 @@ the <code>PhpDebugBar.Widgets</code> namespace.</p>
 <li><code>TemplatesWidget</code>: for the <code>TwigCollector</code></li>
 </ul>
 <a name="custom-tabs-and-indicators"></a><h2>Custom tabs and indicators</h2>
-<p>Behind the scene, <code>createTab()</code> and <code>createIndicator()</code> use <code>addTab(name, tab)</code> and 
-<code>addIndicator(name, indicator)</code>. Tabs are objects of type <code>PhpDebugBar.DebugBar.Tab</code> 
-and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classes subclass 
+<p>Behind the scene, <code>createTab()</code> and <code>createIndicator()</code> use <code>addTab(name, tab)</code> and
+<code>addIndicator(name, indicator)</code>. Tabs are objects of type <code>PhpDebugBar.DebugBar.Tab</code>
+and indicators of type <code>PhpDebugBar.DebugBar.Indicator</code>. These classes subclass
 <code>PhpDebugBar.Widget</code> which makes it easy to create custom tabs or indicators.</p>
 <pre><code>var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({
 
