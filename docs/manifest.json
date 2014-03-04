@@ -9,7 +9,7 @@
         "ajax_and_stack.md",
         "base_collectors.md",
         "bridge_collectors.md",
-        "data_formater.md",
+        "data_formatter.md",
         "storage.md",
         "openhandler.md",
         "http_drivers.md",

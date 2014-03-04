@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace DebugBar\DataFormater;
+namespace DebugBar\DataFormatter;
 
-class DataFormater implements DataFormaterInterface
+class DataFormatter implements DataFormatterInterface
 {
     public function formatVar($data)
     {

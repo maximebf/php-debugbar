@@ -1,21 +1,21 @@
 <?php
 
-namespace DebugBar\Tests\DataFormater;
+namespace DebugBar\Tests\DataFormatter;
 
 use DebugBar\Tests\DebugBarTestCase;
-use DebugBar\DataFormater\DataFormater;
+use DebugBar\DataFormatter\DataFormatter;
 
-class DataFormaterTest extends DebugBarTestCase
+class DataFormatterTest extends DebugBarTestCase
 {
     public function testFormatVar()
     {
-        $f = new DataFormater();
+        $f = new DataFormatter();
         $this->assertEquals("bool TRUE", $f->formatVar(true));
     }
 
     public function testFormatDuration()
     {
-        $f = new DataFormater();
+        $f = new DataFormatter();
         $this->assertEquals("100μs", $f->formatDuration(0.0001));
         $this->assertEquals("100ms", $f->formatDuration(0.1));
         $this->assertEquals("1s", $f->formatDuration(1));
@@ -24,7 +24,7 @@ class DataFormaterTest extends DebugBarTestCase
 
     public function testFormatBytes()
     {
-        $f = new DataFormater();
+        $f = new DataFormatter();
         $this->assertEquals("0B", $f->formatBytes(0));
         $this->assertEquals("1B", $f->formatBytes(1));
         $this->assertEquals("1KB", $f->formatBytes(1024));

@@ -36,18 +36,18 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     /**
      * Sets the data formater instance used by this collector
      *
-     * @param DataFormaterInterface $formater
+     * @param DataFormatterInterface $formater
      */
-    public function setDataFormater(DataFormaterInterface $formater)
+    public function setDataFormatter(DataFormatterInterface $formater)
     {
         $this->dataFormater = $formater;
         return $this;
     }
 
-    public function getDataFormater()
+    public function getDataFormatter()
     {
         if ($this->dataFormater === null) {
-            $this->dataFormater = DataCollector::getDefaultDataFormater();
+            $this->dataFormater = DataCollector::getDefaultDataFormatter();
         }
         return $this->dataFormater;
     }
@@ -64,7 +64,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     {
         $isString = true;
         if (!is_string($message)) {
-            $message = $this->getDataFormater()->formatVar($message);
+            $message = $this->getDataFormatter()->formatVar($message);
             $isString = false;
         }
         $this->messages[] = array(

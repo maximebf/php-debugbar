@@ -43,7 +43,7 @@ class MemoryCollector extends DataCollector implements Renderable
         $this->updatePeakUsage();
         return array(
             'peak_usage' => $this->peakUsage,
-            'peak_usage_str' => $this->getDataFormater()->formatBytes($this->peakUsage)
+            'peak_usage_str' => $this->getDataFormatter()->formatBytes($this->peakUsage)
         );
     }
 

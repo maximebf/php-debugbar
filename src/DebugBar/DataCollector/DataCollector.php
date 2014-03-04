@@ -10,56 +10,56 @@
 
 namespace DebugBar\DataCollector;
 
-use DebugBar\DataFormater\DataFormaterInterface;
-use DebugBar\DataFormater\DataFormater;
+use DebugBar\DataFormatter\DataFormatterInterface;
+use DebugBar\DataFormatter\DataFormatter;
 
 /**
  * Abstract class for data collectors
  */
 abstract class DataCollector implements DataCollectorInterface
 {
-    private static $defaultDataFormater;
+    private static $defaultDataFormatter;
 
     protected $dataFormater;
 
     /**
      * Sets the default data formater instance used by all collectors subclassing this class
      *
-     * @param DataFormaterInterface $formater
+     * @param DataFormatterInterface $formater
      */
-    public static function setDefaultDataFormater(DataFormaterInterface $formater)
+    public static function setDefaultDataFormatter(DataFormatterInterface $formater)
     {
-        self::$defaultDataFormater = $formater;
+        self::$defaultDataFormatter = $formater;
     }
 
     /**
      * Returns the default data formater
      *
-     * @return DataFormaterInterface
+     * @return DataFormatterInterface
      */
-    public static function getDefaultDataFormater()
+    public static function getDefaultDataFormatter()
     {
-        if (self::$defaultDataFormater === null) {
-            self::$defaultDataFormater = new DataFormater();
+        if (self::$defaultDataFormatter === null) {
+            self::$defaultDataFormatter = new DataFormatter();
         }
-        return self::$defaultDataFormater;
+        return self::$defaultDataFormatter;
     }
 
     /**
      * Sets the data formater instance used by this collector
      *
-     * @param DataFormaterInterface $formater
+     * @param DataFormatterInterface $formater
      */
-    public function setDataFormater(DataFormaterInterface $formater)
+    public function setDataFormatter(DataFormatterInterface $formater)
     {
         $this->dataFormater = $formater;
         return $this;
     }
 
-    public function getDataFormater()
+    public function getDataFormatter()
     {
         if ($this->dataFormater === null) {
-            $this->dataFormater = self::getDefaultDataFormater();
+            $this->dataFormater = self::getDefaultDataFormatter();
         }
         return $this->dataFormater;
     }
@@ -69,7 +69,7 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function formatVar($var)
     {
-        return $this->getDataFormater()->formatVar($var);
+        return $this->getDataFormatter()->formatVar($var);
     }
 
     /**
@@ -77,7 +77,7 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function formatDuration($seconds)
     {
-        return $this->getDataFormater()->formatDuration($seconds);
+        return $this->getDataFormatter()->formatDuration($seconds);
     }
 
     /**
@@ -85,6 +85,6 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function formatBytes($size, $precision = 2)
     {
-        return $this->getDataFormater()->formatBytes($size, $precision);
+        return $this->getDataFormatter()->formatBytes($size, $precision);
     }
 }

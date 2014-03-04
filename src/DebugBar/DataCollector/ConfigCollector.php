@@ -47,7 +47,7 @@ class ConfigCollector extends DataCollector implements Renderable
         $data = array();
         foreach ($this->data as $k => $v) {
             if (!is_string($v)) {
-                $v = $this->getDataFormater()->formatVar($v);
+                $v = $this->getDataFormatter()->formatVar($v);
             }
             $data[$k] = $v;
         }

@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace DebugBar\DataFormater;
+namespace DebugBar\DataFormatter;
 
 /**
  * Formats data to be outputed as string
  */
-interface DataFormaterInterface
+interface DataFormatterInterface
 {
     /**
      * Transforms a PHP variable to a string representation

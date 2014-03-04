@@ -2,7 +2,7 @@
 
 2014-01-04:
 
- - added DataFormater
+ - added DataFormatter
 
 2013-12-29:
 
