@@ -87,7 +87,7 @@ class TimeDataCollector extends DataCollector implements Renderable
             'end' => $end,
             'relative_end' => $end - $this->requestEndTime,
             'duration' => $end - $start,
-            'duration_str' => $this->formatDuration($end - $start)
+            'duration_str' => $this->getDataFormater()->formatDuration($end - $start)
         );
     }
 
@@ -162,7 +162,7 @@ class TimeDataCollector extends DataCollector implements Renderable
             'start' => $this->requestStartTime,
             'end' => $this->requestEndTime,
             'duration' => $this->getRequestDuration(),
-            'duration_str' => $this->formatDuration($this->getRequestDuration()),
+            'duration_str' => $this->getDataFormater()->formatDuration($this->getRequestDuration()),
             'measures' => array_values($this->measures)
         );
     }

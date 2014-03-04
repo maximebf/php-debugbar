@@ -23,12 +23,33 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
 
     protected $aggregates = array();
 
+    protected $dataFormater;
+
     /**
      * @param string $name
      */
     public function __construct($name = 'messages')
     {
         $this->name = $name;
+    }
+
+    /**
+     * Sets the data formater instance used by this collector
+     *
+     * @param DataFormaterInterface $formater
+     */
+    public function setDataFormater(DataFormaterInterface $formater)
+    {
+        $this->dataFormater = $formater;
+        return $this;
+    }
+
+    public function getDataFormater()
+    {
+        if ($this->dataFormater === null) {
+            $this->dataFormater = DataCollector::getDefaultDataFormater();
+        }
+        return $this->dataFormater;
     }
 
     /**
@@ -41,9 +62,14 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function addMessage($message, $label = 'info')
     {
+        $isString = true;
+        if (!is_string($message)) {
+            $message = $this->getDataFormater()->formatVar($message);
+            $isString = false;
+        }
         $this->messages[] = array(
-            'message' => print_r($message, true),
-            'is_string' => is_string($message),
+            'message' => $message,
+            'is_string' => $isString,
             'label' => $label,
             'time' => microtime(true)
         );

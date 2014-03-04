@@ -101,9 +101,9 @@ class PDOCollector extends DataCollector implements Renderable
                 array_map(function($s) use ($name) { $s['connection'] = $name; return $s; }, $pdodata['statements']));
         }
 
-        $data['accumulated_duration_str'] = $this->formatDuration($data['accumulated_duration']);
-        $data['memory_usage_str'] = $this->formatBytes($data['memory_usage']);
-        $data['peak_memory_usage_str'] = $this->formatBytes($data['peak_memory_usage']);
+        $data['accumulated_duration_str'] = $this->getDataFormater()->formatDuration($data['accumulated_duration']);
+        $data['memory_usage_str'] = $this->getDataFormater()->formatBytes($data['memory_usage']);
+        $data['peak_memory_usage_str'] = $this->getDataFormater()->formatBytes($data['peak_memory_usage']);
 
         return $data;
     }
@@ -126,11 +126,11 @@ class PDOCollector extends DataCollector implements Renderable
                 'prepared_stmt' => $stmt->getSql(),
                 'params' => (object) $stmt->getParameters(),
                 'duration' => $stmt->getDuration(),
-                'duration_str' => $this->formatDuration($stmt->getDuration()),
+                'duration_str' => $this->getDataFormater()->formatDuration($stmt->getDuration()),
                 'memory' => $stmt->getMemoryUsage(),
-                'memory_str' => $this->formatBytes($stmt->getMemoryUsage()),
+                'memory_str' => $this->getDataFormater()->formatBytes($stmt->getMemoryUsage()),
                 'end_memory' => $stmt->getEndMemory(),
-                'end_memory_str' => $this->formatBytes($stmt->getEndMemory()),
+                'end_memory_str' => $this->getDataFormater()->formatBytes($stmt->getEndMemory()),
                 'is_success' => $stmt->isSuccess(),
                 'error_code' => $stmt->getErrorCode(),
                 'error_message' => $stmt->getErrorMessage()
@@ -144,11 +144,11 @@ class PDOCollector extends DataCollector implements Renderable
             'nb_statements' => count($stmts),
             'nb_failed_statements' => count($pdo->getFailedExecutedStatements()),
             'accumulated_duration' => $pdo->getAccumulatedStatementsDuration(),
-            'accumulated_duration_str' => $this->formatDuration($pdo->getAccumulatedStatementsDuration()),
+            'accumulated_duration_str' => $this->getDataFormater()->formatDuration($pdo->getAccumulatedStatementsDuration()),
             'memory_usage' => $pdo->getMemoryUsage(),
-            'memory_usage_str' => $this->formatBytes($pdo->getPeakMemoryUsage()),
+            'memory_usage_str' => $this->getDataFormater()->formatBytes($pdo->getPeakMemoryUsage()),
             'peak_memory_usage' => $pdo->getPeakMemoryUsage(),
-            'peak_memory_usage_str' => $this->formatBytes($pdo->getPeakMemoryUsage()),
+            'peak_memory_usage_str' => $this->getDataFormater()->formatBytes($pdo->getPeakMemoryUsage()),
             'statements' => $stmts
         );
     }

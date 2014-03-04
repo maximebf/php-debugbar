@@ -10,75 +10,81 @@
 
 namespace DebugBar\DataCollector;
 
+use DebugBar\DataFormater\DataFormaterInterface;
+use DebugBar\DataFormater\DataFormater;
+
 /**
  * Abstract class for data collectors
  */
 abstract class DataCollector implements DataCollectorInterface
 {
+    private static $defaultDataFormater;
+
+    protected $dataFormater;
+
     /**
-     * Transforms a PHP variable to a string representation
+     * Sets the default data formater instance used by all collectors subclassing this class
      *
-     * @param mixed $var
-     * @return string
+     * @param DataFormaterInterface $formater
+     */
+    public static function setDefaultDataFormater(DataFormaterInterface $formater)
+    {
+        self::$defaultDataFormater = $formater;
+    }
+
+    /**
+     * Returns the default data formater
+     *
+     * @return DataFormaterInterface
+     */
+    public static function getDefaultDataFormater()
+    {
+        if (self::$defaultDataFormater === null) {
+            self::$defaultDataFormater = new DataFormater();
+        }
+        return self::$defaultDataFormater;
+    }
+
+    /**
+     * Sets the data formater instance used by this collector
+     *
+     * @param DataFormaterInterface $formater
+     */
+    public function setDataFormater(DataFormaterInterface $formater)
+    {
+        $this->dataFormater = $formater;
+        return $this;
+    }
+
+    public function getDataFormater()
+    {
+        if ($this->dataFormater === null) {
+            $this->dataFormater = self::getDefaultDataFormater();
+        }
+        return $this->dataFormater;
+    }
+
+    /**
+     * @deprecated
      */
     public function formatVar($var)
     {
-        $var = $this->flattenVar($var);
-        return print_r($var, true);
+        return $this->getDataFormater()->formatVar($var);
     }
 
     /**
-     * Flatten a var recursively
-     *
-     * @param $var
-     * @return mixed
-     */
-    public function flattenVar($var)
-    {
-        if (is_array($var)) {
-            foreach ($var as &$v) {
-                $v = $this->flattenVar($v);
-            }
-        } else if (is_object($var)) {
-            $var = "Object(" . get_class($var) . ")";
-        } else if (mb_check_encoding($var, 'UTF-8')) {
-            $var = htmlentities($var, ENT_QUOTES, 'UTF-8', false);
-        } else {
-            $var = '[Invalid UTF-8 string]';
-        }
-        return $var;
-    }
-
-    /**
-     * Transforms a duration in seconds in a readable string
-     *
-     * @param float $seconds
-     * @return string
+     * @deprecated
      */
     public function formatDuration($seconds)
     {
-        if ($seconds < 0.001) {
-            return round($seconds * 1000000) . 'μs';
-        } else if ($seconds < 1) {
-            return round($seconds * 1000, 2) . 'ms';
-        }
-        return round($seconds, 2) . 's';
+        return $this->getDataFormater()->formatDuration($seconds);
     }
 
     /**
-     * Transforms a size in bytes to a human readable string
-     *
-     * @param string $size
-     * @param integer $precision
-     * @return string
+     * @deprecated
      */
     public function formatBytes($size, $precision = 2)
     {
-        if ($size === 0 || $size === null) {
-            return "0B";
-        }
-        $base = log($size) / log(1024);
-        $suffixes = array('', 'KB', 'MB', 'GB', 'TB');
-        return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+        return $this->getDataFormater()->formatBytes($size, $precision);
     }
 }

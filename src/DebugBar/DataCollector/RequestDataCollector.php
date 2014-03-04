@@ -25,7 +25,7 @@ class RequestDataCollector extends DataCollector implements Renderable
 
         foreach ($vars as $var) {
             if (isset($GLOBALS[$var])) {
-                $data["$" . $var] = $this->formatVar($GLOBALS[$var]);
+                $data["$" . $var] = $this->getDataFormater()->formatVar($GLOBALS[$var]);
             }
         }
 
