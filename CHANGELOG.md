@@ -1,5 +1,26 @@
 # Changelog
 
+2014-01-04:
+
+ - added DataFormater
+
+2013-12-29:
+
+ - display an error where the header is too large when sending data with an ajax request
+ - close button instead of minimize
+
+2013-12-27:
+
+ - responsiveness of the debugbar in the browser
+
+2013-12-19:
+
+ - use Bower to manage assets
+
+2013-10-24:
+
+ - added option to render sql with params in PDO collector
+
 2013-10-06:
 
  - prefixed all css classes
