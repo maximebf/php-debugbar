@@ -107,6 +107,7 @@ dl.phpdebugbar-widgets-kvlist {
     padding: 5px;
     border-top: 1px solid #eee;
     cursor: pointer;
+    min-height: 17px;
   }
 
 /* -------------------------------------- */
