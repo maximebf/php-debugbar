@@ -11,6 +11,7 @@
 namespace DebugBar\DataCollector;
 
 use Psr\Log\AbstractLogger;
+use DebugBar\Dumper;
 
 /**
  * Provides a way to log messages
@@ -42,7 +43,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     public function addMessage($message, $label = 'info')
     {
         $this->messages[] = array(
-            'message' => print_r($message, true),
+            'message' => Dumper::formatVar($message),
             'is_string' => is_string($message),
             'label' => $label,
             'time' => microtime(true)
