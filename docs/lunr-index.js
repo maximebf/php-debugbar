@@ -267,11 +267,11 @@ index.add({
 
 
 
-documentTitles["/docs/data-formater.html#data-formater"] = "Data Formater";
+documentTitles["/docs/data-formatter.html#data-formatter"] = "Data Formatter";
 index.add({
-    url: "/docs/data-formater.html#data-formater",
-    title: "Data Formater",
-    body: "# Data Formater  An instance of `DebugBar\DataFormater\DataFormaterInterface` is used by collectors to format data.  The default instance is `DebugBar\DataFormater\DataFormater`. This can be modified using `DebugBar\DataCollector\DataCollector::setDefaultDataFormater()`.  You can use a custom formater for each collector using `DataCollector::setDataFormater()`."
+    url: "/docs/data-formatter.html#data-formatter",
+    title: "Data Formatter",
+    body: "# Data Formatter  An instance of `DebugBar\DataFormatter\DataFormatterInterface` is used by collectors to format data.  The default instance is `DebugBar\DataFormatter\DataFormatter`. This can be modified using `DebugBar\DataCollector\DataCollector::setDefaultDataFormatter()`.  You can use a custom formater for each collector using `DataCollector::setDataFormatter()`."
 });
 
 

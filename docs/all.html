@@ -222,7 +222,7 @@
         </li>
     
         <li>
-            <a href="/docs/data-formater.html#data-formater">Data Formater</a>
+            <a href="/docs/data-formatter.html#data-formatter">Data Formatter</a>
             
                 
     <ol>
@@ -865,12 +865,12 @@ $debugbar-&gt;addCollector(new DebugBar\Bridge\Twig\TwigCollector($env));</code>
 <p>You can provide a <code>DebugBar\DataCollector\TimeDataCollector</code> as the second argument of
 <code>TraceableTwigEnvironment</code> so render operation can be measured.</p>
 
-<a name="data-formater"></a><h1>Data Formater</h1>
-<p>An instance of <code>DebugBar\DataFormater\DataFormaterInterface</code> is used by collectors to
+<a name="data-formatter"></a><h1>Data Formatter</h1>
+<p>An instance of <code>DebugBar\DataFormatter\DataFormatterInterface</code> is used by collectors to
 format data.</p>
-<p>The default instance is <code>DebugBar\DataFormater\DataFormater</code>. This can be modified
-using <code>DebugBar\DataCollector\DataCollector::setDefaultDataFormater()</code>.</p>
-<p>You can use a custom formater for each collector using <code>DataCollector::setDataFormater()</code>.</p>
+<p>The default instance is <code>DebugBar\DataFormatter\DataFormatter</code>. This can be modified
+using <code>DebugBar\DataCollector\DataCollector::setDefaultDataFormatter()</code>.</p>
+<p>You can use a custom formater for each collector using <code>DataCollector::setDataFormatter()</code>.</p>
 
 <a name="storage"></a><h1>Storage</h1>
 <p>DebugBar supports storing collected data for later analysis.
