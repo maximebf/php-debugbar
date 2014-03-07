@@ -27,6 +27,9 @@ class ExceptionsCollector extends DataCollector implements Renderable
     public function addException(Exception $e)
     {
         $this->exceptions[] = $e;
+        if($previous = $e->getPrevious()){
+            $this->addException($previous);
+        }
     }
 
     /**
