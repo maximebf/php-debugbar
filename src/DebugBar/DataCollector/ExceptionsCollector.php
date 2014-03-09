@@ -18,6 +18,7 @@ use Exception;
 class ExceptionsCollector extends DataCollector implements Renderable
 {
     protected $exceptions = array();
+    protected $chainExceptions = false;
 
     /**
      * Adds an exception to be profiled in the debug bar
@@ -27,9 +28,19 @@ class ExceptionsCollector extends DataCollector implements Renderable
     public function addException(Exception $e)
     {
         $this->exceptions[] = $e;
-        if($previous = $e->getPrevious()){
+        if($this->chainExceptions && $previous = $e->getPrevious()){
             $this->addException($previous);
         }
+    }
+
+    /**
+     * Configure whether or not all chained exceptions should be shown.
+     *
+     * @param bool $chainExceptions
+     */
+    public function setChainExceptions($chainExceptions = true)
+    {
+        $this->chainExceptions = $chainExceptions;
     }
 
     /**
