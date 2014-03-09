@@ -75,6 +75,9 @@ class ExceptionsCollector extends DataCollector implements Renderable
         $lines = file($e->getFile());
         $start = $e->getLine() - 4;
         $lines = array_slice($lines, $start < 0 ? 0 : $start, 7);
+        foreach($lines as &$line){
+            $line = htmlentities($line, ENT_QUOTES, 'UTF-8', false);
+        }
 
         return array(
             'type' => get_class($e),
