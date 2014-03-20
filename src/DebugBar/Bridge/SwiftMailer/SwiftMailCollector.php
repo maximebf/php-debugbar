@@ -83,7 +83,7 @@ class SwiftMailCollector extends DataCollector implements Renderable
             ),
             'emails:badge' => array(
                 'map' => 'swiftmailer_mails.count',
-                'default' => 0
+                'default' => 'null'
             )
         );
     }
