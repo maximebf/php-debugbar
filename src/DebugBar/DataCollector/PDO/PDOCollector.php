@@ -4,12 +4,13 @@ namespace DebugBar\DataCollector\PDO;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\TimeDataCollector;
 
 /**
  * Collects data about SQL statements executed with PDO
  */
-class PDOCollector extends DataCollector implements Renderable
+class PDOCollector extends DataCollector implements Renderable, AssetProvider
 {
     protected $connections = array();
 
@@ -76,9 +77,6 @@ class PDOCollector extends DataCollector implements Renderable
         return $this->connections;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         $data = array(
@@ -153,17 +151,11 @@ class PDOCollector extends DataCollector implements Renderable
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'pdo';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         return array(
@@ -177,6 +169,14 @@ class PDOCollector extends DataCollector implements Renderable
                 "map" => "pdo.nb_statements",
                 "default" => 0
             )
+        );
+    }
+
+    public function getAssets()
+    {
+        return array(
+            'css' => 'widgets/sqlqueries/widget.css',
+            'js' => 'widgets/sqlqueries/widget.js'
         );
     }
 }

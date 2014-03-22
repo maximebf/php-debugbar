@@ -12,6 +12,7 @@ namespace DebugBar\Bridge\SwiftMailer;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\AssetProvider;
 use Swift_Mailer;
 use Swift_Plugins_MessageLogger;
 
@@ -20,7 +21,7 @@ use Swift_Plugins_MessageLogger;
  *
  * http://swiftmailer.org/
  */
-class SwiftMailCollector extends DataCollector implements Renderable
+class SwiftMailCollector extends DataCollector implements Renderable, AssetProvider
 {
     protected $messagesLogger;
 
@@ -30,9 +31,6 @@ class SwiftMailCollector extends DataCollector implements Renderable
         $mailer->registerPlugin($this->messagesLogger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         $mails = array();
@@ -60,17 +58,11 @@ class SwiftMailCollector extends DataCollector implements Renderable
         return implode(', ', $f);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'swiftmailer_mails';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         return array(
@@ -85,6 +77,14 @@ class SwiftMailCollector extends DataCollector implements Renderable
                 'map' => 'swiftmailer_mails.count',
                 'default' => 'null'
             )
+        );
+    }
+
+    public function getAssets()
+    {
+        return array(
+            'css' => 'widgets/mails/widget.css',
+            'js' => 'widgets/mails/widget.js'
         );
     }
 }

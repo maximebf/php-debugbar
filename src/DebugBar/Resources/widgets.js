@@ -13,7 +13,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     /**
      * Replaces spaces with &nbsp; and line breaks with <br>
-     * 
+     *
      * @param {String} text
      * @return {String}
      */
@@ -24,7 +24,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     /**
      * Returns a string representation of value, using JSON.stringify
      * if it's an object.
-     * 
+     *
      * @param {Object} value
      * @param {Boolean} prettify Uses htmlize() if true
      * @return {String}
@@ -39,15 +39,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         return value;
     };
 
-    /**
-     * Returns a prefixed css class name
-     * 
-     * @param {String} cls
-     * @return {String}
-     */
-    var csscls = function(cls) {
-        return PhpDebugBar.utils.csscls(cls, 'phpdebugbar-widgets-');
-    };
+    var csscls = PhpDebugBar.utils.makecsscls('phpdebugbar-widgets-');
 
 
     // ------------------------------------------------------------------
@@ -385,145 +377,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
         }
 
     });
-
-    // ------------------------------------------------------------------
     
-    /**
-     * Widget for the displaying sql queries
-     *
-     * Options:
-     *  - data
-     */
-    var SQLQueriesWidget = PhpDebugBar.Widgets.SQLQueriesWidget = PhpDebugBar.Widget.extend({
-
-        className: csscls('sqlqueries'),
-
-        render: function() {
-            this.$status = $('<div />').addClass(csscls('status')).appendTo(this.$el);
-
-            this.$list = new ListWidget({ itemRenderer: function(li, stmt) {
-                $('<span />').addClass(csscls('sql')).text(stmt.sql).appendTo(li);
-                if (stmt.duration_str) {
-                    $('<span title="Duration" />').addClass(csscls('duration')).text(stmt.duration_str).appendTo(li);
-                }
-                if (stmt.memory_str) {
-                    $('<span title="Memory usage" />').addClass(csscls('memory')).text(stmt.memory_str).appendTo(li);
-                }
-                if (typeof(stmt.is_success) != 'undefined' && !stmt.is_success) {
-                    li.addClass(csscls('error'));
-                    li.append($('<span />').addClass(csscls('error')).text("[" + stmt.error_code + "] " + stmt.error_message));
-                } else if (typeof(stmt.row_count) != 'undefined') {
-                    $('<span title="Row count" />').addClass(csscls('row-count')).text(stmt.row_count).appendTo(li);
-                }
-                if (typeof(stmt.stmt_id) != 'undefined' && stmt.stmt_id) {
-                    $('<span title="Prepared statement ID" />').addClass(csscls('stmt-id')).text(stmt.stmt_id).appendTo(li);
-                }
-                if (stmt.params && !$.isEmptyObject(stmt.params)) {
-                    var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
-                    for (var key in stmt.params) {
-                        table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') + 
-                                     '">' + stmt.params[key] + '</td></tr>');
-                    }
-                    li.css('cursor', 'pointer').click(function() {
-                        if (table.is(':visible')) {
-                            table.hide();
-                        } else {
-                            table.show();
-                        }
-                    });
-                }
-            }});
-            this.$list.$el.appendTo(this.$el);
-
-            this.bindAttr('data', function(data) {
-                this.$list.set('data', data.statements);
-                this.$status.empty();
-
-                var t = $('<span />').text(data.nb_statements + " statements were executed").appendTo(this.$status);
-                if (data.nb_failed_statements) {
-                    t.append(", " + data.nb_failed_statements + " of which failed");
-                }
-                if (data.accumulated_duration_str) {
-                    this.$status.append($('<span title="Accumulated duration" />').addClass(csscls('duration')).text(data.accumulated_duration_str));
-                }
-                if (data.memory_usage_str) {
-                    this.$status.append($('<span title="Memory usage" />').addClass(csscls('memory')).text(data.memory_usage_str));
-                }
-            });
-        }
-
-    });
-
-    // ------------------------------------------------------------------
-    
-    /**
-     * Widget for the displaying templates data
-     *
-     * Options:
-     *  - data
-     */
-    var TemplatesWidget = PhpDebugBar.Widgets.TemplatesWidget = PhpDebugBar.Widget.extend({
-
-        className: csscls('templates'),
-
-        render: function() {
-            this.$status = $('<div />').addClass(csscls('status')).appendTo(this.$el);
-
-            this.$list = new ListWidget({ itemRenderer: function(li, tpl) {
-                $('<span />').addClass(csscls('name')).text(tpl.name).appendTo(li);
-                if (tpl.render_time_str) {
-                    $('<span title="Render time" />').addClass(csscls('render_time')).text(tpl.render_time_str).appendTo(li);
-                }
-            }});
-            this.$list.$el.appendTo(this.$el);
-
-            this.bindAttr('data', function(data) {
-                this.$list.set('data', data.templates);
-                var sentence = data.sentence || "templates were rendered";
-                this.$status.empty().append($('<span />').text(data.templates.length + " " + sentence));
-                if (data.accumulated_render_time_str) {
-                    this.$status.append($('<span title="Accumulated render time" />').addClass(csscls('render_time')).text(data.accumulated_render_time_str));
-                }
-            });
-        }
-
-    });
-
-    // ------------------------------------------------------------------
-    
-    /**
-     * Widget for the displaying mails data
-     *
-     * Options:
-     *  - data
-     */
-    var MailsWidget = PhpDebugBar.Widgets.MailsWidget = PhpDebugBar.Widget.extend({
-
-        className: csscls('mails'),
-
-        render: function() {
-            this.$list = new ListWidget({ itemRenderer: function(li, mail) {
-                $('<span />').addClass(csscls('subject')).text(mail.subject).appendTo(li);
-                $('<span />').addClass(csscls('to')).text(mail.to).appendTo(li);
-                if (mail.headers) {
-                    var headers = $('<pre />').addClass(csscls('headers')).appendTo(li);
-                    $('<code />').text(mail.headers).appendTo(headers);
-                    li.click(function() {
-                        if (headers.is(':visible')) {
-                            headers.hide();
-                        } else {
-                            headers.show();
-                        }
-                    });
-                }
-            }});
-            this.$list.$el.appendTo(this.$el);
-
-            this.bindAttr('data', function(data) {
-                this.$list.set('data', data);
-            });
-        }
-
-    });
 
 })(PhpDebugBar.$);

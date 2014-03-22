@@ -16,6 +16,7 @@ use PropelConfiguration;
 use BasicLogger;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\AssetProvider;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -33,7 +34,7 @@ use Psr\Log\LogLevel;
  * PropelCollector::enablePropelProfiling();
  * </code>
  */
-class PropelCollector extends DataCollector implements BasicLogger, Renderable
+class PropelCollector extends DataCollector implements BasicLogger, Renderable, AssetProvider
 {
     protected $logger;
 
@@ -95,73 +96,46 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
         return $this->logQueriesToLogger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function emergency($m)
     {
         $this->log($m, Propel::LOG_EMERG);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function alert($m)
     {
         $this->log($m, Propel::LOG_ALERT);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function crit($m)
     {
         $this->log($m, Propel::LOG_CRIT);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function err($m)
     {
         $this->log($m, Propel::LOG_ERR);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function warning($m)
     {
         $this->log($m, Propel::LOG_WARNING);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function notice($m)
     {
         $this->log($m, Propel::LOG_NOTICE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function info($m)
     {
         $this->log($m, Propel::LOG_INFO);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function debug($m)
     {
         $this->log($m, Propel::LOG_DEBUG);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function log($message, $severity = null)
     {
         if (strpos($message, 'DebugPDOStatement::execute') !== false) {
@@ -235,9 +209,6 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
         return array($sql, $this->formatDuration($duration));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         return array(
@@ -251,17 +222,11 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'propel';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         return array(
@@ -275,6 +240,14 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable
                 "map" => "propel.nb_statements",
                 "default" => 0
             )
+        );
+    }
+
+    public function getAssets()
+    {
+        return array(
+            'css' => 'widgets/sqlqueries/widget.css',
+            'js' => 'widgets/sqlqueries/widget.js'
         );
     }
 }

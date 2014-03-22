@@ -12,6 +12,7 @@ namespace DebugBar\Bridge\Twig;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\AssetProvider;
 
 /**
  * Collects data about rendered templates
@@ -26,16 +27,13 @@ use DebugBar\DataCollector\Renderable;
  * $debugbar->addCollector(new TwigCollector($env));
  * </code>
  */
-class TwigCollector extends DataCollector implements Renderable
+class TwigCollector extends DataCollector implements Renderable, AssetProvider
 {
     public function __construct(TraceableTwigEnvironment $twig)
     {
         $this->twig = $twig;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         $templates = array();
@@ -58,17 +56,11 @@ class TwigCollector extends DataCollector implements Renderable
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'twig';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         return array(
@@ -82,6 +74,14 @@ class TwigCollector extends DataCollector implements Renderable
                 'map' => 'twig.nb_templates',
                 'default' => 0
             )
+        );
+    }
+
+    public function getAssets()
+    {
+        return array(
+            'css' => 'widgets/templates/widget.css',
+            'js' => 'widgets/templates/widget.js'
         );
     }
 }

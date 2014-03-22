@@ -12,6 +12,7 @@ namespace DebugBar\Bridge;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DebugBarException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Logging\DebugStack;
@@ -29,7 +30,7 @@ use Doctrine\DBAL\Logging\DebugStack;
  * $debugbar->addCollector(new DoctrineCollector($debugStack));
  * </code>
  */
-class DoctrineCollector extends DataCollector implements Renderable
+class DoctrineCollector extends DataCollector implements Renderable, AssetProvider
 {
     protected $debugStack;
 
@@ -44,9 +45,6 @@ class DoctrineCollector extends DataCollector implements Renderable
         $this->debugStack = $debugStackOrEntityManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         $queries = array();
@@ -69,17 +67,11 @@ class DoctrineCollector extends DataCollector implements Renderable
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'doctrine';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         return array(
@@ -93,6 +85,14 @@ class DoctrineCollector extends DataCollector implements Renderable
                 "map" => "doctrine.nb_statements",
                 "default" => 0
             )
+        );
+    }
+
+    public function getAssets()
+    {
+        return array(
+            'css' => 'widgets/sqlqueries/widget.css',
+            'js' => 'widgets/sqlqueries/widget.js'
         );
     }
 }

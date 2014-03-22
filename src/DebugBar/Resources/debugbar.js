@@ -21,7 +21,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     /**
      * Returns the value from an object property.
      * Using dots in the key, it is possible to retrieve nested property values
-     * 
+     *
      * @param {Object} dict
      * @param {String} key
      * @param {Object} default_value
@@ -40,7 +40,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     /**
      * Counts the number of properties in an object
-     * 
+     *
      * @param {Object} obj
      * @return {Integer}
      */
@@ -59,7 +59,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     /**
      * Returns a prefixed css class name
-     * 
+     *
      * @param {String} cls
      * @return {String}
      */
@@ -77,16 +77,28 @@ if (typeof(PhpDebugBar) == 'undefined') {
         return prefix + cls;
     };
 
-    var csscls = function(cls) { 
-        return PhpDebugBar.utils.csscls(cls, 'phpdebugbar-');
-    };
+    /**
+     * Creates a partial function of csscls where the second
+     * argument is already defined
+     *
+     * @param  {string} prefix
+     * @return {Function}
+     */
+    PhpDebugBar.utils.makecsscls = function(prefix) {
+        var f = function(cls) {
+            return PhpDebugBar.utils.csscls(cls, prefix);
+        };
+        return f;
+    }
+
+    var csscls = PhpDebugBar.utils.makecsscls('phpdebugbar-');
 
 
     // ------------------------------------------------------------------
     
     /**
      * Base class for all elements with a visual component
-     * 
+     *
      * @param {Object} options
      * @constructor
      */
