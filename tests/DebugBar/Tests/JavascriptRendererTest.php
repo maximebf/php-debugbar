@@ -12,6 +12,8 @@ class JavascriptRendererTest extends DebugBarTestCase
     {
         parent::setUp();
         $this->r = new JavascriptRenderer($this->debugbar);
+        $this->r->setBasePath('/bpath');
+        $this->r->setBaseUrl('/burl');
     }
 
     public function testOptions()
@@ -58,25 +60,35 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertEquals('open.php', $this->r->getOpenHandlerUrl());
     }
 
+    public function testAddAssets()
+    {
+        $this->r->addAssets('foo.css', 'foo.js', '/bar', '/foobar');
+
+        list($css, $js) = $this->r->getAssets();
+        $this->assertContains('/bar/foo.css', $css);
+        $this->assertContains('/bar/foo.js', $js);
+
+        $html = $this->r->renderHead();
+        $this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/foobar/foo.js')), $html);
+    }
+
     public function testGetAssets()
     {
-        $this->r->setBasePath('/foo');
         list($css, $js) = $this->r->getAssets();
-        $this->assertContains('/foo/debugbar.css', $css);
-        $this->assertContains('/foo/widgets.js', $js);
-        $this->assertContains('/foo/vendor/jquery/jquery.min.js', $js);
+        $this->assertContains('/bpath/debugbar.css', $css);
+        $this->assertContains('/bpath/widgets.js', $js);
+        $this->assertContains('/bpath/vendor/jquery/jquery.min.js', $js);
 
         $this->r->setIncludeVendors(false);
         $js = $this->r->getAssets('js');
-        $this->assertContains('/foo/debugbar.js', $js);
-        $this->assertNotContains('/foo/vendor/jquery/jquery.min.js', $js);
+        $this->assertContains('/bpath/debugbar.js', $js);
+        $this->assertNotContains('/bpath/vendor/jquery/jquery.min.js', $js);
     }
 
     public function testRenderHead()
     {
-        $this->r->setBaseUrl('/foo');
         $html = $this->r->renderHead();
-        $this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/foo/debugbar.js')), $html);
+        $this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/burl/debugbar.js')), $html);
     }
 
     public function testRenderFullInitialization()

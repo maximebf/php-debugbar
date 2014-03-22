@@ -1,5 +1,10 @@
 # Changelog
 
+2014-03-22:
+
+ - added AssetProvider interface
+ - added JavascriptRenderer::addAssets()
+
 2014-01-04:
 
  - added DataFormatter
