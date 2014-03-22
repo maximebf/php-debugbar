@@ -4,6 +4,7 @@
 
  - added AssetProvider interface
  - added JavascriptRenderer::addAssets()
+ - added Memcached storage
 
 2014-01-04:
 
