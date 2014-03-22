@@ -70,3 +70,41 @@ in `JavascriptRenderer::addControl($name, $options)` (see Rendering chapter).
     }
 
 This will have the result of adding a new indicator to the debug bar.
+
+When implementing the Renderable interface, you may use widgets which are not provided
+with the default install. You can add new assets by implementing the `DebugBar\DataCollector\AssetProvider` interface.
+
+to implement it, you must define the `getAssets()` method. It must return an array with the
+following keys:
+
+ - base\_path: base path of assets (optional, if omitted or null, will use the base path of the JavascriptRenderer)
+ - base\_url: base url of assets (optional, same as base\_path)
+ - css: an array of css filenames
+ - js: an array of javascript filenames
+
+Example:
+
+    class MyDbCollector extends DebugBar\DataCollector\DataCollector implements DebugBar\DataCollector\Renderable, DebugBar\DataCollector\AssetProvider
+    {
+        // ...
+
+        public function getWidgets()
+        {
+            return array(
+                "database" => array(
+                    "icon" => "inbox",
+                    "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
+                    "map" => "pdo",
+                    "default" => "[]"
+                )
+            );
+        }
+
+        public function getAssets()
+        {
+            return array(
+                'css' => 'widgets/sqlqueries/widget.css',
+                'js' => 'widgets/sqlqueries/widget.js'
+            );
+        }
+    }
