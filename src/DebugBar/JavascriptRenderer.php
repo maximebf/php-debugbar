@@ -711,13 +711,13 @@ class JavascriptRenderer
 
     /**
      * Register shutdown to display the debug bar
-     *
+     * 
      * @param boolean $here Set position of HTML. True if is to current position or false for end file
      * @param boolean $initialize Whether to render the de bug bar initialization code
      * @return string Return "{--DEBUGBAR_OB_START_REPLACE_ME--}" or return an empty string if $here == false
      */
-    public function renderOnShutdown($here = true, $initialize = true, $renderStackedData = true) {
-        register_shutdown_function(array($this, "replaceTagInBuffer"), $here, $initialize, $renderStackedData);
+    public function renderOnShutdown($here = true, $initialize = true, $renderStackedData = true, $head = false) {
+        register_shutdown_function(array($this, "replaceTagInBuffer"), $here, $initialize, $renderStackedData, $head);
 
         if (ob_get_level() === 0) {
             ob_start();
@@ -726,14 +726,18 @@ class JavascriptRenderer
         return ($here) ? self::REPLACEABLE_TAG : "";
     }
 
+    public function renderOnShutdownWithHead($here = true, $initialize = true, $renderStackedData = true) {
+        return $this->renderOnShutdown($here, $initialize, $renderStackedData, true);
+    }
+
     /**
      * Is callback function for register_shutdown_function(...)
-     *
+     * 
      * @param boolean $here Set position of HTML. True if is to current position or false for end file
      * @param boolean $initialize Whether to render the de bug bar initialization code
      */
-    public function replaceTagInBuffer($here = true, $initialize = true, $renderStackedData = true) {
-        $render = $this->render($initialize, $renderStackedData);
+    public function replaceTagInBuffer($here = true, $initialize = true, $renderStackedData = true, $head = false) {
+        $render = (($head)?$this->renderHead():"").$this->render($initialize, $renderStackedData);
 
         $current = ($here && ob_get_level() > 0) ? ob_get_clean() : self::REPLACEABLE_TAG;
 
@@ -746,9 +750,9 @@ class JavascriptRenderer
 
     /**
      * Returns the code needed to display the debug bar
-     *
+     * 
      * AJAX request should not render the initialization code.
-     *
+     * 
      * @param boolean $initialize Whether to render the de bug bar initialization code
      * @return string
      */
