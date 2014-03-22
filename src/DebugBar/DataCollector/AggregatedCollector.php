@@ -100,9 +100,6 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
         return $this->sort;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         $aggregate = array();
@@ -139,9 +136,6 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
         return $data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return $this->name;

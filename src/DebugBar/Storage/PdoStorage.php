@@ -49,9 +49,6 @@ class PdoStorage implements StorageInterface
         $this->sqlQueries = array_merge($this->sqlQueries, $queries);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function save($id, $data)
     {
         $sql = $this->getSqlQuery('save');
@@ -60,9 +57,6 @@ class PdoStorage implements StorageInterface
         $stmt->execute(array($id, serialize($data), $meta['utime'], $meta['datetime'], $meta['uri'], $meta['ip'], $meta['method']));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get($id)
     {
         $sql = $this->getSqlQuery('get');
@@ -74,9 +68,6 @@ class PdoStorage implements StorageInterface
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
         $where = array();
@@ -109,9 +100,6 @@ class PdoStorage implements StorageInterface
         return $results;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function clear()
     {
         $this->pdo->exec($this->getSqlQuery('clear'));

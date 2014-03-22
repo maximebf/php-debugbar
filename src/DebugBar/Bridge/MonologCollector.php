@@ -56,9 +56,6 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
         $logger->pushHandler($this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function write(array $record)
     {
         $this->records[] = array(
@@ -69,17 +66,11 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMessages()
     {
         return $this->records;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         return array(
@@ -88,17 +79,11 @@ class MonologCollector extends AbstractProcessingHandler implements DataCollecto
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         $name = $this->getName();

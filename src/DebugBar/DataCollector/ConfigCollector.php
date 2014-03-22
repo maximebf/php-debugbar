@@ -39,9 +39,6 @@ class ConfigCollector extends DataCollector implements Renderable
         $this->data = $data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         $data = array();
@@ -54,17 +51,11 @@ class ConfigCollector extends DataCollector implements Renderable
         return $data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         $name = $this->getName();

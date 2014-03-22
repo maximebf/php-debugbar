@@ -25,9 +25,6 @@ class FileStorage implements StorageInterface
         $this->dirname = rtrim($dirname, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function save($id, $data)
     {
         if (!file_exists($this->dirname)) {
@@ -36,17 +33,11 @@ class FileStorage implements StorageInterface
         file_put_contents($this->makeFilename($id), json_encode($data));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get($id)
     {
         return json_decode(file_get_contents($this->makeFilename($id)), true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
         //Loop through all .json files and remember the modified time and id.
@@ -101,9 +92,6 @@ class FileStorage implements StorageInterface
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function clear()
     {
         foreach (new \DirectoryIterator($this->dirname) as $file) {

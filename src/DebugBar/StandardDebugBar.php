@@ -22,9 +22,6 @@ use DebugBar\DataCollector\ExceptionsCollector;
  */
 class StandardDebugBar extends DebugBar
 {
-    /**
-     * {@inheritDoc}
-     */
     public function __construct()
     {
         $this->addCollector(new PhpInfoCollector());

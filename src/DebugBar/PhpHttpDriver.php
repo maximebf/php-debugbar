@@ -15,9 +15,6 @@ namespace DebugBar;
  */
 class PhpHttpDriver implements HttpDriverInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     function setHeaders(array $headers)
     {
         foreach ($headers as $name => $value) {
@@ -25,41 +22,26 @@ class PhpHttpDriver implements HttpDriverInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     function isSessionStarted()
     {
         return isset($_SESSION);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     function setSessionValue($name, $value)
     {
         $_SESSION[$name] = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     function hasSessionValue($name)
     {
         return array_key_exists($name, $_SESSION);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     function getSessionValue($name)
     {
         return $_SESSION[$name];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     function deleteSessionValue($name)
     {
         unset($_SESSION[$name]);

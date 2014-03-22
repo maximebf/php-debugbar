@@ -53,9 +53,6 @@ class ExceptionsCollector extends DataCollector implements Renderable
         return $this->exceptions;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect()
     {
         return array(
@@ -89,17 +86,11 @@ class ExceptionsCollector extends DataCollector implements Renderable
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'exceptions';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets()
     {
         return array(
