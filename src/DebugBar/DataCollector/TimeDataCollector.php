@@ -11,12 +11,14 @@
 namespace DebugBar\DataCollector;
 
 use DebugBar\DebugBarException;
+use DebugBar\Widget\Indicator;
+use DebugBar\Widget\TimelineTab;
 
 /**
  * Collects info about the request duration as well as providing
  * a way to log duration of any operations
  */
-class TimeDataCollector extends DataCollector implements Renderable
+class TimeDataCollector extends DataCollector implements WidgetProvider
 {
     /**
      * @var float
@@ -211,18 +213,8 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function getWidgets()
     {
         return array(
-            "time" => array(
-                "icon" => "clock-o",
-                "tooltip" => "Request Duration",
-                "map" => "time.duration_str",
-                "default" => "'0ms'"
-            ),
-            "timeline" => array(
-                "icon" => "tasks",
-                "widget" => "PhpDebugBar.Widgets.TimelineWidget",
-                "map" => "time",
-                "default" => "{}"
-            )
+            "time" => new Indicator("clock-o", "time.duration_str", "'0ms'", "Request Duration"),
+            "timeline" => new TimelineTab("tasks", "time")
         );
     }
 }

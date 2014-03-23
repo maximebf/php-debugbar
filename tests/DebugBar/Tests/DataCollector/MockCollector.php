@@ -3,9 +3,9 @@
 namespace DebugBar\Tests\DataCollector;
 
 use DebugBar\DataCollector\DataCollector;
-use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\WidgetProvider;
 
-class MockCollector extends DataCollector implements Renderable
+class MockCollector extends DataCollector implements WidgetProvider
 {
     protected $data;
     protected $name;

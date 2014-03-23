@@ -4,13 +4,16 @@ namespace DebugBar\DataCollector\PDO;
 
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
-use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\WidgetProvider;
+use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\TimeDataCollector;
+use DebugBar\Widget\SQLQueriesTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * Collects data about SQL statements executed with PDO
  */
-class PDOCollector extends DataCollector implements Renderable, AssetProvider
+class PDOCollector extends DataCollector implements WidgetProvider, AssetProvider
 {
     protected $connections = array();
 
@@ -159,16 +162,8 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
     public function getWidgets()
     {
         return array(
-            "database" => array(
-                "icon" => "inbox",
-                "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
-                "map" => "pdo",
-                "default" => "[]"
-            ),
-            "database:badge" => array(
-                "map" => "pdo.nb_statements",
-                "default" => 0
-            )
+            "database" => new SQLQueriesTab("inbox", "pdo"),
+            "database:badge" => new DataMap("pdo.nb_statements", 0)
         );
     }
 

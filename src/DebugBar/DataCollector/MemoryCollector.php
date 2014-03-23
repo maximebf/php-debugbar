@@ -10,10 +10,12 @@
 
 namespace DebugBar\DataCollector;
 
+use DebugBar\Widget\Indicator;
+
 /**
  * Collects info about memory usage
  */
-class MemoryCollector extends DataCollector implements Renderable
+class MemoryCollector extends DataCollector implements WidgetProvider
 {
     protected $peakUsage = 0;
 
@@ -52,12 +54,7 @@ class MemoryCollector extends DataCollector implements Renderable
     public function getWidgets()
     {
         return array(
-            "memory" => array(
-                "icon" => "cogs",
-                "tooltip" => "Memory Usage",
-                "map" => "memory.peak_usage_str",
-                "default" => "'0B'"
-            )
+            "memory" => new Indicator("cogs", "memory.peak_usage_str", "'OB'", "Memory Usage")
         );
     }
 }

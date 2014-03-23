@@ -11,11 +11,13 @@
 namespace DebugBar\DataCollector;
 
 use Psr\Log\AbstractLogger;
+use DebugBar\Widget\MessagesTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * Provides a way to log messages
  */
-class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable
+class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, WidgetProvider
 {
     protected $name;
 
@@ -137,16 +139,8 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     {
         $name = $this->getName();
         return array(
-            "$name" => array(
-                'icon' => 'list-alt',
-                "widget" => "PhpDebugBar.Widgets.MessagesWidget",
-                "map" => "$name.messages",
-                "default" => "[]"
-            ),
-            "$name:badge" => array(
-                "map" => "$name.count",
-                "default" => "null"
-            )
+            "$name" => new MessagesTab("list-alt", "$name.messages"),
+            "$name:badge" => new DataMap("$name.count", "null")
         );
     }
 }
