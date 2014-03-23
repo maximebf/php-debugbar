@@ -72,7 +72,9 @@ class JavascriptRenderer
 
     protected $openHandlerClass = 'PhpDebugBar.OpenHandler';
 
-    protected $openHandlerUrl;
+    protected $serverHandlerUrl;
+
+    protected $constructorOptions = array();
 
     /**
      * @param \DebugBar\DebugBar $debugBar
@@ -114,7 +116,8 @@ class JavascriptRenderer
      *  - ajax_handler_classname
      *  - ajax_handler_bind_to_jquery
      *  - open_handler_classname
-     *  - open_handler_url
+     *  - server_handler_url
+     *  - ctor_options
      *
      * @param array $options [description]
      */
@@ -165,8 +168,11 @@ class JavascriptRenderer
         if (array_key_exists('open_handler_classname', $options)) {
             $this->setOpenHandlerClass($options['open_handler_classname']);
         }
-        if (array_key_exists('open_handler_url', $options)) {
-            $this->setOpenHandlerUrl($options['open_handler_url']);
+        if (array_key_exists('server_handler_url', $options)) {
+            $this->setServerHandlerUrl($options['server_handler_url']);
+        }
+        if (array_key_exists('ctor_options', $options)) {
+            $this->setConstructorOptions($options['ctor_options']);
         }
     }
 
@@ -468,24 +474,45 @@ class JavascriptRenderer
     }
 
     /**
-     * Sets the url of the open handler
+     * Sets the url of the server handler
      *
      * @param string $url
      */
-    public function setOpenHandlerUrl($url)
+    public function setServerHandlerUrl($url)
     {
-        $this->openHandlerUrl = $url;
+        $this->serverHandlerUrl = $url;
         return $this;
     }
 
     /**
-     * Returns the url for the open handler
+     * Returns the url for the server handler
      *
      * @return string
      */
-    public function getOpenHandlerUrl()
+    public function getServerHandlerUrl()
     {
-        return $this->openHandlerUrl;
+        return $this->serverHandlerUrl;
+    }
+
+    /**
+     * Sets debugbar's constructor options
+     *
+     * @param array $options
+     */
+    public function setConstructorOptions(array $options)
+    {
+        $this->constructorOptions = $options;
+        return $this;
+    }
+
+    /**
+     * Returns debugbar's constructor options
+     *
+     * @return array
+     */
+    public function getConstructorOptions()
+    {
+        return $this->constructorOptions;
     }
 
     /**
@@ -808,7 +835,12 @@ class JavascriptRenderer
         }
 
         if (($this->initialization & self::INITIALIZE_CONSTRUCTOR) === self::INITIALIZE_CONSTRUCTOR) {
-            $js .= sprintf("var %s = new %s();\n", $this->variableName, $this->javascriptClass);
+            $ctorOptions = $this->constructorOptions;
+            if ($this->serverHandlerUrl) {
+                $ctorOptions['serverHandlerUrl'] = $this->serverHandlerUrl;
+            }
+            $js .= sprintf("var %s = new %s(%s);\n", $this->variableName,
+                $this->javascriptClass, json_encode($ctorOptions, JSON_FORCE_OBJECT));
         }
 
         if (($this->initialization & self::INITIALIZE_CONTROLS) === self::INITIALIZE_CONTROLS) {
@@ -822,10 +854,8 @@ class JavascriptRenderer
             }
         }
 
-        if ($this->openHandlerUrl !== null) {
-            $js .= sprintf("%s.setOpenHandler(new %s(%s));\n", $this->variableName,
-                $this->openHandlerClass,
-                json_encode(array("url" => $this->openHandlerUrl)));
+        if ($this->debugBar->isDataPersisted() && $this->serverHandlerUrl !== null) {
+            $js .= sprintf("%s.setOpenHandler(new %s());\n", $this->variableName, $this->openHandlerClass);
         }
 
         return $js;

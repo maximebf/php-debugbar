@@ -1,9 +1,3 @@
-if (typeof(PhpDebugBar) == 'undefined') {
-    // namespace
-    var PhpDebugBar = {};
-    PhpDebugBar.$ = jQuery;
-}
-
 (function($) {
 
     /**

@@ -1,9 +1,3 @@
-if (typeof(PhpDebugBar) == 'undefined') {
-    // namespace
-    var PhpDebugBar = {};
-    PhpDebugBar.$ = jQuery;
-}
-
 (function($) {
 
     var csscls = function(cls) {
@@ -15,7 +9,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         className: 'phpdebugbar-openhandler',
 
         defaults: {
-            items_per_page: 20
+            itemsPerPage: 20
         },
 
         render: function() {
@@ -35,7 +29,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$loadmorebtn = $('<a href="javascript:">Load more</a>')
                 .appendTo(this.$actions)
                 .on('click', function() {
-                    self.find(self.last_find_request, self.last_find_request.offset + self.get('items_per_page'), self.handleFind.bind(self));
+                    self.find(self.last_find_request, self.last_find_request.offset + self.get('itemsPerPage'), self.handleFind.bind(self));
                 });
 
             this.$showonlycurrentbtn = $('<a href="javascript:">Show only current URL</a>')
@@ -145,7 +139,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     .append($('<td />').append(ip))
                     .appendTo(self.$table);
             });
-            if (data.length < this.get('items_per_page')) {
+            if (data.length < this.get('itemsPerPage')) {
                 this.$loadmorebtn.hide();
             }
         },
@@ -163,27 +157,17 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         find: function(filters, offset, callback) {
-            var data = $.extend({}, filters, {max: this.get('items_per_page'), offset: offset || 0});
+            var data = $.extend({}, filters, {max: this.get('itemsPerPage'), offset: offset || 0});
             this.last_find_request = data;
-            this.ajax(data, callback);
+            PhpDebugBar.DebugBar.instance.callServer("open", "find", data, callback);
         },
 
         load: function(id, callback) {
-            this.ajax({op: "get", id: id}, callback);
+            PhpDebugBar.DebugBar.instance.callServer("open", "get", {id: id}, callback);
         },
 
         clear: function(callback) {
-            this.ajax({op: "clear"}, callback);
-        },
-
-        ajax: function(data, callback) {
-            $.ajax({
-                dataType: 'json',
-                url: this.get('url'),
-                data: data,
-                success: callback,
-                ignoreDebugBarAjaxHandler: true
-            });
+            PhpDebugBar.DebugBar.instance.callServer("open", "clear", callback);
         }
 
     });
