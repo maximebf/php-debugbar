@@ -11,11 +11,13 @@
 namespace DebugBar\DataCollector;
 
 use Exception;
+use DebugBar\Widget\ExceptionsTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * Collects info about exceptions
  */
-class ExceptionsCollector extends DataCollector implements Renderable
+class ExceptionsCollector extends DataCollector implements WidgetProvider
 {
     protected $exceptions = array();
     protected $chainExceptions = false;
@@ -91,16 +93,8 @@ class ExceptionsCollector extends DataCollector implements Renderable
     public function getWidgets()
     {
         return array(
-            'exceptions' => array(
-                'icon' => 'bug',
-                'widget' => 'PhpDebugBar.Widgets.ExceptionsWidget',
-                'map' => 'exceptions.exceptions',
-                'default' => '[]'
-            ),
-            'exceptions:badge' => array(
-                'map' => 'exceptions.count',
-                'default' => 'null'
-            )
+            'exceptions' => new ExceptionsTab("bug", "exceptions.exceptions"),
+            'exceptions:badge' => new DataMap('exceptions.count')
         );
     }
 }

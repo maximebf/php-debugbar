@@ -11,8 +11,10 @@
 namespace DebugBar\Bridge\Twig;
 
 use DebugBar\DataCollector\DataCollector;
-use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\WidgetProvider;
 use DebugBar\DataCollector\AssetProvider;
+use DebugBar\Widget\TemplatesTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * Collects data about rendered templates
@@ -27,7 +29,7 @@ use DebugBar\DataCollector\AssetProvider;
  * $debugbar->addCollector(new TwigCollector($env));
  * </code>
  */
-class TwigCollector extends DataCollector implements Renderable, AssetProvider
+class TwigCollector extends DataCollector implements WidgetProvider, AssetProvider
 {
     public function __construct(TraceableTwigEnvironment $twig)
     {
@@ -64,16 +66,8 @@ class TwigCollector extends DataCollector implements Renderable, AssetProvider
     public function getWidgets()
     {
         return array(
-            'twig' => array(
-                'icon' => 'leaf',
-                'widget' => 'PhpDebugBar.Widgets.TemplatesWidget',
-                'map' => 'twig',
-                'default' => '[]'
-            ),
-            'twig:badge' => array(
-                'map' => 'twig.nb_templates',
-                'default' => 0
-            )
+            'twig' => new TemplatesTab('leaf', 'twig'),
+            'twig:badge' => new DataMap('twig.nb_templates', 0)
         );
     }
 

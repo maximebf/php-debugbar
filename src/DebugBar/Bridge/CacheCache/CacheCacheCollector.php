@@ -16,6 +16,8 @@ use Monolog\Logger;
 use DebugBar\Bridge\MonologCollector;
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\ServerHandler\ServerHandlerFactoryInterface;
+use DebugBar\Widget\CacheTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * Collects CacheCache operations
@@ -76,16 +78,8 @@ class CacheCacheCollector extends MonologCollector implements AssetProvider, Ser
     {
         $name = $this->getName();
         return array(
-            $name => array(
-                "icon" => "suitcase",
-                "widget" => "PhpDebugBar.Widgets.CacheWidget",
-                "map" => "$name.records",
-                "default" => "[]"
-            ),
-            "$name:badge" => array(
-                "map" => "$name.count",
-                "default" => "null"
-            )
+            $name => new CacheTab("suitcase", "$name.records"),
+            "$name:badge" => new DataMap("$name.count")
         );
     }
 

@@ -11,17 +11,19 @@
 namespace DebugBar\Bridge\SwiftMailer;
 
 use DebugBar\DataCollector\DataCollector;
-use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\WidgetProvider;
 use DebugBar\DataCollector\AssetProvider;
 use Swift_Mailer;
 use Swift_Plugins_MessageLogger;
+use DebugBar\Widget\MailsTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * Collects data about sent mails
  *
  * http://swiftmailer.org/
  */
-class SwiftMailCollector extends DataCollector implements Renderable, AssetProvider
+class SwiftMailCollector extends DataCollector implements WidgetProvider, AssetProvider
 {
     protected $messagesLogger;
 
@@ -66,17 +68,8 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
     public function getWidgets()
     {
         return array(
-            'emails' => array(
-                'icon' => 'inbox',
-                'widget' => 'PhpDebugBar.Widgets.MailsWidget',
-                'map' => 'swiftmailer_mails.mails',
-                'default' => '[]',
-                'title' => 'Mails'
-            ),
-            'emails:badge' => array(
-                'map' => 'swiftmailer_mails.count',
-                'default' => 'null'
-            )
+            'emails' => new MailsTab('inbox', 'swiftmailer_mails.mails'),
+            'emails:badge' => new DataMap('swiftmailer_mails.count')
         );
     }
 

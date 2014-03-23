@@ -15,10 +15,12 @@ use PropelPDO;
 use PropelConfiguration;
 use BasicLogger;
 use DebugBar\DataCollector\DataCollector;
-use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\WidgetProvider;
 use DebugBar\DataCollector\AssetProvider;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use DebugBar\Widget\SQLQueriesTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * A Propel logger which acts as a data collector
@@ -34,7 +36,7 @@ use Psr\Log\LogLevel;
  * PropelCollector::enablePropelProfiling();
  * </code>
  */
-class PropelCollector extends DataCollector implements BasicLogger, Renderable, AssetProvider
+class PropelCollector extends DataCollector implements BasicLogger, WidgetProvider, AssetProvider
 {
     protected $logger;
 
@@ -230,16 +232,8 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
     public function getWidgets()
     {
         return array(
-            "propel" => array(
-                "icon" => "bolt",
-                "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
-                "map" => "propel",
-                "default" => "[]"
-            ),
-            "propel:badge" => array(
-                "map" => "propel.nb_statements",
-                "default" => 0
-            )
+            "propel" => new SQLQueriesTab("bolt", "propel"),
+            "propel:badge" => new DataMap("propel.nb_statements", 0)
         );
     }
 

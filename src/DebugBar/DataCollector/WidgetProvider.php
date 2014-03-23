@@ -11,13 +11,13 @@
 namespace DebugBar\DataCollector;
 
 /**
- * Indicates that a DataCollector is renderable using JavascriptRenderer
+ * Indicates that a DataCollector provides some widgets to be added
+ * to the debugbar
  */
-interface Renderable
+interface WidgetProvider
 {
     /**
-     * Returns a hash where keys are control names and their values
-     * an array of options as defined in {@see DebugBar\JavascriptRenderer::addControl()}
+     * Returns an array of Widget objects
      *
      * @return array
      */

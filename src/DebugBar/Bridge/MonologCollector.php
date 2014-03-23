@@ -13,7 +13,7 @@ namespace DebugBar\Bridge;
 use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
 use DebugBar\DataCollector\DataCollectorInterface;
-use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\WidgetProvider;
 use DebugBar\DataCollector\MessagesAggregateInterface;
 
 /**
@@ -25,7 +25,7 @@ use DebugBar\DataCollector\MessagesAggregateInterface;
  * $debugbar->addCollector(new MonologCollector($logger));
  * </code>
  */
-class MonologCollector extends AbstractProcessingHandler implements DataCollectorInterface, Renderable, MessagesAggregateInterface
+class MonologCollector extends AbstractProcessingHandler implements DataCollectorInterface, WidgetProvider, MessagesAggregateInterface
 {
     protected $name;
 

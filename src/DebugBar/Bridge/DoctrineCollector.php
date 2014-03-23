@@ -11,11 +11,13 @@
 namespace DebugBar\Bridge;
 
 use DebugBar\DataCollector\DataCollector;
-use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\WidgetProvider;
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DebugBarException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Logging\DebugStack;
+use DebugBar\Widget\SQLQueriesTab;
+use DebugBar\Widget\DataMap;
 
 /**
  * Collects Doctrine queries
@@ -30,7 +32,7 @@ use Doctrine\DBAL\Logging\DebugStack;
  * $debugbar->addCollector(new DoctrineCollector($debugStack));
  * </code>
  */
-class DoctrineCollector extends DataCollector implements Renderable, AssetProvider
+class DoctrineCollector extends DataCollector implements WidgetProvider, AssetProvider
 {
     protected $debugStack;
 
@@ -75,16 +77,8 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
     public function getWidgets()
     {
         return array(
-            "database" => array(
-                "icon" => "arrow-right",
-                "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
-                "map" => "doctrine",
-                "default" => "[]"
-            ),
-            "database:badge" => array(
-                "map" => "doctrine.nb_statements",
-                "default" => 0
-            )
+            "database" => new SQLQueriesTab("arrow-right", "doctrine"),
+            "database:badge" => new DataMap("doctrine.nb_statements", 0)
         );
     }
 

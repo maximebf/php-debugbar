@@ -10,10 +10,12 @@
 
 namespace DebugBar\DataCollector;
 
+use DebugBar\Widget\VariableListTab;
+
 /**
  * Collects array data
  */
-class ConfigCollector extends DataCollector implements Renderable
+class ConfigCollector extends DataCollector implements WidgetProvider
 {
     protected $name;
 
@@ -60,12 +62,7 @@ class ConfigCollector extends DataCollector implements Renderable
     {
         $name = $this->getName();
         return array(
-            "$name" => array(
-                "icon" => "gear",
-                "widget" => "PhpDebugBar.Widgets.VariableListWidget",
-                "map" => "$name",
-                "default" => "{}"
-            )
+            "$name" => new VariableListTab("gear", "$name")
         );
     }
 }

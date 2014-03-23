@@ -10,10 +10,12 @@
 
 namespace DebugBar\DataCollector;
 
+use DebugBar\Widget\VariableListTab;
+
 /**
  * Collects info about the current request
  */
-class RequestDataCollector extends DataCollector implements Renderable
+class RequestDataCollector extends DataCollector implements WidgetProvider
 {
     public function collect()
     {
@@ -37,12 +39,7 @@ class RequestDataCollector extends DataCollector implements Renderable
     public function getWidgets()
     {
         return array(
-            "request" => array(
-                "icon" => "tags",
-                "widget" => "PhpDebugBar.Widgets.VariableListWidget",
-                "map" => "request",
-                "default" => "{}"
-            )
+            "request" => new VariableListTab("tags", "request")
         );
     }
 }
