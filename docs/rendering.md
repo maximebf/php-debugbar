@@ -124,32 +124,15 @@ This has the result of printing:
 
 Using `setInitialization(0)` will only render the addDataSet part.
 
-### Defining controls
+### Adding widgets
 
-Controls can be manually added to the debug bar using `addControl($name, $options)`. You should read
-the Javascript bar chapter before this section.
+Widgets can be added to the debug bar using `addWidget($name, $widget)`. Collectors implementing
+`DebugBar\DataCollector\WidgetProvider` will be able to add their own widgets automatically.
 
-`$name` will be the name of your control and `$options` is a key/value pair array with these
-possible values:
+`$name` will be the name of your widget and `$widget` is one of `DebugBar\Widget\Tab`,
+`DebugBar\Widget\Indicator` and `DebugBar\Widget\DataMap`.
 
-- *icon*: icon name
-- *tooltip*: string
-- *widget*: widget class name
-- *map*: a property name from the data to map the control to
-- *default*: a js string, default value of the data map
-- *tab*: class name of the tab object (to use a custom tab object)
-- *indicator*: class name of the indicator object (to use a custom indicator object)
-- *position*: position of the indicator ('left' of 'right', default to 'right')
+    $renderer->addWidget('memory', new Indicator('cogs', 'memory', '"0B"'));
 
-At least *icon* or *widget* are needed (unless *tab* or *indicator* are specified). If *widget* is
-specified, a tab will be created, otherwise an indicator. Any other options is also passed to the tab
-or indicator.
-
-    $renderer->addControl('messages', array(
-        "widget" => "PhpDebugBar.Widgets.MessagesWidget",
-        "map" => "messages",
-        "default" => "[]"
-    ));
-
-You can disable a control using `disableControl($name)` and ignore any controls provided by
+You can disable a widget using `disableWidget($name)` and ignore any widgets provided by
 a collector using `ignoreCollector($name)`.

@@ -5,6 +5,8 @@ DEV:
  - added possibility for widgets to call server side commands (ServerHandler namespace)
  - OpenHandler moved to ServerHandler
  - Bridge\CacheCacheCollector moved to Bridge\CacheCache\CacheCacheCollector
+ - new widget system
+ - DataCollector\Renderable renamed to DataCollector\WidgetProvider
 
 2014-12 (1.10.2):
 
