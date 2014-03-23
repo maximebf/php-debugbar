@@ -3,8 +3,8 @@ div.phpdebugbar {
   bottom: 0;
   left: 0;
   width: 100%;
-  border-top: 1px solid #ccc;
-  font-family: arial;
+  border-top: 0;
+  font-family: arial, sans-serif;
   background: #fff;
   z-index: 10000;
   font-size: 14px;
@@ -34,9 +34,15 @@ a.phpdebugbar-restore-btn {
 div.phpdebugbar-resize-handle {
   display: none;
   height: 4px;
+  margin-top: -4px;
   width: 100%;
-  background: #fff;
+  background: none;
+  border-bottom: 1px solid #ccc;
   cursor: n-resize;
+}
+
+div.phpdebugbar-closed, div.phpdebugbar-minimized{
+  border-top: 1px solid #ccc;
 }
 
 /* -------------------------------------- */
