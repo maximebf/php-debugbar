@@ -37,14 +37,14 @@ class CacheCacheHandler implements ServerHandlerInterface
         return array('clear', 'clearKey');
     }
 
-    public function clear($debugbar, $request)
+    public function clear($request, $debugbar)
     {
         foreach ($this->caches as $cache) {
             $cache->flushAll();
         }
     }
 
-    public function clearKey($debugbar, $request)
+    public function clearKey($request, $debugbar)
     {
         foreach ($this->caches as $cache) {
             $cache->delete($request['key']);

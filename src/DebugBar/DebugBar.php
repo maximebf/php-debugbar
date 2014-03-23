@@ -444,15 +444,15 @@ class DebugBar implements ArrayAccess
     }
 
     /**
-     * Returns a ServerHandler for this instance
+     * Returns a ServerHandler\FrontController for this instance
      *
      * If a storage is registered, the open handler will be auto registered
      *
-     * @return ServerHandler\Server
+     * @return ServerHandler\FrontController
      */
-    public function createServerHandler()
+    public function createServerHandlerFrontController()
     {
-        return new ServerHandler\Server($this);
+        return new ServerHandler\FrontController($this);
     }
 
     // --------------------------------------------

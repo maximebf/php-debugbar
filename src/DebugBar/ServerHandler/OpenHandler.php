@@ -25,7 +25,7 @@ class OpenHandler implements ServerHandlerInterface
         return array('find', 'get', 'clear');
     }
 
-    public function find($debugbar, $request)
+    public function find($request, $debugbar)
     {
         $max = 20;
         if (isset($request['max'])) {
@@ -47,7 +47,7 @@ class OpenHandler implements ServerHandlerInterface
         return $debugbar->getStorage()->find($filters, $max, $offset);
     }
 
-    public function get($debugbar, $request)
+    public function get($request, $debugbar)
     {
         if (!isset($request['id'])) {
             throw new DebugBarException("Missing 'id' parameter in 'get' operation");
@@ -55,7 +55,7 @@ class OpenHandler implements ServerHandlerInterface
         return $debugbar->getStorage()->get($request['id']);
     }
 
-    public function clear($debugbar, $request)
+    public function clear($request, $debugbar)
     {
         $debugbar->getStorage()->clear();
         return array('success' => true);

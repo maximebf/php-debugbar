@@ -1,5 +1,11 @@
 # Changelog
 
+DEV:
+
+ - added possibility for widgets to call server side commands (ServerHandler namespace)
+ - OpenHandler moved to ServerHandler
+ - Bridge\CacheCacheCollector moved to Bridge\CacheCache\CacheCacheCollector
+
 2014-12 (1.10.2):
 
  - Use Symfony VarDumper instead of kintLite as DataFormatter (#179)
@@ -37,7 +43,7 @@
 2014-03-23:
 
  - Add syntax highlighting
- 
+
 2014-03-22:
 
  - added AssetProvider interface
