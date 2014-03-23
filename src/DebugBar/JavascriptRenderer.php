@@ -36,9 +36,15 @@ class JavascriptRenderer
 
     protected $basePath;
 
-    protected $cssVendors = array('vendor/font-awesome/css/font-awesome.min.css');
+    protected $cssVendors = array(
+        'vendor/font-awesome/css/font-awesome.min.css',
+        'vendor/highlightjs/styles/github.css'
+    );
 
-    protected $jsVendors = array('vendor/jquery/jquery.min.js');
+    protected $jsVendors = array(
+        'vendor/jquery/dist/jquery.min.js',
+        'vendor/highlightjs/highlight.pack.js'
+    );
 
     protected $includeVendors = true;
 

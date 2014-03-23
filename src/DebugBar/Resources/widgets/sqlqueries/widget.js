@@ -16,7 +16,7 @@
             this.$status = $('<div />').addClass(csscls('status')).appendTo(this.$el);
 
             this.$list = new  PhpDebugBar.Widgets.ListWidget({ itemRenderer: function(li, stmt) {
-                $('<span />').addClass(csscls('sql')).text(stmt.sql).appendTo(li);
+                $('<code />').addClass(csscls('sql')).html(PhpDebugBar.Widgets.highlight(stmt.sql, 'sql')).appendTo(li);
                 if (stmt.duration_str) {
                     $('<span title="Duration" />').addClass(csscls('duration')).text(stmt.duration_str).appendTo(li);
                 }

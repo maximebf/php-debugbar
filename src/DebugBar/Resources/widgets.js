@@ -39,6 +39,41 @@ if (typeof(PhpDebugBar) == 'undefined') {
         return value;
     };
 
+    /**
+     * Highlights a block of code
+     *
+     * @param  {String} code
+     * @param  {String} lang
+     * @return {String}
+     */
+    var highlight = PhpDebugBar.Widgets.highlight = function(code, lang) {
+        if (typeof(code) == 'string') {
+            if (lang) {
+                return hljs.highlight(lang, code).value;
+            }
+            return hljs.highlightAuto(code).value;
+        }
+
+        code.each(function(i, e) { hljs.highlightBlock(e); });
+    };
+
+    /**
+     * Creates a <pre> element with a block of code
+     *
+     * @param  {String} code
+     * @param  {String} lang
+     * @return {String}
+     */
+    var createCodeBlock = PhpDebugBar.Widgets.createCodeBlock = function(code, lang) {
+        var pre = $('<pre />');
+        $('<code />').text(code).appendTo(pre);
+        if (lang) {
+            pre.addClass("language-" + lang);
+        }
+        highlight(pre);
+        return pre;
+    };
+
     var csscls = PhpDebugBar.utils.makecsscls('phpdebugbar-widgets-');
 
 
@@ -224,11 +259,15 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 var val = $('<span />').addClass(csscls('value')).text(m).appendTo(li);
                 if (!value.is_string || value.message.length > 100) {
+                    var prettyVal = value.message;
+                    if (!value.is_string) {
+                        prettyVal = createCodeBlock(value.message, 'php');
+                    }
                     li.css('cursor', 'pointer').click(function() {
                         if (val.hasClass(csscls('pretty'))) {
                             val.text(m).removeClass(csscls('pretty'));
                         } else {
-                            val.html(htmlize(value.message)).addClass(csscls('pretty'));
+                            val.addClass(csscls('pretty')).empty().append(prettyVal);
                         }
                     });
                 }
@@ -355,12 +394,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     $('<span />').addClass(csscls('type')).text(e.type).appendTo(li);
                 }
                 if (e.surrounding_lines) {
-                    var file = $('<div />').addClass(csscls('file')).html(htmlize(e.surrounding_lines.join(""))).appendTo(li);
+                    var pre = createCodeBlock(e.surrounding_lines.join(""), 'php').addClass(csscls('file')).appendTo(li);
                     li.click(function() {
-                        if (file.is(':visible')) {
-                            file.hide();
+                        if (pre.is(':visible')) {
+                            pre.hide();
                         } else {
-                            file.show();
+                            pre.show();
                         }
                     });
                 }
