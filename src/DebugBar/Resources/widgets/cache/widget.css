@@ -1,0 +1,19 @@
+
+div.phpdebugbar-widgets-cache div.phpdebugbar-widgets-toolbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+}
+  div.phpdebugbar-widgets-cache div.phpdebugbar-widgets-toolbar a {
+    display: inline-block;
+    padding: 4px 5px;
+    margin: 2px 5px;
+    background: #eee;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #555;
+  }
+  div.phpdebugbar-widgets-cache div.phpdebugbar-widgets-toolbar a:hover {
+    background: #ddd;
+  }

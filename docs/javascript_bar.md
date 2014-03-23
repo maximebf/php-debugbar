@@ -22,9 +22,9 @@ Each panel is composed of a widget which is used to display the
 data from a data collector. Some common widgets are provided in
 the *widgets.js* file.
 
-The `PhpDebugBar` namespace is used for all objects and the only
-dependencies are *jQuery* and *FontAwesome* (css). *FontAwesome* is
-optional but is used to add nice icons!
+The `PhpDebugBar` namespace is used for all objects and the
+dependencies are *jQuery*, *FontAwesome* (css) and *highlight.js*.
+*FontAwesome* is optional but is used to add nice icons!
 
 The main class is `PhpDebugBar.DebugBar`. It provides the infrastructure
 to manage tabs, indicators and datasets.
@@ -169,6 +169,16 @@ and indicators of type `PhpDebugBar.DebugBar.Indicator`. These classes subclass
 
     debugbar.addIndicator('phpdoc', new LinkIndicator({ href: 'http://doc.php.com', title: 'PHP doc' }));
 
+## Executing commands on the server
+
+The `callServer(handlerName, commandName, data, callback)` function of the `DebugBar` object
+can be used to execute commands on the server. The current instance of the debugbar can be
+accessed using `PhpDebugBar.DebugBar.instance`. The data argument is optional.
+
+    PhpDebugBar.DebugBar.instance.callServer('debugbar', 'ping', { key1: "val1" }, function(resp) {
+        console.log(resp);
+    });
+
 ## OpenHandler
 
 An OpenHandler object can be provided using `setOpenHandler()`. The object is in charge
@@ -176,6 +186,4 @@ of loading datasets. The only requirement is to provide a `show()` method which 
 as only parameter a callback which expects an id and data parameter.
 
 The default implementation is `PhpDebugBar.OpenHandler` which must be use in conjunction
-with the server side `DebugBar\OpenHandler` (see previous section).
-
-    debugbar.setOpenHandler(new PhpDebugBar.OpenHandler({ url: "open.php" }));
+with the server side `DebugBar\ServerHandler\OpenHandler`.

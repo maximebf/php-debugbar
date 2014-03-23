@@ -15,7 +15,7 @@ use CacheCache\LoggingBackend;
 use Monolog\Logger;
 use DebugBar\Bridge\MonologCollector;
 use DebugBar\DataCollector\AssetProvider;
-use DebugBar\ServerHandler\ServerHandlerFactoryInterface
+use DebugBar\ServerHandler\ServerHandlerFactoryInterface;
 
 /**
  * Collects CacheCache operations
@@ -50,6 +50,11 @@ class CacheCacheCollector extends MonologCollector implements AssetProvider, Ser
         }
     }
 
+    /**
+     * Adds another cache backend which operations should be logged
+     *
+     * @param Cache $cache
+     */
     public function addCache(Cache $cache)
     {
         $backend = $cache->getBackend();
@@ -59,6 +64,7 @@ class CacheCacheCollector extends MonologCollector implements AssetProvider, Ser
         $cache->setBackend($backend);
         $this->addLogger($backend->getLogger());
         $this->caches[] = $cache;
+        return $this;
     }
 
     public function getName()

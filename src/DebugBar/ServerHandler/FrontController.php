@@ -11,11 +11,12 @@
 namespace DebugBar\ServerHandler;
 
 use DebugBar\DebugBar;
+use DebugBar\DebugBarException;
 
 /**
- *
+ * Handles and dispatches requests from the debugbar to handlers
  */
-class Server implements HandlerInterface
+class FrontController implements ServerHandlerInterface
 {
     protected $debugBar;
 
@@ -39,16 +40,33 @@ class Server implements HandlerInterface
         }
     }
 
-    public function registerHandler(HandlerInterface $handler)
+    /**
+     * Registers a new ServerHandlerInterface
+     *
+     * @param ServerHandlerInterface $handler
+     */
+    public function registerHandler(ServerHandlerInterface $handler)
     {
         $this->handlers[$handler->getName()] = $handler;
+        return $this;
     }
 
+    /**
+     * Checks if an handler is registered by name
+     *
+     * @param string $name
+     * @return boolean
+     */
     public function isHandlerRegistered($name)
     {
         return isset($this->handlers[$name]);
     }
 
+    /**
+     * Returns all handlers
+     *
+     * @return array
+     */
     public function getHandlers()
     {
         return $this->handlers;
@@ -90,7 +108,7 @@ class Server implements HandlerInterface
                 ));
         }
 
-        $response = json_encode(call_user_func(array($handler, $op), $this->debugBar, $request));
+        $response = json_encode(call_user_func(array($handler, $op), $request, $this->debugBar));
         if ($echo) {
             echo $response;
         }
