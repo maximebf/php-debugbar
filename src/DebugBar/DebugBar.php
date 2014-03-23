@@ -443,6 +443,18 @@ class DebugBar implements ArrayAccess
         return $this->jsRenderer;
     }
 
+    /**
+     * Returns a ServerHandler for this instance
+     *
+     * If a storage is registered, the open handler will be auto registered
+     *
+     * @return ServerHandler\Server
+     */
+    public function createServerHandler()
+    {
+        return new ServerHandler\Server($this);
+    }
+
     // --------------------------------------------
     // ArrayAccess implementation
 
