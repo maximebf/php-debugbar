@@ -16,15 +16,15 @@
                 this.$list.set('data', data);
             });
 
-            this.$toolbar = $('<div />').addClass(csscls('toolbar'));
-            this.$toolbar.append($('<a href="#">Clear all</a>').on('click', function() {
-                this.preventDefault();
+            this.$toolbar = $('<div />').addClass(csscls('toolbar')).appendTo(this.$el);
+            this.$toolbar.append($('<a href="#">Clear all</a>').on('click', function(e) {
+                e.preventDefault();
                 PhpDebugBar.DebugBar.instance.callServer('cache', 'clear', function() {
                     alert('Done!')
                 });
             }));
-            this.$toolbar.append($('<a href="#">Clear key</a>').on('click', function() {
-                this.preventDefault();
+            this.$toolbar.append($('<a href="#">Clear key</a>').on('click', function(e) {
+                e.preventDefault();
                 var key = prompt("Key name:");
                 if (!key) {
                     return;
