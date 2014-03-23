@@ -60,9 +60,8 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      * @param mixed $message
      * @param string $label
      */
-    public function addMessage($message, $label = 'info')
+    public function addMessage($message, $label = 'info', $isString = true)
     {
-        $isString = true;
         if (!is_string($message)) {
             $message = $this->getDataFormatter()->formatVar($message);
             $isString = false;
