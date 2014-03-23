@@ -1,6 +1,6 @@
 <script type="text/javascript">
 jQuery.noConflict(true);
-var phpdebugbar = new PhpDebugBar.DebugBar();
+var phpdebugbar = new PhpDebugBar.DebugBar({});
 phpdebugbar.addTab("messages", new PhpDebugBar.DebugBar.Tab({"icon":"list-alt","title":"Messages", "widget": new PhpDebugBar.Widgets.MessagesWidget()}));
 phpdebugbar.addIndicator("time", new PhpDebugBar.DebugBar.Indicator({"icon":"time"}), "right");
 phpdebugbar.setDataMap({

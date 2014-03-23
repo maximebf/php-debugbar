@@ -38,7 +38,8 @@ class JavascriptRendererTest extends DebugBarTestCase
             'ajax_handler_classname' => 'AjaxFoo',
             'ajax_handler_bind_to_jquery' => false,
             'open_handler_classname' => 'OpenFoo',
-            'open_handler_url' => 'open.php'
+            'server_handler_url' => 'server.php',
+            'ctor_options' => array('foo' => 'bar')
         ));
 
         $this->assertEquals('/foo', $this->r->getBasePath());
@@ -57,7 +58,8 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertEquals('AjaxFoo', $this->r->getAjaxHandlerClass());
         $this->assertFalse($this->r->isAjaxHandlerBoundToJquery());
         $this->assertEquals('OpenFoo', $this->r->getOpenHandlerClass());
-        $this->assertEquals('open.php', $this->r->getOpenHandlerUrl());
+        $this->assertEquals('server.php', $this->r->getServerHandlerUrl());
+        $this->assertArrayHasKey('foo', $this->r->getConstructorOptions());
     }
 
     public function testAddAssets()
@@ -106,7 +108,7 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setVariableName('foovar');
         $this->r->setAjaxHandlerClass(false);
         $this->r->setEnableJqueryNoConflict(true);
-        $this->assertStringStartsWith("<script type=\"text/javascript\">\njQuery.noConflict(true);\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+        $this->assertStringStartsWith("<script type=\"text/javascript\">\njQuery.noConflict(true);\nvar foovar = new Foobar({});\nfoovar.addDataSet(", $this->r->render());
     }
 
     public function testJQueryNoConflictAutoDisabling()
