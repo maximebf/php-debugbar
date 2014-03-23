@@ -10,6 +10,8 @@
 
 namespace DebugBar\ServerHandler;
 
+use DebugBar\DebugBarException;
+
 /**
  * Handler to list and open saved dataset
  */
