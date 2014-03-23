@@ -194,11 +194,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
             if (v && v.length > 100) {
                 v = v.substr(0, 100) + "...";
             }
+            var prettyVal = createCodeBlock(value);
             dd.text(v).click(function() {
                 if (dd.hasClass(csscls('pretty'))) {
                     dd.text(v).removeClass(csscls('pretty'));
                 } else {
-                    dd.html(htmlize(value)).addClass(csscls('pretty'));
+                    dd.addClass(csscls('pretty')).empty().append(prettyVal);
                 }
             });
         }

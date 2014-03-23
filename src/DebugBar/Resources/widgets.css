@@ -101,6 +101,7 @@ dl.phpdebugbar-widgets-kvlist {
     clear: both;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
   dl.phpdebugbar-widgets-kvlist dd {
     margin-left: 160px;
