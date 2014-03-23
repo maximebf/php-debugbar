@@ -394,11 +394,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         className: "phpdebugbar " + csscls('minimized'),
 
-        options: {
-            bodyPaddingBottom: true
+        defaults: {
+            bodyPaddingBottom: true,
+            serverHandlerUrl: null
         },
 
-        initialize: function() {
+        initialize: function(options) {
+            this.set(options);
             this.controls = {};
             this.dataMap = {};
             this.datasets = {};
@@ -406,6 +408,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.activePanelName = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.registerResizeHandler();
+
+            DebugBar.instance = this;
         },
 
         /**
@@ -787,7 +791,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * that the debug bar never hides any content
          */
         recomputeBottomOffset: function() {
-            if (this.options.bodyPaddingBottom) {
+            if (this.get('bodyPaddingBottom')) {
                 $('body').css('padding-bottom', this.$el.height());
             }
         },
@@ -920,6 +924,38 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 } else {
                     self.getControl(key).set('data', d);
                 }
+            });
+        },
+
+        /**
+         * Calls the server at the specified serverHandlerUrl
+         
+         * @param  {String}   handler
+         * @param  {String}   command
+         * @param  {Function} callback
+         * @return {Object}
+         */
+        callServer: function(handler, command, callback) {
+            var url = this.get('serverHandlerUrl');
+            if (!url) {
+                throw new Error("No server handler url specified");
+            }
+
+            var data = {};
+            if (arguments.length > 3) {
+                data = callback;
+                callback = arguments[3];
+            }
+
+            data['hdl'] = handler;
+            data['op'] = command;
+
+            return $.ajax({
+                dataType: 'json',
+                url: url,
+                data: data,
+                success: callback,
+                ignoreDebugBarAjaxHandler: true
             });
         },
 
