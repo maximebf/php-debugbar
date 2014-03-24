@@ -47,14 +47,20 @@ if (typeof(PhpDebugBar) == 'undefined') {
      * @return {String}
      */
     var highlight = PhpDebugBar.Widgets.highlight = function(code, lang) {
-        if (typeof(code) == 'string') {
+        if (typeof(code) === 'string') {
+            if (!hljs) {
+                return htmlize(code);
+            }
             if (lang) {
                 return hljs.highlight(lang, code).value;
             }
             return hljs.highlightAuto(code).value;
         }
 
-        code.each(function(i, e) { hljs.highlightBlock(e); });
+        if (hljs) {
+            code.each(function(i, e) { hljs.highlightBlock(e); });
+        }
+        return code;
     };
 
     /**
