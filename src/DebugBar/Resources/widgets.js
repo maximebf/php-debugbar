@@ -194,7 +194,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         className: csscls('kvlist varlist'),
 
         itemRenderer: function(dt, dd, key, value) {
-            dt.text(key);
+            $('<span />').attr('title', key).text(key).appendTo(dt);
 
             var v = value;
             if (v && v.length > 100) {
