@@ -75,7 +75,7 @@
                     t.append(", " + data.nb_failed_statements + " of which failed");
                 }
                 if (duplicate) {
-                    t.append(", " + duplicate + " of which were duplicates");
+                    t.append(", " + duplicate + " of which were duplicated");
                 }
                 if (data.accumulated_duration_str) {
                     this.$status.append($('<span title="Accumulated duration" />').addClass(csscls('duration')).text(data.accumulated_duration_str));
