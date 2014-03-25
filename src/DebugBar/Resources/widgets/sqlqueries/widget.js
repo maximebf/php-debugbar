@@ -56,6 +56,9 @@
                 // Search for duplicate statements.
                 for (var sql = {}, duplicate = 0, i = 0; i < data.statements.length; i++) {
                     var stmt = data.statements[i].sql;
+                    if (data.statements[i].params && !$.isEmptyObject(data.statements[i].params)) {
+                        stmt += ' {' + $.param(data.statements[i].params, false) + '}';
+                    }
                     sql[stmt] = sql[stmt] || { keys: [] };
                     sql[stmt].keys.push(i);
                 }
