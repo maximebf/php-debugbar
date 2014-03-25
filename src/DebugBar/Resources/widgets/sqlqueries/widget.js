@@ -53,9 +53,29 @@
                 this.$list.set('data', data.statements);
                 this.$status.empty();
 
+                // Search for duplicate statements.
+                for (var sql = {}, duplicate = 0, i = 0; i < data.statements.length; i++) {
+                    var stmt = data.statements[i].sql;
+                    sql[stmt] = sql[stmt] || { keys: [] };
+                    sql[stmt].keys.push(i);
+                }
+                // Add classes to all duplicate SQL statements.
+                for (var stmt in sql) {
+                    if (sql[stmt].keys.length > 1) {
+                        duplicate++;
+                        for (var i = 0; i < sql[stmt].keys.length; i++) {
+                            this.$list.$el.find('.' + csscls('list-item')).eq(sql[stmt].keys[i])
+                                .addClass(csscls('sql-duplicate')).addClass(csscls('sql-duplicate-'+duplicate));
+                        }
+                    }
+                }
+
                 var t = $('<span />').text(data.nb_statements + " statements were executed").appendTo(this.$status);
                 if (data.nb_failed_statements) {
                     t.append(", " + data.nb_failed_statements + " of which failed");
+                }
+                if (duplicate) {
+                    t.append(", " + duplicate + " of which were duplicates");
                 }
                 if (data.accumulated_duration_str) {
                     this.$status.append($('<span title="Accumulated duration" />').addClass(csscls('duration')).text(data.accumulated_duration_str));
