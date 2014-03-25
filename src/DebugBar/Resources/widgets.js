@@ -48,7 +48,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
      */
     var highlight = PhpDebugBar.Widgets.highlight = function(code, lang) {
         if (typeof(code) === 'string') {
-            if (!hljs) {
+            if (typeof(hljs) === 'undefined') {
                 return htmlize(code);
             }
             if (lang) {
@@ -57,7 +57,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             return hljs.highlightAuto(code).value;
         }
 
-        if (hljs) {
+        if (typeof(hljs) === 'object') {
             code.each(function(i, e) { hljs.highlightBlock(e); });
         }
         return code;
