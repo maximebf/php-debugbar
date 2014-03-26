@@ -200,11 +200,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
             if (v && v.length > 100) {
                 v = v.substr(0, 100) + "...";
             }
-            var prettyVal = createCodeBlock(value);
+            var prettyVal = null;
             dd.text(v).click(function() {
                 if (dd.hasClass(csscls('pretty'))) {
                     dd.text(v).removeClass(csscls('pretty'));
                 } else {
+                    prettyVal = prettyVal || createCodeBlock(value);
                     dd.addClass(csscls('pretty')).empty().append(prettyVal);
                 }
             });
@@ -268,12 +269,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (!value.is_string || value.message.length > 100) {
                     var prettyVal = value.message;
                     if (!value.is_string) {
-                        prettyVal = createCodeBlock(value.message, 'php');
+                        prettyVal = null;
                     }
                     li.css('cursor', 'pointer').click(function() {
                         if (val.hasClass(csscls('pretty'))) {
                             val.text(m).removeClass(csscls('pretty'));
                         } else {
+                            prettyVal = prettyVal || createCodeBlock(value.message, 'php');
                             val.addClass(csscls('pretty')).empty().append(prettyVal);
                         }
                     });
