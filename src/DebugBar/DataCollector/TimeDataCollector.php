@@ -18,12 +18,25 @@ use DebugBar\DebugBarException;
  */
 class TimeDataCollector extends DataCollector implements Renderable
 {
+
+    /**
+     * @var float
+     */
     protected $requestStartTime;
 
+    /**
+     * @var float
+     */
     protected $requestEndTime;
 
+    /**
+     * @var array
+     */
     protected $startedMeasures = array();
 
+    /**
+     * @var array
+     */
     protected $measures = array();
 
     /**
@@ -62,7 +75,7 @@ class TimeDataCollector extends DataCollector implements Renderable
      * @param string $name
      * @return bool
      */
-    public function hasMeasure($name)
+    public function hasStartedMeasure($name)
     {
         return isset($this->startedMeasures[$name]);
     }
@@ -75,7 +88,7 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function stopMeasure($name)
     {
         $end = microtime(true);
-        if (!$this->hasMeasure($name)) {
+        if (!$this->hasStartedMeasure($name)) {
             throw new DebugBarException("Failed stopping measure '$name' because it hasn't been started");
         }
         $this->addMeasure($this->startedMeasures[$name]['label'], $this->startedMeasures[$name]['start'], $end);
