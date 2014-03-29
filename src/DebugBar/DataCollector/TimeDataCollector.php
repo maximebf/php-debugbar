@@ -57,6 +57,17 @@ class TimeDataCollector extends DataCollector implements Renderable
     }
 
     /**
+     * Check a measure exists
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function hasMeasure($name)
+    {
+        return isset($this->startedMeasures[$name]);
+    }
+
+    /**
      * Stops a measure
      *
      * @param string $name
@@ -64,7 +75,7 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function stopMeasure($name)
     {
         $end = microtime(true);
-        if (!isset($this->startedMeasures[$name])) {
+        if (!$this->hasMeasure($name)) {
             throw new DebugBarException("Failed stopping measure '$name' because it hasn't been started");
         }
         $this->addMeasure($this->startedMeasures[$name]['label'], $this->startedMeasures[$name]['start'], $end);
