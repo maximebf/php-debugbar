@@ -424,7 +424,7 @@ class DebugBar implements ArrayAccess
     /**
      * Returns a JavascriptRenderer for this instance
      *
-     * @param stri $baseUrl
+     * @param string $baseUrl
      * @param string $basePathng
      * @return JavascriptRenderer
      */
