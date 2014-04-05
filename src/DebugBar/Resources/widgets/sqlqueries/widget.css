@@ -67,3 +67,8 @@ div.phpdebugbar-widgets-sqlqueries li.phpdebugbar-widgets-list-item span.phpdebu
   display: block;
   font-weight: bold;
 }
+code.phpdebugbar-widgets-sql {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
