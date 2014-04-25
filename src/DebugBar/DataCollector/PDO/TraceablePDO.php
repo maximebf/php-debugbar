@@ -37,7 +37,7 @@ class TraceablePDO extends PDO
 
     public function errorInfo()
     {
-        return $this->errorInfo();
+        return $this->pdo->errorInfo();
     }
 
     public function exec($sql)
