@@ -99,7 +99,7 @@ Aggregates multiple collectors. Do not provide any widgets, you have to add your
     $renderer->addControl('all_messages', array(
         'widget' => 'PhpDebugBar.Widgets.MessagesWidget',
         'map' => 'all_messages',
-        'default' => '[]';
+        'default' => '[]',
     ));
 
 ## Others
