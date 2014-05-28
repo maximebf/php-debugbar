@@ -74,7 +74,7 @@ code.phpdebugbar-widgets-sql {
 }
 
 div.phpdebugbar-widgets-sqlqueries li.phpdebugbar-widgets-list-item.phpdebugbar-widgets-sql-duplicate {
-  background-color: #ffd;
+  background-color: #edeff0;
 }
 
 div.phpdebugbar-widgets-sqlqueries li.phpdebugbar-widgets-list-item.phpdebugbar-widgets-sql-duplicate:hover {
