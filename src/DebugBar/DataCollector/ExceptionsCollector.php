@@ -69,15 +69,20 @@ class ExceptionsCollector extends DataCollector implements Renderable
      */
     public function formatExceptionData(Exception $e)
     {
-        $lines = file($e->getFile());
-        $start = $e->getLine() - 4;
-        $lines = array_slice($lines, $start < 0 ? 0 : $start, 7);
+        $filePath = $e->getFile();
+        if ($filePath && file_exists($filePath)) {
+            $lines = file($filePath);
+            $start = $e->getLine() - 4;
+            $lines = array_slice($lines, $start < 0 ? 0 : $start, 7);
+        } else {
+            $lines = array("Cannot open the file ($filePath) in which the exception occurred ");
+        }
 
         return array(
             'type' => get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
-            'file' => $e->getFile(),
+            'file' => $filePath,
             'line' => $e->getLine(),
             'surrounding_lines' => $lines
         );
