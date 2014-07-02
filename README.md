@@ -50,7 +50,7 @@ with the following requirement:
 ```JSON
 {
     "require": {
-        "maximebf/debugbar": ">=1.0.0"
+        "maximebf/debugbar": "1.*"
     }
 }
 ```
