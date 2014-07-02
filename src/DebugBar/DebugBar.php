@@ -465,4 +465,8 @@ class DebugBar implements ArrayAccess
     {
         throw new DebugBarException("DebugBar[] is read-only");
     }
+    public function __destruct()
+    {
+        $this->collect();
+    }
 }
