@@ -24,5 +24,10 @@
         "kriswallsmith/assetic": "The best way to manage assets",
         "monolog/monolog": "Log using Monolog",
         "predis/predis": "Redis storage"
+    },
+     "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
     }
 }
