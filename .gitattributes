@@ -1,5 +1,7 @@
 * text=auto
 
+/docs export-ignore
+/demo export-ignore
 /tests export-ignore
 /.gitattributes export-ignore
 /.gitignore export-ignore
