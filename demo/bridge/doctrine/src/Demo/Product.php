@@ -1,5 +1,7 @@
 <?php
 
+namespace Demo;
+
 /**
  * @Entity @Table(name="products")
  **/

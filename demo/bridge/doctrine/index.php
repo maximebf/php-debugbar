@@ -9,7 +9,7 @@ $debugStack = new Doctrine\DBAL\Logging\DebugStack();
 $entityManager->getConnection()->getConfiguration()->setSQLLogger($debugStack);
 $debugbar->addCollector(new DebugBar\Bridge\DoctrineCollector($debugStack));
 
-$product = new Product();
+$product = new Demo\Product();
 $product->setName("foobar");
 
 $entityManager->persist($product);
