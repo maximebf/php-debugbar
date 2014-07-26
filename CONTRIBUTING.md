@@ -13,7 +13,7 @@ A contribution must follow the following guidelines:
  - Docs must be updated for new features
  - Changelog must be updated (bug fix are not required to be added to the changelog)
  - ensure that examples in demo/ folder are still working
- 
+
 Javascript code convention:
 
  - based on: http://javascript.crockford.com/code.html
