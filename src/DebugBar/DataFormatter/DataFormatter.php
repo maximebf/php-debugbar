@@ -36,7 +36,7 @@ class DataFormatter implements DataFormatterInterface
         $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
         return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
     }
-    
+
      /**
      * lightweight version of Kint::dump(). Uses whitespace for formatting instead of html
      * sadly not DRY yet

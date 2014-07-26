@@ -768,9 +768,9 @@ class JavascriptRenderer
 
     /**
      * Returns the code needed to display the debug bar
-     * 
+     *
      * AJAX request should not render the initialization code.
-     * 
+     *
      * @param boolean $initialize Whether to render the de bug bar initialization code
      * @return string
      */
