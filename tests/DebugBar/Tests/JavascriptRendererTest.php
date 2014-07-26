@@ -89,6 +89,11 @@ class JavascriptRendererTest extends DebugBarTestCase
     {
         $html = $this->r->renderHead();
         $this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/burl/debugbar.js')), $html);
+        $this->assertTrue(strpos($html, "jQuery.noConflict(true);") > -1);
+
+        $this->r->setEnableJqueryNoConflict(false);
+        $html = $this->r->renderHead();
+        $this->assertFalse(strpos($html, "jQuery.noConflict(true);"));
     }
 
     public function testRenderFullInitialization()
@@ -105,8 +110,7 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setJavascriptClass('Foobar');
         $this->r->setVariableName('foovar');
         $this->r->setAjaxHandlerClass(false);
-        $this->r->setEnableJqueryNoConflict(true);
-        $this->assertStringStartsWith("<script type=\"text/javascript\">\njQuery.noConflict(true);\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+        $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
     }
 
     public function testJQueryNoConflictAutoDisabling()

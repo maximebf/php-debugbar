@@ -712,6 +712,10 @@ class JavascriptRenderer
             $html .= sprintf('<script type="text/javascript" src="%s"></script>' . "\n", $file);
         }
 
+        if ($this->enableJqueryNoConflict) {
+            $html .= '<script type="text/javascript">jQuery.noConflict(true);</script>' . "\n";
+        }
+
         return $html;
     }
 
@@ -802,10 +806,6 @@ class JavascriptRenderer
     protected function getJsInitializationCode()
     {
         $js = '';
-
-        if ($this->enableJqueryNoConflict) {
-            $js .= "jQuery.noConflict(true);\n";
-        }
 
         if (($this->initialization & self::INITIALIZE_CONSTRUCTOR) === self::INITIALIZE_CONSTRUCTOR) {
             $js .= sprintf("var %s = new %s();\n", $this->variableName, $this->javascriptClass);
