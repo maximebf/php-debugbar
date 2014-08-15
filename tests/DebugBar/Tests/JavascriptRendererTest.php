@@ -69,7 +69,8 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertContains('/bar/foo.js', $js);
 
         $html = $this->r->renderHead();
-        $this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/foobar/foo.js')), $html);
+        //$this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/foobar/foo.js')), $html);
+        $this->assertContains('<script type="text/javascript" src="/foobar/foo.js"></script>', $html);
     }
 
     public function testGetAssets()
@@ -88,7 +89,7 @@ class JavascriptRendererTest extends DebugBarTestCase
     public function testRenderHead()
     {
         $html = $this->r->renderHead();
-        $this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/burl/debugbar.js')), $html);
+        $this->assertContains('<script type="text/javascript" src="/burl/debugbar.js"></script>', $html);
         $this->assertTrue(strpos($html, "jQuery.noConflict(true);") > -1);
 
         $this->r->setEnableJqueryNoConflict(false);
