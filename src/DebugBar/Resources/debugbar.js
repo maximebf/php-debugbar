@@ -461,6 +461,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             // dragging of resize handle
             var dragging = false;
+            var min_h = 40;
+            var max_h = $(window).height() - this.$header.height() - 10;
             this.$resizehdle.on('mousedown', function(e) {
                 var orig_h = $body.height(), pos_y = e.pageY;
                 dragging = true;
@@ -468,6 +470,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 $body.parents().on('mousemove', function(e) {
                     if (dragging) {
                         var h = orig_h + (pos_y - e.pageY);
+                        // Respect the min/max values
+                        h = Math.min(h, max_h);
+                        h = Math.max(h, min_h);
                         $body.css('height', h);
                         localStorage.setItem('phpdebugbar-height', h);
                         self.recomputeBottomOffset();
