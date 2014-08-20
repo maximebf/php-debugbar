@@ -35,8 +35,10 @@
                 if (stmt.params && !$.isEmptyObject(stmt.params)) {
                     var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
                     for (var key in stmt.params) {
-                        table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') + 
-                                     '">' + stmt.params[key] + '</td></tr>');
+                        if (typeof stmt.params[key] !== 'function') {
+                            table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') +
+                            '">' + stmt.params[key] + '</td></tr>');
+                        }
                     }
                     li.css('cursor', 'pointer').click(function() {
                         if (table.is(':visible')) {
