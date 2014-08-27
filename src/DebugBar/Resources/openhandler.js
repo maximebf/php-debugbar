@@ -25,7 +25,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$closebtn = $('<a href="javascript:"><i class="fa fa-times"></i></a>');
             this.$table = $('<tbody />');
             $('<div>PHP DebugBar | Open</div>').addClass(csscls('header')).append(this.$closebtn).appendTo(this.$el);
-            $('<table><thead><tr><th>Load</th><th>Method</th><th>URL</th><th>Date</th><th>IP</th></tr></thead></table>').append(this.$table).appendTo(this.$el);
+            $('<table><thead><tr><th width="150">Date</th><th width="55">Method</th><th>URL</th><th width="100">IP</th><th width="100">Filter data</th></tr></thead></table>').append(this.$table).appendTo(this.$el);
             this.$actions = $('<div />').addClass(csscls('actions')).appendTo(this.$el);
 
             this.$closebtn.on('click', function() {
@@ -106,11 +106,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
                var a = $('<a href="javascript:" />')
                     .text('Load dataset')
                     .on('click', function(e) {
-                        self.hide();
-                        self.load(meta['id'], function(data) {
-                            self.callback(meta['id'], data);
-                        });
-                        e.preventDefault();
+                       self.hide();
+                       self.load(meta['id'], function(data) {
+                           self.callback(meta['id'], data);
+                       });
+                       e.preventDefault();
                     });
                     
                 var method = $('<a href="javascript:" />')
@@ -124,8 +124,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var uri = $('<a href="javascript:" />')
                     .text(meta['uri'])
                     .on('click', function(e) {
-                        self.$table.empty();
-                        self.find({uri: meta['uri']}, 0, self.handleFind.bind(self));
+                        self.hide();
+                        self.load(meta['id'], function(data) {
+                            self.callback(meta['id'], data);
+                        });
                         e.preventDefault();
                     });
 
@@ -136,13 +138,21 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         self.find({ip: meta['ip']}, 0, self.handleFind.bind(self));
                         e.preventDefault();
                     });
+
+                var search = $('<a href="javascript:" />')
+                    .text('Show URL')
+                    .on('click', function(e) {
+                        self.$table.empty();
+                        self.find({uri: meta['uri']}, 0, self.handleFind.bind(self));
+                        e.preventDefault();
+                    });
                     
                 $('<tr />')
-                    .append($('<td />').append(a))
-                    .append($('<td />').append(method))
-                    .append($('<td />').append(uri))
                     .append('<td>' + meta['datetime'] + '</td>')
+                    .append('<td>' + meta['method'] + '</td>')
+                    .append($('<td />').append(uri))
                     .append($('<td />').append(ip))
+                    .append($('<td />').append(search))
                     .appendTo(self.$table);
             });
             if (data.length < this.get('items_per_page')) {
