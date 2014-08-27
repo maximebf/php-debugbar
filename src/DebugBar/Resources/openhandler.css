@@ -43,13 +43,19 @@ div.phpdebugbar-openhandler {
         }
     div.phpdebugbar-openhandler table {
         width: 100%;
+        table-layout: fixed;
         font-size: 14px;
     }
         div.phpdebugbar-openhandler table td {
             padding: 6px 3px;
-            text-align: center;
             border-bottom: 1px solid #ddd;
         }
+            div.phpdebugbar-openhandler table td a{
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
     div.phpdebugbar-openhandler .phpdebugbar-openhandler-actions {
         text-align: center;
         padding: 7px 0;
