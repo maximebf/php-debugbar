@@ -26,6 +26,9 @@ div.phpdebugbar-openhandler {
     font-size: 14px;
     padding-bottom: 10px;
 }
+    div.phpdebugbar-openhandler a {
+        color: #555;
+    }
     div.phpdebugbar-openhandler .phpdebugbar-openhandler-header {
         background: #efefef url(php-icon.png) no-repeat 5px 4px;
         padding-left: 29px;
@@ -43,13 +46,19 @@ div.phpdebugbar-openhandler {
         }
     div.phpdebugbar-openhandler table {
         width: 100%;
+        table-layout: fixed;
         font-size: 14px;
     }
         div.phpdebugbar-openhandler table td {
             padding: 6px 3px;
-            text-align: center;
             border-bottom: 1px solid #ddd;
         }
+            div.phpdebugbar-openhandler table td a{
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
     div.phpdebugbar-openhandler .phpdebugbar-openhandler-actions {
         text-align: center;
         padding: 7px 0;
