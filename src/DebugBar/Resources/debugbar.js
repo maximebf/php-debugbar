@@ -485,7 +485,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
             
             // minimize button
-            this.$closebtn = $('<a href="javascript:" />').addClass(csscls('close-btn')).appendTo(this.$headerRight);
+            this.$closebtn = $('<a href="javascript:"><i class="fa fa-times"></i></a>').addClass(csscls('close-btn')).appendTo(this.$headerRight);
             this.$closebtn.click(function() {
                 self.close();
             });
@@ -497,7 +497,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // open button
-            this.$openbtn = $('<a href="javascript:" />').addClass(csscls('open-btn')).appendTo(this.$headerRight).hide();
+            this.$openbtn = $('<a href="javascript:"><i class="fa fa-folder-open"></i></a>').addClass(csscls('open-btn')).appendTo(this.$headerRight).hide();
             this.$openbtn.click(function() {
                 self.openHandler.show(function(id, dataset) {
                     self.addDataSet(dataset, id, "(opened)");
