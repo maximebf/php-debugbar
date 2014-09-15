@@ -22,6 +22,14 @@ div.phpdebugbar * {
          box-sizing: content-box;
 }
 
+div.phpdebugbar code, div.phpdebugbar pre {
+    background: none;
+    font-family: monospace;
+    font-size: 1em;
+    border: 0;
+    padding: 0;
+}
+
 a.phpdebugbar-restore-btn {
   float: left;
   padding: 5px 8px;
