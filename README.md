@@ -45,18 +45,9 @@ Integrations with other frameworks:
 ## Installation
 
 The best way to install DebugBar is using [Composer](http://getcomposer.org)
-with the following requirement:
+with the following command:
 
-```JSON
-{
-    "require": {
-        "maximebf/debugbar": "1.*"
-    }
-}
-```
-
-If you are cloning the repository, you'll need to run `composer install`.
-
+```composer require maximebf/debugbar```
 
 ## Quick start
 
