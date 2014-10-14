@@ -56,6 +56,10 @@ The easiest way is using the `render()` functions
 
 ```PHP
 <?php
+
+// Require the Composer autoloader, if not already loaded
+require 'vendor/autoload.php';
+
 use DebugBar\StandardDebugBar;
 
 $debugbar = new StandardDebugBar();
