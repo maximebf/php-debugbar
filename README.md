@@ -1,6 +1,6 @@
 # PHP Debug Bar
 
-[![Latest Stable Version](https://poser.pugx.org/maximebf/debugbar/v/stable.png)](https://packagist.org/packages/maximebf/debugbar) [![Build Status](https://travis-ci.org/maximebf/php-debugbar.png?branch=master)](https://travis-ci.org/maximebf/php-debugbar)
+[![Latest Stable Version](https://poser.pugx.org/maximebf/debugbar/v/stable.png)](https://packagist.org/packages/maximebf/debugbar) [![Total Downloads](https://poser.pugx.org/maximebf/debugbar/downloads.svg)](https://packagist.org/packages/maximebf/debugbar) [![License](https://poser.pugx.org/maximebf/debugbar/license.svg)](https://packagist.org/packages/maximebf/debugbar) [![Build Status](https://travis-ci.org/maximebf/php-debugbar.png?branch=master)](https://travis-ci.org/maximebf/php-debugbar)
 
 Displays a debug bar in the browser with information from php.
 No more `var_dump()` in your code!
