@@ -462,7 +462,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             // dragging of resize handle
             var dragging = false;
             var min_h = 40;
-            var max_h = $(window).height() - this.$header.height() - 10;
+            var max_h = $(document).height() - this.$header.height() - 10;
             this.$resizehdle.on('mousedown', function(e) {
                 var orig_h = $body.height(), pos_y = e.pageY;
                 dragging = true;
