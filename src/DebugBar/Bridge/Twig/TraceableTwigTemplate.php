@@ -118,9 +118,4 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
 
         return ob_get_clean();
     }
-
-    public static function clearCache()
-    {
-        $this->template->clearCache();
-    }
 }
