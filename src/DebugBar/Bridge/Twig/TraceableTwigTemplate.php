@@ -55,9 +55,9 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
         $this->template->displayParentBlock($name, $context, $blocks);
     }
 
-    public function displayBlock($name, array $context, array $blocks = array())
+    public function displayBlock($name, array $context, array $blocks = array(), $useBlocks = true)
     {
-        $this->template->displayBlock($name, $context, $blocks);
+        $this->template->displayBlock($name, $context, $blocks, $useBlocks);
     }
 
     public function renderParentBlock($name, array $context, array $blocks = array())
@@ -65,9 +65,9 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
         return $this->template->renderParentBlock($name, $context, $blocks);
     }
 
-    public function renderBlock($name, array $context, array $blocks = array())
+    public function renderBlock($name, array $context, array $blocks = array(), $useBlocks = true)
     {
-        return $this->template->renderBlock($name, $context, $blocks);
+        return $this->template->renderBlock($name, $context, $blocks, $useBlocks);
     }
 
     public function hasBlock($name)
