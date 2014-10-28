@@ -121,6 +121,6 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
 
     public static function clearCache()
     {
-        $this->template->clearCache();
+        Twig_Template::clearCache();
     }
 }
