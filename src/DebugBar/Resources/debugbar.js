@@ -1091,7 +1091,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
                 var xhr = this;
                 this.addEventListener("readystatechange", function() {
-                    if (xhr.readyState == 4) {
+                    var skipUrl = self.debugbar.openHandler ? self.debugbar.openHandler.get('url') : null;
+                    if (xhr.readyState == 4 && url.indexOf(skipUrl) !== 0) {
                         self.handle(xhr);
                     }
                 }, false);
