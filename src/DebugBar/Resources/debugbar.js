@@ -1078,6 +1078,26 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     self.handle(xhr);
                 }
             });
+        },
+        
+        /**
+         * Attaches an event listener to XMLHttpRequest
+         * 
+         * @this {AjaxHandler}
+         */
+        bindToXHR: function() {
+            var self = this;
+            var proxied = XMLHttpRequest.prototype.open;
+            XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
+                var xhr = this;
+                this.addEventListener("readystatechange", function() {
+                    var skipUrl = self.debugbar.openHandler ? self.debugbar.openHandler.get('url') : null;
+                    if (xhr.readyState == 4 && url.indexOf(skipUrl) !== 0) {
+                        self.handle(xhr);
+                    }
+                }, false);
+                proxied.apply(this, Array.prototype.slice.call(arguments));
+            };
         }
 
     });

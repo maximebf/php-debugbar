@@ -69,6 +69,8 @@ class JavascriptRenderer
     protected $ajaxHandlerClass = 'PhpDebugBar.AjaxHandler';
 
     protected $ajaxHandlerBindToJquery = true;
+    
+    protected $ajaxHandlerBindToXHR = false;
 
     protected $openHandlerClass = 'PhpDebugBar.OpenHandler';
 
@@ -447,6 +449,27 @@ class JavascriptRenderer
     }
 
     /**
+     * Sets whether to call bindToXHR() on the ajax handler
+     *
+     * @param boolean $bind
+     */
+    public function setBindAjaxHandlerToXHR($bind = true)
+    {
+        $this->ajaxHandlerBindToXHR = $bind;
+        return $this;
+    }
+
+    /**
+     * Checks whether bindToXHR() will be called on the ajax handler
+     *
+     * @return boolean
+     */
+    public function isAjaxHandlerBoundToXHR()
+    {
+        return $this->ajaxHandlerBindToXHR;
+    }
+    
+    /**
      * Sets the class name of the js open handler
      *
      * @param string $className
@@ -817,7 +840,9 @@ class JavascriptRenderer
 
         if ($this->ajaxHandlerClass) {
             $js .= sprintf("%s.ajaxHandler = new %s(%s);\n", $this->variableName, $this->ajaxHandlerClass, $this->variableName);
-            if ($this->ajaxHandlerBindToJquery) {
+            if ($this->ajaxHandlerBindToXHR) {
+                $js .= sprintf("%s.ajaxHandler.bindToXHR();\n", $this->variableName);
+            } else if ($this->ajaxHandlerBindToJquery) {
                 $js .= sprintf("if (jQuery) %s.ajaxHandler.bindToJquery(jQuery);\n", $this->variableName);
             }
         }
