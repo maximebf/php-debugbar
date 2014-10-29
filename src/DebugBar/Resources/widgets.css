@@ -124,7 +124,7 @@ ul.phpdebugbar-widgets-timeline {
   padding: 0;
   list-style: none;
 }
-  ul.phpdebugbar-widgets-timeline li {
+  ul.phpdebugbar-widgets-timeline .phpdebugbar-widgets-measure {
     height: 20px;
     position: relative;
     border-bottom: 1px solid #eee;
@@ -152,6 +152,30 @@ ul.phpdebugbar-widgets-timeline {
       top: 5px;
       border-radius: 2px;
     }
+    
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
+      float: right;
+      font-size: 12px;
+      color: #888;
+      margin: 0 2px;
+    }
+
+    ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params {
+      display: none;
+      width: 70%;
+      margin: 10px;
+      border: 1px solid #ddd;
+      font-family: monospace;
+      border-collapse: collapse;
+    }
+      ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params td {
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+      ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params .phpdebugbar-widgets-name {
+        width: 20%;
+        font-weight: bold;
+      }
 
 /* -------------------------------------- */
 

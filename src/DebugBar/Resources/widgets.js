@@ -364,16 +364,42 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 this.$el.empty();
                 if (data.measures) {
                     for (var i = 0; i < data.measures.length; i++) {
-                        var li = $('<li />').addClass(csscls('measure')),
-                            left = Math.round(data.measures[i].relative_start * 100 / data.duration),
-                            width = Math.min(Math.round(data.measures[i].duration * 100 / data.duration), 100 - left);
+                        var measure = data.measures[i];
+                        var m = $('<div />').addClass(csscls('measure')),
+                            li = $('<li />'),
+                            left = Math.round(measure.relative_start * 100 / data.duration),
+                            width = Math.min(Math.round(measure.duration * 100 / data.duration), 100 - left);
 
-                        li.append($('<span />').addClass(csscls('value')).css({
+                        m.append($('<span />').addClass(csscls('value')).css({
                             left: left + "%",
                             width: width + "%"
                         }));
-                        li.append($('<span />').addClass(csscls('label')).text(data.measures[i].label + " (" + data.measures[i].duration_str + ")"));
+                        m.append($('<span />').addClass(csscls('label')).text(measure.label + " (" + measure.duration_str + ")"));
+
+                        if (measure.collector) {
+                            $('<span />').addClass(csscls('collector')).text(measure.collector).appendTo(m);
+                        }
+
+                        m.appendTo(li);
                         this.$el.append(li);
+                        
+                        if (measure.params && !$.isEmptyObject(measure.params)) {
+                            var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
+                            for (var key in measure.params) {
+                                if (typeof measure.params[key] !== 'function') {
+                                    table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') +
+                                    '"><pre><code>' + measure.params[key] + '</code></pre></td></tr>');
+                                }
+                            }
+                            li.css('cursor', 'pointer').click(function() {
+                                var table = $(this).find('table');
+                                if (table.is(':visible')) {
+                                    table.hide();
+                                } else {
+                                    table.show();
+                                }
+                            });
+                        }
                     }
                 }
             });
