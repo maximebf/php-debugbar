@@ -10,11 +10,11 @@
 
 namespace DebugBar\Bridge;
 
-use Monolog\Logger;
-use Monolog\Handler\AbstractProcessingHandler;
 use DebugBar\DataCollector\DataCollectorInterface;
-use DebugBar\DataCollector\Renderable;
 use DebugBar\DataCollector\MessagesAggregateInterface;
+use DebugBar\DataCollector\Renderable;
+use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Logger;
 
 /**
  * A monolog handler as well as a data collector

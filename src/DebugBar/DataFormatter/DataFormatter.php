@@ -21,7 +21,7 @@ class DataFormatter implements DataFormatterInterface
     {
         if ($seconds < 0.001) {
             return round($seconds * 1000000) . 'μs';
-        } else if ($seconds < 1) {
+        } elseif ($seconds < 1) {
             return round($seconds * 1000, 2) . 'ms';
         }
         return round($seconds, 2) . 's';
@@ -58,7 +58,6 @@ class DataFormatter implements DataFormatterInterface
         $count    = "count";
         $getClass = "get_class";
 
-
         if ( $var === null ) {
             return 'NULL';
         } elseif ( is_bool( $var ) ) {
@@ -68,8 +67,7 @@ class DataFormatter implements DataFormatterInterface
         } elseif ( is_int( $var ) ) {
             return 'integer ' . $var;
         } elseif ( is_resource( $var ) ) {
-            if ( ( $type = get_resource_type( $var ) ) === 'stream' AND $meta = stream_get_meta_data( $var ) ) {
-
+            if ( ( $type = get_resource_type( $var ) ) === 'stream' and $meta = stream_get_meta_data( $var ) ) {
                 if ( isset( $meta['uri'] ) ) {
                     $file = $meta['uri'];
 
@@ -104,9 +102,10 @@ class DataFormatter implements DataFormatterInterface
 
                 $var[$marker] = true;
 
-
                 foreach ( $var as $key => &$val ) {
-                    if ( $key === $marker ) continue;
+                    if ( $key === $marker ) {
+                        continue;
+                    }
 
                     $key = $space . $s . ( $isSeq ? "" : "'{$html( $key, 0 )}' => " );
 
@@ -116,7 +115,6 @@ class DataFormatter implements DataFormatterInterface
 
                 unset( $var[$marker] );
                 $output[] = "$space]";
-
             } else {
                 $output[] = "[\n$space$s*depth too great*\n$space]";
             }
@@ -127,7 +125,7 @@ class DataFormatter implements DataFormatterInterface
             }
 
             // Copy the object as an array
-            $array = (array)$var;
+            $array = (array) $var;
 
             $output = array();
             $space  = str_repeat( $s = '    ', $level );
@@ -147,7 +145,6 @@ class DataFormatter implements DataFormatterInterface
 
                 foreach ( $array as $key => & $val ) {
                     if ( $key[0] === "\x00" ) {
-
                         $access = $key[1] === "*" ? "protected" : "private";
 
                         // Remove the access level from the variable name
@@ -160,7 +157,6 @@ class DataFormatter implements DataFormatterInterface
                 }
                 unset( $objects[$hash] );
                 $output[] = "$space}";
-
             } else {
                 $output[] = "{\n$space$s*depth too great*\n$space}";
             }

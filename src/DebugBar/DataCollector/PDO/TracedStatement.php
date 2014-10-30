@@ -69,7 +69,7 @@ class TracedStatement
     public function checkParameters($params)
     {
         foreach ($params as &$param) {
-            if(!mb_check_encoding($param, 'UTF-8')) {
+            if (!mb_check_encoding($param, 'UTF-8')) {
                 $param = '[BINARY DATA]';
             }
         }

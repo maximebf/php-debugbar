@@ -11,9 +11,9 @@
 namespace DebugBar\Bridge;
 
 use DebugBar\DataCollector\MessagesCollector;
-use Slim\Slim;
-use Slim\Log;
 use Psr\Log\LogLevel;
+use Slim\Log;
+use Slim\Slim;
 
 /**
  * Collects messages from a Slim logger

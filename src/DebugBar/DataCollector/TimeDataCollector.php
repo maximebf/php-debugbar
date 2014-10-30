@@ -18,7 +18,6 @@ use DebugBar\DebugBarException;
  */
 class TimeDataCollector extends DataCollector implements Renderable
 {
-
     /**
      * @var float
      */

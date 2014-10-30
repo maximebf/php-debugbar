@@ -10,12 +10,12 @@
 
 namespace DebugBar\Bridge;
 
+use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
-use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DebugBarException;
-use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Logging\DebugStack;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Collects Doctrine queries
