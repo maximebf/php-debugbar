@@ -52,7 +52,7 @@ div.phpdebugbar-widgets-templates table.phpdebugbar-widgets-params {
 }
 div.phpdebugbar-widgets-templates table.phpdebugbar-widgets-params td {
   border: 1px solid #ddd;
-  text-align: left;
+  padding: 0 5px;
 }
 div.phpdebugbar-widgets-templates table.phpdebugbar-widgets-params .phpdebugbar-widgets-name {
   width: 20%;

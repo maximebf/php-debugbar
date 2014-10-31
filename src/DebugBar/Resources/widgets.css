@@ -170,6 +170,7 @@ ul.phpdebugbar-widgets-timeline {
     }
       ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params td {
         border: 1px solid #ddd;
+        padding: 0 5px;
       }
       ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params .phpdebugbar-widgets-name {
         width: 20%;
