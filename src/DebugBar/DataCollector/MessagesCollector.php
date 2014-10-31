@@ -88,7 +88,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     {
         $messages = $this->messages;
         foreach ($this->aggregates as $collector) {
-            $msgs = array_map(function($m) use ($collector) {
+            $msgs = array_map(function ($m) use ($collector) {
                 $m['collector'] = $collector->getName();
                 return $m;
             }, $collector->getMessages());
@@ -96,7 +96,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
         }
 
         // sort messages by their timestamp
-        usort($messages, function($a, $b) {
+        usort($messages, function ($a, $b) {
             if ($a['time'] === $b['time']) {
                 return 0;
             }

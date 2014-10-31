@@ -49,7 +49,7 @@ class OpenHandler
 
         if ($sendHeader) {
             $this->debugBar->getHttpDriver()->setHeaders(array(
-                    'Content-Type'=> 'application/json'
+                    'Content-Type' => 'application/json'
                 ));
         }
 

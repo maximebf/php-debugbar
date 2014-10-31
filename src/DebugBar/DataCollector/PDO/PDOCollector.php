@@ -2,9 +2,9 @@
 
 namespace DebugBar\DataCollector\PDO;
 
+use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
-use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\TimeDataCollector;
 
 /**
@@ -96,7 +96,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
             $data['memory_usage'] += $pdodata['memory_usage'];
             $data['peak_memory_usage'] = max($data['peak_memory_usage'], $pdodata['peak_memory_usage']);
             $data['statements'] = array_merge($data['statements'],
-                array_map(function($s) use ($name) { $s['connection'] = $name; return $s; }, $pdodata['statements']));
+                array_map(function ($s) use ($name) { $s['connection'] = $name; return $s; }, $pdodata['statements']));
         }
 
         $data['accumulated_duration_str'] = $this->getDataFormatter()->formatDuration($data['accumulated_duration']);

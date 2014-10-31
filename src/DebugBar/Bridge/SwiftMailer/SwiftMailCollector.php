@@ -10,9 +10,9 @@
 
 namespace DebugBar\Bridge\SwiftMailer;
 
+use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
-use DebugBar\DataCollector\AssetProvider;
 use Swift_Mailer;
 use Swift_Plugins_MessageLogger;
 
@@ -49,7 +49,9 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
 
     protected function formatTo($to)
     {
-        if (!$to) return '';
+        if (!$to) {
+            return '';
+        }
 
         $f = array();
         foreach ($to as $k => $v) {

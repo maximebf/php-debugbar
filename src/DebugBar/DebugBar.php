@@ -216,7 +216,7 @@ class DebugBar implements ArrayAccess
         }
 
         // Remove all invalid (non UTF-8) characters
-        array_walk_recursive($this->data, function(&$item){
+        array_walk_recursive($this->data, function (&$item) {
                 if (is_string($item) && !mb_check_encoding($item, 'UTF-8')) {
                     $item = mb_convert_encoding($item, 'UTF-8', 'UTF-8');
                 }
@@ -258,7 +258,7 @@ class DebugBar implements ArrayAccess
             'data' => $this->getData()
         )));
 
-        if (strlen($data) > $maxTotalHeaderLength){
+        if (strlen($data) > $maxTotalHeaderLength) {
             $data = rawurlencode(json_encode(array(
                 'error' => 'Maximum header size exceeded'
             )));
@@ -314,7 +314,7 @@ class DebugBar implements ArrayAccess
         $data = null;
         if (!$this->isDataPersisted() || $this->stackAlwaysUseSessionStorage) {
             $data = $this->getData();
-        } else if ($this->data === null) {
+        } elseif ($this->data === null) {
             $this->collect();
         }
 

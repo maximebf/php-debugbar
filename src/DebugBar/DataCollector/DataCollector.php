@@ -10,8 +10,8 @@
 
 namespace DebugBar\DataCollector;
 
-use DebugBar\DataFormatter\DataFormatterInterface;
 use DebugBar\DataFormatter\DataFormatter;
+use DebugBar\DataFormatter\DataFormatterInterface;
 
 /**
  * Abstract class for data collectors

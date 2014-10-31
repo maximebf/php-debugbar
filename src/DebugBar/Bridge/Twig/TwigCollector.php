@@ -10,9 +10,9 @@
 
 namespace DebugBar\Bridge\Twig;
 
+use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
-use DebugBar\DataCollector\AssetProvider;
 
 /**
  * Collects data about rendered templates

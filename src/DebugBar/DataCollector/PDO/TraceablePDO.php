@@ -136,7 +136,7 @@ class TraceablePDO extends PDO
      */
     public function getAccumulatedStatementsDuration()
     {
-        return array_reduce($this->executedStatements, function($v, $s) { return $v + $s->getDuration(); });
+        return array_reduce($this->executedStatements, function ($v, $s) { return $v + $s->getDuration(); });
     }
 
     /**
@@ -146,7 +146,7 @@ class TraceablePDO extends PDO
      */
     public function getMemoryUsage()
     {
-        return array_reduce($this->executedStatements, function($v, $s) { return $v + $s->getMemoryUsage(); });
+        return array_reduce($this->executedStatements, function ($v, $s) { return $v + $s->getMemoryUsage(); });
     }
 
     /**
@@ -156,7 +156,7 @@ class TraceablePDO extends PDO
      */
     public function getPeakMemoryUsage()
     {
-        return array_reduce($this->executedStatements, function($v, $s) { $m = $s->getEndMemory(); return $m > $v ? $m : $v; });
+        return array_reduce($this->executedStatements, function ($v, $s) { $m = $s->getEndMemory(); return $m > $v ? $m : $v; });
     }
 
     /**
@@ -176,7 +176,7 @@ class TraceablePDO extends PDO
      */
     public function getFailedExecutedStatements()
     {
-        return array_filter($this->executedStatements, function($s) { return !$s->isSuccess(); });
+        return array_filter($this->executedStatements, function ($s) { return !$s->isSuccess(); });
     }
 
     public function __get($name)

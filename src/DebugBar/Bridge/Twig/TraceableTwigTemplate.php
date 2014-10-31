@@ -10,8 +10,8 @@
 
 namespace DebugBar\Bridge\Twig;
 
-use Twig_TemplateInterface;
 use Twig_Template;
+use Twig_TemplateInterface;
 
 /**
  * Wraps a Twig_Template to add profiling features
