@@ -26,7 +26,7 @@
                 if (typeof(tpl.param_count) != 'undefined') {
                     $('<span title="Parameter count" />').addClass(csscls('param-count')).text(tpl.param_count).appendTo(li);
                 }
-                if (typeof(tpl.type) != 'undefined') {
+                if (typeof(tpl.type) != 'undefined' && tpl.type) {
                     $('<span title="Type" />').addClass(csscls('type')).text(tpl.type).appendTo(li);
                 }
                 if (tpl.params && !$.isEmptyObject(tpl.params)) {
