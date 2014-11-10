@@ -151,6 +151,7 @@ ul.phpdebugbar-widgets-timeline {
       background: #3db9ec;
       top: 5px;
       border-radius: 2px;
+      min-width: 1px;
     }
     
     ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
