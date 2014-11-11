@@ -43,6 +43,11 @@ class TraceableTwigEnvironment extends Twig_Environment
         $this->timeDataCollector = $timeDataCollector;
     }
 
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array(array($this->twig, $name), $arguments);
+    }
+
     public function getRenderedTemplates()
     {
         return $this->renderedTemplates;

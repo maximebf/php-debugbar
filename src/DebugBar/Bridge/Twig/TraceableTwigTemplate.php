@@ -30,6 +30,11 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
         $this->template = $template;
     }
 
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array(array($this->template, $name), $arguments);
+    }
+
     public function getTemplateName()
     {
         return $this->template->getTemplateName();
