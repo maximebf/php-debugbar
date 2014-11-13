@@ -133,7 +133,8 @@ ul.phpdebugbar-widgets-timeline {
   ul.phpdebugbar-widgets-timeline li:hover {
     background: #fafafa;
   }
-    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-label {
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-label,
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
       position: absolute;
       font-size: 12px;
       font-family: monospace;
@@ -144,6 +145,10 @@ ul.phpdebugbar-widgets-timeline {
       text-shadow: none;
       font-weight: normal;
     }
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
+      left: initial;
+      right: 5px;
+    }
     ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-value {
       display: block; 
       position: absolute;
@@ -153,14 +158,6 @@ ul.phpdebugbar-widgets-timeline {
       border-radius: 2px;
       min-width: 1px;
     }
-    
-    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
-      float: right;
-      font-size: 12px;
-      color: #888;
-      margin: 0 2px;
-    }
-
     ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params {
       display: none;
       width: 70%;
