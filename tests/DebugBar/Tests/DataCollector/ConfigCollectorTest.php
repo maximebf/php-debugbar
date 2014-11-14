@@ -15,9 +15,8 @@ class ConfigCollectorTest extends DebugBarTestCase
         $this->assertArrayHasKey('s', $data);
         $this->assertEquals('bar', $data['s']);
         $this->assertArrayHasKey('a', $data);
-        $this->assertEquals("array()", $data['a']);
+        $this->assertEquals("[]", $data['a']);
         $this->assertArrayHasKey('o', $data);
-        $this->assertEquals('object stdClass {}', $data['o']);
     }
 
     public function testName()
