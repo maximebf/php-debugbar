@@ -37,13 +37,13 @@ class JavascriptRenderer
     protected $basePath;
 
     protected $cssVendors = array(
-        'vendor/font-awesome/css/font-awesome.min.css',
-        'vendor/highlightjs/styles/github.css'
+        'fontawesome' => 'vendor/font-awesome/css/font-awesome.min.css',
+        'highlightjs' => 'vendor/highlightjs/styles/github.css'
     );
 
     protected $jsVendors = array(
-        'vendor/jquery/dist/jquery.min.js',
-        'vendor/highlightjs/highlight.pack.js'
+        'jquery' => 'vendor/jquery/dist/jquery.min.js',
+        'highlightjs' => 'vendor/highlightjs/highlight.pack.js'
     );
 
     protected $includeVendors = true;
@@ -245,6 +245,23 @@ class JavascriptRenderer
     public function areVendorsIncluded()
     {
         return $this->includeVendors !== false;
+    }
+
+    /**
+     * Disable a specific vendor's assets.
+     *
+     * @param  string $name "jquery", "fontawesome", "highlightjs"
+     *
+     * @return void
+     */
+    public function disableVendor($name)
+    {
+        if (array_key_exists($name, $this->cssVendors)) {
+            unset($this->cssVendors[$name]);
+        }
+        if (array_key_exists($name, $this->jsVendors)) {
+            unset($this->jsVendors[$name]);
+        }
     }
 
     /**

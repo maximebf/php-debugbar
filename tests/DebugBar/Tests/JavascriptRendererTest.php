@@ -126,4 +126,11 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setIncludeVendors(array('css', 'js'));
         $this->assertTrue($this->r->isJqueryNoConflictEnabled());
     }
+
+    public function testCanDisableSpecificVendors()
+    {
+        $this->assertContains('jquery.min.js', $this->r->renderHead());
+        $this->r->disableVendor('jquery');
+        $this->assertNotContains('jquery.min.js', $this->r->renderHead());
+    }
 }
