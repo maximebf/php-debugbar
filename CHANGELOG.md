@@ -1,5 +1,11 @@
 # Changelog
 
+2014-11 (1.10.1):
+
+ - Add disableVendor() option to JavascriptRenderer to remove a specific vendor (#182)
+ - Fix macros in Twig Collector (#167, #177)
+ - Update Font Awesome to 4.2.0 
+
 2014-10 (1.10.0):
 
  - Add bindToXHR() as alternative to jQuery ajax handling.
