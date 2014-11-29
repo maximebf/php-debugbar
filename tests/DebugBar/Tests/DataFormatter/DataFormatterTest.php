@@ -10,7 +10,7 @@ class DataFormatterTest extends DebugBarTestCase
     public function testFormatVar()
     {
         $f = new DataFormatter();
-        $this->assertEquals("bool TRUE", $f->formatVar(true));
+        $this->assertEquals("true", $f->formatVar(true));
     }
 
     public function testFormatDuration()
