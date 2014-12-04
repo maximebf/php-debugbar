@@ -24,7 +24,7 @@ class PdoStorage implements StorageInterface
     protected $sqlQueries = array(
         'save' => "INSERT INTO %tablename% (id, data, meta_utime, meta_datetime, meta_uri, meta_ip, meta_method) VALUES (?, ?, ?, ?, ?, ?, ?)",
         'get' => "SELECT data FROM %tablename% WHERE id = ?",
-        'find' => "SELECT data FROM %tablename% %where% LIMIT %limit% OFFSET %offset%",
+        'find' => "SELECT data FROM %tablename% %where% ORDER BY meta_datetime LIMIT %limit% OFFSET %offset%",
         'clear' => "DELETE FROM %tablename%"
     );
 
