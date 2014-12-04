@@ -22,7 +22,8 @@ class RedisStorage implements StorageInterface
     protected $hash;
 
     /**
-     * @param string $dirname Directories where to store files
+     * @param  \Predis\Client $redis Redis Client
+     * @param  string $hash
      */
     public function __construct(Client $redis, $hash = 'phpdebugbar')
     {
@@ -30,16 +31,25 @@ class RedisStorage implements StorageInterface
         $this->hash = $hash;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save($id, $data)
     {
         $this->redis->hset($this->hash, $id, serialize($data));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($id)
     {
         return unserialize($this->redis->hget($this->hash, $id));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
         $results = array();
@@ -67,6 +77,9 @@ class RedisStorage implements StorageInterface
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function clear()
     {
         $this->redis->del($this->hash);

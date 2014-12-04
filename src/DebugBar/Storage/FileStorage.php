@@ -25,6 +25,9 @@ class FileStorage implements StorageInterface
         $this->dirname = rtrim($dirname, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save($id, $data)
     {
         if (!file_exists($this->dirname)) {
@@ -33,11 +36,17 @@ class FileStorage implements StorageInterface
         file_put_contents($this->makeFilename($id), json_encode($data));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($id)
     {
         return json_decode(file_get_contents($this->makeFilename($id)), true);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
         //Loop through all .json files and remember the modified time and id.
@@ -81,6 +90,10 @@ class FileStorage implements StorageInterface
 
     /**
      * Filter the metadata for matches.
+     * 
+     * @param  array $meta
+     * @param  array $filters
+     * @return bool
      */
     protected function filter($meta, $filters)
     {
@@ -92,6 +105,9 @@ class FileStorage implements StorageInterface
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function clear()
     {
         foreach (new \DirectoryIterator($this->dirname) as $file) {
@@ -101,6 +117,10 @@ class FileStorage implements StorageInterface
         }
     }
 
+    /**
+     * @param  string $id
+     * @return string 
+     */
     public function makeFilename($id)
     {
         return $this->dirname . basename($id). ".json";

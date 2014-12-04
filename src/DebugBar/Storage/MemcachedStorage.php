@@ -30,6 +30,9 @@ class MemcachedStorage implements StorageInterface
         $this->keyNamespace = $keyNamespace;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save($id, $data)
     {
         $key = $this->createKey($id);
@@ -39,11 +42,17 @@ class MemcachedStorage implements StorageInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($id)
     {
         return $this->memcached->get($this->createKey($id));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
         if (!($keys = $this->memcached->get($this->keyNamespace))) {
@@ -64,6 +73,10 @@ class MemcachedStorage implements StorageInterface
 
     /**
      * Filter the metadata for matches.
+     * 
+     * @param  array $meta
+     * @param  array $filters
+     * @return bool
      */
     protected function filter($meta, $filters)
     {
@@ -75,6 +88,9 @@ class MemcachedStorage implements StorageInterface
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function clear()
     {
         if (!($keys = $this->memcached->get($this->keyNamespace))) {
@@ -84,6 +100,10 @@ class MemcachedStorage implements StorageInterface
         $this->memcached->deleteMulti(explode('|', $keys));
     }
 
+    /**
+     * @param  string $id
+     * @return string 
+     */
     protected function createKey($id)
     {
         return md5("{$this->keyNamespace}.$id");
