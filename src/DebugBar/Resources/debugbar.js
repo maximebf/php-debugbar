@@ -442,6 +442,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 this.respCSSSize = 0;
                 this.$header.removeClass(cssClass);
             }
+
+            // Reset height to ensure bar is still visible
+            this.setHeight(this.$body.height());
         },
 
         /**
@@ -452,6 +455,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         render: function() {
             var self = this;
             this.$el.appendTo('body');
+            this.$dragCapture = $('<div />').addClass(csscls('drag-capture')).appendTo(this.$el);
             this.$resizehdle = $('<div />').addClass(csscls('resize-handle')).appendTo(this.$el);
             this.$header = $('<div />').addClass(csscls('header')).appendTo(this.$el);
             this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
@@ -460,29 +464,21 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.recomputeBottomOffset();
 
             // dragging of resize handle
-            var dragging = false;
-            var min_h = 40;
-            var max_h = $(window).height() - this.$header.height() - 10;
+            var pos_y, orig_h;
             this.$resizehdle.on('mousedown', function(e) {
-                var orig_h = $body.height(), pos_y = e.pageY;
-                dragging = true;
-
-                $body.parents().on('mousemove', function(e) {
-                    if (dragging) {
-                        var h = orig_h + (pos_y - e.pageY);
-                        // Respect the min/max values
-                        h = Math.min(h, max_h);
-                        h = Math.max(h, min_h);
-                        $body.css('height', h);
-                        localStorage.setItem('phpdebugbar-height', h);
-                        self.recomputeBottomOffset();
-                    }
-                }).on('mouseup', function() {
-                    dragging = false;
-                });
-
+                orig_h = $body.height(), pos_y = e.pageY;
+                $body.parents().on('mousemove', mousemove).on('mouseup', mouseup);
+                self.$dragCapture.show();
                 e.preventDefault();
             });
+            var mousemove = function(e) {
+                var h = orig_h + (pos_y - e.pageY);
+                self.setHeight(h);
+            };
+            var mouseup = function() {
+                $body.parents().off('mousemove', mousemove).off('mouseup', mouseup);
+                self.$dragCapture.hide();
+            };
             
             // minimize button
             this.$closebtn = $('<a href="javascript:" />').addClass(csscls('close-btn')).appendTo(this.$headerRight);
@@ -514,6 +510,24 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
+         * Sets the height of the debugbar body section
+         * Forces the height to lie within a reasonable range
+         * Stores the height in local storage so it can be restored
+         * Resets the document body bottom offset
+         *
+         * @this {DebugBar}
+         */
+        setHeight: function(height) {
+          var min_h = 40;
+          var max_h = $(window).innerHeight() - this.$header.height() - 10;
+          height = Math.min(height, max_h);
+          height = Math.max(height, min_h);
+          this.$body.css('height', height);
+          localStorage.setItem('phpdebugbar-height', height);
+          this.recomputeBottomOffset();
+        },
+
+        /**
          * Restores the state of the DebugBar using localStorage
          * This is not called by default in the constructor and
          * needs to be called by subclasses in their init() method
@@ -523,11 +537,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         restoreState: function() {
             // bar height
             var height = localStorage.getItem('phpdebugbar-height');
-            if (height) {
-                this.$body.css('height', height);
-            } else {
-                localStorage.setItem('phpdebugbar-height', this.$body.height());
-            }
+            this.setHeight(height || this.$body.height());
 
             // bar visibility
             var open = localStorage.getItem('phpdebugbar-open');

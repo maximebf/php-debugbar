@@ -12,6 +12,18 @@ div.phpdebugbar {
   text-align: left;
 }
 
+div.phpdebugbar-drag-capture {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10001;
+  background: none;
+  display: none;
+  cursor: n-resize;
+}
+
 div.phpdebugbar-closed {
     width: auto;
 }
