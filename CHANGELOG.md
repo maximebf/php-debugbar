@@ -1,5 +1,10 @@
 # Changelog
 
+2014-12 (1.10.2):
+
+ - Use Symfony VarDumper instead of kintLite as DataFormatter (#179)
+ - Better resize handling (#185)
+ 
 2014-11 (1.10.1):
 
  - Add disableVendor() option to JavascriptRenderer to remove a specific vendor (#182)
