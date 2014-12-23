@@ -134,7 +134,7 @@ ul.phpdebugbar-widgets-timeline {
     background: #fafafa;
   }
     ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-label,
-    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-info {
       position: absolute;
       font-size: 12px;
       font-family: monospace;
@@ -145,9 +145,21 @@ ul.phpdebugbar-widgets-timeline {
       text-shadow: none;
       font-weight: normal;
     }
-    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-info {
       left: initial;
       right: 5px;
+      top: 0;
+    }
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-memory {
+      margin-left: 10px;
+      display: inline-block;
+      width: 65px;
+    }
+    ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-memory:before {
+   	  font-family: FontAwesome;
+      margin-right: 4px;
+	  font-size: 12px;
+      content: "\f085";
     }
     ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-value {
       display: block; 

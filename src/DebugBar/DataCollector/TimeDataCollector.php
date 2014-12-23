@@ -129,7 +129,7 @@ class TimeDataCollector extends DataCollector implements Renderable
             'params' => $params,
             'collector' => $collector,
             'memory_usage' => $memory,
-            'memory_usage_str' => $memory ? $this->getDataFormatter()->formatBytes($memory) : null,
+            'memory_usage_str' => $this->getDataFormatter()->formatBytes($memory),
         );
     }
 

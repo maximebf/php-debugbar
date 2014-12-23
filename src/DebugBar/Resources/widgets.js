@@ -366,6 +366,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     for (var i = 0; i < data.measures.length; i++) {
                         var measure = data.measures[i];
                         var m = $('<div />').addClass(csscls('measure')),
+                        	info = $('<span />').addClass(csscls('info'))
                             li = $('<li />'),
                             left = Math.round(measure.relative_start * 100 / data.duration),
                             width = Math.min(Math.round(measure.duration * 100 / data.duration), 100 - left);
@@ -377,13 +378,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         m.append($('<span />').addClass(csscls('label')).text(measure.label + " (" + measure.duration_str + ")"));
 
                         if (measure.collector) {
-                            $('<span />').addClass(csscls('collector')).text(measure.collector).appendTo(m);
-                        }
-                        
-                        if (measure.memory_usage_str) {
-                            $('<span title="Memory usage" />').addClass(csscls('memory')).text(measure.memory_usage_str).appendTo(m);
+                            $('<span />').addClass(csscls('collector')).text(measure.collector).appendTo(info);
                         }
 
+                        if (measure.memory_usage_str) {
+                            $('<span title="Memory usage" />').addClass(csscls('memory')).text(measure.memory_usage_str).appendTo(info);
+                        }
+
+                        info.appendTo(m);
                         m.appendTo(li);
                         this.$el.append(li);
                         
