@@ -379,6 +379,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         if (measure.collector) {
                             $('<span />').addClass(csscls('collector')).text(measure.collector).appendTo(m);
                         }
+                        
+                        if (measure.memory_usage_str) {
+                            $('<span title="Memory usage" />').addClass(csscls('memory')).text(measure.memory_usage_str).appendTo(m);
+                        }
 
                         m.appendTo(li);
                         this.$el.append(li);

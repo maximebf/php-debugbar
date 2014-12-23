@@ -66,6 +66,7 @@ class TimeDataCollector extends DataCollector implements Renderable
         $this->startedMeasures[$name] = array(
             'label' => $label ?: $name,
             'start' => $start,
+            'memory' => memory_get_usage(true),
             'collector' => $collector
         );
     }
@@ -99,7 +100,8 @@ class TimeDataCollector extends DataCollector implements Renderable
             $this->startedMeasures[$name]['start'],
             $end,
             $params,
-            $this->startedMeasures[$name]['collector']
+            $this->startedMeasures[$name]['collector'],
+            memory_get_usage(true) - $this->startedMeasures[$name]['memory']
         );
         unset($this->startedMeasures[$name]);
     }
@@ -112,8 +114,9 @@ class TimeDataCollector extends DataCollector implements Renderable
      * @param float $end
      * @param array $params
      * @param string|null $collector
+     * @param int|null $memory
      */
-    public function addMeasure($label, $start, $end, $params = array(), $collector = null)
+    public function addMeasure($label, $start, $end, $params = array(), $collector = null, $memory = null)
     {
         $this->measures[] = array(
             'label' => $label,
@@ -124,7 +127,9 @@ class TimeDataCollector extends DataCollector implements Renderable
             'duration' => $end - $start,
             'duration_str' => $this->getDataFormatter()->formatDuration($end - $start),
             'params' => $params,
-            'collector' => $collector
+            'collector' => $collector,
+            'memory_usage' => $memory,
+            'memory_usage_str' => $memory ? $this->getDataFormatter()->formatBytes($memory) : null,
         );
     }
 
