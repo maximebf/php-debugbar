@@ -12,10 +12,27 @@
 
         className: csscls('sqlqueries'),
 
+        onFilterClick: function(el) {
+            $(el).toggleClass(csscls('excluded'));
+
+            var excludedLabels = [];
+            this.$toolbar.find(csscls('.filter') + csscls('.excluded')).each(function() {
+                excludedLabels.push(this.rel);
+            });
+
+            this.$list.$el.find("li[connection=" + $(el).attr("rel") + "]").toggle();
+
+            this.set('exclude', excludedLabels);
+        },
+
         render: function() {
             this.$status = $('<div />').addClass(csscls('status')).appendTo(this.$el);
 
-            this.$list = new  PhpDebugBar.Widgets.ListWidget({ itemRenderer: function(li, stmt) {
+            this.$toolbar = $('<div></div>').addClass(csscls('toolbar')).appendTo(this.$el);
+
+            var filters = [], self = this;
+
+            this.$list = new PhpDebugBar.Widgets.ListWidget({ itemRenderer: function(li, stmt) {
                 $('<code />').addClass(csscls('sql')).html(PhpDebugBar.Widgets.highlight(stmt.sql, 'sql')).appendTo(li);
                 if (stmt.duration_str) {
                     $('<span title="Duration" />').addClass(csscls('duration')).text(stmt.duration_str).appendTo(li);
@@ -31,6 +48,23 @@
                 }
                 if (typeof(stmt.stmt_id) != 'undefined' && stmt.stmt_id) {
                     $('<span title="Prepared statement ID" />').addClass(csscls('stmt-id')).text(stmt.stmt_id).appendTo(li);
+                }
+                if (stmt.connection) {
+                    $('<span title="Connection" />').addClass(csscls('database')).text(stmt.connection).appendTo(li);
+                    li.attr("connection",stmt.connection);
+                    if ( $.inArray(stmt.connection, filters) == -1 ) {
+                        filters.push(stmt.connection);
+                        $('<a href="javascript:" />')
+                            .addClass(csscls('filter'))
+                            .text(stmt.connection)
+                            .attr('rel', stmt.connection)
+                            .on('click', function() { self.onFilterClick(this); })
+                            .appendTo(self.$toolbar);
+                        if (filters.length>1) {
+                            self.$toolbar.show();
+                            self.$list.$el.css("margin-bottom","20px");
+                        }
+                    }
                 }
                 if (stmt.params && !$.isEmptyObject(stmt.params)) {
                     var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);

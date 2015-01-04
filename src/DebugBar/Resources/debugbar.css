@@ -29,7 +29,7 @@ div.phpdebugbar-closed {
 }
 
 div.phpdebugbar * {
-    
+
     -moz-box-sizing: content-box;
          box-sizing: content-box;
 }
@@ -65,7 +65,6 @@ div.phpdebugbar-resize-handle {
 div.phpdebugbar-closed, div.phpdebugbar-minimized{
   border-top: 1px solid #ccc;
 }
-
 /* -------------------------------------- */
 
 div.phpdebugbar-header, a.phpdebugbar-restore-btn {
@@ -146,9 +145,29 @@ a.phpdebugbar-tab.phpdebugbar-active {
     color: white;
   }
 
-a.phpdebugbar-close-btn, a.phpdebugbar-open-btn, a.phpdebugbar-restore-btn {
+a.phpdebugbar-close-btn, a.phpdebugbar-open-btn, a.phpdebugbar-restore-btn, a.phpdebugbar-minimize-btn , a.phpdebugbar-maximize-btn {
   width: 16px;
   height: 16px;
+}
+
+a.phpdebugbar-minimize-btn , a.phpdebugbar-maximize-btn {
+  padding-right: 0px !important;
+}
+
+a.phpdebugbar-maximize-btn { display: none}
+
+a.phpdebugbar-minimize-btn { display: block}
+
+div.phpdebugbar-minimized a.phpdebugbar-maximize-btn { display: block}
+
+div.phpdebugbar-minimized a.phpdebugbar-minimize-btn { display: none}
+
+a.phpdebugbar-minimize-btn {
+  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAZklEQVR4nM3OMQ4CIRAF0HcFVyvXErl/6VWM7eo11gYSQiBC5f5mksl/meFfCXggznSueGNPs4UDttT5YIUznmnZwvcC7XjhUl5t4Vh8k9GtfqeFf6IeHkI9PIRqPIVyTlhm0QHzBSfMK4g2snfEAAAAAElFTkSuQmCC)  no-repeat 9px 6px;
+}
+
+a.phpdebugbar-maximize-btn {
+  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAZklEQVR4nM3OsQmAMBCF4Z+kcA13sUxhq9sZcAHBLVzIIqBNAuG4aNLlwVXvvuOglxhgbEUW2IEbcK3oiVOFJarCEgXg+sMaWoABOL/wJtCadRqeUnkUkIYDMOeFj++Vkna0w73nBRurK28mVdKbAAAAAElFTkSuQmCC)  no-repeat 9px 6px;
 }
 
 a.phpdebugbar-close-btn {
