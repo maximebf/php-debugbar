@@ -90,7 +90,7 @@ div.phpdebugbar-header-right {
   float: right;
 }
 div.phpdebugbar-header > div > * {
-  padding: 5px 8px;
+  padding: 5px 5px;
   font-size: 14px;
   color: #555;
   text-decoration: none;
@@ -163,11 +163,11 @@ div.phpdebugbar-minimized a.phpdebugbar-maximize-btn { display: block}
 div.phpdebugbar-minimized a.phpdebugbar-minimize-btn { display: none}
 
 a.phpdebugbar-minimize-btn {
-  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAZklEQVR4nM3OMQ4CIRAF0HcFVyvXErl/6VWM7eo11gYSQiBC5f5mksl/meFfCXggznSueGNPs4UDttT5YIUznmnZwvcC7XjhUl5t4Vh8k9GtfqeFf6IeHkI9PIRqPIVyTlhm0QHzBSfMK4g2snfEAAAAAElFTkSuQmCC)  no-repeat 9px 6px;
+  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAZklEQVR4nM3OMQ4CIRAF0HcFVyvXErl/6VWM7eo11gYSQiBC5f5mksl/meFfCXggznSueGNPs4UDttT5YIUznmnZwvcC7XjhUl5t4Vh8k9GtfqeFf6IeHkI9PIRqPIVyTlhm0QHzBSfMK4g2snfEAAAAAElFTkSuQmCC)  no-repeat 6px 6px;
 }
 
 a.phpdebugbar-maximize-btn {
-  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAZklEQVR4nM3OsQmAMBCF4Z+kcA13sUxhq9sZcAHBLVzIIqBNAuG4aNLlwVXvvuOglxhgbEUW2IEbcK3oiVOFJarCEgXg+sMaWoABOL/wJtCadRqeUnkUkIYDMOeFj++Vkna0w73nBRurK28mVdKbAAAAAElFTkSuQmCC)  no-repeat 9px 6px;
+  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAZklEQVR4nM3OsQmAMBCF4Z+kcA13sUxhq9sZcAHBLVzIIqBNAuG4aNLlwVXvvuOglxhgbEUW2IEbcK3oiVOFJarCEgXg+sMaWoABOL/wJtCadRqeUnkUkIYDMOeFj++Vkna0w73nBRurK28mVdKbAAAAAElFTkSuQmCC)  no-repeat 6px 6px;
 }
 
 a.phpdebugbar-close-btn {
