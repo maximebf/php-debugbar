@@ -104,7 +104,7 @@ You can provide a `DebugBar\DataCollector\TimeDataCollector` as the second argum
 
 http://guzzlephp.org
 
-Collects info about HTTP requests made with a `GuzzleHttp\Client` and displays it in DebugBar. You need to attach a `GuzzleHttp\Subscriber\Log\DebugbarSubscriber` which implements `GuzzleHttp\Event\SubscriberInterface` to the client. The `DebugbarSubscriber` requires a `TimeDataCollector` and an optional `ExceptionsCollector` from your `$debugbar`.
+Collects timeline info about HTTP requests made with a `GuzzleHttp\Client` and displays it in the DebugBar timeline, log stream and request exceptions in the exceptions tab. You need to attach a `GuzzleHttp\Subscriber\Log\DebugbarSubscriber` which implements `GuzzleHttp\Event\SubscriberInterface` to the client. The `DebugbarSubscriber` requires a `TimeDataCollector` and an optional `ExceptionsCollector` from your `$debugbar`.
 
     // Create HTTP client and get the DebugBar instance.
     $client = new \GuzzleHttp\Client();
