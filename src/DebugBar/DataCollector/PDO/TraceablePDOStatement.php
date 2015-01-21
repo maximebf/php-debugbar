@@ -60,7 +60,7 @@ class TraceablePDOStatement extends PDOStatement
 
         if ($this->pdo->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION && $result === false) {
             $error = $this->errorInfo();
-            $ex = new PDOException($error[2], $error[0]);
+            $ex = new PDOException($error[2], (int) $error[0]);
         }
 
         $trace->end($ex, $this->rowCount());
