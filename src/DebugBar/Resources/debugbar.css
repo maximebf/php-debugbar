@@ -36,6 +36,7 @@ div.phpdebugbar * {
   font-weight: normal;
   text-decoration: none;
   clear: initial;
+  width: auto;
   -moz-box-sizing: content-box;
        box-sizing: content-box;
 }
