@@ -2,6 +2,8 @@
 
 namespace DebugBar\DataCollector\PDO;
 
+use DebugBar\Util;
+
 /**
  * Holds information about a statement
  */
@@ -69,7 +71,7 @@ class TracedStatement
     public function checkParameters($params)
     {
         foreach ($params as &$param) {
-            if (!mb_check_encoding($param, 'UTF-8')) {
+            if (!Util::isUtf8($param)) {
                 $param = '[BINARY DATA]';
             }
         }
@@ -133,7 +135,7 @@ class TracedStatement
     {
         $params = array();
         foreach ($this->parameters as $param) {
-            $params[] = htmlentities($param, ENT_QUOTES, 'UTF-8', false);
+            $params[] = Util::escape($param);
         }
         return $params;
     }

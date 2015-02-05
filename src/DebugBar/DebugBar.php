@@ -13,6 +13,7 @@ namespace DebugBar;
 use ArrayAccess;
 use DebugBar\DataCollector\DataCollectorInterface;
 use DebugBar\Storage\StorageInterface;
+use DebugBar\Util;
 
 /**
  * Main DebugBar object
@@ -217,8 +218,8 @@ class DebugBar implements ArrayAccess
 
         // Remove all invalid (non UTF-8) characters
         array_walk_recursive($this->data, function (&$item) {
-                if (is_string($item) && !mb_check_encoding($item, 'UTF-8')) {
-                    $item = mb_convert_encoding($item, 'UTF-8', 'UTF-8');
+                if (is_string($item) && !Util::isUtf8($item)) {
+                    $item = Util::toUtf8($item);
                 }
             });
 
