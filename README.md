@@ -39,6 +39,7 @@ Integrations with other frameworks:
   - [Atomik](http://atomikframework.com/docs/error-log-debug.html#debug-bar)
   - [XOOPS](http://xoops.org/modules/news/article.php?storyid=6538)
   - [Zend Framework 2](https://github.com/snapshotpl/ZfSnapPhpDebugBar)
+  - [Phalcon](https://github.com/snowair/phalcon-debugbar)
 
 *(drop me a message or submit a PR to add your DebugBar related project here)*
 
