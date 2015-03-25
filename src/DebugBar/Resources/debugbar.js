@@ -463,6 +463,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
             this.$headerRight = $('<div />').addClass(csscls('header-right')).appendTo(this.$header);
             var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
+            this.$paddingBottom = $('<div />').addClass(csscls('padding-bottom')).appendTo('body');
             this.recomputeBottomOffset();
 
             // dragging of resize handle
@@ -817,7 +818,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         recomputeBottomOffset: function() {
             if (this.options.bodyPaddingBottom) {
-                $('body').css('padding-bottom', this.$el.height());
+                this.$paddingBottom.height(this.$el.height());
             }
         },
 
