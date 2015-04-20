@@ -144,6 +144,7 @@ ul.phpdebugbar-widgets-timeline {
       background: none;
       text-shadow: none;
       font-weight: normal;
+      white-space: pre;
     }
     ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
       left: initial;
