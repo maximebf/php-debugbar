@@ -1,3 +1,10 @@
+/* Hide debugbar when printing a page */
+@media print {
+  div.phpdebugbar {
+    display: none;
+  }
+}
+
 div.phpdebugbar {
   position: fixed;
   bottom: 0;
