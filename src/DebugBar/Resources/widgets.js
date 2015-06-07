@@ -307,7 +307,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         continue;
                     }
                     filters.push(data[i].label);
-                    $('<a href="javascript:" />')
+                    $('<a />')
                         .addClass(csscls('filter'))
                         .text(data[i].label)
                         .attr('rel', data[i].label)
