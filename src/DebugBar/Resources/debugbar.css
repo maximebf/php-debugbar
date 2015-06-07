@@ -20,6 +20,10 @@ div.phpdebugbar {
   line-height: 1;
 }
 
+div.phpdebugbar a {
+  cursor: pointer;
+}
+
 div.phpdebugbar-drag-capture {
   position: fixed;
   top: 0;
