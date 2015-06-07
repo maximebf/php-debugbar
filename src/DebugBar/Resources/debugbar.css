@@ -20,7 +20,8 @@ div.phpdebugbar {
   line-height: 1;
 }
 
-div.phpdebugbar a {
+div.phpdebugbar a,
+div.phpdebugbar-openhandler {
   cursor: pointer;
 }
 
