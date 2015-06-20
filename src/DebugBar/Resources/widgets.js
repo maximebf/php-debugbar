@@ -318,12 +318,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.bindAttr(['exclude', 'search'], function() {
                 var data = this.get('data'),
-                    exclude = this.get('exclude'), 
-                    search = this.get('search'),
+                    exclude = this.get('exclude'),
+                    search = this.get('search').toLowerCase(),
                     fdata = [];
 
                 for (var i = 0; i < data.length; i++) {
-                    if ((!data[i].label || $.inArray(data[i].label, exclude) === -1) && (!search || data[i].message.indexOf(search) > -1)) {
+                    if ((!data[i].label || $.inArray(data[i].label, exclude) === -1) && (!search || data[i].message.toLowerCase().indexOf(search) > -1)) {
                         fdata.push(data[i]);
                     }
                 }
