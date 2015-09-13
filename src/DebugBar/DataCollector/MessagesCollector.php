@@ -38,7 +38,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      *
      * @param DataFormatterInterface $formater
      */
-    public function setDataFormatter(DataFormatterInterface $formater)
+    public function setDataFormatter(\DebugBar\DataFormatter\DataFormatterInterface $formater)
     {
         $this->dataFormater = $formater;
         return $this;
