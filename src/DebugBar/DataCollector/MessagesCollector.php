@@ -11,6 +11,7 @@
 namespace DebugBar\DataCollector;
 
 use Psr\Log\AbstractLogger;
+use DebugBar\DataFormatter\DataFormatterInterface;
 
 /**
  * Provides a way to log messages
@@ -38,7 +39,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      *
      * @param DataFormatterInterface $formater
      */
-    public function setDataFormatter(\DebugBar\DataFormatter\DataFormatterInterface $formater)
+    public function setDataFormatter(DataFormatterInterface $formater)
     {
         $this->dataFormater = $formater;
         return $this;
