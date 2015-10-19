@@ -40,8 +40,7 @@ Integrations with other frameworks:
   - [XOOPS](http://xoops.org/modules/news/article.php?storyid=6538)
   - [Zend Framework 2](https://github.com/snapshotpl/ZfSnapPhpDebugBar)
   - [Phalcon](https://github.com/snowair/phalcon-debugbar)
-
-Support for framework-agnostic middleware and PSR-7 with [php-middleware/phpdebugbar](https://github.com/php-middleware/phpdebugbar).
+  - Framework-agnostic middleware and PSR-7 with [php-middleware/phpdebugbar](https://github.com/php-middleware/phpdebugbar).
 
 *(drop me a message or submit a PR to add your DebugBar related project here)*
 
