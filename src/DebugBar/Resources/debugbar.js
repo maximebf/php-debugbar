@@ -398,7 +398,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             bodyPaddingBottom: true
         },
 
-        initialize: function() {
+        initialize: function(options) {
+            this.options = $.extend({}, this.options, options || {});
             this.controls = {};
             this.dataMap = {};
             this.datasets = {};

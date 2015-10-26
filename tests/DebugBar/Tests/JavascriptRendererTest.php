@@ -111,7 +111,20 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setJavascriptClass('Foobar');
         $this->r->setVariableName('foovar');
         $this->r->setAjaxHandlerClass(false);
-        $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+        $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar({\"bodyPaddingBottom\":true});\nfoovar.addDataSet(", $this->r->render());
+    }
+
+    public function testRenderConstructorOptions()
+    {
+        $this->r->setInitialization(JavascriptRenderer::INITIALIZE_CONSTRUCTOR);
+        $this->r->setBodyPaddingBottom(false);
+        $this->r->setAjaxHandlerClass(false);
+        $this->r->setJavascriptClass('Foobar');
+        $this->r->setVariableName('foovar');
+        $this->assertStringStartsWith(
+            "<script type=\"text/javascript\">\nvar foovar = new Foobar({\"bodyPaddingBottom\":false});",
+            $this->r->render()
+        );
     }
 
     public function testJQueryNoConflictAutoDisabling()

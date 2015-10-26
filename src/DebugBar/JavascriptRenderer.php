@@ -76,6 +76,8 @@ class JavascriptRenderer
 
     protected $openHandlerUrl;
 
+    protected $bodyPaddingBottom = true;
+
     /**
      * @param \DebugBar\DebugBar $debugBar
      * @param string $baseUrl
@@ -142,6 +144,9 @@ class JavascriptRenderer
         }
         if (array_key_exists('enable_jquery_noconflict', $options)) {
             $this->setEnableJqueryNoConflict($options['enable_jquery_noconflict']);
+        }
+        if (array_key_exists('body_padding_bottom', $options)) {
+            $this->setBodyPaddingBottom($options['body_padding_bottom']);
         }
         if (array_key_exists('controls', $options)) {
             foreach ($options['controls'] as $name => $control) {
@@ -283,6 +288,27 @@ class JavascriptRenderer
     public function getJavascriptClass()
     {
         return $this->javascriptClass;
+    }
+
+    /**
+     * Sets whether to change body padding bottom to fit debugbar panel
+     *
+     * @param bool $usePadding
+     */
+    public function setBodyPaddingBottom($usePadding)
+    {
+        $this->bodyPaddingBottom = (bool) $usePadding;
+        return $this;
+    }
+
+    /**
+     * Returns whether to change body padding bottom to fit debugbar panel
+     *
+     * @return boolean
+     */
+    public function getBodyPaddingBottom()
+    {
+        return $this->bodyPaddingBottom;
     }
 
     /**
@@ -848,7 +874,8 @@ class JavascriptRenderer
         $js = '';
 
         if (($this->initialization & self::INITIALIZE_CONSTRUCTOR) === self::INITIALIZE_CONSTRUCTOR) {
-            $js .= sprintf("var %s = new %s();\n", $this->variableName, $this->javascriptClass);
+            $options = json_encode(['bodyPaddingBottom' => $this->bodyPaddingBottom]);
+            $js .= sprintf("var %s = new %s(%s);\n", $this->variableName, $this->javascriptClass, $options);
         }
 
         if (($this->initialization & self::INITIALIZE_CONTROLS) === self::INITIALIZE_CONTROLS) {
