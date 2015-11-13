@@ -118,9 +118,9 @@ class TraceableTwigEnvironment extends Twig_Environment
         return $this->twig->isStrictVariables();
     }
 
-    public function getCache()
+    public function getCache($original = true)
     {
-        return $this->twig->getCache();
+        return $this->twig->getCache($original);
     }
 
     public function setCache($cache)
