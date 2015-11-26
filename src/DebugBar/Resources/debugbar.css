@@ -18,6 +18,7 @@ div.phpdebugbar {
   color: #000;
   text-align: left;
   line-height: 1;
+  letter-spacing: normal;
 }
 
 div.phpdebugbar a,
