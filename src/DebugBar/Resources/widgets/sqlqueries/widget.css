@@ -32,7 +32,7 @@ div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-duration:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-memory:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-row-count:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id:before {
-  font-family: FontAwesome;
+  font-family: PhpDebugbarFontAwesome;
   margin-right: 4px;
   font-size: 12px;
 }

@@ -26,7 +26,7 @@ div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-render-time:before,
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-memory:before,
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-param-count:before,
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-type:before {
-  font-family: FontAwesome;
+  font-family: PhpDebugbarFontAwesome;
   margin-right: 4px;
   font-size: 12px;
 }
