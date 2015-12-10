@@ -11,6 +11,7 @@
 namespace DebugBar\DataCollector;
 
 use Psr\Log\AbstractLogger;
+use DebugBar\DataFormatter\DataFormatterInterface;
 
 /**
  * Provides a way to log messages
