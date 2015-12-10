@@ -20,9 +20,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         render: function() {
             var self = this;
-            
+
             this.$el.appendTo('body').hide();
-            this.$closebtn = $('<a><i class="fa fa-times"></i></a>');
+            this.$closebtn = $('<a><i class="phpdebugbar-fa phpdebugbar-fa-times"></i></a>');
             this.$table = $('<tbody />');
             $('<div>PHP DebugBar | Open</div>').addClass(csscls('header')).append(this.$closebtn).appendTo(this.$el);
             $('<table><thead><tr><th width="150">Date</th><th width="55">Method</th><th>URL</th><th width="125">IP</th><th width="100">Filter data</th></tr></thead></table>').append(this.$table).appendTo(this.$el);

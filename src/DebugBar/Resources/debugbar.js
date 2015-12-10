@@ -260,7 +260,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$icon = $('<i />').appendTo(this.$tab);
             this.bindAttr('icon', function(icon) {
                 if (icon) {
-                    this.$icon.attr('class', 'fa fa-' + icon);
+                    this.$icon.attr('class', 'phpdebugbar-fa phpdebugbar-fa-' + icon);
                 } else {
                     this.$icon.attr('class', '');
                 }
@@ -315,7 +315,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$icon = $('<i />').appendTo(this.$el);
             this.bindAttr('icon', function(icon) {
                 if (icon) {
-                    this.$icon.attr('class', 'fa fa-' + icon);
+                    this.$icon.attr('class', 'phpdebugbar-fa phpdebugbar-fa-' + icon);
                 } else {
                     this.$icon.attr('class', '');
                 }
