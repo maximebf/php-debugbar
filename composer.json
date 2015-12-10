@@ -1,15 +1,21 @@
 {
     "name": "maximebf/debugbar",
     "description": "Debug bar in the browser for php application",
-    "keywords": ["debug"],
+    "keywords": ["debug", "debugbar"],
     "homepage": "https://github.com/maximebf/php-debugbar",
     "type": "library",
     "license": "MIT",
-    "authors": [{
-        "name": "Maxime Bouroumeau-Fuseau",
-        "email": "maxime.bouroumeau@gmail.com",
-        "homepage": "http://maximebf.com"
-    }],
+    "authors": [
+        {
+            "name": "Maxime Bouroumeau-Fuseau",
+            "email": "maxime.bouroumeau@gmail.com",
+            "homepage": "http://maximebf.com"
+        },
+        {
+            "name": "Barry vd. Heuvel",
+            "email": "barryvdh@gmail.com"
+        }
+    ],
     "require": {
         "php": ">=5.3.0",
         "psr/log": "^1.0",
@@ -30,7 +36,7 @@
     },
      "extra": {
         "branch-alias": {
-            "dev-master": "1.10-dev"
+            "dev-master": "1.11-dev"
         }
     }
 }
