@@ -40,10 +40,7 @@
                 if (stmt.memory_str) {
                     $('<span title="Memory usage" />').addClass(csscls('memory')).text(stmt.memory_str).appendTo(li);
                 }
-                if (typeof(stmt.is_success) != 'undefined' && !stmt.is_success) {
-                    li.addClass(csscls('error'));
-                    li.append($('<span />').addClass(csscls('error')).text("[" + stmt.error_code + "] " + stmt.error_message));
-                } else if (typeof(stmt.row_count) != 'undefined') {
+                if (typeof(stmt.row_count) != 'undefined') {
                     $('<span title="Row count" />').addClass(csscls('row-count')).text(stmt.row_count).appendTo(li);
                 }
                 if (typeof(stmt.stmt_id) != 'undefined' && stmt.stmt_id) {
@@ -65,6 +62,10 @@
                             self.$list.$el.css("margin-bottom","20px");
                         }
                     }
+                }
+                if (typeof(stmt.is_success) != 'undefined' && !stmt.is_success) {
+                    li.addClass(csscls('error'));
+                    li.append($('<span />').addClass(csscls('error')).text("[" + stmt.error_code + "] " + stmt.error_message));
                 }
                 if (stmt.params && !$.isEmptyObject(stmt.params)) {
                     var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
