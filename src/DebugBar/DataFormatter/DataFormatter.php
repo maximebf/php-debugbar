@@ -54,8 +54,12 @@ class DataFormatter implements DataFormatterInterface
         if ($size === 0 || $size === null) {
             return "0B";
         }
+
+        $sign = $size < 0 ? '-' : '';
+        $size = abs($size);
+
         $base = log($size) / log(1024);
         $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
-        return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+        return $sign . round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
     }
 }
