@@ -15,12 +15,19 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 class DataFormatter implements DataFormatterInterface
 {
+    /**
+     * DataFormatter constructor.
+     */
     public function __construct()
     {
         $this->cloner = new VarCloner();
         $this->dumper = new CliDumper();
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     public function formatVar($data)
     {
         $output = '';
@@ -39,6 +46,10 @@ class DataFormatter implements DataFormatterInterface
         return trim($output);
     }
 
+    /**
+     * @param float $seconds
+     * @return string
+     */
     public function formatDuration($seconds)
     {
         if ($seconds < 0.001) {
@@ -49,6 +60,11 @@ class DataFormatter implements DataFormatterInterface
         return round($seconds, 2) . 's';
     }
 
+    /**
+     * @param string $size
+     * @param int $precision
+     * @return string
+     */
     public function formatBytes($size, $precision = 2)
     {
         if ($size === 0 || $size === null) {

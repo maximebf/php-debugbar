@@ -43,11 +43,17 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
         $this->sqlQuotationChar = $quotationChar;
     }
 
+    /**
+     * @return bool
+     */
     public function isSqlRenderedWithParams()
     {
         return $this->renderSqlWithParams;
     }
 
+    /**
+     * @return string
+     */
     public function getSqlQuotationChar()
     {
         return $this->sqlQuotationChar;
@@ -77,6 +83,9 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
         return $this->connections;
     }
 
+    /**
+     * @return array
+     */
     public function collect()
     {
         $data = array(
@@ -151,11 +160,17 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
         );
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'pdo';
     }
 
+    /**
+     * @return array
+     */
     public function getWidgets()
     {
         return array(
@@ -172,6 +187,9 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
         );
     }
 
+    /**
+     * @return array
+     */
     public function getAssets()
     {
         return array(

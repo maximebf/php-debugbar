@@ -187,6 +187,10 @@ class TimeDataCollector extends DataCollector implements Renderable
         return microtime(true) - $this->requestStartTime;
     }
 
+    /**
+     * @return array
+     * @throws DebugBarException
+     */
     public function collect()
     {
         $this->requestEndTime = microtime(true);
@@ -203,11 +207,17 @@ class TimeDataCollector extends DataCollector implements Renderable
         );
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'time';
     }
 
+    /**
+     * @return array
+     */
     public function getWidgets()
     {
         return array(

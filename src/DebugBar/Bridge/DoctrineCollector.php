@@ -34,6 +34,11 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
 {
     protected $debugStack;
 
+    /**
+     * DoctrineCollector constructor.
+     * @param $debugStackOrEntityManager
+     * @throws DebugBarException
+     */
     public function __construct($debugStackOrEntityManager)
     {
         if ($debugStackOrEntityManager instanceof EntityManager) {
@@ -45,6 +50,9 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
         $this->debugStack = $debugStackOrEntityManager;
     }
 
+    /**
+     * @return array
+     */
     public function collect()
     {
         $queries = array();
@@ -67,11 +75,17 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
         );
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'doctrine';
     }
 
+    /**
+     * @return array
+     */
     public function getWidgets()
     {
         return array(
@@ -88,6 +102,9 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
         );
     }
 
+    /**
+     * @return array
+     */
     public function getAssets()
     {
         return array(

@@ -15,6 +15,9 @@ namespace DebugBar\DataCollector;
  */
 class RequestDataCollector extends DataCollector implements Renderable
 {
+    /**
+     * @return array
+     */
     public function collect()
     {
         $vars = array('_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER');
@@ -29,11 +32,17 @@ class RequestDataCollector extends DataCollector implements Renderable
         return $data;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'request';
     }
 
+    /**
+     * @return array
+     */
     public function getWidgets()
     {
         return array(

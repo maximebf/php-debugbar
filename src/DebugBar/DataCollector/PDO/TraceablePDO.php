@@ -179,16 +179,29 @@ class TraceablePDO extends PDO
         return array_filter($this->executedStatements, function ($s) { return !$s->isSuccess(); });
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function __get($name)
     {
         return $this->pdo->$name;
     }
 
+    /**
+     * @param $name
+     * @param $value
+     */
     public function __set($name, $value)
     {
         $this->pdo->$name = $value;
     }
 
+    /**
+     * @param $name
+     * @param $args
+     * @return mixed
+     */
     public function __call($name, $args)
     {
         return call_user_func_array(array($this->pdo, $name), $args);

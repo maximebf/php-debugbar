@@ -31,11 +31,6 @@ class TracedStatement
      * @param string $sql
      * @param array $params
      * @param string $preparedId
-     * @param integer $rowCount
-     * @param integer $startTime
-     * @param integer $endTime
-     * @param integer $memoryUsage
-     * @param \Exception $e
      */
     public function __construct($sql, array $params = array(), $preparedId = null)
     {
@@ -44,12 +39,22 @@ class TracedStatement
         $this->preparedId = $preparedId;
     }
 
+    /**
+     * @param null $startTime
+     * @param null $startMemory
+     */
     public function start($startTime = null, $startMemory = null)
     {
         $this->startTime = $startTime ?: microtime(true);
         $this->startMemory = $startMemory ?: memory_get_usage(true);
     }
 
+    /**
+     * @param \Exception|null $exception
+     * @param int $rowCount
+     * @param null $endTime
+     * @param null $endMemory
+     */
     public function end(\Exception $exception = null, $rowCount = 0, $endTime = null, $endMemory = null)
     {
         $this->endTime = $endTime ?: microtime(true);
@@ -158,11 +163,17 @@ class TracedStatement
         return $this->preparedId !== null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getStartTime()
     {
         return $this->startTime;
     }
 
+    /**
+     * @return mixed
+     */
     public function getEndTime()
     {
         return $this->endTime;
@@ -178,11 +189,17 @@ class TracedStatement
         return $this->duration;
     }
 
+    /**
+     * @return mixed
+     */
     public function getStartMemory()
     {
         return $this->startMemory;
     }
 
+    /**
+     * @return mixed
+     */
     public function getEndMemory()
     {
         return $this->endMemory;
