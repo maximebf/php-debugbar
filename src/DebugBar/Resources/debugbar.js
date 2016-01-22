@@ -395,8 +395,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
         className: "phpdebugbar " + csscls('minimized'),
 
         options: {
-            bodyPaddingBottom: true,
-            bodyPaddingBottomHeight: parseInt($('body').css('padding-bottom'))
+            bodyMarginBottom: true,
+            bodyMarginBottomHeight: parseInt($('body').css('margin-bottom'))
         },
 
         initialize: function() {
@@ -813,13 +813,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
-         * Recomputes the padding-bottom css property of the body so
+         * Recomputes the margin-bottom css property of the body so
          * that the debug bar never hides any content
          */
         recomputeBottomOffset: function() {
-            if (this.options.bodyPaddingBottom) {
-                var height = parseInt(this.$el.height()) + this.options.bodyPaddingBottomHeight;
-                $('body').css('padding-bottom', height);
+            if (this.options.bodyMarginBottom) {
+                var height = parseInt(this.$el.height()) + this.options.bodyMarginBottomHeight;
+                $('body').css('margin-bottom', height);
             }
         },
 
