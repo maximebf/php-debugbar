@@ -793,7 +793,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$el.addClass(csscls('closed'));
             this.recomputeBottomOffset();
         },
-
+        
+        /**
+         * Checks if the panel is closed
+         *
+         * @return {Boolean}
+         */
+        isClosed: function() {
+            return this.$el.hasClass(csscls('closed'));
+        },
+        
         /**
          * Restore the debug bar
          *
@@ -818,8 +827,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         recomputeBottomOffset: function() {
             if (this.options.bodyMarginBottom) {
-                var height = parseInt(this.$el.height()) + this.options.bodyMarginBottomHeight;
-                $('body').css('margin-bottom', height);
+                if (this.isMinimized() || this.isClosed()) {
+                    return $('body').css('margin-bottom', this.options.bodyMarginBottomHeight || '');
+                }
+                
+                var offset = parseInt(this.$el.height()) + this.options.bodyMarginBottomHeight;
+                $('body').css('margin-bottom', offset);
             }
         },
 
