@@ -39,6 +39,33 @@ interface StorageInterface
     function find(array $filters = array(), $max = 20, $offset = 0);
 
     /**
+     * Check if the gc should be run
+     *
+     */
+    function checkGc();
+
+    /**
+     * Delete collected data older than a certain lifetime
+     *
+     * @param int $lifetime in seconds
+     */
+    function gc($lifetime);
+
+    /**
+     * Set the lifetime of the datasets in seconds.
+     *
+     * @param int $lifetime in seconds
+     */
+    function setGcLifetime($lifetime);
+
+    /**
+     * Set the Gc probability to run on a request.
+     *
+     * @param int $probability Percentage
+     */
+    function setGcProbability($probability);
+
+    /**
      * Clears all the collected data
      */
     function clear();

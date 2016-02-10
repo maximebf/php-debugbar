@@ -19,6 +19,7 @@ class OpenHandler
 
     /**
      * @param DebugBar $debugBar
+     * @throws DebugBarException
      */
     public function __construct(DebugBar $debugBar)
     {
@@ -32,6 +33,10 @@ class OpenHandler
      * Handles the current request
      *
      * @param array $request Request data
+     * @param bool $echo Echo or not
+     * @param bool $sendHeader Send the header or not
+     * @return string
+     * @throws DebugBarException
      */
     public function handle($request = null, $echo = true, $sendHeader = true)
     {

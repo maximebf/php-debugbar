@@ -13,7 +13,7 @@ namespace DebugBar\Storage;
 /**
  * Stores collected data into files
  */
-class FileStorage implements StorageInterface
+class FileStorage extends BaseStorage implements StorageInterface
 {
     protected $dirname;
 
@@ -103,6 +103,13 @@ class FileStorage implements StorageInterface
             }
         }
         return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function gc($lifetime){
+        //TODO
     }
 
     /**
