@@ -86,7 +86,12 @@ class JavascriptRenderer
         $this->debugBar = $debugBar;
 
         if ($baseUrl === null) {
-            $baseUrl = '/vendor/maximebf/debugbar/src/DebugBar/Resources';
+            //calculate $baseUrl from docroot should the docroot exist in the $_SERVER global else revert to the default
+            if( array_key_exists('DOCUMENT_ROOT',$_SERVER) ){
+                $baseUrl = str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__ .'/Resources');
+            } else {
+                $baseUrl = '/vendor/maximebf/debugbar/src/DebugBar/Resources';
+            }
         }
         $this->baseUrl = $baseUrl;
 
@@ -450,6 +455,7 @@ class JavascriptRenderer
      * Sets debugbar's constructor options
      *
      * @param array $options
+     * @return $this
      */
     public function setConstructorOptions(array $options)
     {
@@ -472,6 +478,7 @@ class JavascriptRenderer
      *
      * @param string $name
      * @param AbstractWidget|DataMap $widget
+     * @return $this
      */
     public function addWidget($name, $widget)
     {
@@ -483,6 +490,7 @@ class JavascriptRenderer
      * Disables a widget
      *
      * @param string $name
+     * @return $this
      */
     public function disableWidget($name)
     {
@@ -509,6 +517,7 @@ class JavascriptRenderer
      * @param array $jsFiles  An array of filenames
      * @param string $basePath Base path of those files
      * @param string $baseUrl  Base url of those files
+     * @return $this
      */
     public function addAssets($cssFiles, $jsFiles, $basePath = null, $baseUrl = null)
     {
