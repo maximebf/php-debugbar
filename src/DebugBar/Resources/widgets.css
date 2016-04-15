@@ -9,6 +9,7 @@ ul.phpdebugbar-widgets-list {
     border-bottom: 1px solid #eee;
     position: relative;
     overflow: hidden;
+    direction: ltr;
   }
   ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item:hover {
     background: #fafafa;
@@ -91,6 +92,7 @@ div.phpdebugbar-widgets-messages {
 
 dl.phpdebugbar-widgets-kvlist {
   margin: 0;
+  direction: ltr;
 }
   dl.phpdebugbar-widgets-kvlist dt {
     float: left;
@@ -145,6 +147,7 @@ ul.phpdebugbar-widgets-timeline {
       text-shadow: none;
       font-weight: normal;
       white-space: pre;
+      direction: ltr;
     }
     ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
       left: initial;
