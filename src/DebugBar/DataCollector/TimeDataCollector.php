@@ -16,7 +16,7 @@ use DebugBar\DebugBarException;
  * Collects info about the request duration as well as providing
  * a way to log duration of any operations
  */
-class TimeDataCollector extends DataCollector implements Renderable, ResetCollectorInterface
+class TimeDataCollector extends DataCollector implements Renderable, Resettable
 {
     /**
      * @var float
