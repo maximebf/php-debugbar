@@ -11,9 +11,9 @@
 namespace DebugBar\DataCollector;
 
 /**
- * DataReset Interface
+ * Resettable Interface
  */
-interface ResetCollectorInterface
+interface Resettable
 {
     /**
      * Reset the collector to its initial state.
