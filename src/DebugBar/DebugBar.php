@@ -11,6 +11,7 @@
 namespace DebugBar;
 
 use ArrayAccess;
+use DebugBar\DataCollector\Resettable;
 use DebugBar\DataCollector\DataCollectorInterface;
 use DebugBar\Storage\StorageInterface;
 
@@ -227,6 +228,23 @@ class DebugBar implements ArrayAccess
         }
 
         return $this->data;
+    }
+    
+    /**
+     * Reset the collectors and the DebugBar to the initial state.
+     *
+     * @return string
+     */
+    public function reset()
+    {
+        foreach ($this->collectors as $collector) {
+            if ($collector instanceof Resettable){
+                $collector->reset();
+            }
+        }
+
+        $this->requestId = null;
+        $this->data = null;
     }
 
     /**

@@ -23,7 +23,7 @@ use DebugBar\DebugBarException;
  * $aggcollector['msg1']->addMessage('hello world');
  * </code>
  */
-class AggregatedCollector implements DataCollectorInterface, ArrayAccess
+class AggregatedCollector implements DataCollectorInterface, ArrayAccess, Resettable
 {
     protected $name;
 
@@ -98,6 +98,20 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
     public function getSort()
     {
         return $this->sort;
+    }
+
+    /**
+     * Reset all aggregated collectors
+     *
+     * @return void
+     */
+    public function reset()
+    {
+        foreach ($this->collectors as $collector) {
+            if ($collector instanceof Resettable) {
+                $collector->reset();
+            }
+        }
     }
 
     public function collect()

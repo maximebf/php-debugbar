@@ -16,7 +16,7 @@ use DebugBar\DataFormatter\DataFormatterInterface;
 /**
  * Provides a way to log messages
  */
-class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable
+class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable, Resettable
 {
     protected $name;
 
@@ -51,6 +51,21 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             $this->dataFormater = DataCollector::getDefaultDataFormatter();
         }
         return $this->dataFormater;
+    }
+
+    /**
+     * Reset the collector to its initial state.
+     *
+     * @return void
+     */
+    function reset()
+    {
+        $this->messages = array();
+        foreach ($this->aggregates as $collector) {
+            if ($collector instanceof ResetCollectorInterface){
+                $collector->reset();
+            }
+        }
     }
 
     /**

@@ -16,7 +16,7 @@ use DebugBar\DebugBarException;
  * Collects info about the request duration as well as providing
  * a way to log duration of any operations
  */
-class TimeDataCollector extends DataCollector implements Renderable
+class TimeDataCollector extends DataCollector implements Renderable, Resettable
 {
     /**
      * @var float
@@ -43,14 +43,20 @@ class TimeDataCollector extends DataCollector implements Renderable
      */
     public function __construct($requestStartTime = null)
     {
-        if ($requestStartTime === null) {
-            if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
-                $requestStartTime = $_SERVER['REQUEST_TIME_FLOAT'];
-            } else {
-                $requestStartTime = microtime(true);
-            }
-        }
         $this->requestStartTime = $requestStartTime;
+        if ($this->requestStartTime === null) {
+            $this->getRequestStartTime();
+        }
+    }
+
+    /**
+     * Reset thet start/end time and measures
+     */
+    public function reset()
+    {
+        $this->requestStartTime = null;
+        $this->requestEndTime = null;
+        $this->startedMeasures = array();
     }
 
     /**
@@ -118,7 +124,7 @@ class TimeDataCollector extends DataCollector implements Renderable
         $this->measures[] = array(
             'label' => $label,
             'start' => $start,
-            'relative_start' => $start - $this->requestStartTime,
+            'relative_start' => $start - $this->getRequestStartTime(),
             'end' => $end,
             'relative_end' => $end - $this->requestEndTime,
             'duration' => $end - $start,
@@ -161,6 +167,14 @@ class TimeDataCollector extends DataCollector implements Renderable
      */
     public function getRequestStartTime()
     {
+        if ($this->requestStartTime === null) {
+            if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+                $this->requestStartTime = $_SERVER['REQUEST_TIME_FLOAT'];
+            } else {
+                $this->requestStartTime = microtime(true);
+            }
+        }
+
         return $this->requestStartTime;
     }
 
@@ -182,9 +196,9 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function getRequestDuration()
     {
         if ($this->requestEndTime !== null) {
-            return $this->requestEndTime - $this->requestStartTime;
+            return $this->requestEndTime - $this->getRequestStartTime();
         }
-        return microtime(true) - $this->requestStartTime;
+        return microtime(true) - $this->getRequestStartTime();
     }
 
     public function collect()
@@ -195,7 +209,7 @@ class TimeDataCollector extends DataCollector implements Renderable
         }
 
         return array(
-            'start' => $this->requestStartTime,
+            'start' => $this->getRequestStartTime(),
             'end' => $this->requestEndTime,
             'duration' => $this->getRequestDuration(),
             'duration_str' => $this->getDataFormatter()->formatDuration($this->getRequestDuration()),

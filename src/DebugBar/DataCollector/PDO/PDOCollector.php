@@ -5,13 +5,17 @@ namespace DebugBar\DataCollector\PDO;
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DebugBar\DataCollector\Resettable;
 use DebugBar\DataCollector\TimeDataCollector;
 
 /**
  * Collects data about SQL statements executed with PDO
  */
-class PDOCollector extends DataCollector implements Renderable, AssetProvider
+class PDOCollector extends DataCollector implements Renderable, AssetProvider, Resettable
 {
+    /**
+     * @var array|TraceablePDO[]
+     */
     protected $connections = array();
 
     protected $timeCollector;
@@ -75,6 +79,19 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
     public function getConnections()
     {
         return $this->connections;
+    }
+
+    /**
+     * Reset the executed statements for all connections
+     *
+     * @return void
+     */
+    public function reset()
+    {
+        foreach ($this->connections as $pdo)
+        {
+            $pdo->resetExecutedStatements();
+        }
     }
 
     public function collect()
