@@ -15,7 +15,7 @@ use Exception;
 /**
  * Collects info about exceptions
  */
-class ExceptionsCollector extends DataCollector implements Renderable
+class ExceptionsCollector extends DataCollector implements Renderable, Resettable
 {
     protected $exceptions = array();
     protected $chainExceptions = false;
@@ -51,6 +51,11 @@ class ExceptionsCollector extends DataCollector implements Renderable
     public function getExceptions()
     {
         return $this->exceptions;
+    }
+
+    public function reset()
+    {
+        $this->exceptions = array();
     }
 
     public function collect()
