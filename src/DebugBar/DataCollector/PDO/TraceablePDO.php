@@ -170,6 +170,16 @@ class TraceablePDO extends PDO
     }
 
     /**
+     * Reset the list of executed statements
+     *
+     * @return void
+     */
+    public function resetExecutedStatements()
+    {
+        $this->executedStatements = array();
+    }
+
+    /**
      * Returns the list of failed statements
      *
      * @return array
