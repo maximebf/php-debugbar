@@ -16,7 +16,7 @@ use DebugBar\DataFormatter\DataFormatterInterface;
 /**
  * Provides a way to log messages
  */
-class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable, ResetCollectorInterface
+class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable, Resettable
 {
     protected $name;
 
