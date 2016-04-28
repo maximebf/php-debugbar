@@ -484,19 +484,25 @@ if (typeof(PhpDebugBar) == 'undefined') {
             };
 
             // close button
-            this.$closebtn = $('<a />').addClass(csscls('close-btn')).appendTo(this.$headerRight);
+            this.$closebtn = $('<a />').addClass(csscls('close-btn'))
+                .append($('<span />').addClass(csscls('fa fa-times')))
+                .appendTo(this.$headerRight);
             this.$closebtn.click(function() {
                 self.close();
             });
 
             // minimize button
-            this.$minimizebtn = $('<a />').addClass(csscls('minimize-btn') ).appendTo(this.$headerRight);
+            this.$minimizebtn = $('<a />').addClass(csscls('minimize-btn'))
+                .append($('<span />').addClass(csscls('fa fa-chevron-down')))
+                .appendTo(this.$headerRight);
             this.$minimizebtn.click(function() {
                 self.minimize();
             });
 
             // maximize button
-            this.$maximizebtn = $('<a />').addClass(csscls('maximize-btn') ).appendTo(this.$headerRight);
+            this.$maximizebtn = $('<a />').addClass(csscls('maximize-btn') )
+                .append($('<span />').addClass(csscls('fa fa-chevron-up')))
+                .appendTo(this.$headerRight);
             this.$maximizebtn.click(function() {
                 self.restore();
             });
@@ -508,7 +514,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // open button
-            this.$openbtn = $('<a />').addClass(csscls('open-btn')).appendTo(this.$headerRight).hide();
+            this.$openbtn = $('<a />').addClass(csscls('open-btn'))
+                .append($('<span />').addClass(csscls('fa fa-folder-open')))
+                .appendTo(this.$headerRight).hide();
             this.$openbtn.click(function() {
                 self.openHandler.show(function(id, dataset) {
                     self.addDataSet(dataset, id, "(opened)");
