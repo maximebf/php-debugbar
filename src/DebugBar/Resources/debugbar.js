@@ -827,7 +827,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         recomputeBottomOffset: function() {
             if (this.options.bodyMarginBottom) {
-                if (this.isMinimized() || this.isClosed()) {
+                if (this.isClosed()) {
                     return $('body').css('margin-bottom', this.options.bodyMarginBottomHeight || '');
                 }
                 
