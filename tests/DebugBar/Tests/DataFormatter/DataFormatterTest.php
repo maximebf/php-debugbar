@@ -29,5 +29,8 @@ class DataFormatterTest extends DebugBarTestCase
         $this->assertEquals("1B", $f->formatBytes(1));
         $this->assertEquals("1KB", $f->formatBytes(1024));
         $this->assertEquals("1MB", $f->formatBytes(1024 * 1024));
+        $this->assertEquals("-1B", $f->formatBytes(-1));
+        $this->assertEquals("-1KB", $f->formatBytes(-1024));
+        $this->assertEquals("-1MB", $f->formatBytes(-1024 * 1024));
     }
 }
