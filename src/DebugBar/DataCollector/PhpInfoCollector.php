@@ -15,6 +15,9 @@ namespace DebugBar\DataCollector;
  */
 class PhpInfoCollector extends DataCollector
 {
+    /**
+     * @return array
+     */
     public function collect()
     {
         return array(
@@ -23,6 +26,9 @@ class PhpInfoCollector extends DataCollector
         );
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'php';

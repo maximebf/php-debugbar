@@ -31,6 +31,13 @@ class CacheCacheCollector extends MonologCollector
 {
     protected $logger;
 
+    /**
+     * CacheCacheCollector constructor.
+     * @param Cache|null $cache
+     * @param Logger|null $logger
+     * @param bool $level
+     * @param bool $bubble
+     */
     public function __construct(Cache $cache = null, Logger $logger = null, $level = Logger::DEBUG, $bubble = true)
     {
         parent::__construct(null, $level, $bubble);
@@ -45,6 +52,9 @@ class CacheCacheCollector extends MonologCollector
         }
     }
 
+    /**
+     * @param Cache $cache
+     */
     public function addCache(Cache $cache)
     {
         $backend = $cache->getBackend();
@@ -55,6 +65,9 @@ class CacheCacheCollector extends MonologCollector
         $this->addLogger($backend->getLogger());
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'cache';

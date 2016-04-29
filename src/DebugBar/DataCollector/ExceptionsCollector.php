@@ -88,11 +88,17 @@ class ExceptionsCollector extends DataCollector implements Renderable
         );
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'exceptions';
     }
 
+    /**
+     * @return array
+     */
     public function getWidgets()
     {
         return array(

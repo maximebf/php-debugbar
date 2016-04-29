@@ -15,6 +15,9 @@ namespace DebugBar;
  */
 class RequestIdGenerator implements RequestIdGeneratorInterface
 {
+    /**
+     * @return string
+     */
     public function generate()
     {
         return md5(serialize($_SERVER) . microtime());

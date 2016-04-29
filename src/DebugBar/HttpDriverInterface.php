@@ -19,7 +19,8 @@ interface HttpDriverInterface
     /**
      * Sets HTTP headers
      *
-     * @param string $headers
+     * @param array $headers
+     * @return
      */
     function setHeaders(array $headers);
 
