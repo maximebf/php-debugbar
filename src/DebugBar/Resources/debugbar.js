@@ -399,7 +399,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             bodyMarginBottomHeight: parseInt($('body').css('margin-bottom'))
         },
 
-        initialize: function() {
+        initialize: function(options) {
+            this.options = $.extend({}, this.options, options || {});
             this.controls = {};
             this.dataMap = {};
             this.datasets = {};
