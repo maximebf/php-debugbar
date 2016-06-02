@@ -4,7 +4,7 @@ namespace DebugBar\DataCollector\PDO;
 
 use PDO;
 use PDOException;
-use PDOStatement;
+use DebugBar\DataCollector\PDO\TraceablePDOStatement;
 
 /**
  * A PDO proxy which traces statements
@@ -25,7 +25,7 @@ class TraceablePDO extends PDO
 
 	/**
 	 * Initiates a transaction
-   *
+         *
 	 * @link   http://php.net/manual/en/pdo.begintransaction.php
 	 * @return bool TRUE on success or FALSE on failure.
 	 */
@@ -126,7 +126,7 @@ class TraceablePDO extends PDO
 	 * @param  string $statement This must be a valid SQL statement template for the target DB server.
 	 * @param  array  $driver_options [optional] This array holds one or more key=&gt;value pairs to
 	 * set attribute values for the PDOStatement object that this method returns.
-	 * @return PDOStatement|bool If the database server successfully prepares the statement,
+	 * @return TraceablePDOStatement|bool If the database server successfully prepares the statement,
    * PDO::prepare returns a PDOStatement object. If the database server cannot successfully prepare
    * the statement, PDO::prepare returns FALSE or emits PDOException (depending on error handling).
 	 */
@@ -140,7 +140,8 @@ class TraceablePDO extends PDO
    *
 	 * @link   http://php.net/manual/en/pdo.query.php
 	 * @param  string $statement
-	 * @return PDOStatement|bool PDO::query returns a PDOStatement object, or FALSE on failure.
+	 * @return TraceablePDOStatement|bool PDO::query returns a PDOStatement object, or FALSE on
+   * failure.
    */
     public function query($statement)
     {
