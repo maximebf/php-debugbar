@@ -10,8 +10,6 @@
 
 namespace DebugBar\DataCollector;
 
-use Exception;
-
 /**
  * Collects info about exceptions
  */
@@ -23,9 +21,9 @@ class ExceptionsCollector extends DataCollector implements Renderable
     /**
      * Adds an exception to be profiled in the debug bar
      *
-     * @param Exception $e
+     * @param \Exception|\Throwable $e
      */
-    public function addException(Exception $e)
+    public function addException($e)
     {
         $this->exceptions[] = $e;
         if ($this->chainExceptions && $previous = $e->getPrevious()) {
@@ -46,7 +44,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
     /**
      * Returns the list of exceptions being profiled
      *
-     * @return array[Exception]
+     * @return array[\Exception|\Throwable]
      */
     public function getExceptions()
     {
@@ -64,10 +62,10 @@ class ExceptionsCollector extends DataCollector implements Renderable
     /**
      * Returns exception data as an array
      *
-     * @param Exception $e
+     * @param \Exception|\Throwable $e
      * @return array
      */
-    public function formatExceptionData(Exception $e)
+    public function formatExceptionData($e)
     {
         $filePath = $e->getFile();
         if ($filePath && file_exists($filePath)) {
