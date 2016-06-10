@@ -10,7 +10,9 @@
 
 namespace DebugBar\DataCollector;
 
+use Error;
 use Exception;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 /**
  * Collects info about exceptions
@@ -29,6 +31,9 @@ class ExceptionsCollector extends DataCollector implements Renderable
     {
         $this->exceptions[] = $e;
         if ($this->chainExceptions && $previous = $e->getPrevious()) {
+            if($previous instanceof Error) {
+                $previous = new FatalThrowableError($previous);
+            }
             $this->addException($previous);
         }
     }
@@ -88,17 +93,11 @@ class ExceptionsCollector extends DataCollector implements Renderable
         );
     }
 
-    /**
-     * @return string
-     */
     public function getName()
     {
         return 'exceptions';
     }
 
-    /**
-     * @return array
-     */
     public function getWidgets()
     {
         return array(
