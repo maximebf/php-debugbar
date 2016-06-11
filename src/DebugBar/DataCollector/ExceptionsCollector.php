@@ -10,7 +10,6 @@
 
 namespace DebugBar\DataCollector;
 
-use Error;
 use Exception;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
@@ -31,7 +30,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
     {
         $this->exceptions[] = $e;
         if ($this->chainExceptions && $previous = $e->getPrevious()) {
-            if ($previous instanceof Error) {
+            if (!$previous instanceof Exception) {
                 $previous = new FatalThrowableError($previous);
             }
             $this->addException($previous);
