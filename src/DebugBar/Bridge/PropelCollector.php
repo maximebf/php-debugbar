@@ -202,11 +202,81 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             'duration' => $duration,
             'duration_str' => $this->formatDuration($duration),
             'memory' => $memory,
-            'memory_str' => $this->formatBytes($memory)
+            'memory_str' => $this->formatBytes($memory),
+            'caller' => $this->getCaller(),
         );
         $this->accumulatedTime += $duration;
         $this->peakMemory = max($this->peakMemory, $memory);
         return array($sql, $this->formatDuration($duration));
+    }
+
+    /**
+     * Get the caller from the backtrace, skip data in backtrace that has no value
+     *
+     * @return string
+     */
+    private function getCaller()
+    {
+        $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        foreach ($traces as $key => $trace) {
+            if (isset($trace['file']) && strpos($trace['file'], DIRECTORY_SEPARATOR.'om' . DIRECTORY_SEPARATOR. 'Base') !== false) {
+                continue; // do not log the base class as caller
+            }
+            if (isset($trace['class']) && $trace['class'] === 'ModelCriteria') {
+                continue; // do not log ModelCriteria as caller
+            }
+            if (isset($trace['class']) && strpos($trace['class'], 'Base') === 0) {
+                if (isset($traces[$key+1]) && isset($traces[$key+1]['class'])) {
+                    if ('Base' . $traces[$key+1]['class'] === $trace['class']) {
+                        continue; // do not log Base class as caller when non-base-class is also in stack
+                    }
+                }
+            }
+            if (isset($trace['class']) && isset($trace['file']) && strpos($trace['file'], DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR) !== false) {
+                $config = Propel::getConfiguration(PropelConfiguration::TYPE_ARRAY_FLAT);
+                $key = 'classmap.' . $trace['class'];
+                if (!isset($config[$key]) ) {
+                    continue; // do not log class in vendor dir when not part of current connection
+                }
+            }
+
+            $info= '';
+            if (isset($trace['class']) ) {
+                $info .= $trace['class'];
+            }
+            if (isset($trace['type']) ) {
+                $info .= $trace['type'];
+            } else {
+                $info .= '->';
+            }
+            if (isset($trace['function']) ) {
+                $info .= $trace['function'];
+            }
+
+            if (isset($trace['file']) && isset($trace['line'])) {
+                $info .= ' on ' . $this->getRelativeFile($trace['file']) . ':' . $trace['line'];
+            }
+            return $info;
+        }
+    }
+
+    /**
+     * Gives a path relative to this project root-dir
+     *
+     * @param string $file
+     * @return file
+     */
+    private function getRelativeFile($file) {
+        $root = realpath($_SERVER['DOCUMENT_ROOT']);
+        if (basename($root) === 'web') {
+            $root = realpath($root . DIRECTORY_SEPARATOR . '..');
+        }
+        $targetfile = realpath($file);
+        if ($targetfile === false) {
+            return $file;
+        }
+
+        return str_replace($root . DIRECTORY_SEPARATOR, '', $targetfile);
     }
 
     public function collect()

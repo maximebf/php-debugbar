@@ -20,6 +20,10 @@ div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id {
   margin-left: 8px;
   color: #888;
 }
+div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-caller {
+  display:block;
+  color: #888;
+}
 div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-status span.phpdebugbar-widgets-database,
 div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-status span.phpdebugbar-widgets-duration,
 div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-status span.phpdebugbar-widgets-memory,
