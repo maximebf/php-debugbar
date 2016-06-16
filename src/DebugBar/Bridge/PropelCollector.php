@@ -196,6 +196,8 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             }
         }
 
+        $caller = $this->getCaller();
+
         $this->statements[] = array(
             'sql' => $sql,
             'is_success' => true,
@@ -203,7 +205,8 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             'duration_str' => $this->formatDuration($duration),
             'memory' => $memory,
             'memory_str' => $this->formatBytes($memory),
-            'caller' => $this->getCaller(),
+            'caller' => $caller['info'],
+            'caller_str' => $caller['message'],
         );
         $this->accumulatedTime += $duration;
         $this->peakMemory = max($this->peakMemory, $memory);
@@ -240,23 +243,39 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
                 }
             }
 
-            $info= '';
+            $func= '';
             if (isset($trace['class']) ) {
-                $info .= $trace['class'];
+                $func .= $trace['class'];
             }
             if (isset($trace['type']) ) {
-                $info .= $trace['type'];
+                $func .= $trace['type'];
             } else {
-                $info .= '->';
+                $func .= '->';
             }
             if (isset($trace['function']) ) {
-                $info .= $trace['function'];
+                $func .= $trace['function'];
+            }
+            if (empty($func)) {
+                $func = 'unknown';
             }
 
+            $fileInfo = array(
+                'basename' => 'unknown',
+                'file' => 'unknown',
+                'line' => 0,
+            );
             if (isset($trace['file']) && isset($trace['line'])) {
-                $info .= ' on ' . $this->getRelativeFile($trace['file']) . ':' . $trace['line'];
+                $fileInfo = array(
+                    'basename' => basename($trace['file']),
+                    'file' => $this->getRelativeFile($trace['file']),
+                    'line' => $trace['line'],
+                );
             }
-            return $info;
+
+            return array(
+                'info' => sprintf('%s:%s', $fileInfo['basename'], $fileInfo['line']),
+                'message' => sprintf('Called %s in %s on line %d', $func, $fileInfo['file'], $fileInfo['line']),
+            );
         }
     }
 
