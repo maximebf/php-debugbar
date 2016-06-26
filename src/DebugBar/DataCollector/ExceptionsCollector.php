@@ -86,9 +86,9 @@ class ExceptionsCollector extends DataCollector implements Renderable
     }
 
     /**
-     * Returns exception data as an array
+     * Returns Throwable data as an array
      *
-     * @param Exception $e
+     * @param \Throwable $e
      * @return array
      */
     public function formatThrowableData($e)
