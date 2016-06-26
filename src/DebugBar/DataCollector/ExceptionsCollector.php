@@ -58,7 +58,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
     /**
      * Returns the list of exceptions being profiled
      *
-     * @return array[\Throwable|\Exception]
+     * @return array[\Throwable]
      */
     public function getExceptions()
     {
