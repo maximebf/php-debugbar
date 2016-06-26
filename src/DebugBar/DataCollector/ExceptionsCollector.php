@@ -27,7 +27,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
      * @param Exception $e
      * @deprecated in favor on addThrowable
      */
-    public function addException($e)
+    public function addException(Exception $e)
     {
         $this->addThrowable($e);
     }
@@ -35,7 +35,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
     /**
      * Adds a Throwable to be profiled in the debug bar
      *
-     * @param \Throwable|\Exception $e
+     * @param \Throwable $e
      */
     public function addThrowable($e)
     {
