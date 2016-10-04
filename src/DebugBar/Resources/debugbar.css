@@ -19,6 +19,7 @@ div.phpdebugbar {
   text-align: left;
   line-height: 1;
   letter-spacing: normal;
+  direction: ltr;
 }
 
 div.phpdebugbar a,
