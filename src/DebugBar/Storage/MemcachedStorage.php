@@ -68,6 +68,7 @@ class MemcachedStorage implements StorageInterface
                 }
             }
         }
+        $results = array_reverse($results);
         return array_slice($results, $offset, $max);
     }
 
