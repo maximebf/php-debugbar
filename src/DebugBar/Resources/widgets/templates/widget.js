@@ -17,6 +17,10 @@
 
             this.$list = new  PhpDebugBar.Widgets.ListWidget({ itemRenderer: function(li, tpl) {
                 $('<span />').addClass(csscls('name')).text(tpl.name).appendTo(li);
+
+                if (typeof tpl.xdebug_link != 'undefined') {
+                    $('<a href="' + tpl.xdebug_link + '"></a>').addClass(csscls('editor-link')).appendTo(li);
+                }
                 if (tpl.render_time_str) {
                     $('<span title="Render time" />').addClass(csscls('render-time')).text(tpl.render_time_str).appendTo(li);
                 }
