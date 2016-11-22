@@ -1,7 +1,25 @@
 (function($) {
 
     var csscls = PhpDebugBar.utils.makecsscls('phpdebugbar-widgets-');
+    
+    var entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
 
+    function escapeHtml (string) {
+      return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap (s) {
+        return entityMap[s];
+      });
+    }
+
+    
     /**
      * Widget for the displaying sql queries
      *
@@ -71,8 +89,8 @@
                     var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
                     for (var key in stmt.params) {
                         if (typeof stmt.params[key] !== 'function') {
-                            table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') +
-                            '">' + stmt.params[key] + '</td></tr>');
+                            table.append('<tr><td class="' + csscls('name') + '">' + escapeHtml(key) + '</td><td class="' + csscls('value') +
+                            '">' + escapeHtml(stmt.params[key]) + '</td></tr>');
                         }
                     }
                     li.css('cursor', 'pointer').click(function() {
