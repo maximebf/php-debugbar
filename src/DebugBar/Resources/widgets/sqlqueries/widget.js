@@ -72,7 +72,7 @@
                     for (var key in stmt.params) {
                         if (typeof stmt.params[key] !== 'function') {
                             table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') +
-                            '">' + stmt.params[key] + '</td></tr>');
+                                '">' + stmt.params[key] + '</td></tr>');
                         }
                     }
                     li.css('cursor', 'pointer').click(function() {
@@ -91,7 +91,7 @@
                 this.$status.empty();
 
                 // Search for duplicate statements.
-                for (var sql = {}, duplicate = 0, i = 0; i < data.statements.length; i++) {
+                for (var sql = {}, unique = 0, i = 0; i < data.statements.length; i++) {
                     var stmt = data.statements[i].sql;
                     if (data.statements[i].params && !$.isEmptyObject(data.statements[i].params)) {
                         stmt += ' {' + $.param(data.statements[i].params, false) + '}';
@@ -102,10 +102,10 @@
                 // Add classes to all duplicate SQL statements.
                 for (var stmt in sql) {
                     if (sql[stmt].keys.length > 1) {
-                        duplicate++;
+                        unique++;
                         for (var i = 0; i < sql[stmt].keys.length; i++) {
                             this.$list.$el.find('.' + csscls('list-item')).eq(sql[stmt].keys[i])
-                                .addClass(csscls('sql-duplicate')).addClass(csscls('sql-duplicate-'+duplicate));
+                                .addClass(csscls('sql-duplicate')).addClass(csscls('sql-duplicate-'+unique));
                         }
                     }
                 }
@@ -114,8 +114,9 @@
                 if (data.nb_failed_statements) {
                     t.append(", " + data.nb_failed_statements + " of which failed");
                 }
-                if (duplicate) {
-                    t.append(", " + duplicate + " of which were duplicated");
+                if (unique) {
+                    t.append(", " + (data.nb_statements - unique) + " of which were duplicated");
+                    t.append(", " + unique + " unique");
                 }
                 if (data.accumulated_duration_str) {
                     this.$status.append($('<span title="Accumulated duration" />').addClass(csscls('duration')).text(data.accumulated_duration_str));
