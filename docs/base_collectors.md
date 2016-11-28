@@ -70,6 +70,14 @@ You can even log queries from multiple `PDO` connections:
     $pdoCollector->addConnection($pdoWrite, 'write-db');
 
     $debugbar->addCollector($pdoCollector);
+    
+If you want to see your PDO requests in the TimeDataCollector, you must add the PDOConnector to the $debugbar _first_
+
+    $timeDataCollector = new DebugBar\DataCollector\TimeDataCollector();
+    $pdoCollector = new DebugBar\DataCollector\PDO\PDOCollector($pdo, $timeDataCollector);
+    
+    $debugBar->addCollector($pdoCollector);
+    $debugBar->addCollector($timeDataCollector);
 
 ## RequestData
 
