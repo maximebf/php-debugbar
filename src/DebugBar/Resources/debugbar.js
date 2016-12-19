@@ -1019,6 +1019,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @return {Bool}
          */
         handle: function(xhr) {
+             // Check if the debugbar header is available
+            if (xhr.getAllResponseHeaders().indexOf(this.headerName) === -1){
+                return true;
+            }
             if (!this.loadFromId(xhr)) {
                 return this.loadFromData(xhr);
             }
