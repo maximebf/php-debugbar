@@ -8,6 +8,6 @@ phpdebugbar.setDataMap({
 "time": ["time", "0s"]
 });
 phpdebugbar.restoreState();
-phpdebugbar.ajaxHandler = new PhpDebugBar.AjaxHandler(phpdebugbar);
+phpdebugbar.ajaxHandler = new PhpDebugBar.AjaxHandler(phpdebugbar, undefined, true);
 if (jQuery) phpdebugbar.ajaxHandler.bindToJquery(jQuery);
 phpdebugbar.addDataSet(

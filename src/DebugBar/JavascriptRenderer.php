@@ -74,6 +74,8 @@ class JavascriptRenderer
 
     protected $ajaxHandlerBindToXHR = false;
 
+    protected $ajaxHandlerAutoShow = true;
+
     protected $openHandlerClass = 'PhpDebugBar.OpenHandler';
 
     protected $openHandlerUrl;
@@ -117,6 +119,7 @@ class JavascriptRenderer
      *  - ignore_collectors
      *  - ajax_handler_classname
      *  - ajax_handler_bind_to_jquery
+     *  - ajax_handler_auto_show
      *  - open_handler_classname
      *  - open_handler_url
      *
@@ -168,6 +171,9 @@ class JavascriptRenderer
         }
         if (array_key_exists('ajax_handler_bind_to_jquery', $options)) {
             $this->setBindAjaxHandlerToJquery($options['ajax_handler_bind_to_jquery']);
+        }
+        if (array_key_exists('ajax_handler_auto_show', $options)) {
+            $this->setAjaxHandlerAutoShow($options['ajax_handler_auto_show']);
         }
         if (array_key_exists('open_handler_classname', $options)) {
             $this->setOpenHandlerClass($options['open_handler_classname']);
@@ -511,6 +517,28 @@ class JavascriptRenderer
     public function isAjaxHandlerBoundToXHR()
     {
         return $this->ajaxHandlerBindToXHR;
+    }
+
+    /**
+     * Sets whether new ajax debug data will be immediately shown.  Setting to false could be useful
+     * if there are a lot of tracking events cluttering things.
+     *
+     * @param boolean $autoShow
+     */
+    public function setAjaxHandlerAutoShow($autoShow = true)
+    {
+        $this->ajaxHandlerAutoShow = $autoShow;
+        return $this;
+    }
+
+    /**
+     * Checks whether the ajax handler will immediately show new ajax requests.
+     *
+     * @return boolean
+     */
+    public function isAjaxHandlerAutoShow()
+    {
+        return $this->ajaxHandlerAutoShow;
     }
 
     /**
@@ -897,7 +925,12 @@ class JavascriptRenderer
         }
 
         if ($this->ajaxHandlerClass) {
-            $js .= sprintf("%s.ajaxHandler = new %s(%s);\n", $this->variableName, $this->ajaxHandlerClass, $this->variableName);
+            $js .= sprintf("%s.ajaxHandler = new %s(%s, undefined, %s);\n",
+                $this->variableName,
+                $this->ajaxHandlerClass,
+                $this->variableName,
+                $this->ajaxHandlerAutoShow ? 'true' : 'false'
+            );
             if ($this->ajaxHandlerBindToXHR) {
                 $js .= sprintf("%s.ajaxHandler.bindToXHR();\n", $this->variableName);
             } elseif ($this->ajaxHandlerBindToJquery) {
