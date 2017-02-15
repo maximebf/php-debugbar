@@ -213,6 +213,23 @@ class TimeDataCollector extends DataCollector implements Renderable
             'measures' => array_values($this->measures)
         );
     }
+    
+    /**
+     * Format ServerTiming headers
+     *
+     * @see https://www.w3.org/TR/server-timing/
+     * @return array
+     */
+    public function getServerTimingHeaders()
+    {
+        $headers = [];
+
+        foreach ($this->collect()['measures'] as $k => $m) {
+            $headers[] = sprintf('%d=%f; "%s"', $k, $m['duration'], str_replace('"', "'", $m['label']));
+        }
+
+        return $headers;
+    }
 
     /**
      * @return string
