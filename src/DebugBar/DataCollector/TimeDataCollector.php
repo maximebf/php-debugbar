@@ -224,7 +224,8 @@ class TimeDataCollector extends DataCollector implements Renderable
     {
         $headers = array();
 
-        foreach ($this->collect()['measures'] as $k => $m) {
+        $data = $this->collect();
+        foreach ($data['measures'] as $k => $m) {
             $headers[] = sprintf('%d=%F; "%s"', $k, $m['duration'], str_replace('"', "'", $m['label']));
         }
 
