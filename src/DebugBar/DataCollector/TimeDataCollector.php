@@ -222,7 +222,7 @@ class TimeDataCollector extends DataCollector implements Renderable
      */
     public function getServerTimingHeaders()
     {
-        $headers = [];
+        $headers = array();
 
         foreach ($this->collect()['measures'] as $k => $m) {
             $headers[] = sprintf('%d=%F; "%s"', $k, $m['duration'], str_replace('"', "'", $m['label']));
