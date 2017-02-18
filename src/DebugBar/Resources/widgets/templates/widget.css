@@ -1,6 +1,6 @@
 
 div.phpdebugbar-widgets-templates div.phpdebugbar-widgets-status {
-  font-family: monospace;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   padding: 6px 6px;
   border-bottom: 1px solid #ddd;
   font-weight: bold;
@@ -47,7 +47,7 @@ div.phpdebugbar-widgets-templates table.phpdebugbar-widgets-params {
   width: 70%;
   margin: 10px;
   border: 1px solid #ddd;
-  font-family: monospace;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   border-collapse: collapse;
 }
 div.phpdebugbar-widgets-templates table.phpdebugbar-widgets-params td {
