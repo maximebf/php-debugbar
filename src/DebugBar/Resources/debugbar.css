@@ -11,7 +11,7 @@ div.phpdebugbar {
   left: 0;
   width: 100%;
   border-top: 0;
-  font-family: arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: #fff;
   z-index: 10000;
   font-size: 14px;
@@ -66,7 +66,7 @@ div.phpdebugbar table {
 
 div.phpdebugbar code, div.phpdebugbar pre {
   background: none;
-  font-family: monospace;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 1em;
   border: 0;
   padding: 0;
