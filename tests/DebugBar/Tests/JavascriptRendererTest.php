@@ -37,6 +37,7 @@ class JavascriptRendererTest extends DebugBarTestCase
             'ignore_collectors' => 'config',
             'ajax_handler_classname' => 'AjaxFoo',
             'ajax_handler_bind_to_jquery' => false,
+            'ajax_handler_auto_show' => false,
             'open_handler_classname' => 'OpenFoo',
             'open_handler_url' => 'open.php'
         ));
@@ -56,6 +57,7 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertContains('config', $this->r->getIgnoredCollectors());
         $this->assertEquals('AjaxFoo', $this->r->getAjaxHandlerClass());
         $this->assertFalse($this->r->isAjaxHandlerBoundToJquery());
+        $this->assertFalse($this->r->isAjaxHandlerAutoShow());
         $this->assertEquals('OpenFoo', $this->r->getOpenHandlerClass());
         $this->assertEquals('open.php', $this->r->getOpenHandlerUrl());
     }
