@@ -90,7 +90,12 @@ class JavascriptRenderer
         $this->debugBar = $debugBar;
 
         if ($baseUrl === null) {
-            $baseUrl = '/vendor/maximebf/debugbar/src/DebugBar/Resources';
+            //calculate $baseUrl from docroot should the docroot exist in the $_SERVER global
+			if( array_key_exists('DOCUMENT_ROOT',$_SERVER) ){
+				$baseUrl = str_replace($_SERVER['DOCUMENT_ROOT'], '', __DIR__ .'/Resources');
+			} else {
+				$baseUrl = '/vendor/maximebf/debugbar/src/DebugBar/Resources';
+			}
         }
         $this->baseUrl = $baseUrl;
 
