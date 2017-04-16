@@ -99,3 +99,29 @@ You need to wrap your `Twig_Environment` object into a `DebugBar\Bridge\Twig\Tra
 
 You can provide a `DebugBar\DataCollector\TimeDataCollector` as the second argument of
 `TraceableTwigEnvironment` so render operation can be measured.
+
+## Guzzle
+
+http://guzzlephp.org
+
+Collects timeline info about HTTP requests made with a `GuzzleHttp\Client` and displays it in the DebugBar timeline, log stream and request exceptions in the exceptions tab. You need to attach a `GuzzleHttp\Subscriber\Log\DebugbarSubscriber` which implements `GuzzleHttp\Event\SubscriberInterface` to the client. The `DebugbarSubscriber` requires a `TimeDataCollector` and an optional `ExceptionsCollector` from your `$debugbar`.
+
+    // Create HTTP client and get the DebugBar instance.
+    $client = new \GuzzleHttp\Client();
+    $debugbar = new \DebugBar\DebugBar();
+
+    // LogSubscriber requires a PSR logger.
+    $logger = $debugbar->getCollector('messages');
+    $subscriber = new \GuzzleHttp\Subscriber\Log\LogSubscriber($logger);
+    $client->getEmitter()->attach();
+
+    // Get collectors for time and exceptions.
+    $timeline = $debugbar->getCollector('time');
+    $exceptions = $debugbar->getCollector('exceptions');
+    $subscriber = new \GuzzleHttp\Subscriber\Log\DebugbarSubscriber($timeline, $exceptions);
+    $client->getEmitter()->attach($subscriber);
+
+    // Use the client to do an HTTP request
+    $client->get('http://google.com');
+
+The `DebugbarSubscriber` is loaded by requiring `hannesvdvreken/guzzle-debugbar` with composer.
