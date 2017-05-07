@@ -14,7 +14,7 @@ use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
 use DebugBar\DebugBarException;
-use Doctrine\DBAL\Logging\DebugStack;
+use Doctrine\DBAL\Logging\SQLLogger;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -44,7 +44,7 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
         if ($debugStackOrEntityManager instanceof EntityManager) {
             $debugStackOrEntityManager = $debugStackOrEntityManager->getConnection()->getConfiguration()->getSQLLogger();
         }
-        if (!($debugStackOrEntityManager instanceof DebugStack)) {
+        if (!($debugStackOrEntityManager instanceof SQLLogger)) {
             throw new DebugBarException("'DoctrineCollector' requires an 'EntityManager' or 'DebugStack' object");
         }
         $this->debugStack = $debugStackOrEntityManager;
