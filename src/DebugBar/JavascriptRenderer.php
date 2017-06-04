@@ -796,18 +796,21 @@ class JavascriptRenderer
      *
      * Only useful if Assetic is not used
      *
+     * @param string $v current version of static resource
      * @return string
      */
-    public function renderHead()
+    public function renderHead($v = null)
     {
         list($cssFiles, $jsFiles) = $this->getAssets(null, self::RELATIVE_URL);
         $html = '';
 
         foreach ($cssFiles as $file) {
+            $file = $v != null ? $file .'?v='. $v : $file;
             $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s">' . "\n", $file);
         }
 
         foreach ($jsFiles as $file) {
+            $file = $v !=null ? $file .'?v='. $v : $file;
             $html .= sprintf('<script type="text/javascript" src="%s"></script>' . "\n", $file);
         }
 
