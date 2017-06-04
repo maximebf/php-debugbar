@@ -272,9 +272,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.bindAttr('badge', function(value) {
                 if (value !== null) {
                     this.$badge.text(value);
-                    this.$badge.show();
+                    this.$badge.addClass(csscls('visible'));
                 } else {
-                    this.$badge.hide();
+                    this.$badge.removeClass(csscls('visible'));
                 }
             });
 
