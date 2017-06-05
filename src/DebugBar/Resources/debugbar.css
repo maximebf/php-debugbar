@@ -170,6 +170,9 @@ a.phpdebugbar-tab.phpdebugbar-active {
     display: none;
     vertical-align: middle;
   }
+  a.phpdebugbar-tab span.phpdebugbar-badge.phpdebugbar-visible {
+    display: inline;
+  }
   a.phpdebugbar-tab span.phpdebugbar-badge.phpdebugbar-important {
     background: #ed6868;
     color: white;
