@@ -91,7 +91,7 @@
                 this.$status.empty();
 
                 // Search for duplicate statements.
-                for (var sql = {}, unique = 0, i = 0; i < data.statements.length; i++) {
+                for (var sql = {}, unique = 0, duplicate = 0, i = 0; i < data.statements.length; i++) {
                     var stmt = data.statements[i].sql;
                     if (data.statements[i].params && !$.isEmptyObject(data.statements[i].params)) {
                         stmt += ' {' + $.param(data.statements[i].params, false) + '}';
@@ -102,11 +102,13 @@
                 // Add classes to all duplicate SQL statements.
                 for (var stmt in sql) {
                     if (sql[stmt].keys.length > 1) {
-                        unique++;
+                        duplicate += sql[stmt].keys.length;
                         for (var i = 0; i < sql[stmt].keys.length; i++) {
                             this.$list.$el.find('.' + csscls('list-item')).eq(sql[stmt].keys[i])
-                                .addClass(csscls('sql-duplicate')).addClass(csscls('sql-duplicate-'+unique));
+                                .addClass(csscls('sql-duplicate'));
                         }
+                    } else {
+                        unique++;
                     }
                 }
 
@@ -114,8 +116,8 @@
                 if (data.nb_failed_statements) {
                     t.append(", " + data.nb_failed_statements + " of which failed");
                 }
-                if (unique) {
-                    t.append(", " + (data.nb_statements - unique) + " of which were duplicated");
+                if (duplicate) {
+                    t.append(", " + duplicate + " of which were duplicates");
                     t.append(", " + unique + " unique");
                 }
                 if (data.accumulated_duration_str) {
