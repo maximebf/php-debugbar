@@ -205,10 +205,16 @@ class DebugBar implements ArrayAccess
     public function collect()
     {
         if (php_sapi_name() === 'cli') {
+            $ip = gethostname();
+            if ($ip) {
+                $ip = gethostbyname($ip);
+            } else {
+                $ip = '127.0.0.1';
+            }
             $request_variables = array(
                 'method' => 'CLI',
                 'uri' => isset($_SERVER['SCRIPT_FILENAME']) ? realpath($_SERVER['SCRIPT_FILENAME']) : null,
-                'ip' => gethostbyname(gethostname())
+                'ip' => $ip
             );
         } else {
             $request_variables = array(
