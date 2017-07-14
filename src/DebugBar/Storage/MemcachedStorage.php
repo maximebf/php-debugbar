@@ -21,13 +21,18 @@ class MemcachedStorage implements StorageInterface
 
     protected $keyNamespace;
 
+    protected $expiration;
+
     /**
      * @param Memcached $memcached
+     * @param string $keyNamespace Namespace for Memcached key names (to avoid conflict with other Memcached users).
+     * @param int $expiration Expiration for Memcached entries (see Expiration Times in Memcached documentation).
      */
-    public function __construct(Memcached $memcached, $keyNamespace = 'phpdebugbar')
+    public function __construct(Memcached $memcached, $keyNamespace = 'phpdebugbar', $expiration = 0)
     {
         $this->memcached = $memcached;
         $this->keyNamespace = $keyNamespace;
+        $this->expiration = $expiration;
     }
 
     /**
@@ -36,9 +41,12 @@ class MemcachedStorage implements StorageInterface
     public function save($id, $data)
     {
         $key = $this->createKey($id);
-        $this->memcached->set($key, $data);
+        $this->memcached->set($key, $data, $this->expiration);
         if (!$this->memcached->append($this->keyNamespace, "|$key")) {
-            $this->memcached->set($this->keyNamespace, $key);
+            $this->memcached->set($this->keyNamespace, $key, $this->expiration);
+        } else if ($this->expiration) {
+            // append doesn't support updating expiration, so do it here:
+            $this->memcached->touch($this->keyNamespace, $this->expiration);
         }
     }
 
