@@ -11,6 +11,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
      */
     PhpDebugBar.Widgets = {};
 
+    var csscls = PhpDebugBar.utils.makecsscls('phpdebugbar-widgets-');
+
     /**
      * Replaces spaces with &nbsp; and line breaks with <br>
      *
@@ -68,20 +70,53 @@ if (typeof(PhpDebugBar) == 'undefined') {
      *
      * @param  {String} code
      * @param  {String} lang
+     * @param  {Number} [firstLineNumber] If provided, shows line numbers beginning with the given value.
+     * @param  {Number} [highlightedLine] If provided, the given line number will be highlighted.
      * @return {String}
      */
-    var createCodeBlock = PhpDebugBar.Widgets.createCodeBlock = function(code, lang) {
-        var pre = $('<pre />');
-        $('<code />').text(code).appendTo(pre);
+    var createCodeBlock = PhpDebugBar.Widgets.createCodeBlock = function(code, lang, firstLineNumber, highlightedLine) {
+        var pre = $('<pre />').addClass(csscls('code-block'));
+        // Add a newline to prevent <code> element from vertically collapsing too far if the last
+        // code line was empty: that creates problems with the horizontal scrollbar being
+        // incorrectly positioned - most noticeable when line numbers are shown.
+        var codeElement = $('<code />').text(code + '\n').appendTo(pre);
+
+        // Add a span with a special class if we are supposed to highlight a line.  highlight.js will
+        // still correctly format code even with existing markup in it.
+        if ($.isNumeric(highlightedLine)) {
+            if ($.isNumeric(firstLineNumber)) {
+                highlightedLine = highlightedLine - firstLineNumber + 1;
+            }
+            codeElement.html(function (index, html) {
+                var currentLine = 1;
+                return html.replace(/^.*$/gm, function(line) {
+                    if (currentLine++ == highlightedLine) {
+                        return '<span class="' + csscls('highlighted-line') + '">' + line + '</span>';
+                    } else {
+                        return line;
+                    }
+                });
+            });
+        }
+
+        // Format the code
         if (lang) {
             pre.addClass("language-" + lang);
         }
         highlight(pre);
+
+        // Show line numbers in a list
+        if ($.isNumeric(firstLineNumber)) {
+            var lineCount = code.split('\n').length;
+            var $lineNumbers = $('<ul />').prependTo(pre);
+            pre.children().addClass(csscls('numbered-code'));
+            for (var i = firstLineNumber; i < firstLineNumber + lineCount; i++) {
+                $('<li />').text(i).appendTo($lineNumbers);
+            }
+        }
+
         return pre;
     };
-
-    var csscls = PhpDebugBar.utils.makecsscls('phpdebugbar-widgets-');
-
 
     // ------------------------------------------------------------------
     // Generic widgets
