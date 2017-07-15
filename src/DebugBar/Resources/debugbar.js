@@ -370,7 +370,15 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return "#" + nb + suffix;
             }
 
-            var filename = data['__meta']['uri'].substr(data['__meta']['uri'].lastIndexOf('/') + 1);
+            var uri = data['__meta']['uri'], filename;
+            if (uri.length && uri.charAt(uri.length - 1) === '/') {
+                // URI ends in a trailing /: get the portion before then to avoid returning an empty string
+                filename = uri.substr(0, uri.length - 1); // strip trailing '/'
+                filename = filename.substr(filename.lastIndexOf('/') + 1); // get last path segment
+                filename += '/'; // add the trailing '/' back
+            } else {
+                filename = uri.substr(uri.lastIndexOf('/') + 1);
+            }
             var label = "#" + nb + " " + filename + suffix + ' (' + data['__meta']['datetime'].split(' ')[1] + ')';
             return label;
         }
