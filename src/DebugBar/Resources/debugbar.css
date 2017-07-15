@@ -64,6 +64,16 @@ div.phpdebugbar table {
   border-spacing: 0;
 }
 
+div.phpdebugbar input[type='text'], div.phpdebugbar input[type='password'] {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #fff;
+  font-size: 14px;
+  color: #000;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
 div.phpdebugbar code, div.phpdebugbar pre {
   background: none;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;

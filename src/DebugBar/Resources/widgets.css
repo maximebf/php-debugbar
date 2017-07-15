@@ -20,7 +20,7 @@ div.phpdebugbar-widgets-messages {
   position: relative;
   height: 100%;
 }
-  div.phpdebugbar-widgets-messages div.phpdebugbar-widgets-list {
+  div.phpdebugbar-widgets-messages ul.phpdebugbar-widgets-list {
     padding-bottom: 20px;
   }
   div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-warning:before {
