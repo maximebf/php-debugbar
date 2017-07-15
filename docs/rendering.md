@@ -1,6 +1,6 @@
 # Rendering
 
-Rendering is performed using the `DebugBar\JavascriptRenderer̀ class. It contains
+Rendering is performed using the `DebugBar\JavascriptRenderer` class. It contains
 all the useful functions to included the needed assets and generate a debug bar.
 
     $renderer = $debugbar->getJavascriptRenderer();
@@ -9,15 +9,16 @@ all the useful functions to included the needed assets and generate a debug bar.
 
 The debug bar relies on some css and javascript files which needs to be included
 into your webpage. They are located in the *src/DebugBar/Resources* folder.
-This can be done in four ways:
+Additionally, asset providers may provide inline assets that have to be embedded
+directly in the HTML.  This can be done in four ways:
 
  - Using `JavascriptRenderer::renderHead()` which will returns a string with
    the needed script and link tags
  - Using [Assetic](https://github.com/kriswallsmith/assetic) and
    `JavascriptRenderer::getAsseticCollection()`
- - Dumping the assets yourself using `JavascriptRenderer::dumpCssAssets()` and
-   `JavascriptRenderer::dumpJsAssets()`
- - Retrieving the list filenames of assets using `JavascriptRenderer::getAssets()`
+ - Dumping the assets yourself using `JavascriptRenderer::dumpCssAssets()`,
+   `JavascriptRenderer::dumpJsAssets()`, and `JavascriptRenderer::dumpHeadAssets()`.
+ - Retrieving filenames and inline content of assets using `JavascriptRenderer::getAssets()`
    and doing something with it
 
 I would recommend using the second method as Assetic is a very powerful asset
@@ -40,7 +41,7 @@ Using `renderHead()`:
 
 Using Assetic:
 
-    list($cssCollection, $jsCollection) = $renderer->getAsseticCollection();
+    list($cssCollection, $jsCollection, $inlineHeadCollection) = $renderer->getAsseticCollection();
 
 Dumping the assets:
 
@@ -49,7 +50,7 @@ Dumping the assets:
 
 Retrieving the assets:
 
-    list($cssFiles, $jsFiles) = $renderer->getAssets();
+    list($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead) = $renderer->getAssets();
 
 Note that you can only use the debug bar assets and manage the dependencies by yourself
 using `$renderer->setIncludeVendors(false)`. Instead of false, *css* or *js* may be used
@@ -100,7 +101,7 @@ the first argument of ̀render()`.
 ### Controlling object initialization
 
 You can further control the initialization of the javascript object using `setInitialization()`.
-It takes a bitwise value made out of the constants ̀INITIALIZE_CONSTRUCTOR` and `INITIALIZE_CONTROLS`.
+It takes a bitwise value made out of the constants `INITIALIZE_CONSTRUCTOR` and `INITIALIZE_CONTROLS`.
 The first one controls whether to initialize the variable (ie. `var debugbar = new DebugBar()`). The
 second one whether to initialize all the controls (ie. adding tab and indicators as well as data mapping).
 
