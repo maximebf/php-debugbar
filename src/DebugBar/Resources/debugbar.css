@@ -78,6 +78,7 @@ div.phpdebugbar code, div.phpdebugbar pre {
   background: none;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 1em;
+  color: #000;
   border: 0;
   padding: 0;
   margin: 0;
