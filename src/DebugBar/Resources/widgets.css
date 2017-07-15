@@ -1,3 +1,36 @@
+pre.phpdebugbar-widgets-code-block {
+    white-space: pre;
+    word-wrap: normal;
+    overflow: hidden;
+}
+  pre.phpdebugbar-widgets-code-block code {
+    display: block;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  pre.phpdebugbar-widgets-code-block code.phpdebugbar-widgets-numbered-code {
+    padding: 5px;
+  }
+    pre.phpdebugbar-widgets-code-block code span.phpdebugbar-widgets-highlighted-line {
+      background: #800000;
+      color: #fff;
+      display: inline-block;
+      min-width: 100%;
+    }
+      pre.phpdebugbar-widgets-code-block code span.phpdebugbar-widgets-highlighted-line span {
+        background: none !important;
+        color: inherit !important;
+      }
+  pre.phpdebugbar-widgets-code-block ul {
+    float: left;
+    padding: 5px;
+    background: #cacaca;
+    border-right: 1px solid #aaa;
+    text-align: right;
+  }
+
+/* -------------------------------------- */
+
 ul.phpdebugbar-widgets-list {
   margin: 0;
   padding: 0;
