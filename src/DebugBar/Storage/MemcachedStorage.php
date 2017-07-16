@@ -42,7 +42,8 @@ class MemcachedStorage implements StorageInterface
     {
         $key = $this->createKey($id);
         $this->memcached->set($key, $data, $this->expiration);
-        if (!$this->memcached->append($this->keyNamespace, "|$key")) {
+        // Sometimes append succeeds yet the new appended value can't be read:
+        if (!$this->memcached->append($this->keyNamespace, "|$key") || !$this->memcached->get($this->keyNamespace)) {
             $this->memcached->set($this->keyNamespace, $key, $this->expiration);
         } else if ($this->expiration) {
             // append doesn't support updating expiration, so do it here:
@@ -102,10 +103,11 @@ class MemcachedStorage implements StorageInterface
      */
     public function clear()
     {
-        if (!($keys = $this->memcached->get($this->keyNamespace))) {
+        $keys = $this->memcached->get($this->keyNamespace);
+        $this->memcached->delete($this->keyNamespace);
+        if (!$keys) {
             return;
         }
-        $this->memcached->delete($this->keyNamespace);
         $this->memcached->deleteMulti(explode('|', $keys));
     }
 
