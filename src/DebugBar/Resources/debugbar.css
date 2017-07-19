@@ -74,14 +74,21 @@ div.phpdebugbar input[type='text'], div.phpdebugbar input[type='password'] {
   margin: 0;
 }
 
-div.phpdebugbar code, div.phpdebugbar pre {
+div.phpdebugbar code, div.phpdebugbar pre, div.phpdebugbar samp {
   background: none;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 1em;
-  color: #000;
   border: 0;
   padding: 0;
   margin: 0;
+}
+
+div.phpdebugbar code, div.phpdebugbar pre {
+  color: #000;
+}
+
+div.phpdebugbar pre.sf-dump {
+  color: #a0a000;
 }
 
 a.phpdebugbar-restore-btn {
