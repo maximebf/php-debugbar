@@ -73,6 +73,9 @@ div.phpdebugbar-widgets-messages {
     font-size: 11px;
     color: red;
   }
+  div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item pre.sf-dump {
+    display: inline;
+  }
   div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-collector,
   div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-label {
     float: right;
