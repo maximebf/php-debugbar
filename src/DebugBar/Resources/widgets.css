@@ -146,9 +146,13 @@ dl.phpdebugbar-widgets-kvlist {
 
 /* -------------------------------------- */
 
-dl.phpdebugbar-widgets-varlist {
+dl.phpdebugbar-widgets-varlist,
+dl.phpdebugbar-widgets-htmlvarlist {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
+  dl.phpdebugbar-widgets-htmlvarlist dd {
+    cursor: initial;
+  }
 
 /* -------------------------------------- */
 
