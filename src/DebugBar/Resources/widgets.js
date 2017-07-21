@@ -295,33 +295,37 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var self = this;
 
             this.$list = new ListWidget({ itemRenderer: function(li, value) {
-                var m = value.message;
-                if (m.length > 100) {
-                    m = m.substr(0, 100) + "...";
-                }
-
-                var val = $('<span />').addClass(csscls('value')).text(m).appendTo(li);
-                if (!value.is_string || value.message.length > 100) {
-                    var prettyVal = value.message;
-                    if (!value.is_string) {
-                        prettyVal = null;
+                if (value.message_html) {
+                    var val = $('<span />').addClass(csscls('value')).html(value.message_html).appendTo(li);
+                } else {
+                    var m = value.message;
+                    if (m.length > 100) {
+                        m = m.substr(0, 100) + "...";
                     }
-                    li.css('cursor', 'pointer').click(function() {
-                        if (val.hasClass(csscls('pretty'))) {
-                            val.text(m).removeClass(csscls('pretty'));
-                        } else {
-                            prettyVal = prettyVal || createCodeBlock(value.message, 'php');
-                            val.addClass(csscls('pretty')).empty().append(prettyVal);
+
+                    var val = $('<span />').addClass(csscls('value')).text(m).appendTo(li);
+                    if (!value.is_string || value.message.length > 100) {
+                        var prettyVal = value.message;
+                        if (!value.is_string) {
+                            prettyVal = null;
                         }
-                    });
+                        li.css('cursor', 'pointer').click(function () {
+                            if (val.hasClass(csscls('pretty'))) {
+                                val.text(m).removeClass(csscls('pretty'));
+                            } else {
+                                prettyVal = prettyVal || createCodeBlock(value.message, 'php');
+                                val.addClass(csscls('pretty')).empty().append(prettyVal);
+                            }
+                        });
+                    }
                 }
 
+                if (value.collector) {
+                    $('<span />').addClass(csscls('collector')).text(value.collector).prependTo(li);
+                }
                 if (value.label) {
                     val.addClass(csscls(value.label));
-                    $('<span />').addClass(csscls('label')).text(value.label).appendTo(li);
-                }
-                if (value.collector) {
-                    $('<span />').addClass(csscls('collector')).text(value.collector).appendTo(li);
+                    $('<span />').addClass(csscls('label')).text(value.label).prependTo(li);
                 }
             }});
 
