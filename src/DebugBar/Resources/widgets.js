@@ -249,7 +249,28 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
+    /**
+     * An extension of KVListWidget where the data represents a list
+     * of variables whose contents are HTML; this is useful for showing
+     * variable output from VarDumper's HtmlDumper.
+     *
+     * Options:
+     *  - data
+     */
+    var HtmlVariableListWidget = PhpDebugBar.Widgets.HtmlVariableListWidget = KVListWidget.extend({
+
+        className: csscls('kvlist htmlvarlist'),
+
+        itemRenderer: function(dt, dd, key, value) {
+            $('<span />').attr('title', key).text(key).appendTo(dt);
+            dd.html(value);
+        }
+
+    });
+
+    // ------------------------------------------------------------------
+
     /**
      * Iframe widget
      *

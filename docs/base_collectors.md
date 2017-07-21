@@ -90,16 +90,26 @@ If you want to see your PDO requests in the TimeDataCollector, you must add the 
 
 ## RequestData
 
-Collects the data of PHP's global variables
+Collects the data of PHP's global variables.  You can call the `useHtmlVarDumper()` function to use
+VarDumper's interactive HTML dumper for rendering the variables.  If you do that, you must properly
+render [inline assets](rendering.html#assets) when rendering the debug bar in addition to the normal
+js/css static assets.
 
-    $debugbar->addCollector(new DebugBar\DataCollector\RequestDataCollector());
+    $requestDataCollector = new DebugBar\DataCollector\RequestDataCollector();
+    $requestDataCollector->useHtmlVarDumper();
+    $debugbar->addCollector($requestDataCollector);
 
 ## Config
 
-Used to display any key/value pairs array
+Used to display any key/value pairs array.  You can call the `useHtmlVarDumper()` function to use
+VarDumper's interactive HTML dumper for rendering the variables.  If you do that, you must properly
+render [inline assets](rendering.html#assets) when rendering the debug bar in addition to the normal
+js/css static assets.
 
     $data = array('foo' => 'bar');
-    $debugbar->addCollector(new DebugBar\DataCollector\ConfigCollector($data));
+    $configCollector = new DebugBar\DataCollector\ConfigCollector($data);
+    $configCollector->useHtmlVarDumper();
+    $debugbar->addCollector($configCollector);
 
 You can provide a different name for this collector in the second argument of the constructor.
 
