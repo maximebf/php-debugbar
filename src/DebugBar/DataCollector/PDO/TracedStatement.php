@@ -46,7 +46,7 @@ class TracedStatement
     public function start($startTime = null, $startMemory = null)
     {
         $this->startTime = $startTime ?: microtime(true);
-        $this->startMemory = $startMemory ?: memory_get_usage(true);
+        $this->startMemory = $startMemory ?: memory_get_usage(false);
     }
 
     /**
@@ -59,7 +59,7 @@ class TracedStatement
     {
         $this->endTime = $endTime ?: microtime(true);
         $this->duration = $this->endTime - $this->startTime;
-        $this->endMemory = $endMemory ?: memory_get_usage(true);
+        $this->endMemory = $endMemory ?: memory_get_usage(false);
         $this->memoryDelta = $this->endMemory - $this->startMemory;
         $this->exception = $exception;
         $this->rowCount = $rowCount;
