@@ -89,6 +89,7 @@ div.phpdebugbar code, div.phpdebugbar pre {
 
 div.phpdebugbar pre.sf-dump {
   color: #a0a000;
+  outline: 0;
 }
 
 a.phpdebugbar-restore-btn {
