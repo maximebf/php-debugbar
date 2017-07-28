@@ -45,7 +45,7 @@ class DebugBarVarDumper implements AssetProvider
     /** @var VarCloner */
     protected $cloner;
 
-    /** @var Debu */
+    /** @var DebugBarHtmlDumper */
     protected $dumper;
 
     /**
