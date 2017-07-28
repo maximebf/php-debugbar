@@ -12,6 +12,6 @@ class DebugBarHtmlDumper extends HtmlDumper
 {
     public function getDumpHeaderByDebugBar() {
         // getDumpHeader is protected:
-        return str_replace('pre.sf-dump', '.debugbar pre.sf-dump', $this->getDumpHeader());
+        return str_replace('pre.sf-dump', '.phpdebugbar pre.sf-dump', $this->getDumpHeader());
     }
 }
