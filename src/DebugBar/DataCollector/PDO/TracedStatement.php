@@ -110,7 +110,7 @@ class TracedStatement
         foreach ($this->parameters as $k => $v) {
             $v = "$quoteLeft$v$quoteRight";
             if (!is_numeric($k)) {
-                $sql = str_replace($k, $v, $sql);
+                $sql = preg_replace("/{$k}\b/", $v, $sql, 1);
             } else {
                 $p = strpos($sql, '?');
                 $sql = substr($sql, 0, $p) . $v. substr($sql, $p + 1);
