@@ -25,10 +25,10 @@ class TracedStatementTest extends DebugBarTestCase
                 from geral.exame_part ep
                 where ep.id_exame = :id_exame and 
                       ep.id_exame_situacao = :id_exame_situacao';
-        $params = [
+        $params = array(
             ':id_exame'          => 1,
             ':id_exame_situacao' => 2
-        ];
+        );
         $traced = new TracedStatement($sql, $params);
         $expected = 'select *
                 from geral.exame_part ep
