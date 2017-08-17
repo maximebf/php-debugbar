@@ -10,8 +10,6 @@
 
 namespace DebugBar\Storage;
 
-use Predis\Client;
-
 /**
  * Stores collected data into Redis
  */
@@ -25,7 +23,7 @@ class RedisStorage implements StorageInterface
      * @param  \Predis\Client $redis Redis Client
      * @param  string $hash
      */
-    public function __construct(Client $redis, $hash = 'phpdebugbar')
+    public function __construct($redis, $hash = 'phpdebugbar')
     {
         $this->redis = $redis;
         $this->hash = $hash;
