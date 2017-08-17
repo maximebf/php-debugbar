@@ -87,6 +87,10 @@
             this.$list.$el.appendTo(this.$el);
 
             this.bindAttr('data', function(data) {
+                // the PDO collector maybe is empty
+                if (data.length <= 0) {
+                    return false;
+                }
                 this.$list.set('data', data.statements);
                 this.$status.empty();
 
