@@ -20,6 +20,7 @@ div.phpdebugbar {
   line-height: 1;
   letter-spacing: normal;
   direction: ltr;
+  box-shadow: 0 0 1rem grey;
 }
 
 div.phpdebugbar a,
