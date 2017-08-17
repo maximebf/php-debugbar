@@ -25,7 +25,9 @@ div.phpdebugbar-widgets-templates div.phpdebugbar-widgets-status span.phpdebugba
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-render-time:before,
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-memory:before,
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-param-count:before,
-div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-type:before {
+div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-type:before,
+div.phpdebugbar-widgets-templates a.phpdebugbar-widgets-editor-link:before
+{
   font-family: PhpDebugbarFontAwesome;
   margin-right: 4px;
   font-size: 12px;
@@ -41,6 +43,10 @@ div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-param-count:before {
 }
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-type:before {
   content: "\f121";
+}
+div.phpdebugbar-widgets-templates a.phpdebugbar-widgets-editor-link:before {
+  content: "\f08e";
+  margin-left: 4px;
 }
 div.phpdebugbar-widgets-templates table.phpdebugbar-widgets-params {
   display: none;

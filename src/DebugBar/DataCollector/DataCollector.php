@@ -72,6 +72,18 @@ abstract class DataCollector implements DataCollectorInterface
     }
 
     /**
+     * Get an Xdebug Link to a file
+     *
+     * @return string|null
+     */
+    public function getXdebugLink($file, $line = 1)
+    {
+        if (ini_get('xdebug.file_link_format') || extension_loaded('xdebug')) {
+            return e(str_replace(array('%f', '%l'), array($file, $line), ini_get('xdebug.file_link_format')));
+        }
+    }
+  
+    /**  
      * Sets the default variable dumper used by all collectors subclassing this class
      *
      * @param DebugBarVarDumper $varDumper
