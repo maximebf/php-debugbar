@@ -98,7 +98,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
         );
 
         foreach ($this->connections as $name => $pdo) {
-            $pdodata = $this->collectPDO($pdo, $this->timeCollector);
+            $pdodata = $this->collectPDO($pdo, $this->timeCollector, $name);
             $data['nb_statements'] += $pdodata['nb_statements'];
             $data['nb_failed_statements'] += $pdodata['nb_failed_statements'];
             $data['accumulated_duration'] += $pdodata['accumulated_duration'];
@@ -120,10 +120,16 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
      *
      * @param TraceablePDO $pdo
      * @param TimeDataCollector $timeCollector
+     * @param string|null $connectionName the pdo connection (eg default | read | write)
      * @return array
      */
-    protected function collectPDO(TraceablePDO $pdo, TimeDataCollector $timeCollector = null)
+    protected function collectPDO(TraceablePDO $pdo, TimeDataCollector $timeCollector = null, $connectionName = null)
     {
+        if (empty($connectionName) || $connectionName == 'default') {
+            $connectionName = 'pdo';
+        } else {
+            $connectionName = 'pdo ' . $connectionName;
+        }
         $stmts = array();
         foreach ($pdo->getExecutedStatements() as $stmt) {
             $stmts[] = array(
@@ -143,7 +149,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
                 'error_message' => $stmt->getErrorMessage()
             );
             if ($timeCollector !== null) {
-                $timeCollector->addMeasure($stmt->getSql(), $stmt->getStartTime(), $stmt->getEndTime());
+                $timeCollector->addMeasure($stmt->getSql(), $stmt->getStartTime(), $stmt->getEndTime(), array(), $connectionName);
             }
         }
 
@@ -175,7 +181,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
     {
         return array(
             "database" => array(
-                "icon" => "inbox",
+                "icon" => "database",
                 "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
                 "map" => "pdo",
                 "default" => "[]"

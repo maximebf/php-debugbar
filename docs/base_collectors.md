@@ -6,9 +6,18 @@ Collectors provided in the `DebugBar\DataCollector` namespace.
 ## Messages
 
 Provides a way to log messages (compatible with [PSR-3 logger](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)).
+You can call the `useHtmlVarDumper()` function to use VarDumper's interactive HTML dumper for
+interactively rendering complex variables.  If you do that, you must properly render
+[inline assets](rendering.html#assets) when rendering the debug bar in addition to the normal js/css
+static assets.
 
-    $debugbar->addCollector(new DebugBar\DataCollector\MessagesCollector());
+    $c = new DebugBar\DataCollector\MessagesCollector();
+    $c->useHtmlVarDumper(); // Enables prettier dumps of objects; requires inline assets
+    $debugbar->addCollector($c);
+
     $debugbar['messages']->info('hello world');
+    $complicated_variable = array(1, 2, array(3, 4));
+    $debugbar['messages']->info($complicated_variable); // interactive HTML variable dumping
 
 You can have multiple messages collector by naming them:
 
@@ -70,19 +79,37 @@ You can even log queries from multiple `PDO` connections:
     $pdoCollector->addConnection($pdoWrite, 'write-db');
 
     $debugbar->addCollector($pdoCollector);
+    
+If you want to see your PDO requests in the TimeDataCollector, you must add the PDOConnector to the $debugbar _first_
+
+    $timeDataCollector = new DebugBar\DataCollector\TimeDataCollector();
+    $pdoCollector = new DebugBar\DataCollector\PDO\PDOCollector($pdo, $timeDataCollector);
+    
+    $debugBar->addCollector($pdoCollector);
+    $debugBar->addCollector($timeDataCollector);
 
 ## RequestData
 
-Collects the data of PHP's global variables
+Collects the data of PHP's global variables.  You can call the `useHtmlVarDumper()` function to use
+VarDumper's interactive HTML dumper for rendering the variables.  If you do that, you must properly
+render [inline assets](rendering.html#assets) when rendering the debug bar in addition to the normal
+js/css static assets.
 
-    $debugbar->addCollector(new DebugBar\DataCollector\RequestDataCollector());
+    $requestDataCollector = new DebugBar\DataCollector\RequestDataCollector();
+    $requestDataCollector->useHtmlVarDumper();
+    $debugbar->addCollector($requestDataCollector);
 
 ## Config
 
-Used to display any key/value pairs array
+Used to display any key/value pairs array.  You can call the `useHtmlVarDumper()` function to use
+VarDumper's interactive HTML dumper for rendering the variables.  If you do that, you must properly
+render [inline assets](rendering.html#assets) when rendering the debug bar in addition to the normal
+js/css static assets.
 
     $data = array('foo' => 'bar');
-    $debugbar->addCollector(new DebugBar\DataCollector\ConfigCollector($data));
+    $configCollector = new DebugBar\DataCollector\ConfigCollector($data);
+    $configCollector->useHtmlVarDumper();
+    $debugbar->addCollector($configCollector);
 
 You can provide a different name for this collector in the second argument of the constructor.
 

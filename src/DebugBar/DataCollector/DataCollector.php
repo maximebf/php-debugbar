@@ -12,6 +12,7 @@ namespace DebugBar\DataCollector;
 
 use DebugBar\DataFormatter\DataFormatter;
 use DebugBar\DataFormatter\DataFormatterInterface;
+use DebugBar\DataFormatter\DebugBarVarDumper;
 
 /**
  * Abstract class for data collectors
@@ -19,8 +20,10 @@ use DebugBar\DataFormatter\DataFormatterInterface;
 abstract class DataCollector implements DataCollectorInterface
 {
     private static $defaultDataFormatter;
+    private static $defaultVarDumper;
 
     protected $dataFormater;
+    protected $varDumper;
 
     /**
      * Sets the default data formater instance used by all collectors subclassing this class
@@ -78,6 +81,55 @@ abstract class DataCollector implements DataCollectorInterface
         if (ini_get('xdebug.file_link_format') || extension_loaded('xdebug')) {
             return e(str_replace(array('%f', '%l'), array($file, $line), ini_get('xdebug.file_link_format')));
         }
+    }
+  
+    /**  
+     * Sets the default variable dumper used by all collectors subclassing this class
+     *
+     * @param DebugBarVarDumper $varDumper
+     */
+    public static function setDefaultVarDumper(DebugBarVarDumper $varDumper)
+    {
+        self::$defaultVarDumper = $varDumper;
+    }
+
+    /**
+     * Returns the default variable dumper
+     *
+     * @return DebugBarVarDumper
+     */
+    public static function getDefaultVarDumper()
+    {
+        if (self::$defaultVarDumper === null) {
+            self::$defaultVarDumper = new DebugBarVarDumper();
+        }
+        return self::$defaultVarDumper;
+    }
+
+    /**
+     * Sets the variable dumper instance used by this collector
+     *
+     * @param DebugBarVarDumper $varDumper
+     * @return $this
+     */
+    public function setVarDumper(DebugBarVarDumper $varDumper)
+    {
+        $this->varDumper = $varDumper;
+        return $this;
+    }
+
+    /**
+     * Gets the variable dumper instance used by this collector; note that collectors using this
+     * instance need to be sure to return the static assets provided by the variable dumper.
+     *
+     * @return DebugBarVarDumper
+     */
+    public function getVarDumper()
+    {
+        if ($this->varDumper === null) {
+            $this->varDumper = self::getDefaultVarDumper();
+        }
+        return $this->varDumper;
     }
 
     /**

@@ -25,4 +25,32 @@ class ConfigCollectorTest extends DebugBarTestCase
         $this->assertEquals('foo', $c->getName());
         $this->assertArrayHasKey('foo', $c->getWidgets());
     }
+
+    public function testAssets()
+    {
+        $c = new ConfigCollector();
+        $this->assertEmpty($c->getAssets());
+
+        $c->useHtmlVarDumper();
+        $this->assertNotEmpty($c->getAssets());
+    }
+
+    public function testHtmlRendering()
+    {
+        $c = new ConfigCollector(array('k' => array('one', 'two')));
+
+        $this->assertFalse($c->isHtmlVarDumperUsed());
+        $data = $c->collect();
+        $this->assertEquals(array('k'), array_keys($data));
+        $this->assertContains('one', $data['k']);
+        $this->assertContains('two', $data['k']);
+        $this->assertNotContains('span', $data['k']);
+
+        $c->useHtmlVarDumper();
+        $data = $c->collect();
+        $this->assertEquals(array('k'), array_keys($data));
+        $this->assertContains('one', $data['k']);
+        $this->assertContains('two', $data['k']);
+        $this->assertContains('span', $data['k']);
+    }
 }

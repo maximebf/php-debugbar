@@ -50,7 +50,7 @@ class TimeDataCollector extends DataCollector implements Renderable
                 $requestStartTime = microtime(true);
             }
         }
-        $this->requestStartTime = $requestStartTime;
+        $this->requestStartTime = (float)$requestStartTime;
     }
 
     /**
@@ -197,6 +197,13 @@ class TimeDataCollector extends DataCollector implements Renderable
         foreach (array_keys($this->startedMeasures) as $name) {
             $this->stopMeasure($name);
         }
+
+        usort($this->measures, function($a, $b) {
+            if ($a['start'] == $b['start']) {
+                return 0;
+            }
+            return $a['start'] < $b['start'] ? -1 : 1;
+        });
 
         return array(
             'start' => $this->requestStartTime,

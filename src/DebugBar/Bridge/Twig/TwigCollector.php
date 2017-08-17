@@ -68,7 +68,7 @@ class TwigCollector extends DataCollector implements Renderable, AssetProvider
                 'icon' => 'leaf',
                 'widget' => 'PhpDebugBar.Widgets.TemplatesWidget',
                 'map' => 'twig',
-                'default' => '[]'
+                'default' => json_encode(array('templates' => array())),
             ),
             'twig:badge' => array(
                 'map' => 'twig.nb_templates',

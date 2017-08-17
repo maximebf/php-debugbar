@@ -37,6 +37,7 @@ class JavascriptRendererTest extends DebugBarTestCase
             'ignore_collectors' => 'config',
             'ajax_handler_classname' => 'AjaxFoo',
             'ajax_handler_bind_to_jquery' => false,
+            'ajax_handler_auto_show' => false,
             'open_handler_classname' => 'OpenFoo',
             'open_handler_url' => 'open.php'
         ));
@@ -56,20 +57,32 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertContains('config', $this->r->getIgnoredCollectors());
         $this->assertEquals('AjaxFoo', $this->r->getAjaxHandlerClass());
         $this->assertFalse($this->r->isAjaxHandlerBoundToJquery());
+        $this->assertFalse($this->r->isAjaxHandlerAutoShow());
         $this->assertEquals('OpenFoo', $this->r->getOpenHandlerClass());
         $this->assertEquals('open.php', $this->r->getOpenHandlerUrl());
     }
 
     public function testAddAssets()
     {
-        $this->r->addAssets('foo.css', 'foo.js', '/bar', '/foobar');
+        // Use a loop to test deduplication of assets
+        for ($i = 0; $i < 2; ++$i) {
+            $this->r->addAssets('foo.css', 'foo.js', '/bar', '/foobar');
+            $this->r->addInlineAssets(array('Css' => 'CssTest'), array('Js' => 'JsTest'), array('Head' => 'HeaderTest'));
+        }
 
-        list($css, $js) = $this->r->getAssets();
+        // Make sure all the right assets are returned by getAssets
+        list($css, $js, $inline_css, $inline_js, $inline_head) = $this->r->getAssets();
         $this->assertContains('/bar/foo.css', $css);
         $this->assertContains('/bar/foo.js', $js);
+        $this->assertEquals(array('Css' => 'CssTest'), $inline_css);
+        $this->assertEquals(array('Js' => 'JsTest'), $inline_js);
+        $this->assertEquals(array('Head' => 'HeaderTest'), $inline_head);
+
+        // Make sure asset files are deduplicated
+        $this->assertCount(count(array_unique($css)), $css);
+        $this->assertCount(count(array_unique($js)), $js);
 
         $html = $this->r->renderHead();
-        //$this->assertTag(array('tag' => 'script', 'attributes' => array('src' => '/foobar/foo.js')), $html);
         $this->assertContains('<script type="text/javascript" src="/foobar/foo.js"></script>', $html);
     }
 
@@ -88,13 +101,23 @@ class JavascriptRendererTest extends DebugBarTestCase
 
     public function testRenderHead()
     {
-        $html = $this->r->renderHead();
-        $this->assertContains('<script type="text/javascript" src="/burl/debugbar.js"></script>', $html);
-        $this->assertTrue(strpos($html, "jQuery.noConflict(true);") > -1);
+        $this->r->addInlineAssets(array('Css' => 'CssTest'), array('Js' => 'JsTest'), array('Head' => 'HeaderTest'));
 
+        $html = $this->r->renderHead();
+        // Check for file links
+        $this->assertContains('<link rel="stylesheet" type="text/css" href="/burl/debugbar.css">', $html);
+        $this->assertContains('<script type="text/javascript" src="/burl/debugbar.js"></script>', $html);
+        // Check for inline assets
+        $this->assertContains('<style type="text/css">CssTest</style>', $html);
+        $this->assertContains('<script type="text/javascript">JsTest</script>', $html);
+        $this->assertContains('HeaderTest', $html);
+        // Check jQuery noConflict
+        $this->assertContains('jQuery.noConflict(true);', $html);
+
+        // Check for absence of jQuery noConflict
         $this->r->setEnableJqueryNoConflict(false);
         $html = $this->r->renderHead();
-        $this->assertFalse(strpos($html, "jQuery.noConflict(true);"));
+        $this->assertNotContains('noConflict', $html);
     }
 
     public function testRenderFullInitialization()

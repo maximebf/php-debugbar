@@ -43,6 +43,14 @@ request. Use true as the first argument of `sendDataInHeaders()`.
 
     $debugbar->sendDataInHeaders(true);
 
+By default, the debug bar will immediately show new AJAX requests. If your page
+makes a lot of requests in the background (e.g. tracking), this can be
+disruptive. You can disable this behavior by calling
+`setAjaxHandlerAutoShow(false)` on the `JavascriptRenderer`, like this:
+
+    $renderer = $debugbar->getJavascriptRenderer();
+    $renderer->setAjaxHandlerAutoShow(false);
+
 ## Stacked data
 
 Some times you need to collect data about a request but the page won't actually
