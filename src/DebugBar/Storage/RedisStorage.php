@@ -59,6 +59,11 @@ class RedisStorage implements StorageInterface
                 }
             }
         }
+        
+        usort($results, function ($a, $b) {
+            return $a['utime'] < $b['utime'];
+        });
+        
         return array_slice($results, $offset, $max);
     }
 
