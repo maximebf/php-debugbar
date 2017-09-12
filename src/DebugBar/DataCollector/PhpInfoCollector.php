@@ -39,14 +39,13 @@ class PhpInfoCollector extends DataCollector implements Renderable
      */
     public function getWidgets()
     {
-        return [
-            "php_version" => [
+        return array(
+            "php_version" => array(
                 "icon" => "code",
                 "tooltip" => "Version",
                 "map" => "php.version",
                 "default" => ""
-            ],
-        ];
+            ),
+        );
     }
-
 }
