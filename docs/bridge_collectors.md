@@ -113,3 +113,12 @@ You need to inject the root-`Twig_Profiler_Profile` into the collector:
     $env->addExtension(new Twig_Extension_Profiler($profile));
     $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
 
+You can optionally use `DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler` in place of
+`Twig_Extension_Profiler` so render operation can be measured.
+
+    $loader = new Twig_Loader_Filesystem('.');
+    $env = new Twig_Environment($loader);
+    $profile = new Twig_Profiler_Profile();
+    $env->addExtension(new TimeableTwigExtensionProfiler($profile, $debugbar['time']));
+    $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
+
