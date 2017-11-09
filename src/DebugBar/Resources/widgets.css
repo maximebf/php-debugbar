@@ -247,3 +247,15 @@ div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item {
     border: 1px solid #ddd;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   }
+
+div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
+  font-family: PhpDebugbarFontAwesome;
+  margin-right: 4px;
+  font-size: 12px;
+  font-style: normal;
+}
+
+div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
+  content: "\f08e";
+  margin-left: 4px;
+}
