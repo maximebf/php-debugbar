@@ -22,13 +22,17 @@ use DebugBar\DataCollector\Renderable;
  * A Twig_Extension_Profiler should be added to your Twig_Environment
  * The root-Twig_Profiler_Profile-object should then be injected into this collector
  *
+ * you can optionally provide the Twig_Environment or the Twig_Loader to also create
+ * debug-links.
+ *
  * @see \Twig_Extension_Profiler, \Twig_Profiler_Profile
  *
  * <code>
  * $env = new Twig_Environment($loader); // Or from a PSR11-container
  * $profile = new Twig_Profiler_Profile();
  * $env->addExtension(new Twig_Extension_Profile($profile));
- * $debugbar->addCollector(new TwigProfileCollector($profile));
+ * $debugbar->addCollector(new TwigProfileCollector($profile, $env));
+ * // or: $debugbar->addCollector(new TwigProfileCollector($profile, $loader));
  * </code>
  */
 class TwigProfileCollector extends DataCollector implements Renderable, AssetProvider
@@ -37,6 +41,10 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
      * @var \Twig_Profiler_Profile
      */
     private $profile;
+    /**
+     * @var \Twig_LoaderInterface
+     */
+    private $loader;
     /** @var int */
     private $templateCount;
     /** @var int */
@@ -49,6 +57,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
      * @var int    $render_time
      * @var string $render_time_str
      * @var string $memory_str
+     * @var string $xdebug_link
      * }
      */
     private $templates;
@@ -57,10 +66,15 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
      * TwigProfileCollector constructor.
      *
      * @param \Twig_Profiler_Profile $profile
+     * @param \Twig_LoaderInterface|\Twig_Environment $loaderOrEnv
      */
-    public function __construct(\Twig_Profiler_Profile $profile)
+    public function __construct(\Twig_Profiler_Profile $profile, $loaderOrEnv = null)
     {
-        $this->profile = $profile;
+        $this->profile     = $profile;
+        if ($loaderOrEnv instanceof \Twig_Environment) {
+            $loaderOrEnv = $loaderOrEnv->getLoader();
+        }
+        $this->loader = $loaderOrEnv;
     }
 
     /**
@@ -101,7 +115,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
      *
      * @return array Collected data
      */
-    function collect()
+    public function collect()
     {
         $this->templateCount = $this->blockCount = $this->macroCount = 0;
         $this->templates     = array();
@@ -132,7 +146,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
      *
      * @return string
      */
-    function getName()
+    public function getName()
     {
         return 'twig';
     }
@@ -142,6 +156,24 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
         $dumper = new \Twig_Profiler_Dumper_Html();
 
         return $dumper->dump($this->profile);
+    }
+
+    /**
+     * Get an Xdebug Link to a file
+     *
+     * @return array {
+     *  @var string url
+     *  @var bool ajax
+     * }
+     */
+    public function getXdebugLink($template, $line = 1)
+    {
+        if (is_null($this->loader)) {
+            return null;
+        }
+        $file = $this->loader->getSourceContext($template)->getPath();
+
+        return parent::getXdebugLink($file, $line);
     }
 
     private function computeData(\Twig_Profiler_Profile $profile)
@@ -155,6 +187,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
                 'render_time'     => $profile->getDuration(),
                 'render_time_str' => $this->getDataFormatter()->formatDuration($profile->getDuration()),
                 'memory_str'      => $this->getDataFormatter()->formatBytes($profile->getMemoryUsage()),
+                'xdebug_link'     => $this->getXdebugLink($profile->getTemplate()),
             );
         }
         foreach ($profile as $p) {
