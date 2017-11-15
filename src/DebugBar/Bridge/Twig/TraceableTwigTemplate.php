@@ -80,14 +80,14 @@ class TraceableTwigTemplate extends Twig_Template implements Twig_TemplateInterf
         return $this->template->renderBlock($name, $context, $blocks, $useBlocks);
     }
 
-    public function hasBlock($name)
+    public function hasBlock($name, array $context = null, array $blocks = array())
     {
-        return $this->template->hasBlock($name);
+        return $this->template->hasBlock($name, $context, $blocks);
     }
 
-    public function getBlockNames()
+    public function getBlockNames(array $context = null, array $blocks = array())
     {
-        return $this->template->getBlockNames();
+        return $this->template->getBlockNames($context, $blocks);
     }
 
     public function getBlocks()
