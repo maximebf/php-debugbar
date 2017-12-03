@@ -177,7 +177,7 @@ a.phpdebugbar-tab.phpdebugbar-active {
     margin-left: 5px;
     font-size: 11px;
     line-height: 14px;
-    padding: 0px 6px;
+    padding: 0 6px;
     background: #ccc;
     border-radius: 4px;
     color: #555;
@@ -203,7 +203,7 @@ a.phpdebugbar-close-btn, a.phpdebugbar-open-btn, a.phpdebugbar-restore-btn, a.ph
 }
 
 a.phpdebugbar-minimize-btn , a.phpdebugbar-maximize-btn {
-  padding-right: 0px !important;
+  padding-right: 0 !important;
 }
 
 a.phpdebugbar-maximize-btn { display: none}
