@@ -767,7 +767,7 @@ class JavascriptRenderer
      *    elements); it must be embedded within the <head> element
      *
      * @param string $type Optionally return only 'css', 'js', or 'inline_head' collection
-     * @return array or \Assetic\Asset\AssetCollection
+     * @return array|\Assetic\Asset\AssetCollection
      */
     public function getAsseticCollection($type = null)
     {
