@@ -99,3 +99,26 @@ You need to wrap your `Twig_Environment` object into a `DebugBar\Bridge\Twig\Tra
 
 You can provide a `DebugBar\DataCollector\TimeDataCollector` as the second argument of
 `TraceableTwigEnvironment` so render operation can be measured.
+
+## Twig (Profiler)
+
+An alternative to `DebugBar\Bridge\Twig\TwigCollector` for newer versions of twig.
+This collector uses the class `Twig_Extension_Profiler` to collect info about rendered
+templates, blocks and macros.
+You need to inject the root-`Twig_Profiler_Profile` into the collector:
+
+    $loader = new Twig_Loader_Filesystem('.');
+    $env = new Twig_Environment($loader);
+    $profile = new Twig_Profiler_Profile();
+    $env->addExtension(new Twig_Extension_Profiler($profile));
+    $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
+
+You can optionally use `DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler` in place of
+`Twig_Extension_Profiler` so render operation can be measured.
+
+    $loader = new Twig_Loader_Filesystem('.');
+    $env = new Twig_Environment($loader);
+    $profile = new Twig_Profiler_Profile();
+    $env->addExtension(new TimeableTwigExtensionProfiler($profile, $debugbar['time']));
+    $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
+
