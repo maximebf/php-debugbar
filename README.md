@@ -42,6 +42,7 @@ Integrations with other frameworks:
   - [Phalcon](https://github.com/snowair/phalcon-debugbar)
   - [SilverStripe](https://github.com/lekoala/silverstripe-debugbar)
   - [Grav CMS](https://getgrav.org)
+  - [TYPO3](https://github.com/Konafets/typo3_debugbar)
   - Framework-agnostic middleware and PSR-7 with [php-middleware/phpdebugbar](https://github.com/php-middleware/phpdebugbar).
 
 *(drop me a message or submit a PR to add your DebugBar related project here)*
