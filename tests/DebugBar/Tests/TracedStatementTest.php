@@ -55,4 +55,67 @@ class TracedStatementTest extends DebugBarTestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    public function testReplacementParamsContainingPotentialAdditionalQuestionMarkPlaceholderGeneratesCorrectString()
+    {
+        $hasQuestionMark = "Asking a question?";
+        $string          = "Asking for a friend";
+
+        $sql = "INSERT INTO questions SET question = ?, detail = ?";
+
+        $params = array($hasQuestionMark, $string);
+
+        $traced = new TracedStatement($sql, $params);
+
+        $result = $traced->getSqlWithParams();
+
+        $expected = "INSERT INTO questions SET question = <$hasQuestionMark>, detail = <$string>";
+
+        $this->assertEquals($expected, $result);
+
+        $result = $traced->getSqlWithParams("'");
+
+        $expected = "INSERT INTO questions SET question = '$hasQuestionMark', detail = '$string'";
+
+        $this->assertEquals($expected, $result);
+
+        $result = $traced->getSqlWithParams('"');
+
+        $expected = "INSERT INTO questions SET question = \"$hasQuestionMark\", detail = \"$string\"";
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testReplacementParamsContainingPotentialAdditionalNamedPlaceholderGeneratesCorrectString()
+    {
+        $hasQuestionMark = "Asking a question with a :string inside";
+        $string          = "Asking for a friend";
+
+        $sql = "INSERT INTO questions SET question = :question, detail = :string";
+
+        $params = array(
+            ':question' => $hasQuestionMark,
+            ':string'   => $string,
+        );
+
+        $traced = new TracedStatement($sql, $params);
+
+        $result = $traced->getSqlWithParams();
+
+        $expected = "INSERT INTO questions SET question = <$hasQuestionMark>, detail = <$string>";
+
+        $this->assertEquals($expected, $result);
+
+        $result = $traced->getSqlWithParams("'");
+
+        $expected = "INSERT INTO questions SET question = '$hasQuestionMark', detail = '$string'";
+
+        $this->assertEquals($expected, $result);
+
+        $result = $traced->getSqlWithParams('"');
+
+        $expected = "INSERT INTO questions SET question = \"$hasQuestionMark\", detail = \"$string\"";
+
+        $this->assertEquals($expected, $result);
+    }
 }

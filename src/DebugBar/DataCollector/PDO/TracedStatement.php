@@ -115,12 +115,16 @@ class TracedStatement
             $backRefSafeV = strtr($v, $cleanBackRefCharMap);
 
             $v = "$quoteLeft$backRefSafeV$quoteRight";
-            if (!is_numeric($k)) {
-                $sql = preg_replace("/{$k}\b/", $v, $sql, 1);
+
+            if (is_numeric($k)) {
+                $marker = "\?";
             } else {
-                $p = strpos($sql, '?');
-                $sql = substr($sql, 0, $p) . $v. substr($sql, $p + 1);
+                $marker = (preg_match("/^:/", $k)) ? $k : ":" . $k;
             }
+
+            $matchRule = "/({$marker}(?!\w))(?=(?:[^$quotationChar]|[$quotationChar][^$quotationChar]*[$quotationChar])*$)/";
+
+            $sql = preg_replace($matchRule, $v, $sql, 1);
         }
 
         $sql = strtr($sql, array_flip($cleanBackRefCharMap));
