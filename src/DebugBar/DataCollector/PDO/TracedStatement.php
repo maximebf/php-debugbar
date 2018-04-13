@@ -107,8 +107,14 @@ class TracedStatement
         }
 
         $sql = $this->sql;
+
+        $cleanBackRefCharMap = array('%'=>'%%', '$'=>'$%', '\\'=>'\\%');
+
         foreach ($this->parameters as $k => $v) {
-            $v = "$quoteLeft$v$quoteRight";
+
+            $backRefSafeV = strtr($v, $cleanBackRefCharMap);
+
+            $v = "$quoteLeft$backRefSafeV$quoteRight";
             if (!is_numeric($k)) {
                 $sql = preg_replace("/{$k}\b/", $v, $sql, 1);
             } else {
@@ -116,6 +122,9 @@ class TracedStatement
                 $sql = substr($sql, 0, $p) . $v. substr($sql, $p + 1);
             }
         }
+
+        $sql = strtr($sql, array_flip($cleanBackRefCharMap));
+
         return $sql;
     }
 
