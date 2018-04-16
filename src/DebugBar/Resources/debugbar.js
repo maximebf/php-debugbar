@@ -825,6 +825,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var tab = localStorage.getItem('phpdebugbar-tab');
             if (this.isTab(tab)) {
                 this.showTab(tab);
+            } else {
+                this.showTab();
             }
             this.$el.removeClass(csscls('closed'));
             this.resize();
