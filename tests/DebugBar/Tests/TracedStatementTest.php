@@ -37,4 +37,30 @@ class TracedStatementTest extends DebugBarTestCase
         $result = $traced->getSqlWithParams();
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * Check if query repeated parameters are being replaced in the correct way
+     * @bugFix Before fix it : select *
+     *                          from geral.exame_part ep
+     *                           where ep.status = <1> and
+     *                             ep.id_exame_situacao > :pendente
+     * @return void
+     */
+    public function testReplacementRepeatedParamsQuery()
+    {
+        $sql = 'select *
+                from geral.exame_part ep
+                where ep.status = :pendente and 
+                      ep.id_exame_situacao > :pendente';
+        $params = array(
+            ':pendente' => 1
+        );
+        $traced = new TracedStatement($sql, $params);
+        $expected = 'select *
+                from geral.exame_part ep
+                where ep.status = <1> and 
+                      ep.id_exame_situacao > <1>';
+        $result = $traced->getSqlWithParams();
+        $this->assertEquals($expected, $result);
+    }
 }
