@@ -45,56 +45,6 @@ class TraceableTwigTemplate extends Twig_Template implements Twig_TemplateInterf
         return $this->template->getTemplateName();
     }
 
-    public function getEnvironment()
-    {
-        return $this->template->getEnvironment();
-    }
-
-    public function getParent(array $context)
-    {
-        return $this->template->getParent($context);
-    }
-
-    public function isTraitable()
-    {
-        return $this->template->isTraitable();
-    }
-
-    public function displayParentBlock($name, array $context, array $blocks = array())
-    {
-        $this->template->displayParentBlock($name, $context, $blocks);
-    }
-
-    public function displayBlock($name, array $context, array $blocks = array(), $useBlocks = true)
-    {
-        $this->template->displayBlock($name, $context, $blocks, $useBlocks);
-    }
-
-    public function renderParentBlock($name, array $context, array $blocks = array())
-    {
-        return $this->template->renderParentBlock($name, $context, $blocks);
-    }
-
-    public function renderBlock($name, array $context, array $blocks = array(), $useBlocks = true)
-    {
-        return $this->template->renderBlock($name, $context, $blocks, $useBlocks);
-    }
-
-    public function hasBlock($name)
-    {
-        return $this->template->hasBlock($name);
-    }
-
-    public function getBlockNames()
-    {
-        return $this->template->getBlockNames();
-    }
-
-    public function getBlocks()
-    {
-        return $this->template->getBlocks();
-    }
-
     public function display(array $context, array $blocks = array())
     {
         $start = microtime(true);
