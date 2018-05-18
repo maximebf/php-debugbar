@@ -25,10 +25,10 @@ class TracedStatementTest extends DebugBarTestCase
                 from geral.exame_part ep
                 where ep.id_exame = :id_exame and 
                       ep.id_exame_situacao = :id_exame_situacao';
-        $params = [
+        $params = array(
             ':id_exame'          => 1,
             ':id_exame_situacao' => 2
-        ];
+        );
         $traced = new TracedStatement($sql, $params);
         $expected = 'select *
                 from geral.exame_part ep
@@ -43,9 +43,9 @@ class TracedStatementTest extends DebugBarTestCase
         $hashedPassword = '$2y$10$S3Y/kSsx8Z5BPtdd9.k3LOkbQ0egtsUHBT9EGQ.spxsmaEWbrxBW2';
         $sql = "UPDATE user SET password = :password";
 
-        $params = [
+        $params = array(
             ':password' => $hashedPassword,
-        ];
+        );
 
         $traced = new TracedStatement($sql, $params);
 
@@ -93,10 +93,10 @@ class TracedStatementTest extends DebugBarTestCase
 
         $sql = "INSERT INTO questions SET question = :question, detail = :string";
 
-        $params = [
+        $params = array(
             ':question' => $hasQuestionMark,
             ':string'   => $string,
-        ];
+        );
 
         $traced = new TracedStatement($sql, $params);
 
@@ -137,9 +137,9 @@ class TracedStatementTest extends DebugBarTestCase
                   on c.id_person = p.id_person
                 where c.status = :status and 
                       p.status <> :status';
-        $params = [
+        $params = array(
             ':status' => 1
-        ];
+        );
         $traced = new TracedStatement($sql, $params);
         $expected = 'select *
                 from geral.person p
