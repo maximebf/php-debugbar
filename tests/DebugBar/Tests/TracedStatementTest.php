@@ -63,7 +63,7 @@ class TracedStatementTest extends DebugBarTestCase
 
         $sql = "INSERT INTO questions SET question = ?, detail = ?";
 
-        $params = [$hasQuestionMark, $string];
+        $params = array($hasQuestionMark, $string);
 
         $traced = new TracedStatement($sql, $params);
 
