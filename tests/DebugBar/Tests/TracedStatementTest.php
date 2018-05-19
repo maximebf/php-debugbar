@@ -59,7 +59,7 @@ class TracedStatementTest extends DebugBarTestCase
     public function testReplacementParamsContainingPotentialAdditionalQuestionMarkPlaceholderGeneratesCorrectString()
     {
         $hasQuestionMark = "Asking a question?";
-        $string          = "Asking for a friend";
+        $string = "Asking for a friend";
 
         $sql = "INSERT INTO questions SET question = ?, detail = ?";
 
@@ -89,7 +89,7 @@ class TracedStatementTest extends DebugBarTestCase
     public function testReplacementParamsContainingPotentialAdditionalNamedPlaceholderGeneratesCorrectString()
     {
         $hasQuestionMark = "Asking a question with a :string inside";
-        $string          = "Asking for a friend";
+        $string = "Asking for a friend";
 
         $sql = "INSERT INTO questions SET question = :question, detail = :string";
 
@@ -116,6 +116,38 @@ class TracedStatementTest extends DebugBarTestCase
 
         $expected = "INSERT INTO questions SET question = \"$hasQuestionMark\", detail = \"$string\"";
 
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Check if query parameters are being replaced in the correct way
+     * @bugFix Before fix it : select *
+     *                          from geral.person p
+     *                           left join geral.contract c
+     *                             on c.id_person = p.id_person
+     *                           where c.status = <1> and
+     *                           p.status <> :status;
+     * @return void
+     */
+    public function testRepeadParamsQuery()
+    {
+        $sql = 'select *
+                from geral.person p
+                left join geral.contract c
+                  on c.id_person = p.id_person
+                where c.status = :status and 
+                      p.status <> :status';
+        $params = array(
+            ':status' => 1
+        );
+        $traced = new TracedStatement($sql, $params);
+        $expected = 'select *
+                from geral.person p
+                left join geral.contract c
+                  on c.id_person = p.id_person
+                where c.status = <1> and 
+                      p.status <> <1>';
+        $result = $traced->getSqlWithParams();
         $this->assertEquals($expected, $result);
     }
 }
