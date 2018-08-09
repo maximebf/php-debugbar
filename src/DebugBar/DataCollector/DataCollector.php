@@ -91,13 +91,13 @@ abstract class DataCollector implements DataCollectorInterface
             $file = strtr($file, $this->xdebugReplacements);
         }
 
-        $url = strtr($this->getXdebugLinkTemplate(), ['%f' => $file, '%l' => $line]);
+        $url = strtr($this->getXdebugLinkTemplate(), array('%f' => $file, '%l' => $line));
         if ($url) {
-            return ['url' => $url, 'ajax' => $this->getXdebugShouldUseAjax()];
+            return array('url' => $url, 'ajax' => $this->getXdebugShouldUseAjax());
         }
     }
-  
-    /**  
+
+    /**
      * Sets the default variable dumper used by all collectors subclassing this class
      *
      * @param DebugBarVarDumper $varDumper
