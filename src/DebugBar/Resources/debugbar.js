@@ -379,6 +379,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
             } else {
                 filename = uri.substr(uri.lastIndexOf('/') + 1);
             }
+            
+            // truncate the filename in the label, if it's too long
+            var maxLength = 150;
+            if (filename.length > maxLength) {
+                filename = filename.substr(0, maxLength) + '...';
+            }
+
             var label = "#" + nb + " " + filename + suffix + ' (' + data['__meta']['datetime'].split(' ')[1] + ')';
             return label;
         }
