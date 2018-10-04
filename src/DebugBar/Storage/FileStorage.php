@@ -52,7 +52,8 @@ class FileStorage implements StorageInterface
         //Loop through all .json files and remember the modified time and id.
         $files = array();
         foreach (new \DirectoryIterator($this->dirname) as $file) {
-            if ($file->getExtension() == 'json') {
+            $file_extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+            if ($file_extension == 'json') {
                 $files[] = array(
                     'time' => $file->getMTime(),
                     'id' => $file->getBasename('.json')
