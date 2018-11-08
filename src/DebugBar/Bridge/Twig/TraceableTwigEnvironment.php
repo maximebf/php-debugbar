@@ -11,14 +11,14 @@
 namespace DebugBar\Bridge\Twig;
 
 use DebugBar\DataCollector\TimeDataCollector;
-use Twig_CompilerInterface;
+use Twig_Compiler;
 use Twig_Environment;
 use Twig_ExtensionInterface;
-use Twig_LexerInterface;
+use Twig_Lexer;
 use Twig_LoaderInterface;
-use Twig_NodeInterface;
+use Twig_Node;
 use Twig_NodeVisitorInterface;
-use Twig_ParserInterface;
+use Twig_Parser;
 use Twig_TokenParserInterface;
 use Twig_TokenStream;
 
@@ -205,7 +205,7 @@ class TraceableTwigEnvironment extends Twig_Environment
         return $this->twig->getLexer();
     }
 
-    public function setLexer(Twig_LexerInterface $lexer)
+    public function setLexer(Twig_Lexer $lexer)
     {
         $this->twig->setLexer($lexer);
     }
@@ -220,7 +220,7 @@ class TraceableTwigEnvironment extends Twig_Environment
         return $this->twig->getParser();
     }
 
-    public function setParser(Twig_ParserInterface $parser)
+    public function setParser(Twig_Parser $parser)
     {
         $this->twig->setParser($parser);
     }
@@ -235,12 +235,12 @@ class TraceableTwigEnvironment extends Twig_Environment
         return $this->twig->getCompiler();
     }
 
-    public function setCompiler(Twig_CompilerInterface $compiler)
+    public function setCompiler(Twig_Compiler $compiler)
     {
         $this->twig->setCompiler($compiler);
     }
 
-    public function compile(Twig_NodeInterface $node)
+    public function compile(Twig_Node $node)
     {
         return $this->twig->compile($node);
     }
