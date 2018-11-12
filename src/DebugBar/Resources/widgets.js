@@ -558,6 +558,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         }
                     });
                 }
+                if (e.stack_trace) {
+                  e.stack_trace.split("\n").forEach(function(trace) {
+                    var $traceLine = $('<div />');
+                    $('<span />').addClass(csscls('filename')).text(trace).appendTo($traceLine);
+                    $traceLine.appendTo(li);
+                  });
+                }
             }});
             this.$list.$el.appendTo(this.$el);
 
