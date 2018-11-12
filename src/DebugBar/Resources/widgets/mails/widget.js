@@ -27,6 +27,9 @@
                         }
                     });
                 }
+                if (mail.body) {
+                    $('<div />').html(mail.body).appendTo(li);
+                }
             }});
             this.$list.$el.appendTo(this.$el);
 
