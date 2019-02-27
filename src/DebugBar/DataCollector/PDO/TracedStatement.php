@@ -32,7 +32,7 @@ class TracedStatement
      * @param array $params
      * @param string $preparedId
      */
-    public function __construct($sql, array $params = array(), $preparedId = null)
+    public function __construct($sql, array $params = [], $preparedId = null)
     {
         $this->sql = $sql;
         $this->parameters = $this->checkParameters($params);
@@ -52,8 +52,8 @@ class TracedStatement
     /**
      * @param \Exception|null $exception
      * @param int $rowCount
-     * @param null $endTime
-     * @param null $endMemory
+     * @param float $endTime
+     * @param int $endMemory
      */
     public function end(\Exception $exception = null, $rowCount = 0, $endTime = null, $endMemory = null)
     {
@@ -68,8 +68,8 @@ class TracedStatement
     /**
      * Check parameters for illegal (non UTF-8) strings, like Binary data.
      *
-     * @param $params
-     * @return mixed
+     * @param array $params
+     * @return array
      */
     public function checkParameters($params)
     {
@@ -82,7 +82,7 @@ class TracedStatement
     }
 
     /**
-     * Returns the SQL string used for the query
+     * Returns the SQL string used for the query, without filled parameters
      *
      * @return string
      */
@@ -108,7 +108,7 @@ class TracedStatement
 
         $sql = $this->sql;
 
-        $cleanBackRefCharMap = array('%'=>'%%', '$'=>'$%', '\\'=>'\\%');
+        $cleanBackRefCharMap = ['%' => '%%', '$' => '$%', '\\' => '\\%'];
 
         foreach ($this->parameters as $k => $v) {
 
@@ -150,7 +150,7 @@ class TracedStatement
      */
     public function getParameters()
     {
-        $params = array();
+        $params = [];
         foreach ($this->parameters as $name => $param) {
             $params[$name] = htmlentities($param, ENT_QUOTES, 'UTF-8', false);
         }
@@ -178,7 +178,7 @@ class TracedStatement
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getStartTime()
     {
@@ -186,7 +186,7 @@ class TracedStatement
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getEndTime()
     {
@@ -194,9 +194,9 @@ class TracedStatement
     }
 
     /**
-     * Returns the duration in seconds of the execution
+     * Returns the duration in seconds + microseconds of the execution
      *
-     * @return int
+     * @return float
      */
     public function getDuration()
     {
@@ -204,7 +204,7 @@ class TracedStatement
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getStartMemory()
     {
@@ -212,7 +212,7 @@ class TracedStatement
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getEndMemory()
     {
@@ -252,7 +252,7 @@ class TracedStatement
     /**
      * Returns the exception's code
      *
-     * @return string
+     * @return int|string
      */
     public function getErrorCode()
     {
