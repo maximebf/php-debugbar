@@ -971,9 +971,10 @@ class JavascriptRenderer
      *
      * @param boolean $initialize Whether or not to render the debug bar initialization code
      * @param boolean $renderStackedData Whether or not to render the stacked data
+     * @param boolean $deleteStackedData Whether or not to delete the stacked data after rendering
      * @return string
      */
-    public function render($initialize = true, $renderStackedData = true)
+    public function render($initialize = true, $renderStackedData = true, $deleteStackedData = false)
     {
         $js = '';
 
@@ -982,7 +983,7 @@ class JavascriptRenderer
         }
 
         if ($renderStackedData && $this->debugBar->hasStackedData()) {
-            foreach ($this->debugBar->getStackedData() as $id => $data) {
+            foreach ($this->debugBar->getStackedData($deleteStackedData) as $id => $data) {
                 $js .= $this->getAddDatasetCode($id, $data, '(stacked)');
             }
         }
