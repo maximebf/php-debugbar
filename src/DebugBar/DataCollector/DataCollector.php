@@ -175,8 +175,9 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function getXdebugLinkTemplate()
     {
-        if (empty($this->xdebugLinkTemplate) && !empty(ini_get('xdebug.file_link_format'))) {
-            $this->xdebugLinkTemplate = ini_get('xdebug.file_link_format');
+        $fileLinkFormat = ini_get('xdebug.file_link_format');
+        if (empty($this->xdebugLinkTemplate) && !empty($fileLinkFormat)) {
+            $this->xdebugLinkTemplate = $fileLinkFormat;
         }
 
         return $this->xdebugLinkTemplate;
