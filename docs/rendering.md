@@ -45,7 +45,7 @@ Using Assetic:
 
 Dumping the assets:
 
-    header('Content-Type', 'text/javascript');
+    header('Content-Type: text/javascript');
     $renderer->dumpJsAssets();
 
 Retrieving the assets:
