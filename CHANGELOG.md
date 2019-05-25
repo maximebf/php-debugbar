@@ -1,5 +1,9 @@
 # Changelog
 
+2019-05 (1.10.3)
+
+- New implementation for `dump()` in SwiftLogCollector (#265)
+
 2014-12 (1.10.2):
 
  - Use Symfony VarDumper instead of kintLite as DataFormatter (#179)
