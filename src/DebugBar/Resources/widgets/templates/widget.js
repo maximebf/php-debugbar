@@ -47,7 +47,7 @@
                             '"><pre><code>' + tpl.params[key] + '</code></pre></td></tr>');
                         }
                     }
-                    li.css('cursor', 'pointer').click(function() {
+                    li.css('cursor', 'pointer').dblclick(function() {
                         if (table.is(':visible')) {
                             table.hide();
                         } else {
