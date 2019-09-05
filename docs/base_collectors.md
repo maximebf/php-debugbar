@@ -59,7 +59,7 @@ Display exceptions
     try {
         throw new Exception('foobar');
     } catch (Exception $e) {
-        $debugbar['exceptions']->addException($e);
+        $debugbar['exceptions']->addThrowable($e);
     }
 
 ## PDO
