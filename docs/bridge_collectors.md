@@ -90,22 +90,9 @@ Display log messages and sent mail using `DebugBar\Bridge\SwiftMailer\SwiftLogCo
 
 http://twig.sensiolabs.org/
 
-Collects info about rendered templates using `DebugBar\Bridge\Twig\TwigCollector`.
-You need to wrap your `Twig_Environment` object into a `DebugBar\Bridge\Twig\TraceableTwigEnvironment` object.
-
-    $loader = new Twig_Loader_Filesystem('.');
-    $env = new DebugBar\Bridge\Twig\TraceableTwigEnvironment(new Twig_Environment($loader));
-    $debugbar->addCollector(new DebugBar\Bridge\Twig\TwigCollector($env));
-
-You can provide a `DebugBar\DataCollector\TimeDataCollector` as the second argument of
-`TraceableTwigEnvironment` so render operation can be measured.
-
-## Twig (Profiler)
-
-An alternative to `DebugBar\Bridge\Twig\TwigCollector` for newer versions of twig.
 This collector uses the class `Twig_Extension_Profiler` to collect info about rendered
 templates, blocks and macros.
-You need to inject the root-`Twig_Profiler_Profile` into the collector:
+You need to inject the root `Twig_Profiler_Profile` into the collector:
 
     $loader = new Twig_Loader_Filesystem('.');
     $env = new Twig_Environment($loader);
@@ -119,6 +106,6 @@ You can optionally use `DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler` in p
     $loader = new Twig_Loader_Filesystem('.');
     $env = new Twig_Environment($loader);
     $profile = new Twig_Profiler_Profile();
-    $env->addExtension(new TimeableTwigExtensionProfiler($profile, $debugbar['time']));
+    $env->addExtension(new DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler($profile, $debugbar['time']));
     $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
 
