@@ -21,7 +21,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
     protected $sqlQuotationChar = '<>';
 
     /**
-     * @param TraceablePDO $pdo
+     * @param \PDO $pdo
      * @param TimeDataCollector $timeCollector
      */
     public function __construct(\PDO $pdo = null, TimeDataCollector $timeCollector = null)
@@ -70,7 +70,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
         if ($name === null) {
             $name = spl_object_hash($pdo);
         }
-        if ($pdo instanceof \PDO) {
+        if (!($pdo instanceof TraceablePDO)) {
             $pdo = new TraceablePDO($pdo);
         }
         $this->connections[$name] = $pdo;
