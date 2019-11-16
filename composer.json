@@ -24,6 +24,9 @@
     "require-dev": {
         "phpunit/phpunit": "^5"
     },
+    "conflict": {
+        "twig/twig": "<1.34|>=2.0,<2.4"
+    },
     "autoload": {
         "psr-4": {
             "DebugBar\\": "src/DebugBar/"
