@@ -13,24 +13,28 @@ namespace DebugBar\Bridge;
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use Twig\Environment;
+use Twig\Loader\LoaderInterface;
+use Twig\Profiler\Dumper\HtmlDumper;
+use Twig\Profiler\Profile;
 
 /**
  * Collects data about rendered templates
  *
- * http://twig.sensiolabs.org/
+ * https://twig.sensiolabs.org/
  *
- * A Twig_Extension_Profiler should be added to your Twig_Environment
- * The root-Twig_Profiler_Profile-object should then be injected into this collector
+ * A \Twig\Extension\ProfilerExtension should be added to your \Twig\Environment
+ * The root \Twig\Profiler\Profile object should then be injected into this collector
  *
- * you can optionally provide the Twig_Environment or the Twig_Loader to also create
+ * you can optionally provide the \Twig\Environment or the \Twig\Loader\LoaderInterface to also create
  * debug-links.
  *
- * @see \Twig_Extension_Profiler, \Twig_Profiler_Profile
+ * @see \Twig\Extension\ProfilerExtension, \Twig\Profiler\Profile
  *
  * <code>
- * $env = new Twig_Environment($loader); // Or from a PSR11-container
- * $profile = new Twig_Profiler_Profile();
- * $env->addExtension(new Twig_Extension_Profile($profile));
+ * $env = new \Twig\Environment($loader); // Or from a PSR11-container
+ * $profile = new \Twig\Profiler\Profile();
+ * $env->addExtension(new \Twig\Extension\ProfilerExtension($profile));
  * $debugbar->addCollector(new TwigProfileCollector($profile, $env));
  * // or: $debugbar->addCollector(new TwigProfileCollector($profile, $loader));
  * </code>
@@ -38,11 +42,11 @@ use DebugBar\DataCollector\Renderable;
 class TwigProfileCollector extends DataCollector implements Renderable, AssetProvider
 {
     /**
-     * @var \Twig_Profiler_Profile
+     * @var Profile
      */
     private $profile;
     /**
-     * @var \Twig_LoaderInterface
+     * @var LoaderInterface
      */
     private $loader;
     /** @var int */
@@ -65,13 +69,13 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
     /**
      * TwigProfileCollector constructor.
      *
-     * @param \Twig_Profiler_Profile $profile
-     * @param \Twig_LoaderInterface|\Twig_Environment $loaderOrEnv
+     * @param Profile $profile
+     * @param LoaderInterface|Environment $loaderOrEnv
      */
-    public function __construct(\Twig_Profiler_Profile $profile, $loaderOrEnv = null)
+    public function __construct(Profile $profile, $loaderOrEnv = null)
     {
         $this->profile     = $profile;
-        if ($loaderOrEnv instanceof \Twig_Environment) {
+        if ($loaderOrEnv instanceof Environment) {
             $loaderOrEnv = $loaderOrEnv->getLoader();
         }
         $this->loader = $loaderOrEnv;
@@ -153,7 +157,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
 
     public function getHtmlCallGraph()
     {
-        $dumper = new \Twig_Profiler_Dumper_Html();
+        $dumper = new HtmlDumper();
 
         return $dumper->dump($this->profile);
     }
@@ -176,7 +180,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
         return parent::getXdebugLink($file, $line);
     }
 
-    private function computeData(\Twig_Profiler_Profile $profile)
+    private function computeData(Profile $profile)
     {
         $this->templateCount += ($profile->isTemplate() ? 1 : 0);
         $this->blockCount    += ($profile->isBlock() ? 1 : 0);
