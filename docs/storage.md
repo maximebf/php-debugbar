@@ -18,7 +18,7 @@ It will collect data as json files under the specified directory
 
 ### Redis
 
-Stores data inside a Redis hash. Uses [Predis](http://github.com/nrk/predis).
+Stores data inside a Redis hash. Uses [Predis](http://github.com/nrk/predis) or [PHPRedis](https://github.com/phpredis/phpredis).
 
     $storage = new DebugBar\Storage\RedisStorage($client);
 
