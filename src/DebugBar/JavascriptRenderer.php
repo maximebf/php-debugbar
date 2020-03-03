@@ -82,12 +82,14 @@ class JavascriptRenderer
 
     protected $openHandlerUrl;
 
+    protected $cspNonce;
+
     /**
      * @param \DebugBar\DebugBar $debugBar
      * @param string $baseUrl
      * @param string $basePath
      */
-    public function __construct(DebugBar $debugBar, $baseUrl = null, $basePath = null)
+    public function __construct(DebugBar $debugBar, $baseUrl = null, $basePath = null, $cspNonce = null)
     {
         $this->debugBar = $debugBar;
 
@@ -100,6 +102,8 @@ class JavascriptRenderer
             $basePath = __DIR__ . DIRECTORY_SEPARATOR . 'Resources';
         }
         $this->basePath = $basePath;
+
+        $this->cspNonce = $cspNonce;
 
         // bitwise operations cannot be done in class definition :(
         $this->initialization = self::INITIALIZE_CONSTRUCTOR | self::INITIALIZE_CONTROLS;
@@ -905,6 +909,8 @@ class JavascriptRenderer
         list($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead) = $this->getAssets(null, self::RELATIVE_URL);
         $html = '';
 
+        $nonce = $this->getNonceAttribute();
+
         foreach ($cssFiles as $file) {
             $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s">' . "\n", $file);
         }
@@ -918,7 +924,7 @@ class JavascriptRenderer
         }
 
         foreach ($inlineJs as $content) {
-            $html .= sprintf('<script type="text/javascript">%s</script>' . "\n", $content);
+            $html .= sprintf('<script type="text/javascript" %s>%s</script>' . "\n", $nonce, $content);
         }
 
         foreach ($inlineHead as $content) {
@@ -926,7 +932,7 @@ class JavascriptRenderer
         }
 
         if ($this->enableJqueryNoConflict && !$this->useRequireJs) {
-            $html .= '<script type="text/javascript">jQuery.noConflict(true);</script>' . "\n";
+            $html .= '<script type="text/javascript"' . $nonce . '>jQuery.noConflict(true);</script>' . "\n";
         }
 
         return $html;
@@ -1013,10 +1019,12 @@ class JavascriptRenderer
         $suffix = !$initialize ? '(ajax)' : null;
         $js .= $this->getAddDatasetCode($this->debugBar->getCurrentRequestId(), $this->debugBar->getData(), $suffix);
 
+        $nonce = $this->getNonceAttribute();
+
         if ($this->useRequireJs){
-            return "<script type=\"text/javascript\">\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
+            return "<script type=\"text/javascript\" {$nonce}>\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
         } else {
-            return "<script type=\"text/javascript\">\n$js\n</script>\n";
+            return "<script type=\"text/javascript\" {$nonce}>\n$js\n</script>\n";
         }
 
     }
@@ -1148,5 +1156,18 @@ class JavascriptRenderer
             $suffix ? ", " . json_encode($suffix) : ''
         );
         return $js;
+    }
+
+    /**
+     * If a nonce it set, create the correct attribute
+     * @return string
+     */
+    protected function getNonceAttribute()
+    {
+        if ($this->cspNonce) {
+            return 'nonce="' . $this->cspNonce .'"';
+        }
+
+        return '';
     }
 }
