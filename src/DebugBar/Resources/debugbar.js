@@ -1160,7 +1160,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var self = this;
             var proxied = window.fetch;
 
-            if (proxied === undefined && proxied.polyfill !== undefined) {
+            if (proxied !== undefined && proxied.polyfill !== undefined) {
                 return;
             }
 
