@@ -1169,8 +1169,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 promise.then(function (response) {
                     self.handle(response);
-                }, function (e) {
-                    self.handle(response);
                 });
 
                 return promise;
