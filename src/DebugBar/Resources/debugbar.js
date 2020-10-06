@@ -916,6 +916,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @return {String} Dataset's id
          */
         addDataSet: function(data, id, suffix, show) {
+            if(window.parent && window.parent != window.top && window.parent.phpdebugbar && window.parent.phpdebugbar != this){
+                window.parent.phpdebugbar.addDataSet(data, id, suffix, show);
+            }
+            
             var label = this.datesetTitleFormater.format(id, data, suffix);
             id = id || (getObjectSize(this.datasets) + 1);
             this.datasets[id] = data;
