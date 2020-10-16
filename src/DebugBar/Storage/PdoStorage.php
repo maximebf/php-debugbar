@@ -51,7 +51,7 @@ class PdoStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save($id, $data)
     {
@@ -62,7 +62,7 @@ class PdoStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function get($id)
     {
@@ -76,7 +76,7 @@ class PdoStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
@@ -111,7 +111,7 @@ class PdoStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function clear()
     {

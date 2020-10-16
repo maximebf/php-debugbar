@@ -26,7 +26,7 @@ class FileStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save($id, $data)
     {
@@ -37,7 +37,7 @@ class FileStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function get($id)
     {
@@ -45,7 +45,7 @@ class FileStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
@@ -90,7 +90,7 @@ class FileStorage implements StorageInterface
 
     /**
      * Filter the metadata for matches.
-     * 
+     *
      * @param  array $meta
      * @param  array $filters
      * @return bool
@@ -106,7 +106,7 @@ class FileStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function clear()
     {
@@ -119,7 +119,7 @@ class FileStorage implements StorageInterface
 
     /**
      * @param  string $id
-     * @return string 
+     * @return string
      */
     public function makeFilename($id)
     {
