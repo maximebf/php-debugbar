@@ -4,7 +4,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
 
 # This triggers builds to run on the new TravisCI infrastructure.
 # See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
@@ -21,10 +21,6 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache
-
-matrix:
-  allow_failures:
-    - php: 7.4snapshot
     
 install:
   - travis_retry composer install --no-interaction --prefer-dist
