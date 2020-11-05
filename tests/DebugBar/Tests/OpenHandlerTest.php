@@ -3,12 +3,13 @@
 namespace DebugBar\Tests;
 
 use DebugBar\DebugBar;
+use DebugBar\DebugBarException;
 use DebugBar\OpenHandler;
 use DebugBar\Tests\Storage\MockStorage;
 
 class OpenHandlerTest extends DebugBarTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->debugbar->setStorage(new MockStorage(array('foo' => array('__meta' => array('id' => 'foo')))));
@@ -32,11 +33,10 @@ class OpenHandlerTest extends DebugBarTestCase
         $this->assertEquals('foo', $data['__meta']['id']);
     }
 
-    /**
-     * @expectedException \DebugBar\DebugBarException
-     */
     public function testGetMissingId()
     {
+        $this->expectException(DebugBarException::class);
+
         $this->openHandler->handle(array('op' => 'get'), false, false);
     }
 
