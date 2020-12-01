@@ -143,7 +143,7 @@ class TraceablePDO extends PDO
 	 * @return TraceablePDOStatement|bool PDO::query returns a PDOStatement object, or FALSE on
    * failure.
    */
-    public function query($statement)
+    public function query($statement, $fetchMode = null, ...$fetchModeArgs)
     {
         return $this->profileCall('query', $statement, func_get_args());
     }
