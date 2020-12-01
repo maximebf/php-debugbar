@@ -140,6 +140,8 @@ class TraceablePDO extends PDO
    *
 	 * @link   http://php.net/manual/en/pdo.query.php
 	 * @param  string $statement
+	 * @param  int $fetchMode
+	 * @param  mixed ...$fetchModeArgs
 	 * @return TraceablePDOStatement|bool PDO::query returns a PDOStatement object, or FALSE on
    * failure.
    */
