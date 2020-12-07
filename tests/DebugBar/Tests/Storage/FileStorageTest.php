@@ -7,7 +7,7 @@ use DebugBar\Storage\FileStorage;
 
 class FileStorageTest extends DebugBarTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->dirname = '/tmp/debugbar';
         if (!file_exists($this->dirname)) {
@@ -39,6 +39,6 @@ class FileStorageTest extends DebugBarTestCase
     public function testClear()
     {
         $this->s->clear();
-        $this->assertFileNotExists($this->dirname . '/foo.json');
+        $this->assertFileDoesNotExist($this->dirname . '/foo.json');
     }
 }

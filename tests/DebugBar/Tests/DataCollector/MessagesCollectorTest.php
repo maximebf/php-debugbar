@@ -57,10 +57,10 @@ class MessagesCollectorTest extends DebugBarTestCase
         $c->addMessage($var);
         $data = $c->collect();
         $message_text = $data['messages'][0]['message'];
-        $this->assertContains('array', $message_text);
-        $this->assertContains('one', $message_text);
-        $this->assertContains('two', $message_text);
-        $this->assertNotContains('span', $message_text);
+        $this->assertStringContainsString('array', $message_text);
+        $this->assertStringContainsString('one', $message_text);
+        $this->assertStringContainsString('two', $message_text);
+        $this->assertStringNotContainsString('span', $message_text);
         $this->assertNull($data['messages'][0]['message_html']);
 
         $c = new MessagesCollector();
@@ -69,15 +69,14 @@ class MessagesCollectorTest extends DebugBarTestCase
         $c->addMessage($var);
         $data = $c->collect();
         $message_text = $data['messages'][0]['message'];
-        $this->assertContains('array', $message_text);
-        $this->assertContains('one', $message_text);
-        $this->assertContains('two', $message_text);
-        $this->assertNotContains('span', $message_text);
+        $this->assertStringContainsString('array', $message_text);
+        $this->assertStringContainsString('one', $message_text);
+        $this->assertStringContainsString('two', $message_text);
+        $this->assertStringNotContainsString('span', $message_text);
         $message_html = $data['messages'][0]['message_html'];
-        $this->assertContains('array', $message_html);
-        $this->assertContains('one', $message_html);
-        $this->assertContains('two', $message_html);
-        $this->assertContains('span', $message_html);
-
+        $this->assertStringContainsString('array', $message_html);
+        $this->assertStringContainsString('one', $message_html);
+        $this->assertStringContainsString('two', $message_html);
+        $this->assertStringContainsString('span', $message_html);
     }
 }

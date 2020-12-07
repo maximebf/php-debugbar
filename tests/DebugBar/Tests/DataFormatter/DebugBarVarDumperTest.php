@@ -20,19 +20,19 @@ class DebugBarVarDumperTest extends DebugBarTestCase
         $d->mergeDumperOptions(array('styles' => $this->testStyles));
         $out = $d->renderVar('magic');
 
-        $this->assertContains('magic', $out);
-        $this->assertNotContains(self::STYLE_STRING, $out); // make sure there's no dump header
+        $this->assertStringContainsString('magic', $out);
+        $this->assertStringNotContainsString(self::STYLE_STRING, $out); // make sure there's no dump header
 
         // Test that we can capture a variable without rendering into a Data-type variable
         $data = $d->captureVar('hello');
-        $this->assertContains('hello', $data);
+        $this->assertStringContainsString('hello', $data);
         $deserialized = unserialize($data);
         $this->assertInstanceOf('Symfony\Component\VarDumper\Cloner\Data', $deserialized);
 
         // Test that we can render the captured variable at a later time
         $out = $d->renderCapturedVar($data);
-        $this->assertContains('hello', $out);
-        $this->assertNotContains(self::STYLE_STRING, $out); // make sure there's no dump header
+        $this->assertStringContainsString('hello', $out);
+        $this->assertStringNotContainsString(self::STYLE_STRING, $out); // make sure there's no dump header
     }
 
     public function testSeeking()
@@ -47,17 +47,17 @@ class DebugBarVarDumperTest extends DebugBarTestCase
 
         // seek depth of 1
         $out = $d->renderCapturedVar($data, array(1));
-        $this->assertNotContains('one', $out);
-        $this->assertContains('array', $out);
-        $this->assertContains('two', $out);
-        $this->assertNotContains('three', $out);
+        $this->assertStringNotContainsString('one', $out);
+        $this->assertStringContainsString('array', $out);
+        $this->assertStringContainsString('two', $out);
+        $this->assertStringNotContainsString('three', $out);
 
         // seek depth of 2
         $out = $d->renderCapturedVar($data, array(1, 0));
-        $this->assertNotContains('one', $out);
-        $this->assertNotContains('array', $out);
-        $this->assertContains('two', $out);
-        $this->assertNotContains('three', $out);
+        $this->assertStringNotContainsString('one', $out);
+        $this->assertStringNotContainsString('array', $out);
+        $this->assertStringContainsString('two', $out);
+        $this->assertStringNotContainsString('three', $out);
     }
 
     public function testAssetProvider()
@@ -73,7 +73,7 @@ class DebugBarVarDumperTest extends DebugBarTestCase
         $this->assertCount(1, $inlineHead);
 
         $assetText = $inlineHead['html_var_dumper'];
-        $this->assertContains(self::STYLE_STRING, $assetText);
+        $this->assertStringContainsString(self::STYLE_STRING, $assetText);
     }
 
     public function testBasicOptionOperations()
@@ -108,9 +108,9 @@ class DebugBarVarDumperTest extends DebugBarTestCase
 
         // Test basic get/merge/reset functionality for dumper
         $options = $d->getDumperOptions();
-        $this->assertContains('styles', $options);
+        $this->assertArrayHasKey('styles', $options);
         $this->assertArrayHasKey('const', $options['styles']);
-        $this->assertContains('expanded_depth', $options);
+        $this->assertArrayHasKey('expanded_depth', $options);
         $this->assertEquals(0, $options['expanded_depth']);
         $this->assertCount(2, $options);
 
@@ -145,53 +145,53 @@ class DebugBarVarDumperTest extends DebugBarTestCase
         // Test that the 'casters' option can remove default casters
         $testData = function() {};
         $d->resetClonerOptions();
-        $this->assertContains('DebugBarVarDumperTest.php', $d->renderVar($testData));
+        $this->assertStringContainsString('DebugBarVarDumperTest.php', $d->renderVar($testData));
 
         $d->resetClonerOptions(array(
             'casters' => array(),
         ));
-        $this->assertNotContains('DebugBarVarDumperTest.php', $d->renderVar($testData));
+        $this->assertStringNotContainsString('DebugBarVarDumperTest.php', $d->renderVar($testData));
 
         // Test that the 'additional_casters' option can add new casters
         $testData = function() {};
         $d->resetClonerOptions();
-        $this->assertContains('DebugBarVarDumperTest.php', $d->renderVar($testData));
+        $this->assertStringContainsString('DebugBarVarDumperTest.php', $d->renderVar($testData));
 
         $d->resetClonerOptions(array(
             'casters' => array(),
             'additional_casters' => array('Closure' => 'Symfony\Component\VarDumper\Caster\ReflectionCaster::castClosure'),
         ));
-        $this->assertContains('DebugBarVarDumperTest.php', $d->renderVar($testData));
+        $this->assertStringContainsString('DebugBarVarDumperTest.php', $d->renderVar($testData));
 
         // Test 'max_items'
         $testData = array(array('one', 'two', 'three', 'four', 'five'));
         $d->resetClonerOptions();
         $out = $d->renderVar($testData);
         foreach ($testData[0] as $search) {
-            $this->assertContains($search, $out);
+            $this->assertStringContainsString($search, $out);
         }
 
         $d->resetClonerOptions(array(
             'max_items' => 3,
         ));
         $out = $d->renderVar($testData);
-        $this->assertContains('one', $out);
-        $this->assertContains('two', $out);
-        $this->assertContains('three', $out);
-        $this->assertNotContains('four', $out);
-        $this->assertNotContains('five', $out);
+        $this->assertStringContainsString('one', $out);
+        $this->assertStringContainsString('two', $out);
+        $this->assertStringContainsString('three', $out);
+        $this->assertStringNotContainsString('four', $out);
+        $this->assertStringNotContainsString('five', $out);
 
         // Test 'max_string'
         $testData = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $d->resetClonerOptions();
-        $this->assertContains($testData, $d->renderVar($testData));
+        $this->assertStringContainsString($testData, $d->renderVar($testData));
 
         $d->resetClonerOptions(array(
             'max_string' => 10,
         ));
         $out = $d->renderVar($testData);
-        $this->assertContains('ABCDEFGHIJ', $out);
-        $this->assertNotContains('ABCDEFGHIJK', $out);
+        $this->assertStringContainsString('ABCDEFGHIJ', $out);
+        $this->assertStringNotContainsString('ABCDEFGHIJK', $out);
 
         // Test 'min_depth' if we are on a Symfony version that supports it
         if (method_exists('Symfony\Component\VarDumper\Cloner\AbstractCloner', 'setMinDepth')) {
@@ -201,7 +201,7 @@ class DebugBarVarDumperTest extends DebugBarTestCase
             ));
             $out = $d->renderVar($testData);
             foreach ($testData as $search) {
-                $this->assertContains($search, $out);
+                $this->assertStringContainsString($search, $out);
             }
 
             $d->resetClonerOptions(array(
@@ -209,11 +209,11 @@ class DebugBarVarDumperTest extends DebugBarTestCase
                 'max_items' => 3,
             ));
             $out = $d->renderVar($testData);
-            $this->assertContains('one', $out);
-            $this->assertContains('two', $out);
-            $this->assertContains('three', $out);
-            $this->assertNotContains('four', $out);
-            $this->assertNotContains('five', $out);
+            $this->assertStringContainsString('one', $out);
+            $this->assertStringContainsString('two', $out);
+            $this->assertStringContainsString('three', $out);
+            $this->assertStringNotContainsString('four', $out);
+            $this->assertStringNotContainsString('five', $out);
         }
     }
 
@@ -225,11 +225,11 @@ class DebugBarVarDumperTest extends DebugBarTestCase
         // Test that the 'styles' option affects assets
         $d->resetDumperOptions();
         $assets = $d->getAssets();
-        $this->assertNotContains(self::STYLE_STRING, $assets['inline_head']['html_var_dumper']);
+        $this->assertStringNotContainsString(self::STYLE_STRING, $assets['inline_head']['html_var_dumper']);
 
         $d->resetDumperOptions(array('styles' => $this->testStyles));
         $assets = $d->getAssets();
-        $this->assertContains(self::STYLE_STRING, $assets['inline_head']['html_var_dumper']);
+        $this->assertStringContainsString(self::STYLE_STRING, $assets['inline_head']['html_var_dumper']);
 
         // The next tests require changes in Symfony 3.2:
         $dumpMethod = new \ReflectionMethod('Symfony\Component\VarDumper\Dumper\HtmlDumper', 'dump');
@@ -237,17 +237,17 @@ class DebugBarVarDumperTest extends DebugBarTestCase
             // Test that the 'expanded_depth' option affects output
             $d->resetDumperOptions(array('expanded_depth' => 123321));
             $out = $d->renderVar(true);
-            $this->assertContains('123321', $out);
+            $this->assertStringContainsString('123321', $out);
 
             // Test that the 'max_string' option affects output
             $d->resetDumperOptions(array('max_string' => 321123));
             $out = $d->renderVar(true);
-            $this->assertContains('321123', $out);
+            $this->assertStringContainsString('321123', $out);
 
             // Test that the 'file_link_format' option affects output
             $d->resetDumperOptions(array('file_link_format' => 'fmt%ftest'));
             $out = $d->renderVar(function() {});
-            $this->assertContains('DebugBarVarDumperTest.phptest', $out);
+            $this->assertStringContainsString('DebugBarVarDumperTest.phptest', $out);
         }
     }
 }
