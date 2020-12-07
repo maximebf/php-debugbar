@@ -39,6 +39,6 @@ class FileStorageTest extends DebugBarTestCase
     public function testClear()
     {
         $this->s->clear();
-        $this->assertFileDoesNotExist($this->dirname . '/foo.json');
+        $this->assertFileNotExists($this->dirname . '/foo.json');
     }
 }
