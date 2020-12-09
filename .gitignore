@@ -1,3 +1,5 @@
 composer.lock
 /vendor
+/demo/bridge/*/vendor
 /src/DebugBar/Resources/vendor
+.phpunit.result.cache
