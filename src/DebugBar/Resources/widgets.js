@@ -236,7 +236,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 v = v.substr(0, 100) + "...";
             }
             var prettyVal = null;
-            dd.text(v).click(function() {
+            dd.text(v).dblclick(function() {
                 if (dd.hasClass(csscls('pretty'))) {
                     dd.text(v).removeClass(csscls('pretty'));
                 } else {
@@ -330,7 +330,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         if (!value.is_string) {
                             prettyVal = null;
                         }
-                        li.css('cursor', 'pointer').click(function () {
+                        li.css('cursor', 'pointer').dblclick(function () {
                             if (val.hasClass(csscls('pretty'))) {
                                 val.text(m).removeClass(csscls('pretty'));
                             } else {
@@ -477,7 +477,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                                     '"><pre><code>' + measure.params[key] + '</code></pre></td></tr>');
                                 }
                             }
-                            li.css('cursor', 'pointer').click(function() {
+                            li.css('cursor', 'pointer').dblclick(function() {
                                 var table = $(this).find('table');
                                 if (table.is(':visible')) {
                                     table.hide();
@@ -550,7 +550,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 }
                 if (e.surrounding_lines) {
                     var pre = createCodeBlock(e.surrounding_lines.join(""), 'php').addClass(csscls('file')).appendTo(li);
-                    li.click(function() {
+                    li.dblclick(function() {
                         if (pre.is(':visible')) {
                             pre.hide();
                         } else {
