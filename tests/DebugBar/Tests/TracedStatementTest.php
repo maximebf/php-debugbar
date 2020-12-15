@@ -150,4 +150,36 @@ class TracedStatementTest extends DebugBarTestCase
         $result = $traced->getSqlWithParams();
         $this->assertEquals($expected, $result);
     }
+
+    public function testObjectWithoutToStringDoNotTriggerWarnings()
+    {
+        $sql = 'select *
+                from geral.person p
+                where c.created_at = :date';
+        $params = array(
+            ':date' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '1970-01-01 00:00:00'),
+        );
+        $traced = new TracedStatement($sql, $params);
+        $expected = 'select *
+                from geral.person p
+                where c.created_at = <[BINARY DATA]>';
+        $result = $traced->getSqlWithParams();
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testObjectWithToStringMethodCastToString()
+    {
+        $sql = 'select *
+                from messages m
+                where m.message = :message';
+        $params = array(
+            ':message' => new TestMessage('Test Message'),
+        );
+        $traced = new TracedStatement($sql, $params);
+        $expected = 'select *
+                from messages m
+                where m.message = <Test Message>';
+        $result = $traced->getSqlWithParams();
+        $this->assertEquals($expected, $result);
+    }
 }
