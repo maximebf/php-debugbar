@@ -81,6 +81,7 @@ div.phpdebugbar code, div.phpdebugbar pre, div.phpdebugbar samp {
   border: 0;
   padding: 0;
   margin: 0;
+  direction: ltr;
 }
 
 div.phpdebugbar code, div.phpdebugbar pre {
@@ -263,6 +264,7 @@ select.phpdebugbar-datasets-switcher {
   max-width: 200px;
   max-height: 23px;
   padding: 0;
+  direction: ltr;
 }
 
 /* -------------------------------------- */
