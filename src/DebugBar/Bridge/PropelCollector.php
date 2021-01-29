@@ -196,17 +196,106 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             }
         }
 
+        $caller = $this->getCaller();
+
         $this->statements[] = array(
             'sql' => $sql,
             'is_success' => true,
             'duration' => $duration,
             'duration_str' => $this->formatDuration($duration),
             'memory' => $memory,
-            'memory_str' => $this->formatBytes($memory)
+            'memory_str' => $this->formatBytes($memory),
+            'caller' => $caller['info'],
+            'caller_str' => $caller['message'],
         );
         $this->accumulatedTime += $duration;
         $this->peakMemory = max($this->peakMemory, $memory);
         return array($sql, $this->formatDuration($duration));
+    }
+
+    /**
+     * Get the caller from the backtrace, skip data in backtrace that has no value
+     *
+     * @return string
+     */
+    private function getCaller()
+    {
+        $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        foreach ($traces as $key => $trace) {
+            if (isset($trace['file']) && strpos($trace['file'], DIRECTORY_SEPARATOR.'om' . DIRECTORY_SEPARATOR. 'Base') !== false) {
+                continue; // do not log the base class as caller
+            }
+            if (isset($trace['class']) && $trace['class'] === 'ModelCriteria') {
+                continue; // do not log ModelCriteria as caller
+            }
+            if (isset($trace['class']) && strpos($trace['class'], 'Base') === 0) {
+                if (isset($traces[$key+1]) && isset($traces[$key+1]['class'])) {
+                    if ('Base' . $traces[$key+1]['class'] === $trace['class']) {
+                        continue; // do not log Base class as caller when non-base-class is also in stack
+                    }
+                }
+            }
+            if (isset($trace['class']) && isset($trace['file']) && strpos($trace['file'], DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR) !== false) {
+                $config = Propel::getConfiguration(PropelConfiguration::TYPE_ARRAY_FLAT);
+                $key = 'classmap.' . $trace['class'];
+                if (!isset($config[$key]) ) {
+                    continue; // do not log class in vendor dir when not part of current connection
+                }
+            }
+
+            $func= '';
+            if (isset($trace['class']) ) {
+                $func .= $trace['class'];
+            }
+            if (isset($trace['type']) ) {
+                $func .= $trace['type'];
+            } else {
+                $func .= '->';
+            }
+            if (isset($trace['function']) ) {
+                $func .= $trace['function'];
+            }
+            if (empty($func)) {
+                $func = 'unknown';
+            }
+
+            $fileInfo = array(
+                'basename' => 'unknown',
+                'file' => 'unknown',
+                'line' => 0,
+            );
+            if (isset($trace['file']) && isset($trace['line'])) {
+                $fileInfo = array(
+                    'basename' => basename($trace['file']),
+                    'file' => $this->getRelativeFile($trace['file']),
+                    'line' => $trace['line'],
+                );
+            }
+
+            return array(
+                'info' => sprintf('%s:%s', $fileInfo['basename'], $fileInfo['line']),
+                'message' => sprintf('Called %s in %s on line %d', $func, $fileInfo['file'], $fileInfo['line']),
+            );
+        }
+    }
+
+    /**
+     * Gives a path relative to this project root-dir
+     *
+     * @param string $file
+     * @return file
+     */
+    private function getRelativeFile($file) {
+        $root = realpath($_SERVER['DOCUMENT_ROOT']);
+        if (basename($root) === 'web') {
+            $root = realpath($root . DIRECTORY_SEPARATOR . '..');
+        }
+        $targetfile = realpath($file);
+        if ($targetfile === false) {
+            return $file;
+        }
+
+        return str_replace($root . DIRECTORY_SEPARATOR, '', $targetfile);
     }
 
     public function collect()

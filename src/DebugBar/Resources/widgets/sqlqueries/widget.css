@@ -14,6 +14,7 @@ div.phpdebugbar-widgets-sqlqueries li.phpdebugbar-widgets-list-item.phpdebugbar-
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-database,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-duration,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-memory,
+div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-caller,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-row-count,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-copy-clipboard,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id {
@@ -21,6 +22,7 @@ div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id {
   margin-left: 8px;
   color: #888;
 }
+
 div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-status span.phpdebugbar-widgets-database,
 div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-status span.phpdebugbar-widgets-duration,
 div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-status span.phpdebugbar-widgets-memory,
@@ -32,6 +34,7 @@ div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-status span.phpdebugb
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-database:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-duration:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-memory:before,
+div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-caller:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-row-count:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-copy-clipboard:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id:before {
@@ -47,6 +50,9 @@ div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-duration:before {
 }
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-memory:before {
   content: "\f085";
+}
+div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-caller:before {
+  content: "\f1c9";
 }
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-row-count:before {
   content: "\f0ce";

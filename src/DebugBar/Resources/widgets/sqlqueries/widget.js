@@ -65,6 +65,9 @@
                 if (stmt.memory_str) {
                     $('<span title="Memory usage" />').addClass(csscls('memory')).text(stmt.memory_str).appendTo(li);
                 }
+                if (stmt.caller) {
+                    $('<span title="' + stmt.caller_str + '" />').addClass(csscls('caller')).text(stmt.caller).appendTo(li);
+                }
                 if (typeof(stmt.row_count) != 'undefined') {
                     $('<span title="Row count" />').addClass(csscls('row-count')).text(stmt.row_count).appendTo(li);
                 }
