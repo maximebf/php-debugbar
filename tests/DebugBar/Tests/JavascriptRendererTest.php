@@ -8,7 +8,7 @@ use DebugBar\StandardDebugBar;
 
 class JavascriptRendererTest extends DebugBarTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->r = new JavascriptRenderer($this->debugbar);
@@ -83,7 +83,7 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertCount(count(array_unique($js)), $js);
 
         $html = $this->r->renderHead();
-        $this->assertContains('<script type="text/javascript" src="/foobar/foo.js"></script>', $html);
+        $this->assertStringContainsString('<script type="text/javascript" src="/foobar/foo.js"></script>', $html);
     }
 
     public function testGetAssets()
@@ -105,19 +105,19 @@ class JavascriptRendererTest extends DebugBarTestCase
 
         $html = $this->r->renderHead();
         // Check for file links
-        $this->assertContains('<link rel="stylesheet" type="text/css" href="/burl/debugbar.css">', $html);
-        $this->assertContains('<script type="text/javascript" src="/burl/debugbar.js"></script>', $html);
+        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/burl/debugbar.css">', $html);
+        $this->assertStringContainsString('<script type="text/javascript" src="/burl/debugbar.js"></script>', $html);
         // Check for inline assets
-        $this->assertContains('<style type="text/css">CssTest</style>', $html);
-        $this->assertContains('<script type="text/javascript">JsTest</script>', $html);
-        $this->assertContains('HeaderTest', $html);
+        $this->assertStringContainsString('<style type="text/css">CssTest</style>', $html);
+        $this->assertStringContainsString('<script type="text/javascript">JsTest</script>', $html);
+        $this->assertStringContainsString('HeaderTest', $html);
         // Check jQuery noConflict
-        $this->assertContains('jQuery.noConflict(true);', $html);
+        $this->assertStringContainsString('jQuery.noConflict(true);', $html);
 
         // Check for absence of jQuery noConflict
         $this->r->setEnableJqueryNoConflict(false);
         $html = $this->r->renderHead();
-        $this->assertNotContains('noConflict', $html);
+        $this->assertStringNotContainsString('noConflict', $html);
     }
 
     public function testRenderFullInitialization()
@@ -152,8 +152,8 @@ class JavascriptRendererTest extends DebugBarTestCase
 
     public function testCanDisableSpecificVendors()
     {
-        $this->assertContains('jquery.min.js', $this->r->renderHead());
+        $this->assertStringContainsString('jquery.min.js', $this->r->renderHead());
         $this->r->disableVendor('jquery');
-        $this->assertNotContains('jquery.min.js', $this->r->renderHead());
+        $this->assertStringNotContainsString('jquery.min.js', $this->r->renderHead());
     }
 }
