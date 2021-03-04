@@ -7,7 +7,7 @@ use DebugBar\DataCollector\TimeDataCollector;
 
 class TimeDataCollectorTest extends DebugBarTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->s = microtime(true);
         $this->c = new TimeDataCollector($this->s);
@@ -44,5 +44,17 @@ class TimeDataCollectorTest extends DebugBarTestCase
         $this->assertTrue($data['end'] > $this->s);
         $this->assertTrue($data['duration'] > 0);
         $this->assertCount(2, $data['measures']);
+    }
+
+    public function testMeasure()
+    {
+        $returned = $this->c->measure('bar', function() {
+            return 'returnedValue';
+        });
+        $m = $this->c->getMeasures();
+        $this->assertCount(1, $m);
+        $this->assertEquals('bar', $m[0]['label']);
+        $this->assertTrue($m[0]['start'] < $m[0]['end']);
+        $this->assertSame('returnedValue', $returned);
     }
 }

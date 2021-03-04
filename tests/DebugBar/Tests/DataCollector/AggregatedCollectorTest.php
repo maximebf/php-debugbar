@@ -7,7 +7,7 @@ use DebugBar\DataCollector\AggregatedCollector;
 
 class AggregatedCollectorTest extends DebugBarTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->c = new AggregatedCollector('test');
     }

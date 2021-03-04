@@ -42,15 +42,15 @@ class ConfigCollectorTest extends DebugBarTestCase
         $this->assertFalse($c->isHtmlVarDumperUsed());
         $data = $c->collect();
         $this->assertEquals(array('k'), array_keys($data));
-        $this->assertContains('one', $data['k']);
-        $this->assertContains('two', $data['k']);
-        $this->assertNotContains('span', $data['k']);
+        $this->assertStringContainsString('one', $data['k']);
+        $this->assertStringContainsString('two', $data['k']);
+        $this->assertStringNotContainsString('span', $data['k']);
 
         $c->useHtmlVarDumper();
         $data = $c->collect();
         $this->assertEquals(array('k'), array_keys($data));
-        $this->assertContains('one', $data['k']);
-        $this->assertContains('two', $data['k']);
-        $this->assertContains('span', $data['k']);
+        $this->assertStringContainsString('one', $data['k']);
+        $this->assertStringContainsString('two', $data['k']);
+        $this->assertStringContainsString('span', $data['k']);
     }
 }

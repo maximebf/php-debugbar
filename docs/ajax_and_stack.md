@@ -51,6 +51,16 @@ disruptive. You can disable this behavior by calling
     $renderer = $debugbar->getJavascriptRenderer();
     $renderer->setAjaxHandlerAutoShow(false);
 
+## Fetch
+
+Fetch API is supported by wrapping `window.fetch` so that the promise is also
+passed through to the debugbar AJAX handler.
+
+If you find your fetch requests are not showing up in debugbar, you're probably
+initializing your JavaScript client library (e.g. Apollo) before debugbar has
+loaded, try adding `defer` onto your script tags, or moving them after the
+injected debugbar JavaScript.
+
 ## Stacked data
 
 Some times you need to collect data about a request but the page won't actually

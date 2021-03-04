@@ -944,6 +944,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var self = this;
             this.openHandler.load(id, function(data) {
                 self.addDataSet(data, id, suffix, show);
+                self.resize();
                 callback && callback(data);
             });
         },
@@ -1160,7 +1161,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var self = this;
             var proxied = window.fetch;
 
-            if (proxied === undefined && proxied.polyfill !== undefined) {
+            if (proxied !== undefined && proxied.polyfill !== undefined) {
                 return;
             }
 
@@ -1168,8 +1169,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var promise = proxied.apply(this, arguments);
 
                 promise.then(function (response) {
-                    self.handle(response);
-                }, function (e) {
                     self.handle(response);
                 });
 
