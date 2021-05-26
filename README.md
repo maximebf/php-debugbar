@@ -44,6 +44,7 @@ Integrations with other frameworks:
   - [Grav CMS](https://getgrav.org)
   - [TYPO3](https://github.com/Konafets/typo3_debugbar)
   - [Joomla](https://github.com/joomla/joomla-cms/blob/4.0-dev/plugins/system/debug/debug.php)
+  - [Drupal](https://www.drupal.org/project/debugbar)
   - Framework-agnostic middleware and PSR-7 with [php-middleware/phpdebugbar](https://github.com/php-middleware/phpdebugbar).
 
 *(drop me a message or submit a PR to add your DebugBar related project here)*
