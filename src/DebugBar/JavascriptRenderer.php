@@ -82,6 +82,10 @@ class JavascriptRenderer
 
     protected $openHandlerUrl;
 
+    protected $jsCustomAttributes = "";
+
+    protected $jsUseNonce = false;
+
     /**
      * @param \DebugBar\DebugBar $debugBar
      * @param string $baseUrl
@@ -124,6 +128,8 @@ class JavascriptRenderer
      *  - ajax_handler_auto_show
      *  - open_handler_classname
      *  - open_handler_url
+     *  - js_custom_attributes
+     *  - js_use_nonce
      *
      * @param array $options [description]
      */
@@ -182,6 +188,12 @@ class JavascriptRenderer
         }
         if (array_key_exists('open_handler_url', $options)) {
             $this->setOpenHandlerUrl($options['open_handler_url']);
+        }
+        if (array_key_exists('js_custom_attributes', $options)) {
+            $this->setJSCustomAttributes($options['js_custom_attributes']);
+        }
+        if (array_key_exists('js_use_nonce', $options)) {
+            $this->setJSNonce($options['js_use_nonce']);
         }
     }
 
@@ -607,6 +619,48 @@ class JavascriptRenderer
     }
 
     /**
+     * Sets custom html attributes for script tags
+     *
+     * @param string $attributes
+     */
+    public function setJSCustomAttributes($attributes)
+    {
+        $this->jsCustomAttributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * Returns custom html attributes for script tags
+     *
+     * @return string
+     */
+    public function getJSCustomAttributes()
+    {
+        return $this->jsCustomAttributes;
+    }
+
+    /**
+     * Sets custom js nonce
+     *
+     * @param string $nonce
+     */
+    public function setJSNonce($nonce)
+    {
+        $this->jsUseNonce = $nonce;
+        return $this;
+    }
+
+    /**
+     * Returns JS nonce
+     *
+     * @return string
+     */
+    public function getJSNonce()
+    {
+        return $this->jsUseNonce;
+    }
+
+    /**
      * Add assets stored in files to render in the head
      *
      * @param array $cssFiles An array of filenames
@@ -902,6 +956,10 @@ class JavascriptRenderer
      */
     public function renderHead()
     {
+        if($this->jsUseNonce && (empty($this->jsCustomAttributes) || strpos("nonce", $this->jsCustomAttributes))){
+            $this->jsCustomAttributes .= " nonce='".$this->jsUseNonce."'";
+        }
+
         list($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead) = $this->getAssets(null, self::RELATIVE_URL);
         $html = '';
 
@@ -914,11 +972,11 @@ class JavascriptRenderer
         }
 
         foreach ($jsFiles as $file) {
-            $html .= sprintf('<script type="text/javascript" src="%s"></script>' . "\n", $file);
+            $html .= sprintf('<script type="text/javascript" src="%s"'.$this->jsCustomAttributes.'></script>' . "\n", $file);
         }
 
         foreach ($inlineJs as $content) {
-            $html .= sprintf('<script type="text/javascript">%s</script>' . "\n", $content);
+            $html .= sprintf('<script type="text/javascript"'.$this->jsCustomAttributes.'>%s</script>' . "\n", $content);
         }
 
         foreach ($inlineHead as $content) {
@@ -926,7 +984,7 @@ class JavascriptRenderer
         }
 
         if ($this->enableJqueryNoConflict && !$this->useRequireJs) {
-            $html .= '<script type="text/javascript">jQuery.noConflict(true);</script>' . "\n";
+            $html .= '<script type="text/javascript"'.$this->jsCustomAttributes.'>jQuery.noConflict(true);</script>' . "\n";
         }
 
         return $html;
@@ -998,6 +1056,10 @@ class JavascriptRenderer
      */
     public function render($initialize = true, $renderStackedData = true)
     {
+        if($this->jsUseNonce && (empty($this->jsCustomAttributes) || strpos("nonce", $this->jsCustomAttributes))){
+            $this->jsCustomAttributes .= " nonce='".$this->jsUseNonce."'";
+        }
+
         $js = '';
 
         if ($initialize) {
@@ -1014,9 +1076,9 @@ class JavascriptRenderer
         $js .= $this->getAddDatasetCode($this->debugBar->getCurrentRequestId(), $this->debugBar->getData(), $suffix);
 
         if ($this->useRequireJs){
-            return "<script type=\"text/javascript\">\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
+            return "<script type=\"text/javascript\"{$this->jsCustomAttributes}>\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
         } else {
-            return "<script type=\"text/javascript\">\n$js\n</script>\n";
+            return "<script type=\"text/javascript\"{$this->jsCustomAttributes}>\n$js\n</script>\n";
         }
 
     }
