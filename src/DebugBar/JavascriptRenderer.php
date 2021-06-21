@@ -89,7 +89,7 @@ class JavascriptRenderer
      * @param string $baseUrl
      * @param string $basePath
      */
-    public function __construct(DebugBar $debugBar, $baseUrl = null, $basePath = null, $cspNonce = null)
+    public function __construct(DebugBar $debugBar, $baseUrl = null, $basePath = null)
     {
         $this->debugBar = $debugBar;
 
@@ -102,8 +102,6 @@ class JavascriptRenderer
             $basePath = __DIR__ . DIRECTORY_SEPARATOR . 'Resources';
         }
         $this->basePath = $basePath;
-
-        $this->cspNonce = $cspNonce;
 
         // bitwise operations cannot be done in class definition :(
         $this->initialization = self::INITIALIZE_CONSTRUCTOR | self::INITIALIZE_CONTROLS;
@@ -186,6 +184,9 @@ class JavascriptRenderer
         }
         if (array_key_exists('open_handler_url', $options)) {
             $this->setOpenHandlerUrl($options['open_handler_url']);
+        }
+        if (array_key_exists('csp_nonce', $options)) {
+            $this->setCspNonce($options['csp_nonce']);
         }
     }
 
@@ -608,6 +609,28 @@ class JavascriptRenderer
     public function getOpenHandlerUrl()
     {
         return $this->openHandlerUrl;
+    }
+
+    /**
+     * Sets the CSP Nonce (or remove it by setting to null)
+     *
+     * @param string|null $nonce
+     * @return $this
+     */
+    public function setCspNonce($nonce = null)
+    {
+        $this->cspNonce = $nonce;
+        return $this;
+    }
+
+    /**
+     * Get the CSP Nonce
+     *
+     * @return string|null
+     */
+    public function getCspNonce()
+    {
+        return $this->cspNonce;
     }
 
     /**
@@ -1164,8 +1187,8 @@ class JavascriptRenderer
      */
     protected function getNonceAttribute()
     {
-        if ($this->cspNonce) {
-            return 'nonce="' . $this->cspNonce .'"';
+        if ($nonce = $this->getCspNonce()) {
+            return 'nonce="' . $nonce .'"';
         }
 
         return '';
