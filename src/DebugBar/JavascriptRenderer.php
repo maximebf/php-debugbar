@@ -82,6 +82,8 @@ class JavascriptRenderer
 
     protected $openHandlerUrl;
 
+    protected $cspNonce;
+
     /**
      * @param \DebugBar\DebugBar $debugBar
      * @param string $baseUrl
@@ -182,6 +184,9 @@ class JavascriptRenderer
         }
         if (array_key_exists('open_handler_url', $options)) {
             $this->setOpenHandlerUrl($options['open_handler_url']);
+        }
+        if (array_key_exists('csp_nonce', $options)) {
+            $this->setCspNonce($options['csp_nonce']);
         }
     }
 
@@ -607,6 +612,28 @@ class JavascriptRenderer
     }
 
     /**
+     * Sets the CSP Nonce (or remove it by setting to null)
+     *
+     * @param string|null $nonce
+     * @return $this
+     */
+    public function setCspNonce($nonce = null)
+    {
+        $this->cspNonce = $nonce;
+        return $this;
+    }
+
+    /**
+     * Get the CSP Nonce
+     *
+     * @return string|null
+     */
+    public function getCspNonce()
+    {
+        return $this->cspNonce;
+    }
+
+    /**
      * Add assets stored in files to render in the head
      *
      * @param array $cssFiles An array of filenames
@@ -905,6 +932,8 @@ class JavascriptRenderer
         list($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead) = $this->getAssets(null, self::RELATIVE_URL);
         $html = '';
 
+        $nonce = $this->getNonceAttribute();
+
         foreach ($cssFiles as $file) {
             $html .= sprintf('<link rel="stylesheet" type="text/css" href="%s">' . "\n", $file);
         }
@@ -918,7 +947,7 @@ class JavascriptRenderer
         }
 
         foreach ($inlineJs as $content) {
-            $html .= sprintf('<script type="text/javascript">%s</script>' . "\n", $content);
+            $html .= sprintf('<script type="text/javascript" %s>%s</script>' . "\n", $nonce, $content);
         }
 
         foreach ($inlineHead as $content) {
@@ -926,7 +955,7 @@ class JavascriptRenderer
         }
 
         if ($this->enableJqueryNoConflict && !$this->useRequireJs) {
-            $html .= '<script type="text/javascript">jQuery.noConflict(true);</script>' . "\n";
+            $html .= '<script type="text/javascript"' . $nonce . '>jQuery.noConflict(true);</script>' . "\n";
         }
 
         return $html;
@@ -1013,10 +1042,12 @@ class JavascriptRenderer
         $suffix = !$initialize ? '(ajax)' : null;
         $js .= $this->getAddDatasetCode($this->debugBar->getCurrentRequestId(), $this->debugBar->getData(), $suffix);
 
+        $nonce = $this->getNonceAttribute();
+
         if ($this->useRequireJs){
-            return "<script type=\"text/javascript\">\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
+            return "<script type=\"text/javascript\" {$nonce}>\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
         } else {
-            return "<script type=\"text/javascript\">\n$js\n</script>\n";
+            return "<script type=\"text/javascript\" {$nonce}>\n$js\n</script>\n";
         }
 
     }
@@ -1148,5 +1179,18 @@ class JavascriptRenderer
             $suffix ? ", " . json_encode($suffix) : ''
         );
         return $js;
+    }
+
+    /**
+     * If a nonce it set, create the correct attribute
+     * @return string
+     */
+    protected function getNonceAttribute()
+    {
+        if ($nonce = $this->getCspNonce()) {
+            return 'nonce="' . $nonce .'"';
+        }
+
+        return '';
     }
 }
