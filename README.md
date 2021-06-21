@@ -1,6 +1,6 @@
 # PHP Debug Bar
 
-[![Latest Stable Version](https://poser.pugx.org/maximebf/debugbar/v/stable.png)](https://packagist.org/packages/maximebf/debugbar) [![Total Downloads](https://poser.pugx.org/maximebf/debugbar/downloads.svg)](https://packagist.org/packages/maximebf/debugbar) [![License](https://poser.pugx.org/maximebf/debugbar/license.svg)](https://packagist.org/packages/maximebf/debugbar) [![Build Status](https://travis-ci.org/maximebf/php-debugbar.png?branch=master)](https://travis-ci.org/maximebf/php-debugbar)
+[![Latest Stable Version](https://poser.pugx.org/maximebf/debugbar/v/stable.png)](https://packagist.org/packages/maximebf/debugbar) [![Total Downloads](https://poser.pugx.org/maximebf/debugbar/downloads.svg)](https://packagist.org/packages/maximebf/debugbar) [![License](https://poser.pugx.org/maximebf/debugbar/license.svg)](https://packagist.org/packages/maximebf/debugbar) ![Tests](https://github.com/maximebf/php-debugbar/workflows/Tests/badge.svg)
 
 Displays a debug bar in the browser with information from php.
 No more `var_dump()` in your code!
@@ -43,6 +43,8 @@ Integrations with other frameworks:
   - [SilverStripe](https://github.com/lekoala/silverstripe-debugbar)
   - [Grav CMS](https://getgrav.org)
   - [TYPO3](https://github.com/Konafets/typo3_debugbar)
+  - [Joomla](https://github.com/joomla/joomla-cms/blob/4.0-dev/plugins/system/debug/debug.php)
+  - [Drupal](https://www.drupal.org/project/debugbar)
   - Framework-agnostic middleware and PSR-7 with [php-middleware/phpdebugbar](https://github.com/php-middleware/phpdebugbar).
 
 *(drop me a message or submit a PR to add your DebugBar related project here)*

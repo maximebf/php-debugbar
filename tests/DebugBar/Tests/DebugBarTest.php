@@ -3,6 +3,7 @@
 namespace DebugBar\Tests;
 
 use DebugBar\DebugBar;
+use DebugBar\DebugBarException;
 use DebugBar\Tests\DataCollector\MockCollector;
 use DebugBar\Tests\Storage\MockStorage;
 use DebugBar\RandomRequestIdGenerator;
@@ -17,12 +18,12 @@ class DebugBarTest extends DebugBarTestCase
         $this->assertContains($c, $this->debugbar->getCollectors());
     }
 
-    /**
-     * @expectedException \DebugBar\DebugBarException
-     */
     public function testAddCollectorWithSameName()
     {
         $this->debugbar->addCollector(new MockCollector());
+
+        $this->expectException(DebugBarException::class);
+
         $this->debugbar->addCollector(new MockCollector());
     }
 

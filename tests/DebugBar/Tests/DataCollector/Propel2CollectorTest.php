@@ -14,7 +14,7 @@ class Propel2CollectorTest extends DebugBarTestCase
     /* @var null|DataFormatter */
     protected $dataFormatter = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $config = array(
             'slowTreshold' => 0.1,
