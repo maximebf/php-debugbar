@@ -8,6 +8,9 @@ use DebugBar\StandardDebugBar;
 
 class JavascriptRendererTest extends DebugBarTestCase
 {
+    /** @var JavascriptRenderer  */
+    protected $r;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -135,6 +138,13 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setVariableName('foovar');
         $this->r->setAjaxHandlerClass(false);
         $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+    }
+
+    public function testRenderConstructorWithNonce()
+    {
+        $this->r->setInitialization(JavascriptRenderer::INITIALIZE_CONSTRUCTOR);
+        $this->r->setCspNonce('mynonce');
+        $this->assertStringStartsWith("<script type=\"text/javascript\" nonce=\"mynonce\">\nvar phpdebugbar = new PhpDebugBar.DebugBar();", $this->r->render());
     }
 
     public function testJQueryNoConflictAutoDisabling()
