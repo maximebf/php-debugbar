@@ -947,7 +947,7 @@ class JavascriptRenderer
         }
 
         foreach ($inlineJs as $content) {
-            $html .= sprintf('<script type="text/javascript" %s>%s</script>' . "\n", $nonce, $content);
+            $html .= sprintf('<script type="text/javascript"%s>%s</script>' . "\n", $nonce, $content);
         }
 
         foreach ($inlineHead as $content) {
@@ -1045,9 +1045,9 @@ class JavascriptRenderer
         $nonce = $this->getNonceAttribute();
 
         if ($this->useRequireJs){
-            return "<script type=\"text/javascript\" {$nonce}>\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
+            return "<script type=\"text/javascript\"{$nonce}>\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
         } else {
-            return "<script type=\"text/javascript\" {$nonce}>\n$js\n</script>\n";
+            return "<script type=\"text/javascript\"{$nonce}>\n$js\n</script>\n";
         }
 
     }
@@ -1188,7 +1188,7 @@ class JavascriptRenderer
     protected function getNonceAttribute()
     {
         if ($nonce = $this->getCspNonce()) {
-            return 'nonce="' . $nonce .'"';
+            return ' nonce="' . $nonce .'"';
         }
 
         return '';

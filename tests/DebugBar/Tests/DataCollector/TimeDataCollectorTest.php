@@ -27,6 +27,7 @@ class TimeDataCollectorTest extends DebugBarTestCase
     public function testStartStopMeasure()
     {
         $this->c->startMeasure('foo', 'bar', 'baz');
+        usleep(1000);
         $this->c->stopMeasure('foo', array('bar' => 'baz'));
         $m = $this->c->getMeasures();
         $this->assertCount(1, $m);
