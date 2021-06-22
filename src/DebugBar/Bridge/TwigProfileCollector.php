@@ -153,7 +153,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
 
     public function getHtmlCallGraph()
     {
-        $dumper = new \Twig_Profiler_Dumper_Html();
+        $dumper = new \Twig\Profiler\Dumper\HtmlDumper();
 
         return $dumper->dump($this->profile);
     }
