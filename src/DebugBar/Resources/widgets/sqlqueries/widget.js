@@ -50,20 +50,63 @@
             };
             select(code);
         },
+        getListSelectOrder: function () {
+            var list = $('.phpdebugbar-widgets-list-item');
+            var defaultOptions = [
+                {val: 0, text: 'ORDER'},
+                {val: 3, text: 'SQL'}
+            ];
+            if (list.length === 0) {
+                return [];
+            }
+            var firstItem = list.eq(0);
+            var hasDuration = firstItem.find('.phpdebugbar-widgets-duration').length;
+            var hasMemory = firstItem.find('.phpdebugbar-widgets-duration').length;
+            if (hasDuration === 1) {
+                defaultOptions.push({val: 1, text: 'DURATION'});
+            }
+            if (hasMemory === 1) {
+                defaultOptions.push({val: 2, text: 'MEMORY USE'});
+            }
+            return defaultOptions;
+        },
+        order: function (el) {
+            var element = $(el);
+            var option = parseInt(element.val(), 10);
+            var listTarget = '.phpdebugbar-widgets-memory';
+            var orderBy = function (a, b) {
+                var attrCompare = 'data-memory';
+                if (option === 1) {
+                    attrCompare = 'data-duration';
+                    listTarget = '.phpdebugbar-widgets-duration';
+                }
+                if (option === 3) {
+                    listTarget = '.phpdebugbar-widgets-sql';
+                    return ($(b).find(listTarget).text()) < ($(a).find(listTarget).text()) ? 1 : -1;
+                }
+                if (option === 0) {
+                    attrCompare = 'data-order';
+                    listTarget = '.phpdebugbar-widgets-sql';
+                    return (parseInt($(b).find(listTarget).attr(attrCompare), 10)) < (parseInt($(a).find(listTarget).attr(attrCompare), 10)) ? 1 : -1;
+                }
+                return (parseFloat($(b).find(listTarget).attr(attrCompare))) > (parseFloat($(a).find(listTarget).attr(attrCompare))) ? 1 : -1;
+            };
+            $('.phpdebugbar-widgets-sqlqueries ul li').sort(orderBy).appendTo('.phpdebugbar-widgets-sqlqueries ul');
+        },
         render: function() {
             this.$status = $('<div />').addClass(csscls('status')).appendTo(this.$el);
 
             this.$toolbar = $('<div></div>').addClass(csscls('toolbar')).appendTo(this.$el);
 
-            var filters = [], self = this;
+            var filters = [], self = this, count = 0;
 
             this.$list = new PhpDebugBar.Widgets.ListWidget({ itemRenderer: function(li, stmt) {
-                $('<code />').addClass(csscls('sql')).html(PhpDebugBar.Widgets.highlight(stmt.sql, 'sql')).appendTo(li);
+                $('<code />').attr('data-order', ++count).addClass(csscls('sql')).html(PhpDebugBar.Widgets.highlight(stmt.sql, 'sql')).appendTo(li);
                 if (stmt.duration_str) {
-                    $('<span title="Duration" />').addClass(csscls('duration')).text(stmt.duration_str).appendTo(li);
+                    $('<span title="Duration" />').attr('data-duration', stmt.duration).addClass(csscls('duration')).text(stmt.duration_str).appendTo(li);
                 }
                 if (stmt.memory_str) {
-                    $('<span title="Memory usage" />').addClass(csscls('memory')).text(stmt.memory_str).appendTo(li);
+                    $('<span title="Memory usage" />').attr('data-memory', stmt.memory).addClass(csscls('memory')).text(stmt.memory_str).appendTo(li);
                 }
                 if (typeof(stmt.row_count) != 'undefined') {
                     $('<span title="Row count" />').addClass(csscls('row-count')).text(stmt.row_count).appendTo(li);
@@ -150,6 +193,18 @@
                 }
 
                 var t = $('<span />').text(data.nb_statements + " statements were executed").appendTo(this.$status);
+                var sel = $('<select>');
+                var options = self.getListSelectOrder();
+                var spanOrder = $('<span/>');
+                $(options).each(function () {
+                    sel.append($("<option>").attr('value', this.val).text(this.text));
+                });
+                sel.on('click', function (event) {
+                    self.order(this);
+                    event.stopPropagation();
+                });
+                spanOrder.addClass(csscls('order')).append(sel);
+                this.$status.append(spanOrder);
                 if (data.nb_failed_statements) {
                     t.append(", " + data.nb_failed_statements + " of which failed");
                 }
