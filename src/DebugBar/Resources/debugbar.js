@@ -477,6 +477,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$dragCapture = $('<div />').addClass(csscls('drag-capture')).appendTo(this.$el);
             this.$resizehdle = $('<div />').addClass(csscls('resize-handle')).appendTo(this.$el);
             this.$header = $('<div />').addClass(csscls('header')).appendTo(this.$el);
+            this.$headerBtn = $('<a />').addClass(csscls('restore-btn')).appendTo(this.$header);
+            this.$headerBtn.click(function() {
+                self.close();
+            });
             this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
             this.$headerRight = $('<div />').addClass(csscls('header-right')).appendTo(this.$header);
             var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
