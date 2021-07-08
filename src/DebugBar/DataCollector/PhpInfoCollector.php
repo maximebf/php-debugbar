@@ -35,7 +35,7 @@ class PhpInfoCollector extends DataCollector implements Renderable
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getWidgets()
     {

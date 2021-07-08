@@ -39,7 +39,7 @@ class MemcachedStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save($id, $data)
     {
@@ -54,7 +54,7 @@ class MemcachedStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function get($id)
     {
@@ -62,7 +62,7 @@ class MemcachedStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
@@ -101,7 +101,7 @@ class MemcachedStorage implements StorageInterface
 
     /**
      * Filter the metadata for matches.
-     * 
+     *
      * @param  array $meta
      * @param  array $filters
      * @return bool
@@ -117,7 +117,7 @@ class MemcachedStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function clear()
     {
@@ -130,7 +130,7 @@ class MemcachedStorage implements StorageInterface
 
     /**
      * @param  string $id
-     * @return string 
+     * @return string
      */
     protected function createKey($id)
     {

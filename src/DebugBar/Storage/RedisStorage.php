@@ -30,7 +30,7 @@ class RedisStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save($id, $data)
     {
@@ -40,7 +40,7 @@ class RedisStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function get($id)
     {
@@ -49,7 +49,7 @@ class RedisStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function find(array $filters = array(), $max = 20, $offset = 0)
     {
@@ -66,11 +66,11 @@ class RedisStorage implements StorageInterface
                 }
             }
         } while($cursor);
-        
+
         usort($results, function ($a, $b) {
             return $a['utime'] < $b['utime'];
         });
-        
+
         return array_slice($results, $offset, $max);
     }
 
@@ -88,7 +88,7 @@ class RedisStorage implements StorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function clear()
     {

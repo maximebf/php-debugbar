@@ -87,7 +87,7 @@ class SeekingData extends Data
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dump(DumperInterface $dumper)
     {
