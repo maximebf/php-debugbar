@@ -17,13 +17,13 @@ abstract class DebugBarTestCase extends TestCase
     public function assertJsonIsArray($json)
     {
         $data = json_decode($json);
-        $this->assertTrue(is_array($data));
+        $this->assertIsArray($data);
     }
 
     public function assertJsonIsObject($json)
     {
         $data = json_decode($json);
-        $this->assertTrue(is_object($data));
+        $this->assertIsObject($data);
     }
 
     public function assertJsonArrayNotEmpty($json)

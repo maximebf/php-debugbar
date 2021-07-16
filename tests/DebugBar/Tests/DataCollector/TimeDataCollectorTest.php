@@ -34,7 +34,7 @@ class TimeDataCollectorTest extends DebugBarTestCase
         $this->assertEquals('bar', $m[0]['label']);
         $this->assertEquals('baz', $m[0]['collector']);
         $this->assertEquals(array('bar' => 'baz'), $m[0]['params']);
-        $this->assertTrue($m[0]['start'] < $m[0]['end']);
+        $this->assertLessThan($m[0]['end'], $m[0]['start']);
     }
 
     public function testCollect()
@@ -42,8 +42,8 @@ class TimeDataCollectorTest extends DebugBarTestCase
         $this->c->addMeasure('foo', 0, 10);
         $this->c->addMeasure('bar', 10, 20);
         $data = $this->c->collect();
-        $this->assertTrue($data['end'] > $this->s);
-        $this->assertTrue($data['duration'] > 0);
+        $this->assertGreaterThan($this->s, $data['end']);
+        $this->assertGreaterThan(0, $data['duration']);
         $this->assertCount(2, $data['measures']);
     }
 
@@ -55,7 +55,7 @@ class TimeDataCollectorTest extends DebugBarTestCase
         $m = $this->c->getMeasures();
         $this->assertCount(1, $m);
         $this->assertEquals('bar', $m[0]['label']);
-        $this->assertTrue($m[0]['start'] < $m[0]['end']);
+        $this->assertLessThan($m[0]['end'], $m[0]['start']);
         $this->assertSame('returnedValue', $returned);
     }
 }
