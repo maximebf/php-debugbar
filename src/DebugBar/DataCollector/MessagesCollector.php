@@ -185,7 +185,11 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function log($level, $message, array $context = array())
     {
-        $this->addMessage($this->interpolate($message, $context), $level);
+        // For string messages, interpolate the context following PSR-3
+        if (is_string($message)) {
+            $message = $this->interpolate($message, $context);
+        }
+        $this->addMessage($message, $level);
     }
 
     /**
