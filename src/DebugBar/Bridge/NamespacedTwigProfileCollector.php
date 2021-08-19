@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Transip\Libraries\Frontend\DebugBar\Collector;
+namespace DebugBar\Bridge;
 
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
