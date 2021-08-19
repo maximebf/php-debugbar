@@ -135,19 +135,3 @@ $env->addExtension(new ProfilerExtension($profile));
 $debugbar->addCollector(new NamespacedTwigProfileCollector($profile));
 ```
 
-You can optionally use `DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler` in place of
-`Twig\Extension\ProfilerExtension` so render operation can be measured.
-
-```php
-use DebugBar\Bridge\NamespacedTwigProfileCollector;
-use DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-use Twig\Profiler\Profile;
-
-$loader = new FilesystemLoader('.');
-$env = new Environment($loader);
-$profile = new Profile();
-$env->addExtension(new TimeableTwigExtensionProfiler($profile, $debugbar['time']));
-$debugbar->addCollector(new NamespacedTwigProfileCollector($profile));
-```
