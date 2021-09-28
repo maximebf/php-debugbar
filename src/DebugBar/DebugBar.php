@@ -481,6 +481,7 @@ class DebugBar implements ArrayAccess
         return $this->getCollector($key);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($key)
     {
         return $this->hasCollector($key);
