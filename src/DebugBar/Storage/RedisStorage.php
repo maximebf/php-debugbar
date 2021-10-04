@@ -18,12 +18,14 @@ class RedisStorage implements StorageInterface
     /** @var \Predis\Client|\Redis */
     protected $redis;
 
-    protected string $hash;
+    /** @var string */
+    protected $hash;
 
     /**
      * @param  \Predis\Client|\Redis $redis Redis Client
+     * @param string $hash
      */
-    public function __construct($redis, string $hash = 'phpdebugbar')
+    public function __construct($redis, $hash = 'phpdebugbar')
     {
         $this->redis = $redis;
         $this->hash = $hash;
