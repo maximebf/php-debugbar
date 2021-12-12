@@ -719,8 +719,8 @@ class JavascriptRenderer
         }
 
         foreach ($additionalAssets as $assets) {
-            $basePath = isset($assets['base_path']) ? $assets['base_path'] : null;
-            $baseUrl = isset($assets['base_url']) ? $assets['base_url'] : null;
+            $basePath = isset($assets['base_path']) ? $assets['base_path'] : '';
+            $baseUrl = isset($assets['base_url']) ? $assets['base_url'] : '';
             $root = $this->getRelativeRoot($relativeTo,
                 $this->makeUriRelativeTo($basePath, $this->basePath),
                 $this->makeUriRelativeTo($baseUrl, $this->baseUrl));
@@ -746,7 +746,7 @@ class JavascriptRenderer
         $cssFiles = array_unique($cssFiles);
         $jsFiles = array_unique($jsFiles);
 
-        return $this->filterAssetArray(array($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead), $type);
+        return $this->filterAssetArray(array($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead), $type ?? '');
     }
 
     /**
@@ -802,7 +802,7 @@ class JavascriptRenderer
      * @param string $type 'css', 'js', 'inline_css', 'inline_js', 'inline_head', or null for all
      * @return array
      */
-    protected function filterAssetArray($array, $type = null)
+    protected function filterAssetArray($array, $type = '')
     {
         $types = array('css', 'js', 'inline_css', 'inline_js', 'inline_head');
         $typeIndex = array_search(strtolower($type), $types);
