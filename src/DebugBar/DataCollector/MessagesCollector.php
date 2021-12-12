@@ -183,7 +183,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      * @param $message
      * @param array $context
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = array()): void
     {
         // For string messages, interpolate the context following PSR-3
         if (is_string($message)) {
