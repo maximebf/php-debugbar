@@ -90,22 +90,48 @@ Display log messages and sent mail using `DebugBar\Bridge\SwiftMailer\SwiftLogCo
 
 http://twig.sensiolabs.org/
 
+### Version 1 and 2
+
 This collector uses the class `Twig_Extension_Profiler` to collect info about rendered
 templates, blocks and macros.
 You need to inject the root `Twig_Profiler_Profile` into the collector:
 
-    $loader = new Twig_Loader_Filesystem('.');
-    $env = new Twig_Environment($loader);
-    $profile = new Twig_Profiler_Profile();
-    $env->addExtension(new Twig_Extension_Profiler($profile));
-    $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
+```php
+$loader = new Twig_Loader_Filesystem('.');
+$env = new Twig_Environment($loader);
+$profile = new Twig_Profiler_Profile();
+$env->addExtension(new Twig_Extension_Profiler($profile));
+$debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
+```
 
 You can optionally use `DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler` in place of
 `Twig_Extension_Profiler` so render operation can be measured.
 
-    $loader = new Twig_Loader_Filesystem('.');
-    $env = new Twig_Environment($loader);
-    $profile = new Twig_Profiler_Profile();
-    $env->addExtension(new DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler($profile, $debugbar['time']));
-    $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
+```php
+$loader = new Twig_Loader_Filesystem('.');
+$env = new Twig_Environment($loader);
+$profile = new Twig_Profiler_Profile();
+$env->addExtension(new DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler($profile, $debugbar['time']));
+$debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
+```
+
+### Version 2 and 3
+
+This collector uses the class `Twig\Extension\ProfilerExtension` to collect info about rendered
+templates, blocks and macros.
+You need to inject the root `Twig\Profiler\Profile` into the collector:
+
+```php
+use DebugBar\Bridge\NamespacedTwigProfileCollector;
+use Twig\Environment;
+use Twig\Extension\ProfilerExtension;
+use Twig\Loader\FilesystemLoader;
+use Twig\Profiler\Profile;
+
+$loader = new FilesystemLoader('.');
+$env = new Environment($loader);
+$profile = new Profile();
+$env->addExtension(new ProfilerExtension($profile));
+$debugbar->addCollector(new NamespacedTwigProfileCollector($profile));
+```
 

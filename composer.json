@@ -22,7 +22,8 @@
         "symfony/var-dumper": "^2.6|^3|^4|^5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5.20 || ^9.4.2"
+        "phpunit/phpunit": "^7.5.20 || ^9.4.2",
+        "twig/twig": "^1.38|^2.7|^3.0"
     },
     "autoload": {
         "psr-4": {
