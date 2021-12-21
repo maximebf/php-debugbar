@@ -1,4 +1,7 @@
 # Changelog
+2021-12-21
+
+ - Add support for `symfony/var-dumper^6` package
 
 2019-05 (1.10.3)
 
