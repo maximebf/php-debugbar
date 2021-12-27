@@ -789,6 +789,8 @@ class JavascriptRenderer
             return $uris;
         }
 
+        $uri = $uri ?? '';
+
         if (substr($uri, 0, 1) === '/' || preg_match('/^([a-zA-Z]+:\/\/|[a-zA-Z]:\/|[a-zA-Z]:\\\)/', $uri)) {
             return $uri;
         }
@@ -805,7 +807,7 @@ class JavascriptRenderer
     protected function filterAssetArray($array, $type = '')
     {
         $types = array('css', 'js', 'inline_css', 'inline_js', 'inline_head');
-        $typeIndex = array_search(strtolower($type), $types);
+        $typeIndex = array_search(strtolower($type ?? ''), $types);
         return $typeIndex !== false ? $array[$typeIndex] : $array;
     }
 
