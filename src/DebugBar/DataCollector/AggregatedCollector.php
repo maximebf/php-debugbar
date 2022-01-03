@@ -155,9 +155,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
      * @param mixed $value
      * @throws DebugBarException
      */
-    
-    #[\ReturnTypeWillChange]
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         throw new DebugBarException("AggregatedCollector[] is read-only");
     }
@@ -177,9 +175,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
      * @param mixed $key
      * @return bool
      */
-    
-    #[\ReturnTypeWillChange]
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return isset($this->collectors[$key]);
     }
@@ -188,9 +184,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
      * @param mixed $key
      * @throws DebugBarException
      */
-    
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         throw new DebugBarException("AggregatedCollector[] is read-only");
     }
