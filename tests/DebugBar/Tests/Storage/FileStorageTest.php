@@ -9,12 +9,14 @@ class FileStorageTest extends DebugBarTestCase
 {
     public function setUp(): void
     {
-        $this->dirname = '/tmp/debugbar';
-        if (!file_exists($this->dirname)) {
-            mkdir($this->dirname, 0777);
+        $this->dirname = tempnam(sys_get_temp_dir(), 'debugbar');
+        if (file_exists($this->dirname)) {
+          unlink($this->dirname);
         }
+        mkdir($this->dirname, 0777);
         $this->s = new FileStorage($this->dirname);
         $this->data = array('__meta' => array('id' => 'foo'));
+        $this->s->save('bar', $this->data);
     }
 
     public function testSave()
@@ -26,7 +28,7 @@ class FileStorageTest extends DebugBarTestCase
 
     public function testGet()
     {
-        $data = $this->s->get('foo');
+        $data = $this->s->get('bar');
         $this->assertEquals($this->data, $data);
     }
 
@@ -39,6 +41,6 @@ class FileStorageTest extends DebugBarTestCase
     public function testClear()
     {
         $this->s->clear();
-        $this->assertFileNotExists($this->dirname . '/foo.json');
+        $this->assertFileDoesNotExist($this->dirname . '/foo.json');
     }
 }
