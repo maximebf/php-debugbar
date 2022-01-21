@@ -7,7 +7,7 @@ use DebugBar\Storage\FileStorage;
 
 class FileStorageTest extends DebugBarTestCase
 {
-	private $dirname;
+    private $dirname;
 
     public function setUp(): void
     {
@@ -23,17 +23,17 @@ class FileStorageTest extends DebugBarTestCase
 
     public function teardown(): void
     {
-		$files = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($this->dirname, \RecursiveDirectoryIterator::SKIP_DOTS),
-			\RecursiveIteratorIterator::CHILD_FIRST
-		);
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($this->dirname, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
 
-		foreach ($files as $fileinfo) {
-			$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-			$todo($fileinfo->getRealPath());
+        foreach ($files as $fileinfo) {
+            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+            $todo($fileinfo->getRealPath());
 		}
 
-		rmdir($this->dirname);
+        rmdir($this->dirname);
     }
 
     public function testSave()
@@ -59,11 +59,11 @@ class FileStorageTest extends DebugBarTestCase
     {
         $this->s->clear();
 
-		// avoid depreciation message on newer PHPUnit versions.  Can be removed after
+        // avoid depreciation message on newer PHPUnit versions.  Can be removed after
         if (method_exists($this, 'assertFileDoesNotExist')) {
           $this->assertFileDoesNotExist($this->dirname . '/foo.json');
         } else {
           $this->assertFileNotExists($this->dirname . '/foo.json');
-		}
+        }
     }
 }
