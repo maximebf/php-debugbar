@@ -48,13 +48,14 @@ class SeekingData extends Data
      *
      * @return self|null A clone of $this of null if the key is not set
      */
+    #[\ReturnTypeWillChange]
     public function seek($key)
     {
         $thisData = $this->getRawData();
         $item = $thisData[$this->position][$this->key];
 
         if (!$item instanceof Stub || !$item->position) {
-            return;
+            return null;
         }
         $keys = array($key);
 
@@ -68,7 +69,7 @@ class SeekingData extends Data
             case Stub::TYPE_RESOURCE:
                 break;
             default:
-                return;
+                return null;
         }
 
         $data = null;
@@ -89,7 +90,7 @@ class SeekingData extends Data
     /**
      * {@inheritdoc}
      */
-    public function dump(DumperInterface $dumper)
+    public function dump(DumperInterface $dumper) : void
     {
         // Override the base class dump to use the position and key
         $refs = array(0);
