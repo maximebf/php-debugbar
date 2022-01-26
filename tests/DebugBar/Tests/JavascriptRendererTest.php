@@ -8,6 +8,9 @@ use DebugBar\StandardDebugBar;
 
 class JavascriptRendererTest extends DebugBarTestCase
 {
+    /** @var JavascriptRenderer  */
+    protected $r;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -124,7 +127,7 @@ class JavascriptRendererTest extends DebugBarTestCase
     {
         $this->debugbar->addCollector(new \DebugBar\DataCollector\MessagesCollector());
         $this->r->addControl('time', array('icon' => 'time', 'map' => 'time', 'default' => '"0s"'));
-        $expected = rtrim(file_get_contents(__DIR__ . '/full_init.html'));
+        $expected = str_replace("\r\n", "\n", rtrim(file_get_contents(__DIR__ . '/full_init.html')));
         $this->assertStringStartsWith($expected, $this->r->render());
     }
 
@@ -135,6 +138,13 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setVariableName('foovar');
         $this->r->setAjaxHandlerClass(false);
         $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+    }
+
+    public function testRenderConstructorWithNonce()
+    {
+        $this->r->setInitialization(JavascriptRenderer::INITIALIZE_CONSTRUCTOR);
+        $this->r->setCspNonce('mynonce');
+        $this->assertStringStartsWith("<script type=\"text/javascript\" nonce=\"mynonce\">\nvar phpdebugbar = new PhpDebugBar.DebugBar();", $this->r->render());
     }
 
     public function testJQueryNoConflictAutoDisabling()
