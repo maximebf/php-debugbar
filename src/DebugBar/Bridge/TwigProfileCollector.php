@@ -25,7 +25,7 @@ use DebugBar\DataCollector\Renderable;
  * you can optionally provide the Twig_Environment or the Twig_Loader to also create
  * debug-links.
  *
- * @see \Twig_Extension_Profiler, \Twig_Profiler_Profile
+ * @see \Twig_Extension_Profiler, \Twig\Profiler\Profile
  *
  * <code>
  * $env = new Twig_Environment($loader); // Or from a PSR11-container
@@ -40,7 +40,7 @@ use DebugBar\DataCollector\Renderable;
 class TwigProfileCollector extends DataCollector implements Renderable, AssetProvider
 {
     /**
-     * @var \Twig_Profiler_Profile
+     * @var \Twig\Profiler\Profile
      */
     private $profile;
     /**
@@ -67,10 +67,10 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
     /**
      * TwigProfileCollector constructor.
      *
-     * @param \Twig_Profiler_Profile $profile
+     * @param \Twig\Profiler\Profile $profile
      * @param \Twig_LoaderInterface|\Twig_Environment $loaderOrEnv
      */
-    public function __construct(\Twig_Profiler_Profile $profile, $loaderOrEnv = null)
+    public function __construct(\Twig\Profiler\Profile $profile, $loaderOrEnv = null)
     {
         $this->profile     = $profile;
         if ($loaderOrEnv instanceof \Twig_Environment) {
@@ -178,7 +178,7 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
         return parent::getXdebugLink($file, $line);
     }
 
-    private function computeData(\Twig_Profiler_Profile $profile)
+    private function computeData(\Twig\Profiler\Profile $profile)
     {
         $this->templateCount += ($profile->isTemplate() ? 1 : 0);
         $this->blockCount    += ($profile->isBlock() ? 1 : 0);
