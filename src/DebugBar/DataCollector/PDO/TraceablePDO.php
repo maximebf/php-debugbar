@@ -29,6 +29,7 @@ class TraceablePDO extends PDO
 	 * @link   http://php.net/manual/en/pdo.begintransaction.php
 	 * @return bool TRUE on success or FALSE on failure.
 	 */
+    #[\ReturnTypeWillChange]
     public function beginTransaction()
     {
         return $this->pdo->beginTransaction();
@@ -40,6 +41,7 @@ class TraceablePDO extends PDO
      * @link   http://php.net/manual/en/pdo.commit.php
      * @return bool TRUE on success or FALSE on failure.
      */
+    #[\ReturnTypeWillChange]
     public function commit()
     {
         return $this->pdo->commit();
@@ -51,6 +53,7 @@ class TraceablePDO extends PDO
      * @link   http://php.net/manual/en/pdo.errorinfo.php
      * @return array PDO::errorInfo returns an array of error information
      */
+    #[\ReturnTypeWillChange]
     public function errorCode()
     {
         return $this->pdo->errorCode();
@@ -62,6 +65,7 @@ class TraceablePDO extends PDO
      * @link   http://php.net/manual/en/pdo.errorinfo.php
      * @return array PDO::errorInfo returns an array of error information
      */
+    #[\ReturnTypeWillChange]
     public function errorInfo()
     {
         return $this->pdo->errorInfo();
@@ -77,6 +81,7 @@ class TraceablePDO extends PDO
      * return Boolean FALSE, but may also return a non-Boolean value which evaluates to FALSE.
      * Please read the section on Booleans for more information
      */
+    #[\ReturnTypeWillChange]
     public function exec($statement)
     {
         return $this->profileCall('exec', $statement, func_get_args());
@@ -90,6 +95,7 @@ class TraceablePDO extends PDO
      * @return mixed A successful call returns the value of the requested PDO attribute.
      * An unsuccessful call returns null.
      */
+    #[\ReturnTypeWillChange]
     public function getAttribute($attribute)
     {
         return $this->pdo->getAttribute($attribute);
@@ -101,7 +107,7 @@ class TraceablePDO extends PDO
      * @link   http://php.net/manual/en/pdo.intransaction.php
      * @return bool TRUE if a transaction is currently active, and FALSE if not.
      */
-    public function inTransaction()
+    public function inTransaction() : bool
     {
         return $this->pdo->inTransaction();
     }
@@ -114,7 +120,7 @@ class TraceablePDO extends PDO
      * @return string If a sequence name was not specified for the name parameter, PDO::lastInsertId
      * returns a string representing the row ID of the last row that was inserted into the database.
      */
-    public function lastInsertId($name = null)
+    public function lastInsertId($name = null) : string
     {
         return $this->pdo->lastInsertId($name);
     }
@@ -130,6 +136,7 @@ class TraceablePDO extends PDO
    * PDO::prepare returns a PDOStatement object. If the database server cannot successfully prepare
    * the statement, PDO::prepare returns FALSE or emits PDOException (depending on error handling).
 	 */
+    #[\ReturnTypeWillChange]
     public function prepare($statement, $driver_options = [])
     {
         return $this->pdo->prepare($statement, $driver_options);
@@ -145,6 +152,7 @@ class TraceablePDO extends PDO
 	 * @return TraceablePDOStatement|bool PDO::query returns a PDOStatement object, or FALSE on
    * failure.
    */
+    #[\ReturnTypeWillChange]
     public function query($statement, $fetchMode = null, ...$fetchModeArgs)
     {
         return $this->profileCall('query', $statement, func_get_args());
@@ -160,6 +168,7 @@ class TraceablePDO extends PDO
      * @return string|bool A quoted string that is theoretically safe to pass into an SQL statement.
      * Returns FALSE if the driver does not support quoting in this way.
      */
+    #[\ReturnTypeWillChange]
     public function quote($string, $parameter_type = PDO::PARAM_STR)
     {
         return $this->pdo->quote($string, $parameter_type);
@@ -171,6 +180,7 @@ class TraceablePDO extends PDO
      * @link   http://php.net/manual/en/pdo.rollback.php
      * @return bool TRUE on success or FALSE on failure.
      */
+    #[\ReturnTypeWillChange]
     public function rollBack()
     {
         return $this->pdo->rollBack();
@@ -184,6 +194,7 @@ class TraceablePDO extends PDO
      * @param  mixed $value
      * @return bool TRUE on success or FALSE on failure.
      */
+    #[\ReturnTypeWillChange]
     public function setAttribute($attribute, $value)
     {
         return $this->pdo->setAttribute($attribute, $value);
