@@ -11,7 +11,7 @@
 namespace DebugBar\DataCollector;
 
 use Exception;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Throwable;
 
 /**
  * Collects info about exceptions
@@ -30,39 +30,44 @@ class ExceptionsCollector extends DataCollector implements Renderable
      *
      * @param Exception $e
      * @deprecated in favor on addThrowable
+     * @return $this
      */
     public function addException(Exception $e)
     {
-        $this->addThrowable($e);
+        return $this->addThrowable($e);
     }
 
     /**
      * Adds a Throwable to be profiled in the debug bar
      *
-     * @param \Throwable $e
+     * @param Throwable $e
+     * @return $this
      */
-    public function addThrowable($e)
+    public function addThrowable(Throwable $e)
     {
         $this->exceptions[] = $e;
         if ($this->chainExceptions && $previous = $e->getPrevious()) {
             $this->addThrowable($previous);
         }
+        return $this;
     }
 
     /**
      * Configure whether or not all chained exceptions should be shown.
      *
      * @param bool $chainExceptions
+     * @return $this
      */
     public function setChainExceptions($chainExceptions = true)
     {
         $this->chainExceptions = $chainExceptions;
+        return $this;
     }
 
     /**
      * Returns the list of exceptions being profiled
      *
-     * @return array[\Throwable]
+     * @return array[Throwable]
      */
     public function getExceptions()
     {
@@ -116,10 +121,10 @@ class ExceptionsCollector extends DataCollector implements Renderable
     /**
      * Returns Throwable data as an array
      *
-     * @param \Throwable $e
+     * @param Throwable $e
      * @return array
      */
-    public function formatThrowableData($e)
+    public function formatThrowableData(Throwable $e)
     {
         $filePath = $e->getFile();
         if ($filePath && file_exists($filePath)) {
