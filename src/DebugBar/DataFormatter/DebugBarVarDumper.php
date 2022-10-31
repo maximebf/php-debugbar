@@ -4,7 +4,7 @@ namespace DebugBar\DataFormatter;
 
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataFormatter\VarDumper\DebugBarHtmlDumper;
-use DebugBar\DataFormatter\VarDumper\SeekingData;
+use Symfony\Component\VarDumper\Cloner\Data\SeekingData;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
@@ -254,8 +254,6 @@ class DebugBarVarDumper implements AssetProvider
     public function renderCapturedVar($capturedData, $seekPath = array())
     {
         $data = unserialize($capturedData);
-        // The seek method was added in Symfony 3.2; emulate the behavior via SeekingData for older
-        // Symfony versions.
         if (!method_exists($data, 'seek')) {
             $data = new SeekingData($data->getRawData());
         }
