@@ -150,4 +150,25 @@ class TracedStatementTest extends DebugBarTestCase
         $result = $traced->getSqlWithParams();
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * Check that query parameters are being replaced only once
+     * @bugFix Before fix it: select * from
+     *                          `my_table` where `my_field` between
+     *                           <2018-01-01> and <2018-01-01>
+     * @return void
+     */
+    public function testParametersAreNotRepeated()
+    {
+        $query = 'select * from `my_table` where `my_field` between ? and ?';
+        $bindings = [
+            '2018-01-01',
+            '2020-09-01',
+        ];
+
+        $this->assertEquals(
+            'select * from `my_table` where `my_field` between <2018-01-01> and <2020-09-01>',
+            (new TracedStatement($query, $bindings))->getSqlWithParams()
+        );
+    }
 }
