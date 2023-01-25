@@ -1207,7 +1207,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var xhr = this;
                 this.addEventListener("readystatechange", function() {
                     var skipUrl = self.debugbar.openHandler ? self.debugbar.openHandler.get('url') : null;
-                    if (xhr.readyState == 4 && url.indexOf(skipUrl) !== 0) {
+                    var href = (typeof url === 'string') ? url : url.href;
+                    
+                    if (xhr.readyState == 4 && href.indexOf(skipUrl) !== 0) {
                         self.handle(xhr);
                     }
                 }, false);
