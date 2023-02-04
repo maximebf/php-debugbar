@@ -27,12 +27,14 @@ class TracedStatement
 
     protected $exception;
 
+    protected $preparedId;
+
     /**
      * @param string $sql
      * @param array $params
-     * @param string $preparedId
+     * @param null|string $preparedId
      */
-    public function __construct(string $sql, array $params = [], $preparedId = null)
+    public function __construct(string $sql, array $params = [], ?string $preparedId = null)
     {
         $this->sql = $sql;
         $this->parameters = $this->checkParameters($params);
@@ -164,9 +166,9 @@ class TracedStatement
     /**
      * Returns the prepared statement id
      *
-     * @return string
+     * @return null|string
      */
-    public function getPreparedId() : string
+    public function getPreparedId() : ?string
     {
         return $this->preparedId;
     }
