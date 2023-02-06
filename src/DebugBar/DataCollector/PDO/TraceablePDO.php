@@ -248,7 +248,7 @@ class TraceablePDO extends PDO
      */
     public function getAccumulatedStatementsDuration() : float
     {
-        return array_reduce($this->executedStatements, function ($v, $s) { return $v + $s->getDuration(); });
+        return array_reduce($this->executedStatements, function ($v, $s) { return $v + $s->getDuration(); }, 0.0);
     }
 
     /**
@@ -258,7 +258,7 @@ class TraceablePDO extends PDO
      */
     public function getMemoryUsage() : int
     {
-        return array_reduce($this->executedStatements, function ($v, $s) { return $v + $s->getMemoryUsage(); });
+        return array_reduce($this->executedStatements, function ($v, $s) { return $v + $s->getMemoryUsage(); }, 0);
     }
 
     /**
@@ -268,7 +268,7 @@ class TraceablePDO extends PDO
      */
     public function getPeakMemoryUsage() : int
     {
-        return array_reduce($this->executedStatements, function ($v, $s) { $m = $s->getEndMemory(); return $m > $v ? $m : $v; });
+        return array_reduce($this->executedStatements, function ($v, $s) { $m = $s->getEndMemory(); return $m > $v ? $m : $v; }, 0);
     }
 
     /**
