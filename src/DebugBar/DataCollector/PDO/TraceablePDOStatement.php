@@ -84,7 +84,7 @@ class TraceablePDOStatement extends PDOStatement
     public function bindValue($parameter, $value, $data_type = PDO::PARAM_STR) : bool
     {
         $this->boundParameters[$parameter] = $value;
-        return call_user_func_array(['parent', 'bindValue'], func_get_args());
+        return parent::bindValue(...func_get_args());
     }
 
     /**
