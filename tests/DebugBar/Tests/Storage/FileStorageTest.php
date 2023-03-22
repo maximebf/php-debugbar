@@ -8,6 +8,8 @@ use DebugBar\Storage\FileStorage;
 class FileStorageTest extends DebugBarTestCase
 {
     private $dirname;
+    private $s;
+    private $data;
 
     public function setUp(): void
     {
