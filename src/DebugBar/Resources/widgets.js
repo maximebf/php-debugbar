@@ -54,13 +54,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return htmlize(code);
             }
             if (lang) {
-                return hljs.highlight(lang, code).value;
+                return hljs.highlight(code, {language: lang}).value;
             }
             return hljs.highlightAuto(code).value;
         }
 
         if (typeof(hljs) === 'object') {
-            code.each(function(i, e) { hljs.highlightBlock(e); });
+            code.each(function(i, e) { hljs.highlightElement(e); });
         }
         return code;
     };
