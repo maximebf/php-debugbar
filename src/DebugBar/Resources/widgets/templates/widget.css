@@ -37,7 +37,7 @@ div.phpdebugbar-widgets-templates a.phpdebugbar-widgets-editor-link:before
 }
 div.phpdebugbar-widgets-templates a.phpdebugbar-widgets-editor-link:hover
 {
-    color: #ffffff;
+    color: #aaaaaa;
 }
 div.phpdebugbar-widgets-templates span.phpdebugbar-widgets-render-time:before {
   content: "\f017";
