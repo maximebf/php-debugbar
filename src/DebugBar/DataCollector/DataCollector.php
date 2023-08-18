@@ -87,6 +87,10 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function getXdebugLink($file, $line = 1)
     {
+        if (empty($file)) {
+            return null;
+        }
+
         if (file_exists($file)) {
             $file = realpath($file);
         }
