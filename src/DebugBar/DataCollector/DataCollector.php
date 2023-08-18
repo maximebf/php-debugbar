@@ -87,8 +87,15 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function getXdebugLink($file, $line = 1)
     {
-        if (count($this->xdebugReplacements)) {
-            $file = strtr($file, $this->xdebugReplacements);
+        if (file_exists($file)) {
+            $file = realpath($file);
+        }
+
+        foreach ($this->xdebugReplacements as $path => $replacement) {
+            if (strpos($file, $path) === 0) {
+            	$file = $replacement . substr($file, strlen($path));
+            	break;
+            }
         }
 
         $url = strtr($this->getXdebugLinkTemplate(), ['%f' => $file, '%l' => $line]);
