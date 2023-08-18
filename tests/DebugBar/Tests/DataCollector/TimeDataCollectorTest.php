@@ -7,6 +7,9 @@ use DebugBar\DataCollector\TimeDataCollector;
 
 class TimeDataCollectorTest extends DebugBarTestCase
 {
+    private $s;
+    private $c;
+
     public function setUp(): void
     {
         $this->s = microtime(true);

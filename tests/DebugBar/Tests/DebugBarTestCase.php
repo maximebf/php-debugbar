@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 abstract class DebugBarTestCase extends TestCase
 {
+    protected $debugbar;
+
     public function setUp(): void
     {
         $this->debugbar = new DebugBar();

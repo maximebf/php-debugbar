@@ -9,6 +9,8 @@ use DebugBar\Tests\Storage\MockStorage;
 
 class OpenHandlerTest extends DebugBarTestCase
 {
+    private $openHandler;
+
     public function setUp(): void
     {
         parent::setUp();
