@@ -262,11 +262,25 @@ abstract class DataCollector implements DataCollectorInterface
     /**
      * @param array $xdebugReplacements
      */
+    public function addXdebugReplacements($xdebugReplacements)
+    {
+        foreach ($xdebugReplacements as $serverPath => $replacement) {
+            $this->setXdebugReplacement($serverPath, $replacement);
+        }
+    }
+
+    /**
+     * @param array $xdebugReplacements
+     */
     public function setXdebugReplacements($xdebugReplacements)
     {
         $this->xdebugReplacements = $xdebugReplacements;
     }
 
+    /**
+     * @param string $serverPath
+     * @param string $replacement
+     */
     public function setXdebugReplacement($serverPath, $replacement)
     {
         $this->xdebugReplacements[$serverPath] = $replacement;
