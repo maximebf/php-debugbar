@@ -27,6 +27,7 @@ Includes collectors for:
   - [Monolog](https://github.com/Seldaek/monolog)
   - [Propel](http://propelorm.org/)
   - [Slim](http://slimframework.com)
+  - [Symfony Mailer](https://symfony.com/doc/current/mailer.html)
   - [Swift Mailer](http://swiftmailer.org/)
   - [Twig](http://twig.symfony.com/)
 
