@@ -124,6 +124,16 @@ class ExceptionsCollector extends DataCollector implements Renderable
     }
 
     /**
+     * Returns Throwable data as an string
+     *
+     * @param \Throwable $e
+     * @return string
+     */
+    public function formatTraceAsString($e)
+    {
+        return $e->getTraceAsString();
+    }
+    /**
      * Returns Throwable data as an array
      *
      * @param \Throwable $e
@@ -151,7 +161,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             'code' => $e->getCode(),
             'file' => $filePath,
             'line' => $e->getLine(),
-            'stack_trace' => $e->getTraceAsString(),
+            'stack_trace' => $this->formatTraceAsString($e),
             'stack_trace_html' => $traceHtml,
             'surrounding_lines' => $lines,
             'xdebug_link' => $this->getXdebugLink($filePath, $e->getLine())
