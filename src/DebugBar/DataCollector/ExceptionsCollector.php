@@ -116,12 +116,11 @@ class ExceptionsCollector extends DataCollector implements Renderable
     /**
      * Returns Throwable trace as an formated array
      *
-     * @param \Throwable $e
      * @return array
      */
-    public function formatTraceArray($e)
+    public function formatTrace(array $trace)
     {
-        return $e->getTrace();
+        return $trace;
     }
 
     /**
@@ -143,7 +142,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
 
         $traceHtml = null;
         if ($this->isHtmlVarDumperUsed()) {
-            $traceHtml = $this->getVarDumper()->renderVar($this->formatTraceArray($e));
+            $traceHtml = $this->getVarDumper()->renderVar($this->formatTrace($e->getTrace()));
         }
 
         return array(
