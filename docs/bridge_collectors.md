@@ -86,6 +86,20 @@ Display log messages and sent mail using `DebugBar\Bridge\SwiftMailer\SwiftLogCo
     $debugbar['messages']->aggregate(new DebugBar\Bridge\SwiftMailer\SwiftLogCollector($mailer));
     $debugbar->addCollector(new DebugBar\Bridge\SwiftMailer\SwiftMailCollector($mailer));
 
+## Symfony Mailer
+
+https://symfony.com/doc/current/mailer.html
+
+Display log messages and sent mail using `DebugBar\Bridge\Symfony\SymfonyMailCollector`
+
+    use Symfony\Component\Mailer\Event\SentMessageEvent;
+
+    $mailCollector = new DebugBar\Bridge\Symfony\SymfonyMailCollector();
+    $debugbar->addCollector($mailCollector);
+    $eventDispatcher->addListener(SentMessageEvent::class, function (SentMessageEvent $event) use (&$mailCollector): void {
+        $mailCollector->addSymfonyMessage($event->getMessage());
+    });
+
 ## Twig
 
 http://twig.sensiolabs.org/
