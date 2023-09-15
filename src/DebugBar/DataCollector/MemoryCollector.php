@@ -17,7 +17,16 @@ class MemoryCollector extends DataCollector implements Renderable
 {
     protected $realUsage = false;
 
+    protected $memoryRealStart = 0;
+
+    protected $memoryStart = 0;
+
     protected $peakUsage = 0;
+
+    public function __construct()
+    {
+        $this->updateMemoryBaseline();
+    }
 
     /**
      * Returns whether total allocated memory page size is used instead of actual used memory size
@@ -42,13 +51,24 @@ class MemoryCollector extends DataCollector implements Renderable
     }
 
     /**
+     * Set memory baseline for avoid problems on swoole/octane
+     *
+     * @return void
+     */
+    public function updateMemoryBaseline()
+    {
+        $this->memoryStart = memory_get_usage(false);
+        $this->memoryRealStart = memory_get_usage(true);
+    }
+
+    /**
      * Returns the peak memory usage
      *
      * @return integer
      */
     public function getPeakUsage()
     {
-        return $this->peakUsage;
+        return $this->peakUsage - ($this->realUsage ? $this->memoryRealStart : $this->memoryStart);
     }
 
     /**
@@ -66,8 +86,8 @@ class MemoryCollector extends DataCollector implements Renderable
     {
         $this->updatePeakUsage();
         return array(
-            'peak_usage' => $this->peakUsage,
-            'peak_usage_str' => $this->getDataFormatter()->formatBytes($this->peakUsage, 0)
+            'peak_usage' => $this->getPeakUsage(),
+            'peak_usage_str' => $this->getDataFormatter()->formatBytes($this->getPeakUsage(), 0)
         );
     }
 
