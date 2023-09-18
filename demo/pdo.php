@@ -18,6 +18,6 @@ $stmt = $pdo->prepare('select * from users where name=?');
 $stmt->execute(array('foo'));
 $foo = $stmt->fetch();
 
-$pdo->exec('delete from titi');
+$pdo->exec('delete from users');
 
 render_demo_page();
