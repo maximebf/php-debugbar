@@ -27,8 +27,9 @@ Includes collectors for:
   - [Monolog](https://github.com/Seldaek/monolog)
   - [Propel](http://propelorm.org/)
   - [Slim](http://slimframework.com)
+  - [Symfony Mailer](https://symfony.com/doc/current/mailer.html)
   - [Swift Mailer](http://swiftmailer.org/)
-  - [Twig](http://twig.sensiolabs.org/)
+  - [Twig](http://twig.symfony.com/)
 
 Checkout the [demo](https://github.com/maximebf/php-debugbar/tree/master/demo) for
 examples and [phpdebugbar.com](http://phpdebugbar.com) for a live example.

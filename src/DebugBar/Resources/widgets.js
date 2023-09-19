@@ -54,13 +54,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return htmlize(code);
             }
             if (lang) {
-                return hljs.highlight(lang, code).value;
+                return hljs.highlight(code, {language: lang}).value;
             }
             return hljs.highlightAuto(code).value;
         }
 
         if (typeof(hljs) === 'object') {
-            code.each(function(i, e) { hljs.highlightBlock(e); });
+            code.each(function(i, e) { hljs.highlightElement(e); });
         }
         return code;
     };
@@ -263,7 +263,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         className: csscls('kvlist htmlvarlist'),
 
         itemRenderer: function(dt, dd, key, value) {
-            $('<span />').attr('title', key).text(key).appendTo(dt);
+            $('<span />').attr('title', $('<i />').html(key || '').text()).html(key || '').appendTo(dt);
             dd.html(value);
         }
 
@@ -438,6 +438,19 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     return (seconds).toFixed(2) +  's';
                 };
 
+                // ported from php DataFormatter
+                var formatBytes = function formatBytes(size) {
+                    if (size === 0 || size === null) {
+                        return '0B';
+                    }
+
+                    var sign = size < 0 ? '-' : '',
+                        size = Math.abs(size),
+                        base = Math.log(size) / Math.log(1024),
+                        suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
+                    return sign + (Math.round(Math.pow(1024, base - Math.floor(base)) * 100) / 100) + suffixes[Math.floor(base)];
+                }
+
                 this.$el.empty();
                 if (data.measures) {
                     var aggregate = {};
@@ -446,10 +459,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         var measure = data.measures[i];
 
                         if(!aggregate[measure.label])
-                            aggregate[measure.label] = { count: 0, duration: 0 };
+                            aggregate[measure.label] = { count: 0, duration: 0, memory : 0 };
 
                         aggregate[measure.label]['count'] += 1;
                         aggregate[measure.label]['duration'] += measure.duration;
+                        aggregate[measure.label]['memory'] += (measure.memory || 0);
 
                         var m = $('<div />').addClass(csscls('measure')),
                             li = $('<li />'),
@@ -460,7 +474,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                             left: left + "%",
                             width: width + "%"
                         }));
-                        m.append($('<span />').addClass(csscls('label')).text(measure.label + " (" + measure.duration_str + ")"));
+                        m.append($('<span />').addClass(csscls('label'))
+                            .text(measure.label + " (" + measure.duration_str +(measure.memory ? '/' + measure.memory_str: '') + ")"));
 
                         if (measure.collector) {
                             $('<span />').addClass(csscls('collector')).text(measure.collector).appendTo(m);
@@ -499,15 +514,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     });
 
                     // build table and add
-                    var aggregateTable = $('<table style="display: table; border: 0; width: 99%"></table>').addClass(csscls('params'));
+                    var aggregateTable = $('<table></table>').addClass(csscls('params'));
                     $.each(aggregate, function(i, aggregate) {
                         width = Math.min((aggregate.data.duration * 100 / data.duration).toFixed(2), 100);
 
                         aggregateTable.append('<tr><td class="' + csscls('name') + '">' + aggregate.data.count + ' x ' + aggregate.label + ' (' + width + '%)</td><td class="' + csscls('value') + '">' +
                             '<div class="' + csscls('measure') +'">' +
-                                '<span class="' + csscls('value') + '" style="width:' + width + '%"></span>' +
-                                '<span class="' + csscls('label') + '">' + formatDuration(aggregate.data.duration) + '</span>' +
+                                '<span class="' + csscls('value') + '"></span>' +
+                                '<span class="' + csscls('label') + '">' + formatDuration(aggregate.data.duration) + (aggregate.data.memory ? '/' + formatBytes(aggregate.data.memory) : '') + '</span>' +
                             '</div></td></tr>');
+                        aggregateTable.find('span.' + csscls('value') + ':last').css({width: width + "%" });
                     });
 
                     this.$el.append('<li/>').find('li:last').append(aggregateTable);

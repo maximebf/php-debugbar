@@ -232,6 +232,10 @@ div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item {
     color: #555;
   }
 
+  div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item a.phpdebugbar-widgets-editor-link:hover {
+    color: #aaaaaa;
+  }
+
   div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-type {
     display: block;
     position: absolute;
@@ -258,4 +262,10 @@ div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
 div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
   content: "\f08e";
   margin-left: 4px;
+}
+
+ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params {
+    display: table;
+    border: 0;
+    width: 99%;
 }
