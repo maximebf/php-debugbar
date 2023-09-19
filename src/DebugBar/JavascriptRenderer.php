@@ -1046,6 +1046,10 @@ class JavascriptRenderer
 
         $nonce = $this->getNonceAttribute();
 
+	if ($nonce != '') {
+            $js = preg_replace("/<script>/", "<script nonce='{$this->cspNonce}'>", $js);
+        }
+
         if ($this->useRequireJs){
             return "<script type=\"text/javascript\"{$nonce}>\nrequire(['debugbar'], function(PhpDebugBar){ $js });\n</script>\n";
         } else {
