@@ -263,3 +263,9 @@ div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
   content: "\f08e";
   margin-left: 4px;
 }
+
+ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params {
+    display: table;
+    border: 0;
+    width: 99%;
+}
