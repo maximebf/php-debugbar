@@ -115,7 +115,7 @@ Aggregates multiple collectors. Do not provide any widgets, you have to add your
 
     $debugbar->addCollector(new DebugBar\DataCollector\AggregatedCollector('all_messages', 'messages', 'time'));
     $debugbar['all_messages']->addCollector($debugbar['messages']);
-    $debugbar['all_messages']->addCollector(new MessagesCollector('mails'));
+    $debugbar['all_messages']->addCollector(new DebugBar\DataCollector\MessagesCollector('mails'));
     $debugbar['all_messages']['mails']->addMessage('sending mail');
 
     $renderer = $debugbar->getJavascriptRenderer();
