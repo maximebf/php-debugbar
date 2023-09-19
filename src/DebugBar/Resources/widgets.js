@@ -514,15 +514,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     });
 
                     // build table and add
-                    var aggregateTable = $('<table style="display: table; border: 0; width: 99%"></table>').addClass(csscls('params'));
+                    var aggregateTable = $('<table></table>').addClass(csscls('params'));
                     $.each(aggregate, function(i, aggregate) {
                         width = Math.min((aggregate.data.duration * 100 / data.duration).toFixed(2), 100);
 
                         aggregateTable.append('<tr><td class="' + csscls('name') + '">' + aggregate.data.count + ' x ' + aggregate.label + ' (' + width + '%)</td><td class="' + csscls('value') + '">' +
                             '<div class="' + csscls('measure') +'">' +
-                                '<span class="' + csscls('value') + '" style="width:' + width + '%"></span>' +
+                                '<span class="' + csscls('value') + '"></span>' +
                                 '<span class="' + csscls('label') + '">' + formatDuration(aggregate.data.duration) + (aggregate.data.memory ? '/' + formatBytes(aggregate.data.memory) : '') + '</span>' +
                             '</div></td></tr>');
+                        aggregateTable.find('span.' + csscls('value') + ':last').css({width: width + "%" });
                     });
 
                     this.$el.append('<li/>').find('li:last').append(aggregateTable);
