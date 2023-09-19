@@ -114,6 +114,26 @@ class ExceptionsCollector extends DataCollector implements Renderable
     }
 
     /**
+     * Returns Throwable trace as an formated array
+     *
+     * @return array
+     */
+    public function formatTrace(array $trace)
+    {
+        return $trace;
+    }
+
+    /**
+     * Returns Throwable data as an string
+     *
+     * @param \Throwable $e
+     * @return string
+     */
+    public function formatTraceAsString($e)
+    {
+        return $e->getTraceAsString();
+    }
+    /**
      * Returns Throwable data as an array
      *
      * @param \Throwable $e
@@ -132,7 +152,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
 
         $traceHtml = null;
         if ($this->isHtmlVarDumperUsed()) {
-            $traceHtml = $this->getVarDumper()->renderVar($e->getTrace());
+            $traceHtml = $this->getVarDumper()->renderVar($this->formatTrace($e->getTrace()));
         }
 
         return array(
@@ -141,7 +161,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             'code' => $e->getCode(),
             'file' => $this->normalizeFilePath($filePath),
             'line' => $e->getLine(),
-            'stack_trace' => $e->getTraceAsString(),
+            'stack_trace' => $this->formatTraceAsString($e),
             'stack_trace_html' => $traceHtml,
             'surrounding_lines' => $lines,
             'xdebug_link' => $this->getXdebugLink($filePath, $e->getLine())
