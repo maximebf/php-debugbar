@@ -139,7 +139,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             'type' => get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
-            'file' => $filePath,
+            'file' => $this->normalizeFilePath($filePath),
             'line' => $e->getLine(),
             'stack_trace' => $e->getTraceAsString(),
             'stack_trace_html' => $traceHtml,

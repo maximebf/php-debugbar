@@ -75,6 +75,32 @@ abstract class DataCollector implements DataCollectorInterface
     }
 
     /**
+     * Shorten the file path by removing the xdebug path replacements
+     *
+     * @param string $file
+     * @return string
+     */
+    public function normalizeFilePath($file)
+    {
+        if (empty($file)) {
+            return '';
+        }
+
+        if (file_exists($file)) {
+            $file = realpath($file);
+        }
+
+        foreach (array_keys($this->xdebugReplacements) as $path) {
+            if (strpos($file, $path) === 0) {
+            	$file = substr($file, strlen($path));
+                break;
+            }
+        }
+
+        return ltrim(str_replace('\\', '/', $file), '/');
+    }
+
+    /**
      * Get an Xdebug Link to a file
      *
      * @param string $file
