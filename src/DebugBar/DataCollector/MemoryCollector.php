@@ -23,11 +23,6 @@ class MemoryCollector extends DataCollector implements Renderable
 
     protected $peakUsage = 0;
 
-    public function __construct()
-    {
-        $this->updateMemoryBaseline();
-    }
-
     /**
      * Returns whether total allocated memory page size is used instead of actual used memory size
      * by the application.  See $real_usage parameter on memory_get_peak_usage for details.
@@ -51,11 +46,11 @@ class MemoryCollector extends DataCollector implements Renderable
     }
 
     /**
-     * Set memory baseline for avoid problems on swoole/octane
+     * Reset memory baseline, to measure multiple requests in a long running process
      *
      * @return void
      */
-    public function updateMemoryBaseline()
+    public function resetMemoryBaseline()
     {
         $this->memoryStart = memory_get_usage(false);
         $this->memoryRealStart = memory_get_usage(true);
