@@ -169,8 +169,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             $start = $e->getLine() - 4;
             $lines = array_slice($lines, $start < 0 ? 0 : $start, 7);
         } else {
-            $filePath = $this->normalizeFilePath($filePath);
-            $lines = array("Cannot open the file ($filePath) in which the exception occurred ");
+            $lines = array('Cannot open the file ('.$this->normalizeFilePath($filePath).') in which the exception occurred');
         }
 
         $traceHtml = null;
