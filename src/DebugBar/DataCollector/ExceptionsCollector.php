@@ -120,6 +120,16 @@ class ExceptionsCollector extends DataCollector implements Renderable
      */
     public function formatTrace(array $trace)
     {
+        if (! empty($this->xdebugReplacements)) {
+            $trace = array_map(function ($track) {
+                if (isset($track['file'])) {
+                    $track['file'] = $this->normalizeFilePath($track['file']);
+                }
+
+                return $track;
+            }, $trace);
+        }
+
         return $trace;
     }
 
@@ -131,8 +141,20 @@ class ExceptionsCollector extends DataCollector implements Renderable
      */
     public function formatTraceAsString($e)
     {
+        if (! empty($this->xdebugReplacements)) {
+            return implode("\n", array_map(function ($track) {
+                $track = explode(' ', $track);
+                if (isset($track[1])) {
+                    $track[1] = $this->normalizeFilePath($track[1]);
+                }
+
+                return implode(' ', $track);
+            }, explode("\n", $e->getTraceAsString())));
+        }
+
         return $e->getTraceAsString();
     }
+
     /**
      * Returns Throwable data as an array
      *
