@@ -433,8 +433,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var formatDuration = function(seconds) {
                     if (seconds < 0.001)
                         return (seconds * 1000000).toFixed() + 'μs';
-                    else if (seconds < 1)
+                    else if (seconds < 0.1)
                         return (seconds * 1000).toFixed(2) + 'ms';
+                    else if (seconds < 1)
+                        return (seconds * 1000).toFixed() + 'ms';
                     return (seconds).toFixed(2) +  's';
                 };
 
