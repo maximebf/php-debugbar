@@ -518,7 +518,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     $.each(aggregate, function(i, aggregate) {
                         width = Math.min((aggregate.data.duration * 100 / data.duration).toFixed(2), 100);
 
-                        aggregateTable.append('<tr><td class="' + csscls('name') + '">' + aggregate.data.count + ' x ' + aggregate.label + ' (' + width + '%)</td><td class="' + csscls('value') + '">' +
+                        aggregateTable.append('<tr><td class="' + csscls('name') + '">' +
+                            aggregate.data.count + ' x ' + $('<i />').text(aggregate.label).html() + ' (' + width + '%)</td><td class="' + csscls('value') + '">' +
                             '<div class="' + csscls('measure') +'">' +
                                 '<span class="' + csscls('value') + '"></span>' +
                                 '<span class="' + csscls('label') + '">' + formatDuration(aggregate.data.duration) + (aggregate.data.memory ? '/' + formatBytes(aggregate.data.memory) : '') + '</span>' +
