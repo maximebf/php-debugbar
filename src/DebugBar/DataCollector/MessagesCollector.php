@@ -195,7 +195,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     /**
      * Interpolates context values into the message placeholders.
      *
-     * @param $message
+     * @param string $message
      * @param array $context
      * @return string
      */
@@ -204,9 +204,24 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
         // build a replacement array with braces around the context keys
         $replace = array();
         foreach ($context as $key => $val) {
+            $placeholder = '{' . $key . '}';
+            if (strpos($message, $placeholder) === false) {
+                continue;
+            }
             // check that the value can be cast to string
-            if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
-                $replace['{' . $key . '}'] = $val;
+            if (null === $val || is_scalar($val) || (is_object($val) && method_exists($val, "__toString"))) {
+                $replace[$placeholder] = $val;
+            } elseif ($val instanceof \DateTimeInterface) {
+                $replace[$placeholder] = $val->format("Y-m-d\TH:i:s.uP");
+            } elseif ($val instanceof \UnitEnum) {
+                $replace[$placeholder] = $val instanceof \BackedEnum ? $val->value : $val->name;
+            } elseif (is_object($val)) {
+                $replace[$placeholder] = '[object ' . $this->getDataFormatter()->formatClassName($val) . ']';
+            } elseif (is_array($val)) {
+                $json = @json_encode($val);
+                $replace[$placeholder] = false === $json ? 'null' : 'array' . $json;
+            } else {
+                $replace[$placeholder] = '['.gettype($val).']';
             }
         }
 
