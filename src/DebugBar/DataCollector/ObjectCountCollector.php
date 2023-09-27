@@ -32,14 +32,15 @@ class ObjectCountCollector extends DataCollector implements DataCollectorInterfa
 
     /**
      * @param string|mixed $class
+     * @param int $count
      */
-    public function countClass($class) {
+    public function countClass($class, $count = 1) {
         if (! is_string($class)) {
             $class = get_class($class);
         }
 
-        $this->classList[$class] = ($this->classList[$class] ?? 0) + 1;
-        $this->classCount++;
+        $this->classList[$class] = ($this->classList[$class] ?? 0) + $count;
+        $this->classCount += $count;
     }
 
     /**
@@ -47,14 +48,14 @@ class ObjectCountCollector extends DataCollector implements DataCollectorInterfa
      */
     public function collect()
     {
-        ksort($this->classList, SORT_NUMERIC);
+        arsort($this->classList, SORT_NUMERIC);
 
         if (! $this->getXdebugLinkTemplate()) {
-            return ['data' => array_reverse($this->classList), 'count' => $this->classCount];
+            return ['data' => $this->classList, 'count' => $this->classCount, 'is_counter' => true];
         }
 
         $data = [];
-        foreach (array_reverse($this->classList) as $class => $count) {
+        foreach ($this->classList as $class => $count) {
             $reflector = class_exists($class) ? new \ReflectionClass($class) : null;
 
             if ($reflector && $link = $this->getXdebugLink($reflector->getFileName())) {
@@ -64,7 +65,7 @@ class ObjectCountCollector extends DataCollector implements DataCollectorInterfa
             }
         }
 
-        return ['data' => $data, 'count' => $this->classCount];
+        return ['data' => $data, 'count' => $this->classCount, 'is_counter' => true];
     }
 
     /**
