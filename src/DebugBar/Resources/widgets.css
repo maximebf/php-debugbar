@@ -98,6 +98,18 @@ div.phpdebugbar-widgets-messages {
     width: 100%;
     background: #fff;
   }
+  div.phpdebugbar-widgets-messages li .phpdebugbar-widgets-label-called-from {
+    float: right;
+    color: #666;
+    padding-left: 5px;
+    border-bottom: 1px dotted #666;
+  }
+  div.phpdebugbar-widgets-messages li .phpdebugbar-widgets-label-called-from:before {
+    content: "\f08d";
+    font-family: PhpDebugbarFontAwesome;
+    margin-right: 4px;
+    font-size: 12px;
+  }
     div.phpdebugbar-widgets-messages div.phpdebugbar-widgets-toolbar input {
       border: 0;
       margin: 0;

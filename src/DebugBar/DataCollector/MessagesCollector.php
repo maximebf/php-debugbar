@@ -33,12 +33,21 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     // may support yet - so return false by default for now.
     protected $useHtmlVarDumper = false;
 
+    /** @var bool */
+    protected $collectFile = false;
+
     /**
      * @param string $name
      */
     public function __construct($name = 'messages')
     {
         $this->name = $name;
+    }
+
+    /** @return void */
+    public function collectFileTrace($enabled = true)
+    {
+        $this->collectFile = $enabled;
     }
 
     /**
@@ -134,13 +143,35 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             }
             $isString = false;
         }
-        $this->messages[] = array(
+
+        $stackItem = [];
+        if ($this->collectFile) {
+            $stacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
+            $stackItem = $stacktrace[0];
+            foreach ($stacktrace as $trace) {
+                if (strpos($trace['file'], '/vendor/') !== false) {
+                    continue;
+                }
+
+                $stackItem = $trace;
+                break;
+            }
+        }
+
+        if (!empty($stackItem)) {
+            $stackItem = [
+                'file_name' => $stackItem['file'],
+                'file_line' => $stackItem['line'],
+            ];
+        }
+
+        $this->messages[] = array_merge(array(
             'message' => $messageText,
             'message_html' => $messageHtml,
             'is_string' => $isString,
             'label' => $label,
             'time' => microtime(true)
-        );
+        ), $stackItem);
     }
 
     /**
@@ -150,6 +181,10 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function aggregate(MessagesAggregateInterface $messages)
     {
+        if ($this->collectFile && method_exists($messages, 'collectFileTrace')) {
+            $messages->collectFileTrace();
+        }
+
         $this->aggregates[] = $messages;
     }
 
