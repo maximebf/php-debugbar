@@ -14,8 +14,8 @@ $debugbar['messages']->aggregate(new SwiftLogCollector($mailer));
 $debugbar->addCollector(new SwiftMailCollector($mailer));
 
 $message = Swift_Message::newInstance('Wonderful Subject')
-  ->setFrom(array('john@doe.com' => 'John Doe'))
-  ->setTo(array('receiver@domain.org', 'other@domain.org' => 'A name'))
+  ->setFrom(['john@doe.com' => 'John Doe'])
+  ->setTo(['receiver@domain.org', 'other@domain.org' => 'A name'])
   ->setBody('Here is the message itself');
 
 $mailer->send($message);

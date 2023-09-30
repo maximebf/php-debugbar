@@ -38,7 +38,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
 {
     protected $logger;
 
-    protected $statements = array();
+    protected $statements = [];
 
     protected $accumulatedTime = 0;
 
@@ -57,7 +57,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
         $config->setParameter('debugpdo.logging.details.method.enabled', true);
         $config->setParameter('debugpdo.logging.details.time.enabled', true);
         $config->setParameter('debugpdo.logging.details.mem.enabled', true);
-        $allMethods = array(
+        $allMethods = [
             'PropelPDO::__construct',       // logs connection opening
             'PropelPDO::__destruct',        // logs connection close
             'PropelPDO::exec',              // logs a query
@@ -66,7 +66,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             'PropelPDO::commit',            // logs a transaction commit
             'PropelPDO::rollBack',          // logs a transaction rollBack (watch out for the capital 'B')
             'DebugPDOStatement::execute',   // logs a query from a prepared statement
-        );
+        ];
         $config->setParameter('debugpdo.logging.methods', $allMethods, false);
     }
 
@@ -139,7 +139,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
     public function log($message, $severity = null)
     {
         if (strpos($message, 'DebugPDOStatement::execute') !== false) {
-            list($sql, $duration_str) = $this->parseAndLogSqlQuery($message);
+            [$sql, $duration_str] = $this->parseAndLogSqlQuery($message);
             if (!$this->logQueriesToLogger) {
                 return;
             }
@@ -159,7 +159,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
      */
     protected function convertLogLevel($level)
     {
-        $map = array(
+        $map = [
             Propel::LOG_EMERG => LogLevel::EMERGENCY,
             Propel::LOG_ALERT => LogLevel::ALERT,
             Propel::LOG_CRIT => LogLevel::CRITICAL,
@@ -167,7 +167,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             Propel::LOG_WARNING => LogLevel::WARNING,
             Propel::LOG_NOTICE => LogLevel::NOTICE,
             Propel::LOG_DEBUG => LogLevel::DEBUG
-        );
+        ];
         return $map[$level];
     }
 
@@ -196,22 +196,22 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             }
         }
 
-        $this->statements[] = array(
+        $this->statements[] = [
             'sql' => $sql,
             'is_success' => true,
             'duration' => $duration,
             'duration_str' => $this->formatDuration($duration),
             'memory' => $memory,
             'memory_str' => $this->formatBytes($memory)
-        );
+        ];
         $this->accumulatedTime += $duration;
         $this->peakMemory = max($this->peakMemory, $memory);
-        return array($sql, $this->formatDuration($duration));
+        return [$sql, $this->formatDuration($duration)];
     }
 
     public function collect()
     {
-        return array(
+        return [
             'nb_statements' => count($this->statements),
             'nb_failed_statements' => 0,
             'accumulated_duration' => $this->accumulatedTime,
@@ -219,7 +219,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             'peak_memory_usage' => $this->peakMemory,
             'peak_memory_usage_str' => $this->formatBytes($this->peakMemory),
             'statements' => $this->statements
-        );
+        ];
     }
 
     public function getName()
@@ -229,25 +229,25 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
 
     public function getWidgets()
     {
-        return array(
-            "propel" => array(
+        return [
+            "propel" => [
                 "icon" => "bolt",
                 "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
                 "map" => "propel",
                 "default" => "[]"
-            ),
-            "propel:badge" => array(
+            ],
+            "propel:badge" => [
                 "map" => "propel.nb_statements",
                 "default" => 0
-            )
-        );
+            ]
+        ];
     }
 
     public function getAssets()
     {
-        return array(
+        return [
             'css' => 'widgets/sqlqueries/widget.css',
             'js' => 'widgets/sqlqueries/widget.js'
-        );
+        ];
     }
 }

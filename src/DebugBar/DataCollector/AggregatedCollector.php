@@ -31,7 +31,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
 
     protected $sort;
 
-    protected $collectors = array();
+    protected $collectors = [];
 
     /**
      * @param string $name
@@ -105,7 +105,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
      */
     public function collect() : array
     {
-        $aggregate = array();
+        $aggregate = [];
         foreach ($this->collectors as $collector) {
             $data = $collector->collect();
             if ($this->mergeProperty !== null) {
@@ -128,10 +128,7 @@ class AggregatedCollector implements DataCollectorInterface, ArrayAccess
         if (is_string($this->sort)) {
             $p = $this->sort;
             usort($data, function ($a, $b) use ($p) {
-                if ($a[$p] == $b[$p]) {
-                    return 0;
-                }
-                return $a[$p] < $b[$p] ? -1 : 1;
+                return $a[$p] <=> $b[$p];
             });
         } elseif ($this->sort === true) {
             sort($data);

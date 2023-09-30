@@ -33,18 +33,18 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
 
     public function collect()
     {
-        $mails = array();
+        $mails = [];
         foreach ($this->messagesLogger->getMessages() as $msg) {
-            $mails[] = array(
+            $mails[] = [
                 'to' => $this->formatTo($msg->getTo()),
                 'subject' => $msg->getSubject(),
                 'headers' => $msg->getHeaders()->toString()
-            );
+            ];
         }
-        return array(
+        return [
             'count' => count($mails),
             'mails' => $mails
-        );
+        ];
     }
 
     protected function formatTo($to)
@@ -53,7 +53,7 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
             return '';
         }
 
-        $f = array();
+        $f = [];
         foreach ($to as $k => $v) {
             $f[] = (empty($v) ? '' : "$v ") . "<$k>";
         }
@@ -67,26 +67,26 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
 
     public function getWidgets()
     {
-        return array(
-            'emails' => array(
+        return [
+            'emails' => [
                 'icon' => 'inbox',
                 'widget' => 'PhpDebugBar.Widgets.MailsWidget',
                 'map' => 'swiftmailer_mails.mails',
                 'default' => '[]',
                 'title' => 'Mails'
-            ),
-            'emails:badge' => array(
+            ],
+            'emails:badge' => [
                 'map' => 'swiftmailer_mails.count',
                 'default' => 'null'
-            )
-        );
+            ]
+        ];
     }
 
     public function getAssets()
     {
-        return array(
+        return [
             'css' => 'widgets/mails/widget.css',
             'js' => 'widgets/mails/widget.js'
-        );
+        ];
     }
 }

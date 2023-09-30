@@ -34,10 +34,10 @@ class TraceableTwigTemplate extends Twig_Template implements Twig_TemplateInterf
 
     public function __call($name, $arguments)
     {
-        return call_user_func_array(array($this->template, $name), $arguments);
+        return call_user_func_array([$this->template, $name], $arguments);
     }
 
-    public function doDisplay(array $context, array $blocks = array())
+    public function doDisplay(array $context, array $blocks = [])
     {
         return $this->template->doDisplay($context, $blocks);
     }
@@ -62,22 +62,22 @@ class TraceableTwigTemplate extends Twig_Template implements Twig_TemplateInterf
         return $this->template->isTraitable();
     }
 
-    public function displayParentBlock($name, array $context, array $blocks = array())
+    public function displayParentBlock($name, array $context, array $blocks = [])
     {
         $this->template->displayParentBlock($name, $context, $blocks);
     }
 
-    public function displayBlock($name, array $context, array $blocks = array(), $useBlocks = true)
+    public function displayBlock($name, array $context, array $blocks = [], $useBlocks = true)
     {
         $this->template->displayBlock($name, $context, $blocks, $useBlocks);
     }
 
-    public function renderParentBlock($name, array $context, array $blocks = array())
+    public function renderParentBlock($name, array $context, array $blocks = [])
     {
         return $this->template->renderParentBlock($name, $context, $blocks);
     }
 
-    public function renderBlock($name, array $context, array $blocks = array(), $useBlocks = true)
+    public function renderBlock($name, array $context, array $blocks = [], $useBlocks = true)
     {
         return $this->template->renderBlock($name, $context, $blocks, $useBlocks);
     }
@@ -97,7 +97,7 @@ class TraceableTwigTemplate extends Twig_Template implements Twig_TemplateInterf
         return $this->template->getBlocks();
     }
 
-    public function display(array $context, array $blocks = array())
+    public function display(array $context, array $blocks = [])
     {
         $start = microtime(true);
         $this->template->display($context, $blocks);
@@ -108,10 +108,10 @@ class TraceableTwigTemplate extends Twig_Template implements Twig_TemplateInterf
             $timeDataCollector->addMeasure($name, $start, $end);
         }
 
-        $this->env->addRenderedTemplate(array(
+        $this->env->addRenderedTemplate([
             'name' => $this->template->getTemplateName(),
             'render_time' => $end - $start
-        ));
+        ]);
     }
 
     public function render(array $context)
@@ -120,7 +120,7 @@ class TraceableTwigTemplate extends Twig_Template implements Twig_TemplateInterf
         ob_start();
         try {
             $this->display($context);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             while (ob_get_level() > $level) {
                 ob_end_clean();
             }

@@ -31,12 +31,12 @@ class TimeDataCollector extends DataCollector implements Renderable
     /**
      * @var array
      */
-    protected $startedMeasures = array();
+    protected $startedMeasures = [];
 
     /**
      * @var array
      */
-    protected $measures = array();
+    protected $measures = [];
 
     /**
      * @var bool
@@ -76,12 +76,12 @@ class TimeDataCollector extends DataCollector implements Renderable
     public function startMeasure($name, $label = null, $collector = null)
     {
         $start = microtime(true);
-        $this->startedMeasures[$name] = array(
+        $this->startedMeasures[$name] = [
             'label' => $label ?: $name,
             'start' => $start,
             'memory' => $this->memoryMeasure ? memory_get_usage(false) : null,
             'collector' => $collector
-        );
+        ];
     }
 
     /**
@@ -102,13 +102,13 @@ class TimeDataCollector extends DataCollector implements Renderable
      * @param array $params
      * @throws DebugBarException
      */
-    public function stopMeasure($name, $params = array())
+    public function stopMeasure($name, $params = [])
     {
         $end = microtime(true);
         if (!$this->hasStartedMeasure($name)) {
             throw new DebugBarException("Failed stopping measure '$name' because it hasn't been started");
         }
-        if (! is_null($this->startedMeasures[$name]['memory'])) {
+        if (!is_null($this->startedMeasures[$name]['memory'])) {
             $params['memoryUsage'] = memory_get_usage(false) - $this->startedMeasures[$name]['memory'];
         }
         $this->addMeasure(
@@ -130,14 +130,14 @@ class TimeDataCollector extends DataCollector implements Renderable
      * @param array $params
      * @param string|null $collector
      */
-    public function addMeasure($label, $start, $end, $params = array(), $collector = null)
+    public function addMeasure($label, $start, $end, $params = [], $collector = null)
     {
         if (isset($params['memoryUsage'])) {
             $memory = $this->memoryMeasure ? $params['memoryUsage'] : 0;
             unset($params['memoryUsage']);
         }
 
-        $this->measures[] = array(
+        $this->measures[] = [
             'label' => $label,
             'start' => $start,
             'relative_start' => $start - $this->requestStartTime,
@@ -149,7 +149,7 @@ class TimeDataCollector extends DataCollector implements Renderable
             'memory_str' => $this->getDataFormatter()->formatBytes($memory ?? 0),
             'params' => $params,
             'collector' => $collector
-        );
+        ];
     }
 
     /**
@@ -165,7 +165,7 @@ class TimeDataCollector extends DataCollector implements Renderable
         $name = spl_object_hash($closure);
         $this->startMeasure($name, $label, $collector);
         $result = $closure();
-        $params = is_array($result) ? $result : array();
+        $params = is_array($result) ? $result : [];
         $this->stopMeasure($name, $params);
         return $result;
     }
@@ -224,20 +224,17 @@ class TimeDataCollector extends DataCollector implements Renderable
             $this->stopMeasure($name);
         }
 
-        usort($this->measures, function($a, $b) {
-            if ($a['start'] == $b['start']) {
-                return 0;
-            }
-            return $a['start'] < $b['start'] ? -1 : 1;
+        usort($this->measures, function ($a, $b) {
+            return $a['start'] <=> $b['start'];
         });
 
-        return array(
+        return [
             'start' => $this->requestStartTime,
             'end' => $this->requestEndTime,
             'duration' => $this->getRequestDuration(),
             'duration_str' => $this->getDataFormatter()->formatDuration($this->getRequestDuration()),
             'measures' => array_values($this->measures)
-        );
+        ];
     }
 
     /**
@@ -253,19 +250,19 @@ class TimeDataCollector extends DataCollector implements Renderable
      */
     public function getWidgets()
     {
-        return array(
-            "time" => array(
+        return [
+            "time" => [
                 "icon" => "clock-o",
                 "tooltip" => "Request Duration",
                 "map" => "time.duration_str",
                 "default" => "'0ms'"
-            ),
-            "timeline" => array(
+            ],
+            "timeline" => [
                 "icon" => "tasks",
                 "widget" => "PhpDebugBar.Widgets.TimelineWidget",
                 "map" => "time",
                 "default" => "{}"
-            )
-        );
+            ]
+        ];
     }
 }

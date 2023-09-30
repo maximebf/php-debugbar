@@ -48,12 +48,12 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
     /**
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * @var int
@@ -65,7 +65,7 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
      */
     public function __construct(
         ConnectionInterface $connection,
-        array $logMethods = array(
+        array $logMethods = [
             'beginTransaction',
             'commit',
             'rollBack',
@@ -73,7 +73,7 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
             'exec',
             'query',
             'execute'
-        )
+        ]
     ) {
         if ($connection instanceof ProfilerConnectionWrapper) {
             $connection->setLogMethods($logMethods);
@@ -140,24 +140,24 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
      */
     protected function getStatements($records, $config)
     {
-        $statements = array();
+        $statements = [];
         foreach ($records as $record) {
             $duration = null;
             $memory = null;
 
             $isSuccess = ( LogLevel::INFO === strtolower($record['level_name']) );
 
-            $detailsCount = count($config['details']);
+            $detailsCount = is_array($config['details']) || $config['details'] instanceof \Countable ? count($config['details']) : 0;
             $parameters = explode($config['outerGlue'], $record['message'], $detailsCount + 1);
             if (count($parameters) === ($detailsCount + 1)) {
                 $parameters = array_map('trim', $parameters);
-                $_details = array();
+                $_details = [];
                 foreach (array_splice($parameters, 0, $detailsCount) as $string) {
-                    list($key, $value) = array_map('trim', explode($config['innerGlue'], $string, 2));
+                    [$key, $value] = array_map('trim', explode($config['innerGlue'], $string, 2));
                     $_details[$key] = $value;
                 }
 
-                $details = array();
+                $details = [];
                 foreach ($config['details'] as $key => $detail) {
                     if (isset($_details[$detail['name']])) {
                         $value = $_details[$detail['name']];
@@ -168,12 +168,12 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
                                 $value = (float)$value;
                             }
                         } else {
-                            $suffixes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+                            $suffixes = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
                             $suffix = substr($value, -2);
                             $i = array_search($suffix, $suffixes, true);
                             $i = (false === $i) ? 0 : $i;
 
-                            $value = ((float)$value) * pow(1024, $i);
+                            $value = ((float)$value) * 1024 ** $i;
                         }
                         $details[$key] = $value;
                     }
@@ -196,14 +196,14 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
                 $message = $record['message'];
             }
 
-            $statement = array(
+            $statement = [
                 'sql' => $message,
                 'is_success' => $isSuccess,
                 'duration' => $duration,
                 'duration_str' => $this->getDataFormatter()->formatDuration($duration),
                 'memory' => $memory,
                 'memory_str' => $this->getDataFormatter()->formatBytes($memory),
-            );
+            ];
 
             if (false === $isSuccess) {
                 $statement['sql'] = '';
@@ -222,17 +222,17 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
     public function collect()
     {
         if (count($this->errors)) {
-            return array(
+            return [
                 'statements' => array_map(function ($message) {
-                    return array('sql' => '', 'is_success' => false, 'error_code' => 500, 'error_message' => $message);
+                    return ['sql' => '', 'is_success' => false, 'error_code' => 500, 'error_message' => $message];
                 }, $this->errors),
                 'nb_statements' => 0,
                 'nb_failed_statements' => count($this->errors),
-            );
+            ];
         }
 
         if ($this->getHandler() === null) {
-            return array();
+            return [];
         }
 
         $statements = $this->getStatements($this->getHandler()->getRecords(), $this->getConfig());
@@ -242,16 +242,16 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
         }));
         $accumulatedDuration = array_reduce($statements, function ($accumulatedDuration, $statement) {
         
-            $time = isset($statement['duration']) ? $statement['duration'] : 0;
+            $time = $statement['duration'] ?? 0;
             return $accumulatedDuration += $time;
         });
         $memoryUsage = array_reduce($statements, function ($memoryUsage, $statement) {
         
-            $time = isset($statement['memory']) ? $statement['memory'] : 0;
+            $time = $statement['memory'] ?? 0;
             return $memoryUsage += $time;
         });
 
-        return array(
+        return [
             'nb_statements' => $this->getQueryCount(),
             'nb_failed_statements' => $failedStatement,
             'accumulated_duration' => $accumulatedDuration,
@@ -259,7 +259,7 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
             'memory_usage' => $memoryUsage,
             'memory_usage_str' => $this->getDataFormatter()->formatBytes($memoryUsage),
             'statements' => $statements
-        );
+        ];
     }
 
     /**
@@ -280,18 +280,18 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
      */
     public function getWidgets()
     {
-        return array(
-            $this->getName() => array(
+        return [
+            $this->getName() => [
                 'icon' => 'bolt',
                 'widget' => 'PhpDebugBar.Widgets.SQLQueriesWidget',
                 'map' => $this->getName(),
                 'default' => '[]'
-            ),
-            $this->getName().':badge' => array(
+            ],
+            $this->getName().':badge' => [
                 'map' => $this->getName().'.nb_statements',
                 'default' => 0
-            ),
-        );
+            ]
+        ];
     }
 
     /**
@@ -299,9 +299,9 @@ class Propel2Collector extends DataCollector implements Renderable, AssetProvide
      */
     public function getAssets()
     {
-        return array(
+        return [
             'css' => 'widgets/sqlqueries/widget.css',
             'js' => 'widgets/sqlqueries/widget.js'
-        );
+        ];
     }
 }

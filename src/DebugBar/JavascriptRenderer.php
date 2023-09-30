@@ -20,15 +20,15 @@ use DebugBar\DataCollector\Renderable;
  */
 class JavascriptRenderer
 {
-    const INITIALIZE_CONSTRUCTOR = 2;
+    public const INITIALIZE_CONSTRUCTOR = 2;
 
-    const INITIALIZE_CONTROLS = 4;
+    public const INITIALIZE_CONTROLS = 4;
 
-    const REPLACEABLE_TAG = "{--DEBUGBAR_OB_START_REPLACE_ME--}";
+    public const REPLACEABLE_TAG = "{--DEBUGBAR_OB_START_REPLACE_ME--}";
 
-    const RELATIVE_PATH = 'path';
+    public const RELATIVE_PATH = 'path';
 
-    const RELATIVE_URL = 'url';
+    public const RELATIVE_URL = 'url';
 
     protected $debugBar;
 
@@ -36,23 +36,17 @@ class JavascriptRenderer
 
     protected $basePath;
 
-    protected $cssVendors = array(
-        'fontawesome' => 'vendor/font-awesome/css/font-awesome.min.css',
-        'highlightjs' => 'vendor/highlightjs/styles/github.css'
-    );
+    protected $cssVendors = ['fontawesome' => 'vendor/font-awesome/css/font-awesome.min.css', 'highlightjs' => 'vendor/highlightjs/styles/github.css'];
 
-    protected $jsVendors = array(
-        'jquery' => 'vendor/jquery/dist/jquery.min.js',
-        'highlightjs' => 'vendor/highlightjs/highlight.pack.js'
-    );
+    protected $jsVendors = ['jquery' => 'vendor/jquery/dist/jquery.min.js', 'highlightjs' => 'vendor/highlightjs/highlight.pack.js'];
 
     protected $includeVendors = true;
 
-    protected $cssFiles = array('debugbar.css', 'widgets.css', 'openhandler.css');
+    protected $cssFiles = ['debugbar.css', 'widgets.css', 'openhandler.css'];
 
-    protected $jsFiles = array('debugbar.js', 'widgets.js', 'openhandler.js');
+    protected $jsFiles = ['debugbar.js', 'widgets.js', 'openhandler.js'];
 
-    protected $additionalAssets = array();
+    protected $additionalAssets = [];
 
     protected $javascriptClass = 'PhpDebugBar.DebugBar';
 
@@ -64,9 +58,9 @@ class JavascriptRenderer
 
     protected $initialization;
 
-    protected $controls = array();
+    protected $controls = [];
 
-    protected $ignoredCollectors = array();
+    protected $ignoredCollectors = [];
 
     protected $ajaxHandlerClass = 'PhpDebugBar.AjaxHandler';
 
@@ -243,7 +237,7 @@ class JavascriptRenderer
     public function setIncludeVendors($enabled = true)
     {
         if (is_string($enabled)) {
-            $enabled = array($enabled);
+            $enabled = [$enabled];
         }
         $this->includeVendors = $enabled;
 
@@ -410,7 +404,7 @@ class JavascriptRenderer
      */
     public function addControl($name, array $options)
     {
-        if (count(array_intersect(array_keys($options), array('icon', 'widget', 'tab', 'indicator'))) === 0) {
+        if (count(array_intersect(array_keys($options), ['icon', 'widget', 'tab', 'indicator'])) === 0) {
             throw new DebugBarException("Not enough options for control '$name'");
         }
         $this->controls[$name] = $options;
@@ -644,12 +638,12 @@ class JavascriptRenderer
      */
     public function addAssets($cssFiles, $jsFiles, $basePath = null, $baseUrl = null)
     {
-        $this->additionalAssets[] = array(
+        $this->additionalAssets[] = [
             'base_path' => $basePath,
             'base_url' => $baseUrl,
-            'css' => (array) $cssFiles,
-            'js' => (array) $jsFiles
-        );
+            'css' => (array)$cssFiles,
+            'js' => (array)$jsFiles
+        ];
         return $this;
     }
 
@@ -672,11 +666,11 @@ class JavascriptRenderer
      */
     public function addInlineAssets($inlineCss, $inlineJs, $inlineHead)
     {
-        $this->additionalAssets[] = array(
-            'inline_css' => (array) $inlineCss,
-            'inline_js' => (array) $inlineJs,
-            'inline_head' => (array) $inlineHead
-        );
+        $this->additionalAssets[] = [
+            'inline_css' => (array)$inlineCss,
+            'inline_js' => (array)$inlineJs,
+            'inline_head' => (array)$inlineHead
+        ];
         return $this;
     }
 
@@ -691,9 +685,9 @@ class JavascriptRenderer
     {
         $cssFiles = $this->cssFiles;
         $jsFiles = $this->jsFiles;
-        $inlineCss = array();
-        $inlineJs = array();
-        $inlineHead = array();
+        $inlineCss = [];
+        $inlineJs = [];
+        $inlineHead = [];
 
         if ($this->includeVendors !== false) {
             if ($this->includeVendors === true || in_array('css', $this->includeVendors)) {
@@ -719,8 +713,8 @@ class JavascriptRenderer
         }
 
         foreach ($additionalAssets as $assets) {
-            $basePath = isset($assets['base_path']) ? $assets['base_path'] : '';
-            $baseUrl = isset($assets['base_url']) ? $assets['base_url'] : '';
+            $basePath = $assets['base_path'] ?? '';
+            $baseUrl = $assets['base_url'] ?? '';
             $root = $this->getRelativeRoot($relativeTo,
                 $this->makeUriRelativeTo($basePath, $this->basePath),
                 $this->makeUriRelativeTo($baseUrl, $this->baseUrl));
@@ -746,7 +740,7 @@ class JavascriptRenderer
         $cssFiles = array_unique($cssFiles);
         $jsFiles = array_unique($jsFiles);
 
-        return $this->filterAssetArray(array($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead), $type ?? '');
+        return $this->filterAssetArray([$cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead], $type ?? '');
     }
 
     /**
@@ -782,7 +776,7 @@ class JavascriptRenderer
         }
 
         if (is_array($uri)) {
-            $uris = array();
+            $uris = [];
             foreach ($uri as $u) {
                 $uris[] = $this->makeUriRelativeTo($u, $root);
             }
@@ -806,7 +800,7 @@ class JavascriptRenderer
      */
     protected function filterAssetArray($array, $type = '')
     {
-        $types = array('css', 'js', 'inline_css', 'inline_js', 'inline_head');
+        $types = ['css', 'js', 'inline_css', 'inline_js', 'inline_head'];
         $typeIndex = array_search(strtolower($type ?? ''), $types);
         return $typeIndex !== false ? $array[$typeIndex] : $array;
     }
@@ -823,15 +817,15 @@ class JavascriptRenderer
      */
     public function getAsseticCollection($type = null)
     {
-        $types = array('css', 'js', 'inline_head');
+        $types = ['css', 'js', 'inline_head'];
         $typeIndex = array_search(strtolower($type), $types);
 
-        list($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead) = $this->getAssets();
-        $collections = array(
+        [$cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead] = $this->getAssets();
+        $collections = [
             $this->createAsseticCollection($cssFiles, $inlineCss),
             $this->createAsseticCollection($jsFiles, $inlineJs),
             $this->createAsseticCollection(null, $inlineHead)
-        );
+        ];
         return $typeIndex !== false ? $collections[$typeIndex] : $collections;
     }
 
@@ -846,7 +840,7 @@ class JavascriptRenderer
      */
     protected function createAsseticCollection($files = null, $content = null)
     {
-        $assets = array();
+        $assets = [];
         if ($files) {
             foreach ($files as $file) {
                 $assets[] = new \Assetic\Asset\FileAsset($file);
@@ -931,7 +925,7 @@ class JavascriptRenderer
      */
     public function renderHead()
     {
-        list($cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead) = $this->getAssets(null, self::RELATIVE_URL);
+        [$cssFiles, $jsFiles, $inlineCss, $inlineJs, $inlineHead] = $this->getAssets(null, self::RELATIVE_URL);
         $html = '';
 
         $nonce = $this->getNonceAttribute();
@@ -974,7 +968,7 @@ class JavascriptRenderer
      */
     public function renderOnShutdown($here = true, $initialize = true, $renderStackedData = true, $head = false)
     {
-        register_shutdown_function(array($this, "replaceTagInBuffer"), $here, $initialize, $renderStackedData, $head);
+        register_shutdown_function([$this, "replaceTagInBuffer"], $here, $initialize, $renderStackedData, $head);
 
         if (ob_get_level() === 0) {
             ob_start();
@@ -1095,7 +1089,7 @@ class JavascriptRenderer
         if ($this->openHandlerUrl !== null) {
             $js .= sprintf("%s.setOpenHandler(new %s(%s));\n", $this->variableName,
                 $this->openHandlerClass,
-                json_encode(array("url" => $this->openHandlerUrl)));
+                json_encode(["url" => $this->openHandlerUrl]));
         }
 
         return $js;
@@ -1112,11 +1106,11 @@ class JavascriptRenderer
     protected function getJsControlsDefinitionCode($varname)
     {
         $js = '';
-        $dataMap = array();
-        $excludedOptions = array('indicator', 'tab', 'map', 'default', 'widget', 'position');
+        $dataMap = [];
+        $excludedOptions = ['indicator', 'tab', 'map', 'default', 'widget', 'position'];
 
         // finds controls provided by collectors
-        $widgets = array();
+        $widgets = [];
         foreach ($this->debugBar->getCollectors() as $collector) {
             if (($collector instanceof Renderable) && !in_array($collector->getName(), $this->ignoredCollectors)) {
                 if ($w = $collector->getWidgets()) {
@@ -1136,7 +1130,7 @@ class JavascriptRenderer
                 $js .= sprintf("%s.addTab(\"%s\", new %s({%s%s}));\n",
                     $varname,
                     $name,
-                    isset($options['tab']) ? $options['tab'] : 'PhpDebugBar.DebugBar.Tab',
+                    $options['tab'] ?? 'PhpDebugBar.DebugBar.Tab',
                     substr(json_encode($opts, JSON_FORCE_OBJECT), 1, -1),
                     isset($options['widget']) ? sprintf('%s"widget": new %s()', count($opts) ? ', ' : '', $options['widget']) : ''
                 );
@@ -1144,19 +1138,19 @@ class JavascriptRenderer
                 $js .= sprintf("%s.addIndicator(\"%s\", new %s(%s), \"%s\");\n",
                     $varname,
                     $name,
-                    isset($options['indicator']) ? $options['indicator'] : 'PhpDebugBar.DebugBar.Indicator',
+                    $options['indicator'] ?? 'PhpDebugBar.DebugBar.Indicator',
                     json_encode($opts, JSON_FORCE_OBJECT),
-                    isset($options['position']) ? $options['position'] : 'right'
+                    $options['position'] ?? 'right'
                 );
             }
 
             if (isset($options['map']) && isset($options['default'])) {
-                $dataMap[$name] = array($options['map'], $options['default']);
+                $dataMap[$name] = [$options['map'], $options['default']];
             }
         }
 
         // creates the data mapping object
-        $mapJson = array();
+        $mapJson = [];
         foreach ($dataMap as $name => $values) {
             $mapJson[] = sprintf('"%s": ["%s", %s]', $name, $values[0], $values[1]);
         }

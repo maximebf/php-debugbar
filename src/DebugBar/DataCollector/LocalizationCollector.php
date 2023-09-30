@@ -40,10 +40,7 @@ class LocalizationCollector extends DataCollector implements Renderable
      */
     public function collect()
     {
-        return array(
-          'locale' => $this->getLocale(),
-          'domain' => $this->getDomain(),
-        );
+        return ['locale' => $this->getLocale(), 'domain' => $this->getDomain()];
     }
 
     /**
@@ -59,15 +56,15 @@ class LocalizationCollector extends DataCollector implements Renderable
      */
     public function getWidgets()
     {
-        return array(
-            'domain' => array(
+        return [
+            'domain' => [
                 'icon' => 'bookmark',
-                'map'  => 'localization.domain',
-            ),
-            'locale' => array(
+                'map' => 'localization.domain'
+            ],
+            'locale' => [
                 'icon' => 'flag',
-                'map'  => 'localization.locale',
-            )
-        );
+                'map' => 'localization.locale'
+            ]
+        ];
     }
 }

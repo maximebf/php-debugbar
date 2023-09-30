@@ -64,13 +64,13 @@ class MemcachedStorage implements StorageInterface
     /**
      * {@inheritdoc}
      */
-    public function find(array $filters = array(), $max = 20, $offset = 0)
+    public function find(array $filters = [], $max = 20, $offset = 0)
     {
         if (!($keys = $this->memcached->get($this->keyNamespace))) {
-            return array();
+            return [];
         }
 
-        $results = array();
+        $results = [];
         $keys = array_reverse(explode('|', $keys)); // Reverse so newest comes first
         $keyPosition = 0; // Index in $keys to try to get next items from
         $remainingItems = $max + $offset; // Try to obtain this many remaining items

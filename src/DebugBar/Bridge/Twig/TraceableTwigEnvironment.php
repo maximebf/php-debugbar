@@ -31,7 +31,7 @@ class TraceableTwigEnvironment extends Twig_Environment
 {
     protected $twig;
 
-    protected $renderedTemplates = array();
+    protected $renderedTemplates = [];
 
     protected $timeDataCollector;
 
@@ -47,7 +47,7 @@ class TraceableTwigEnvironment extends Twig_Environment
 
     public function __call($name, $arguments)
     {
-        return call_user_func_array(array($this->twig, $name), $arguments);
+        return call_user_func_array([$this->twig, $name], $arguments);
     }
 
     public function getRenderedTemplates()
@@ -145,12 +145,12 @@ class TraceableTwigEnvironment extends Twig_Environment
         return $this->twig->getTemplateClassPrefix();
     }
 
-    public function render($name, array $context = array())
+    public function render($name, array $context = [])
     {
         return $this->loadTemplate($name)->render($context);
     }
 
-    public function display($name, array $context = array())
+    public function display($name, array $context = [])
     {
         $this->loadTemplate($name)->display($context);
     }

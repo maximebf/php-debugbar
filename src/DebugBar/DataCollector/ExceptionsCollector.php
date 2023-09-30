@@ -18,7 +18,7 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
  */
 class ExceptionsCollector extends DataCollector implements Renderable
 {
-    protected $exceptions = array();
+    protected $exceptions = [];
     protected $chainExceptions = false;
 
     // The HTML var dumper requires debug bar users to support the new inline assets, which not all
@@ -95,10 +95,10 @@ class ExceptionsCollector extends DataCollector implements Renderable
 
     public function collect()
     {
-        return array(
+        return [
             'count' => count($this->exceptions),
-            'exceptions' => array_map(array($this, 'formatThrowableData'), $this->exceptions)
-        );
+            'exceptions' => array_map([$this, 'formatThrowableData'], $this->exceptions)
+        ];
     }
 
     /**
@@ -147,7 +147,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             $start = $e->getLine() - 4;
             $lines = array_slice($lines, $start < 0 ? 0 : $start, 7);
         } else {
-            $lines = array("Cannot open the file ($filePath) in which the exception occurred ");
+            $lines = ["Cannot open the file ($filePath) in which the exception occurred "];
         }
 
         $traceHtml = null;
@@ -155,7 +155,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             $traceHtml = $this->getVarDumper()->renderVar($this->formatTrace($e->getTrace()));
         }
 
-        return array(
+        return [
             'type' => get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
@@ -165,7 +165,7 @@ class ExceptionsCollector extends DataCollector implements Renderable
             'stack_trace_html' => $traceHtml,
             'surrounding_lines' => $lines,
             'xdebug_link' => $this->getXdebugLink($filePath, $e->getLine())
-        );
+        ];
     }
 
     /**
@@ -181,17 +181,17 @@ class ExceptionsCollector extends DataCollector implements Renderable
      */
     public function getWidgets()
     {
-        return array(
-            'exceptions' => array(
+        return [
+            'exceptions' => [
                 'icon' => 'bug',
                 'widget' => 'PhpDebugBar.Widgets.ExceptionsWidget',
                 'map' => 'exceptions.exceptions',
                 'default' => '[]'
-            ),
-            'exceptions:badge' => array(
+            ],
+            'exceptions:badge' => [
                 'map' => 'exceptions.count',
                 'default' => 'null'
-            )
-        );
+            ]
+        ];
     }
 }

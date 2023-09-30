@@ -55,24 +55,24 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
      */
     public function collect()
     {
-        $queries = array();
+        $queries = [];
         $totalExecTime = 0;
         foreach ($this->debugStack->queries as $q) {
-            $queries[] = array(
+            $queries[] = [
                 'sql' => $q['sql'],
                 'params' => (object) $q['params'],
                 'duration' => $q['executionMS'],
                 'duration_str' => $this->formatDuration($q['executionMS'])
-            );
+            ];
             $totalExecTime += $q['executionMS'];
         }
 
-        return array(
+        return [
             'nb_statements' => count($queries),
             'accumulated_duration' => $totalExecTime,
             'accumulated_duration_str' => $this->formatDuration($totalExecTime),
             'statements' => $queries
-        );
+        ];
     }
 
     /**
@@ -88,18 +88,18 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
      */
     public function getWidgets()
     {
-        return array(
-            "database" => array(
+        return [
+            "database" => [
                 "icon" => "arrow-right",
                 "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
                 "map" => "doctrine",
                 "default" => "[]"
-            ),
-            "database:badge" => array(
+            ],
+            "database:badge" => [
                 "map" => "doctrine.nb_statements",
                 "default" => 0
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -107,9 +107,9 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
      */
     public function getAssets()
     {
-        return array(
+        return [
             'css' => 'widgets/sqlqueries/widget.css',
             'js' => 'widgets/sqlqueries/widget.js'
-        );
+        ];
     }
 }

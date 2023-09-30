@@ -26,7 +26,7 @@ abstract class DataCollector implements DataCollectorInterface
     protected $varDumper;
     protected $xdebugLinkTemplate = '';
     protected $xdebugShouldUseAjax = false;
-    protected $xdebugReplacements = array();
+    protected $xdebugReplacements = [];
 
     /**
      * Sets the default data formater instance used by all collectors subclassing this class
@@ -224,7 +224,7 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function setEditorLinkTemplate($editor)
     {
-        $editorLinkTemplates = array(
+        $editorLinkTemplates = [
             'sublime' => 'subl://open?url=file://%f&line=%l',
             'textmate' => 'txmt://open?url=file://%f&line=%l',
             'emacs' => 'emacs://open?url=file://%f&line=%l',
@@ -245,7 +245,7 @@ abstract class DataCollector implements DataCollectorInterface
             'atom' => 'atom://core/open/file?filename=%f&line=%l',
             'espresso' => 'x-espresso://open?filepath=%f&lines=%l',
             'netbeans' => 'netbeans://open/?f=%f:%l',
-        );
+        ];
 
         if (is_string($editor) && isset($editorLinkTemplates[$editor])) {
             $this->setXdebugLinkTemplate($editorLinkTemplates[$editor]);

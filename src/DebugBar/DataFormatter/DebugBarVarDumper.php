@@ -16,11 +16,11 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
  */
 class DebugBarVarDumper implements AssetProvider
 {
-    protected static $defaultClonerOptions = array();
+    protected static $defaultClonerOptions = [];
 
-    protected static $defaultDumperOptions = array(
+    protected static $defaultDumperOptions = [
         'expanded_depth' => 0,
-        'styles' => array(
+        'styles' => [
             // NOTE:  'default' CSS is also specified in debugbar.css
             'default' => 'word-wrap: break-word; white-space: pre-wrap; word-break: normal',
             'num' => 'font-weight:bold; color:#1299DA',
@@ -35,8 +35,8 @@ class DebugBarVarDumper implements AssetProvider
             'key' => 'color:#3A9B26',
             'index' => 'color:#1299DA',
             'ellipsis' => 'color:#A0A000',
-        ),
-    );
+        ]
+    ];
 
     protected $clonerOptions;
 
@@ -147,7 +147,7 @@ class DebugBarVarDumper implements AssetProvider
      */
     public function resetClonerOptions($options = null)
     {
-        $this->clonerOptions = ($options ?: array()) + self::$defaultClonerOptions;
+        $this->clonerOptions = ($options ?: []) + self::$defaultClonerOptions;
         $this->cloner = null;
     }
 
@@ -204,7 +204,7 @@ class DebugBarVarDumper implements AssetProvider
      */
     public function resetDumperOptions($options = null)
     {
-        $this->dumperOptions = ($options ?: array()) + self::$defaultDumperOptions;
+        $this->dumperOptions = ($options ?: []) + self::$defaultDumperOptions;
         $this->dumper = null;
     }
 
@@ -226,7 +226,7 @@ class DebugBarVarDumper implements AssetProvider
      */
     protected function getDisplayOptions()
     {
-        $displayOptions = array();
+        $displayOptions = [];
         $dumperOptions = $this->getDumperOptions();
         // Only used by Symfony 3.2 and newer:
         if (isset($dumperOptions['expanded_depth'])) {
@@ -251,7 +251,7 @@ class DebugBarVarDumper implements AssetProvider
      *                        of the data.
      * @return string HTML rendering of the variable.
      */
-    public function renderCapturedVar($capturedData, $seekPath = array())
+    public function renderCapturedVar($capturedData, $seekPath = [])
     {
         $data = unserialize($capturedData);
         if (!method_exists($data, 'seek')) {
@@ -284,11 +284,11 @@ class DebugBarVarDumper implements AssetProvider
     public function getAssets() {
         $dumper = $this->getDumper();
         $dumper->resetDumpHeader(); // this will cause the default dump header to regenerate
-        return array(
-            'inline_head' => array(
+        return [
+            'inline_head' => [
                 'html_var_dumper' => $dumper->getDumpHeaderByDebugBar(),
-            ),
-        );
+            ]
+        ];
     }
 
     /**

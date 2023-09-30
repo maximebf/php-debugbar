@@ -47,18 +47,16 @@ class OpenHandler
         $op = 'find';
         if (isset($request['op'])) {
             $op = $request['op'];
-            if (!in_array($op, array('find', 'get', 'clear'))) {
+            if (!in_array($op, ['find', 'get', 'clear'])) {
                 throw new DebugBarException("Invalid operation '{$request['op']}'");
             }
         }
 
         if ($sendHeader) {
-            $this->debugBar->getHttpDriver()->setHeaders(array(
-                    'Content-Type' => 'application/json'
-                ));
+            $this->debugBar->getHttpDriver()->setHeaders(['Content-Type' => 'application/json']);
         }
 
-        $response = json_encode(call_user_func(array($this, $op), $request));
+        $response = json_encode(call_user_func([$this, $op], $request));
         if ($echo) {
             echo $response;
         }
@@ -82,8 +80,8 @@ class OpenHandler
             $offset = $request['offset'];
         }
 
-        $filters = array();
-        foreach (array('utime', 'datetime', 'ip', 'uri', 'method') as $key) {
+        $filters = [];
+        foreach (['utime', 'datetime', 'ip', 'uri', 'method'] as $key) {
             if (isset($request[$key])) {
                 $filters[$key] = $request[$key];
             }
@@ -112,6 +110,6 @@ class OpenHandler
     protected function clear($request)
     {
         $this->debugBar->getStorage()->clear();
-        return array('success' => true);
+        return ['success' => true];
     }
 }

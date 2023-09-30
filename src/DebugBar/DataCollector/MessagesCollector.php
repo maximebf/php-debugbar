@@ -21,9 +21,9 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
 {
     protected $name;
 
-    protected $messages = array();
+    protected $messages = [];
 
-    protected $aggregates = array();
+    protected $aggregates = [];
 
     protected $dataFormater;
 
@@ -134,13 +134,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             }
             $isString = false;
         }
-        $this->messages[] = array(
-            'message' => $messageText,
-            'message_html' => $messageHtml,
-            'is_string' => $isString,
-            'label' => $label,
-            'time' => microtime(true)
-        );
+        $this->messages[] = ['message' => $messageText, 'message_html' => $messageHtml, 'is_string' => $isString, 'label' => $label, 'time' => microtime(true)];
     }
 
     /**
@@ -169,10 +163,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
 
         // sort messages by their timestamp
         usort($messages, function ($a, $b) {
-            if ($a['time'] === $b['time']) {
-                return 0;
-            }
-            return $a['time'] < $b['time'] ? -1 : 1;
+            return $a['time'] <=> $b['time'];
         });
 
         return $messages;
@@ -183,7 +174,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      * @param $message
      * @param array $context
      */
-    public function log($level, $message, array $context = array()): void
+    public function log($level, $message, array $context = []): void
     {
         // For string messages, interpolate the context following PSR-3
         if (is_string($message)) {
@@ -199,10 +190,10 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      * @param array $context
      * @return string
      */
-    function interpolate($message, array $context = array())
+    function interpolate($message, array $context = [])
     {
         // build a replacement array with braces around the context keys
-        $replace = array();
+        $replace = [];
         foreach ($context as $key => $val) {
             // check that the value can be cast to string
             if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
@@ -219,7 +210,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function clear()
     {
-        $this->messages = array();
+        $this->messages = [];
     }
 
     /**
@@ -228,10 +219,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     public function collect()
     {
         $messages = $this->getMessages();
-        return array(
-            'count' => count($messages),
-            'messages' => $messages
-        );
+        return ['count' => count($messages), 'messages' => $messages];
     }
 
     /**
@@ -246,7 +234,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      * @return array
      */
     public function getAssets() {
-        return $this->isHtmlVarDumperUsed() ? $this->getVarDumper()->getAssets() : array();
+        return $this->isHtmlVarDumperUsed() ? $this->getVarDumper()->getAssets() : [];
     }
 
     /**
@@ -255,17 +243,17 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     public function getWidgets()
     {
         $name = $this->getName();
-        return array(
-            "$name" => array(
+        return [
+            "$name" => [
                 'icon' => 'list-alt',
                 "widget" => "PhpDebugBar.Widgets.MessagesWidget",
                 "map" => "$name.messages",
                 "default" => "[]"
-            ),
-            "$name:badge" => array(
+            ],
+            "$name:badge" => [
                 "map" => "$name.count",
                 "default" => "null"
-            )
-        );
+            ]
+        ];
     }
 }

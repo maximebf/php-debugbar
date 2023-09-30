@@ -6,11 +6,11 @@ use DebugBar\HttpDriverInterface;
 
 class MockHttpDriver implements HttpDriverInterface
 {
-    public $headers = array();
+    public $headers = [];
 
     public $sessionStarted = true;
 
-    public $session = array();
+    public $session = [];
 
     function setHeaders(array $headers)
     {

@@ -13,5 +13,5 @@ $twig->addExtension(new DebugBar\Bridge\Twig\TimeableTwigExtensionProfiler($prof
 $debugbar->addCollector(new DebugBar\Bridge\TwigProfileCollector($profile));
 
 render_demo_page(function() use ($twig) {
-    echo $twig->render('hello.html', array('name' => 'peter pan'));
+    echo $twig->render('hello.html', ['name' => 'peter pan']);
 });

@@ -36,7 +36,7 @@ interface StorageInterface
      * @param integer $offset
      * @return array
      */
-    function find(array $filters = array(), $max = 20, $offset = 0);
+    function find(array $filters = [], $max = 20, $offset = 0);
 
     /**
      * Clears all the collected data

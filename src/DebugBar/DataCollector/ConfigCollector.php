@@ -51,7 +51,7 @@ class ConfigCollector extends DataCollector implements Renderable, AssetProvider
      * @param array  $data
      * @param string $name
      */
-    public function __construct(array $data = array(), $name = 'config')
+    public function __construct(array $data = [], $name = 'config')
     {
         $this->name = $name;
         $this->data = $data;
@@ -72,7 +72,7 @@ class ConfigCollector extends DataCollector implements Renderable, AssetProvider
      */
     public function collect()
     {
-        $data = array();
+        $data = [];
         foreach ($this->data as $k => $v) {
             if ($this->isHtmlVarDumperUsed()) {
                 $v = $this->getVarDumper()->renderVar($v);
@@ -96,7 +96,7 @@ class ConfigCollector extends DataCollector implements Renderable, AssetProvider
      * @return array
      */
     public function getAssets() {
-        return $this->isHtmlVarDumperUsed() ? $this->getVarDumper()->getAssets() : array();
+        return $this->isHtmlVarDumperUsed() ? $this->getVarDumper()->getAssets() : [];
     }
 
     /**
@@ -108,13 +108,13 @@ class ConfigCollector extends DataCollector implements Renderable, AssetProvider
         $widget = $this->isHtmlVarDumperUsed()
             ? "PhpDebugBar.Widgets.HtmlVariableListWidget"
             : "PhpDebugBar.Widgets.VariableListWidget";
-        return array(
-            "$name" => array(
+        return [
+            "$name" => [
                 "icon" => "gear",
                 "widget" => $widget,
                 "map" => "$name",
                 "default" => "{}"
-            )
-        );
+            ]
+        ];
     }
 }

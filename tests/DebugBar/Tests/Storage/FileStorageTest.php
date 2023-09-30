@@ -19,7 +19,7 @@ class FileStorageTest extends DebugBarTestCase
         }
         mkdir($this->dirname, 0777);
         $this->s = new FileStorage($this->dirname);
-        $this->data = array('__meta' => array('id' => 'foo'));
+        $this->data = ['__meta' => ['id' => 'foo']];
         $this->s->save('bar', $this->data);
     }
 

@@ -10,12 +10,12 @@ $debugbar->addCollector(new PDOCollector($pdo));
 
 $pdo->exec('create table users (name varchar)');
 $stmt = $pdo->prepare('insert into users (name) values (?)');
-$stmt->execute(array('foo'));
-$stmt->execute(array('bar'));
+$stmt->execute(['foo']);
+$stmt->execute(['bar']);
 
 $users = $pdo->query('select * from users')->fetchAll();
 $stmt = $pdo->prepare('select * from users where name=?');
-$stmt->execute(array('foo'));
+$stmt->execute(['foo']);
 $foo = $stmt->fetch();
 
 $pdo->exec('delete from users');

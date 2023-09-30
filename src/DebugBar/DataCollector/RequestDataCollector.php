@@ -48,8 +48,8 @@ class RequestDataCollector extends DataCollector implements Renderable, AssetPro
      */
     public function collect()
     {
-        $vars = array('_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER');
-        $data = array();
+        $vars = ['_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER'];
+        $data = [];
 
         foreach ($vars as $var) {
             if (isset($GLOBALS[$var])) {
@@ -77,7 +77,7 @@ class RequestDataCollector extends DataCollector implements Renderable, AssetPro
      * @return array
      */
     public function getAssets() {
-        return $this->isHtmlVarDumperUsed() ? $this->getVarDumper()->getAssets() : array();
+        return $this->isHtmlVarDumperUsed() ? $this->getVarDumper()->getAssets() : [];
     }
 
     /**
@@ -88,13 +88,13 @@ class RequestDataCollector extends DataCollector implements Renderable, AssetPro
         $widget = $this->isHtmlVarDumperUsed()
             ? "PhpDebugBar.Widgets.HtmlVariableListWidget"
             : "PhpDebugBar.Widgets.VariableListWidget";
-        return array(
-            "request" => array(
+        return [
+            "request" => [
                 "icon" => "tags",
                 "widget" => $widget,
                 "map" => "request",
                 "default" => "{}"
-            )
-        );
+            ]
+        ];
     }
 }

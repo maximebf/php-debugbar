@@ -29,7 +29,7 @@ class DebugBarTest extends DebugBarTestCase
 
     public function testCollect()
     {
-        $data = array('foo' => 'bar');
+        $data = ['foo' => 'bar'];
         $this->debugbar->addCollector(new MockCollector($data));
         $datac = $this->debugbar->collect();
 
@@ -49,14 +49,14 @@ class DebugBarTest extends DebugBarTestCase
     public function testStorage()
     {
         $this->debugbar->setStorage($s = new MockStorage());
-        $this->debugbar->addCollector(new MockCollector(array('foo')));
+        $this->debugbar->addCollector(new MockCollector(['foo']));
         $data = $this->debugbar->collect();
         $this->assertEquals($s->data[$this->debugbar->getCurrentRequestId()], $data);
     }
 
     public function testGetDataAsHeaders()
     {
-        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $this->debugbar->addCollector($c = new MockCollector(['foo']));
         $headers = $this->debugbar->getDataAsHeaders();
         $this->assertArrayHasKey('phpdebugbar', $headers);
     }
@@ -64,7 +64,7 @@ class DebugBarTest extends DebugBarTestCase
     public function testSendDataInHeaders()
     {
         $http = $this->debugbar->getHttpDriver();
-        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $this->debugbar->addCollector($c = new MockCollector(['foo']));
 
         $this->debugbar->sendDataInHeaders();
         $this->assertArrayHasKey('phpdebugbar', $http->headers);
@@ -74,7 +74,7 @@ class DebugBarTest extends DebugBarTestCase
     {
         $http = $this->debugbar->getHttpDriver();
         $this->debugbar->setStorage($s = new MockStorage());
-        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $this->debugbar->addCollector($c = new MockCollector(['foo']));
 
         $this->debugbar->sendDataInHeaders(true);
         $this->assertArrayHasKey('phpdebugbar-id', $http->headers);
@@ -84,7 +84,7 @@ class DebugBarTest extends DebugBarTestCase
     public function testStackedData()
     {
         $http = $this->debugbar->getHttpDriver();
-        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $this->debugbar->addCollector($c = new MockCollector(['foo']));
         $this->debugbar->stackData();
 
         $this->assertArrayHasKey($ns = $this->debugbar->getStackDataSessionNamespace(), $http->session);
@@ -96,7 +96,7 @@ class DebugBarTest extends DebugBarTestCase
         $data = $this->debugbar->getStackedData();
         $this->assertArrayNotHasKey($ns, $http->session);
         $this->assertArrayHasKey($id, $data);
-        $this->assertEquals(1, count($data));
+        $this->assertEquals(1, is_array($data) || $data instanceof \Countable ? count($data) : 0);
         $this->assertArrayHasKey('mock', $data[$id]);
         $this->assertEquals($c->collect(), $data[$id]['mock']);
     }
@@ -105,7 +105,7 @@ class DebugBarTest extends DebugBarTestCase
     {
         $http = $this->debugbar->getHttpDriver();
         $this->debugbar->setStorage($s = new MockStorage());
-        $this->debugbar->addCollector($c = new MockCollector(array('foo')));
+        $this->debugbar->addCollector($c = new MockCollector(['foo']));
         $this->debugbar->stackData();
 
         $id = $this->debugbar->getCurrentRequestId();

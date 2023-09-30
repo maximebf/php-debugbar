@@ -42,7 +42,7 @@ class DataFormatter implements DataFormatterInterface
                 // A negative depth means "end of dump"
                 if ($depth >= 0) {
                     // Adds a two spaces indentation to the line
-                    $output .= str_repeat('  ', $depth).$line."\n";
+                    $output .= str_repeat('  ', $depth) . $line . "\n";
                 }
             }
         );
@@ -81,7 +81,7 @@ class DataFormatter implements DataFormatterInterface
         $size = abs($size);
 
         $base = log($size) / log(1024);
-        $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
-        return $sign . round(pow(1024, $base - floor($base)), $precision) . $suffixes[(int) floor($base)];
+        $suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
+        return $sign . round(1024 ** ($base - floor($base)), $precision) . $suffixes[(int)floor($base)];
     }
 }

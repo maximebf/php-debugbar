@@ -47,7 +47,7 @@ class RedisStorage implements StorageInterface
     public function get($id)
     {
         return array_merge(unserialize($this->redis->hGet("$this->hash:data", $id)),
-            array('__meta' => unserialize($this->redis->hGet("$this->hash:meta", $id))));
+            ['__meta' => unserialize($this->redis->hGet("$this->hash:meta", $id))]);
     }
 
     /**

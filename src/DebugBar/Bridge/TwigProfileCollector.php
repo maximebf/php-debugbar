@@ -87,18 +87,18 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
      */
     public function getWidgets()
     {
-        return array(
-            'twig'       => array(
+        return [
+            'twig'       => [
                 'icon'    => 'leaf',
                 'widget'  => 'PhpDebugBar.Widgets.TemplatesWidget',
                 'map'     => 'twig',
-                'default' => json_encode(array('templates' => array())),
-            ),
-            'twig:badge' => array(
+                'default' => json_encode(['templates' => []]),
+            ],
+            'twig:badge' => [
                 'map'     => 'twig.badge',
                 'default' => 0,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -106,10 +106,10 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
      */
     public function getAssets()
     {
-        return array(
+        return [
             'css' => 'widgets/templates/widget.css',
-            'js'  => 'widgets/templates/widget.js',
-        );
+            'js' => 'widgets/templates/widget.js'
+        ];
     }
 
     /**
@@ -120,10 +120,10 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
     public function collect()
     {
         $this->templateCount = $this->blockCount = $this->macroCount = 0;
-        $this->templates     = array();
+        $this->templates     = [];
         $this->computeData($this->profile);
 
-        return array(
+        return [
             'nb_templates'                => $this->templateCount,
             'nb_blocks'                   => $this->blockCount,
             'nb_macros'                   => $this->macroCount,
@@ -134,13 +134,13 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
             'callgraph'                   => $this->getHtmlCallGraph(),
             'badge'                       => implode(
                 '/',
-                array(
+                [
                     $this->templateCount,
                     $this->blockCount,
                     $this->macroCount,
-                )
+                ]
             ),
-        );
+        ];
     }
 
     /**
@@ -184,13 +184,13 @@ class TwigProfileCollector extends DataCollector implements Renderable, AssetPro
         $this->blockCount    += ($profile->isBlock() ? 1 : 0);
         $this->macroCount    += ($profile->isMacro() ? 1 : 0);
         if ($profile->isTemplate()) {
-            $this->templates[] = array(
+            $this->templates[] = [
                 'name'            => $profile->getName(),
                 'render_time'     => $profile->getDuration(),
                 'render_time_str' => $this->getDataFormatter()->formatDuration($profile->getDuration()),
                 'memory_str'      => $this->getDataFormatter()->formatBytes($profile->getMemoryUsage()),
                 'xdebug_link'     => $this->getXdebugLink($profile->getTemplate()),
-            );
+            ];
         }
         foreach ($profile as $p) {
             $this->computeData($p);

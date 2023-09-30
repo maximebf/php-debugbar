@@ -14,7 +14,7 @@ use DebugBar\DataCollector\Renderable;
 class SymfonyMailCollector extends DataCollector implements Renderable, AssetProvider
 {
     /** @var array */
-    private $messages = array();
+    private $messages = [];
 
     /** @var bool */
     private $showDetailed = false;
@@ -32,24 +32,24 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
 
     public function collect()
     {
-        $mails = array();
+        $mails = [];
 
         foreach ($this->messages as $message) {
             /* @var \Symfony\Component\Mime\Message $message */
-            $mails[] = array(
+            $mails[] = [
                 'to' => array_map(function ($address) {
                     /* @var \Symfony\Component\Mime\Address $address */
                     return $address->toString();
                 }, $message->getTo()),
                 'subject' => $message->getSubject(),
                 'headers' => ($this->showDetailed ? $message : $message->getHeaders())->toString(),
-            );;
+            ];
         }
 
-        return array(
+        return [
             'count' => count($mails),
             'mails' => $mails,
-        );
+        ];
     }
 
     public function getName()
@@ -59,26 +59,26 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
 
     public function getWidgets()
     {
-        return array(
-            'emails' => array(
+        return [
+            'emails' => [
                 'icon' => 'inbox',
                 'widget' => 'PhpDebugBar.Widgets.MailsWidget',
                 'map' => 'symfonymailer_mails.mails',
                 'default' => '[]',
                 'title' => 'Mails'
-            ),
-            'emails:badge' => array(
+            ],
+            'emails:badge' => [
                 'map' => 'symfonymailer_mails.count',
                 'default' => 'null'
-            )
-        );
+            ]
+        ];
     }
 
     public function getAssets()
     {
-        return array(
+        return [
             'css' => 'widgets/mails/widget.css',
             'js' => 'widgets/mails/widget.js'
-        );
+        ];
     }
 }
