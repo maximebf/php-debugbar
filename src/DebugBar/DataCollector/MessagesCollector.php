@@ -11,27 +11,20 @@
 namespace DebugBar\DataCollector;
 
 use Psr\Log\AbstractLogger;
-use DebugBar\DataFormatter\DataFormatterInterface;
-use DebugBar\DataFormatter\DebugBarVarDumper;
+use DebugBar\DataFormatter\HasDataFormatter;
 
 /**
  * Provides a way to log messages
  */
 class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable, AssetProvider
 {
+    use HasDataFormatter;
+
     protected $name;
 
     protected $messages = array();
 
     protected $aggregates = array();
-
-    protected $dataFormater;
-
-    protected $varDumper;
-
-    // The HTML var dumper requires debug bar users to support the new inline assets, which not all
-    // may support yet - so return false by default for now.
-    protected $useHtmlVarDumper = false;
 
     /**
      * @param string $name
@@ -39,79 +32,6 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     public function __construct($name = 'messages')
     {
         $this->name = $name;
-    }
-
-    /**
-     * Sets the data formater instance used by this collector
-     *
-     * @param DataFormatterInterface $formater
-     * @return $this
-     */
-    public function setDataFormatter(DataFormatterInterface $formater)
-    {
-        $this->dataFormater = $formater;
-        return $this;
-    }
-
-    /**
-     * @return DataFormatterInterface
-     */
-    public function getDataFormatter()
-    {
-        if ($this->dataFormater === null) {
-            $this->dataFormater = DataCollector::getDefaultDataFormatter();
-        }
-        return $this->dataFormater;
-    }
-
-    /**
-     * Sets the variable dumper instance used by this collector
-     *
-     * @param DebugBarVarDumper $varDumper
-     * @return $this
-     */
-    public function setVarDumper(DebugBarVarDumper $varDumper)
-    {
-        $this->varDumper = $varDumper;
-        return $this;
-    }
-
-    /**
-     * Gets the variable dumper instance used by this collector
-     *
-     * @return DebugBarVarDumper
-     */
-    public function getVarDumper()
-    {
-        if ($this->varDumper === null) {
-            $this->varDumper = DataCollector::getDefaultVarDumper();
-        }
-        return $this->varDumper;
-    }
-
-    /**
-     * Sets a flag indicating whether the Symfony HtmlDumper will be used to dump variables for
-     * rich variable rendering.  Be sure to set this flag before logging any messages for the
-     * first time.
-     *
-     * @param bool $value
-     * @return $this
-     */
-    public function useHtmlVarDumper($value = true)
-    {
-        $this->useHtmlVarDumper = $value;
-        return $this;
-    }
-
-    /**
-     * Indicates whether the Symfony HtmlDumper will be used to dump variables for rich variable
-     * rendering.
-     *
-     * @return mixed
-     */
-    public function isHtmlVarDumperUsed()
-    {
-        return $this->useHtmlVarDumper;
     }
 
     /**
