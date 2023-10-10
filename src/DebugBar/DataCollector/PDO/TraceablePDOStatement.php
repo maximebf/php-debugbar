@@ -44,7 +44,7 @@ class TraceablePDOStatement extends PDOStatement
     {
         $this->boundParameters[$column] = $param;
         $args = array_merge([$column, &$param], array_slice(func_get_args(), 2));
-        return call_user_func_array(['parent', 'bindColumn'], $args);
+        return parent::bindColumn(...$args);
     }
 
     /**
@@ -66,7 +66,7 @@ class TraceablePDOStatement extends PDOStatement
     {
         $this->boundParameters[$parameter] = $variable;
         $args = array_merge([$parameter, &$variable], array_slice(func_get_args(), 2));
-        return call_user_func_array(['parent', 'bindParam'], $args);
+        return parent::bindParam(...$args);
     }
 
     /**
