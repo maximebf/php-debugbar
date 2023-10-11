@@ -92,8 +92,8 @@ Thus in almost all cases, you should only have to use `render()` right away:
 
 This will print the initialization code for the toolbar and the dataset for the request.
 When you are performing AJAX requests, you do not want to initialize a new toolbar but
-add the dataset to the existing one. You can disable initialization using ̀false` as
-the first argument of ̀render()`.
+add the dataset to the existing one. You can disable initialization using `false` as
+the first argument of `render()`.
 
     <p>my ajax content</p>
     <?php echo $renderer->render(false) ?>
