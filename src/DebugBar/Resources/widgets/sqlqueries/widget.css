@@ -34,7 +34,8 @@ div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-duration:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-memory:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-row-count:before,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-copy-clipboard:before,
-div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id:before {
+div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id:before,
+div.phpdebugbar-widgets-sqlqueries a.phpdebugbar-widgets-editor-link:before {
   font-family: PhpDebugbarFontAwesome;
   margin-right: 4px;
   font-size: 12px;
@@ -56,6 +57,15 @@ div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id:before {
 }
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-copy-clipboard:before {
   content: "\f0c5";
+}
+div.phpdebugbar-widgets-sqlqueries a.phpdebugbar-widgets-editor-link:before {
+  content: "\f08e";
+}
+div.phpdebugbar-widgets-sqlqueries a.phpdebugbar-widgets-editor-link {
+  color: #888;
+}
+div.phpdebugbar-widgets-sqlqueries a.phpdebugbar-widgets-editor-link:hover {
+  color: #aaaaaa;
 }
 div.phpdebugbar-widgets-sqlqueries table.phpdebugbar-widgets-params {
   display: none;
@@ -114,5 +124,30 @@ div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-toolbar a.phpdebugbar
 }
 div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-toolbar a.phpdebugbar-widgets-filter.phpdebugbar-widgets-excluded {
   background: #eee;
+  color: #888;
+}
+div.phpdebugbar-widgets-sqlqueries a.phpdebugbar-widgets-duplicates {
+  font-weight: bold;
+  text-decoration: underline;
+}
+div.phpdebugbar-widgets-sqlqueries li.phpdebugbar-widgets-list-item div.phpdebugbar-widgets-bg-measure {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-bg-measure div.phpdebugbar-widgets-value {
+  position: absolute;
+  height: 100%;
+  opacity: 0.2;
+  background: red;
+}
+div.phpdebugbar-widgets-sqlqueries td.phpdebugbar-widgets-value li.phpdebugbar-widgets-table-list-item {
+  text-align: left;
+  padding-left: 6px;
+}
+div.phpdebugbar-widgets-sqlqueries .phpdebugbar-text-muted {
   color: #888;
 }
