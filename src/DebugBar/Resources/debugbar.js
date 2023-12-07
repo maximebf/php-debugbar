@@ -537,7 +537,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // select box for data sets
-            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).appendTo(this.$headerRight);
+            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).attr('name', 'datasets-switcher')
+                .appendTo(this.$headerRight);
             this.$datasets.change(function() {
                 self.dataChangeHandler(self.datasets[this.value]);
                 self.showTab();
