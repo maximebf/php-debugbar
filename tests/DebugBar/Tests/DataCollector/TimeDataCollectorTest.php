@@ -53,6 +53,7 @@ class TimeDataCollectorTest extends DebugBarTestCase
     public function testMeasure()
     {
         $returned = $this->c->measure('bar', function() {
+            usleep(50);
             return 'returnedValue';
         });
         $m = $this->c->getMeasures();
