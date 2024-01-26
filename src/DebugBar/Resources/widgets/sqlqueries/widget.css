@@ -13,6 +13,7 @@ div.phpdebugbar-widgets-sqlqueries li.phpdebugbar-widgets-list-item.phpdebugbar-
 
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-database,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-duration,
+div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-order,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-memory,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-row-count,
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-copy-clipboard,
