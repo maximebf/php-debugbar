@@ -21,10 +21,6 @@ class ExceptionsCollector extends DataCollector implements Renderable
     protected $exceptions = array();
     protected $chainExceptions = false;
 
-    // The HTML var dumper requires debug bar users to support the new inline assets, which not all
-    // may support yet - so return false by default for now.
-    protected $useHtmlVarDumper = false;
-
     /**
      * Adds an exception to be profiled in the debug bar
      *
@@ -67,30 +63,6 @@ class ExceptionsCollector extends DataCollector implements Renderable
     public function getExceptions()
     {
         return $this->exceptions;
-    }
-
-    /**
-     * Sets a flag indicating whether the Symfony HtmlDumper will be used to dump variables for
-     * rich variable rendering.
-     *
-     * @param bool $value
-     * @return $this
-     */
-    public function useHtmlVarDumper($value = true)
-    {
-        $this->useHtmlVarDumper = $value;
-        return $this;
-    }
-
-    /**
-     * Indicates whether the Symfony HtmlDumper will be used to dump variables for rich variable
-     * rendering.
-     *
-     * @return mixed
-     */
-    public function isHtmlVarDumperUsed()
-    {
-        return $this->useHtmlVarDumper;
     }
 
     public function collect()
