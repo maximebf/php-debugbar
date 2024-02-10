@@ -74,7 +74,7 @@ trait HasXdebugLinks
 
         $url = strtr($this->getXdebugLinkTemplate(), [
             '%f' => rawurlencode(str_replace('\\', '/', $file)),
-            '%l' => rawurlencode((string) $line ?: 1),
+            '%l' => rawurlencode((string) $line ?: ''),
         ]);
         if ($url) {
             return [

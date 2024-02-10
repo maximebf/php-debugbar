@@ -35,6 +35,8 @@ pre.phpdebugbar-widgets-code-block {
     display: block;
     font-style: italic;
     float: right;
+    margin-left: 8px;
+    color: #888;
   }
 
   li.phpdebugbar-widgets-list-item a.phpdebugbar-widgets-editor-link:hover {
@@ -181,17 +183,6 @@ dl.phpdebugbar-widgets-kvlist {
     border-top: 1px solid #eee;
     cursor: pointer;
     min-height: 17px;
-  }
-  .phpdebugbar-widgets-kvlist .phpdebugbar-widgets-editor-link {
-    margin-left: 8px;
-    color: #888;
-  }
-  .phpdebugbar-widgets-kvlist .phpdebugbar-widgets-editor-link:before {
-    content: "\f08e";
-    font-family: PhpDebugbarFontAwesome;
-    margin-left: 4px;
-    margin-right: 4px;
-    font-size: 12px;
   }
 
 /* -------------------------------------- */
