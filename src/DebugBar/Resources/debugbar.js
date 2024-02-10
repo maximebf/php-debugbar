@@ -1175,6 +1175,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 promise.then(function (response) {
                     self.handle(response);
+                }).catch(function(reason) {
+                    // Fetch request failed or aborted via AbortController.abort().
+                    // Catch is required to not trigger React's error handler.
                 });
 
                 return promise;
