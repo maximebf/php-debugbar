@@ -11,17 +11,19 @@ pre.phpdebugbar-widgets-code-block {
   pre.phpdebugbar-widgets-code-block code.phpdebugbar-widgets-numbered-code {
     padding: 5px;
   }
-    pre.phpdebugbar-widgets-code-block code span.phpdebugbar-widgets-highlighted-line {
-      background: #800000;
-      color: #fff;
-      display: inline-block;
-      min-width: 100%;
-    }
-      pre.phpdebugbar-widgets-code-block code span.phpdebugbar-widgets-highlighted-line span {
-        background: none !important;
-        color: inherit !important;
-      }
+  pre.phpdebugbar-widgets-code-block ul li.phpdebugbar-widgets-highlighted-line {
+    font-weight: bolder;
+    text-decoration: underline;
+  }
+  pre.phpdebugbar-widgets-code-block ul li.phpdebugbar-widgets-highlighted-line span {
+    position: absolute;
+    background: #800000;
+    min-width: calc(100% - 85px);
+    margin-left: 10px;
+    opacity: 0.15;
+  }
   pre.phpdebugbar-widgets-code-block ul {
+    position: static;
     float: left;
     padding: 5px;
     background: #cacaca;

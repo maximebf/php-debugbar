@@ -81,29 +81,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
         // incorrectly positioned - most noticeable when line numbers are shown.
         var codeElement = $('<code />').text(code + '\n').appendTo(pre);
 
-        // Add a span with a special class if we are supposed to highlight a line.  highlight.js will
-        // still correctly format code even with existing markup in it.
-        if ($.isNumeric(highlightedLine)) {
-            if ($.isNumeric(firstLineNumber)) {
-                highlightedLine = highlightedLine - firstLineNumber + 1;
-            }
-            codeElement.html(function (index, html) {
-                var currentLine = 1;
-                return html.replace(/^.*$/gm, function(line) {
-                    if (currentLine++ == highlightedLine) {
-                        return '<span class="' + csscls('highlighted-line') + '">' + line + '</span>';
-                    } else {
-                        return line;
-                    }
-                });
-            });
-        }
-
         // Format the code
         if (lang) {
-            pre.addClass("language-" + lang);
+            codeElement.addClass("language-" + lang);
         }
-        highlight(pre);
+        highlight(codeElement).removeClass('hljs');
 
         // Show line numbers in a list
         if ($.isNumeric(firstLineNumber)) {
@@ -111,7 +93,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var $lineNumbers = $('<ul />').prependTo(pre);
             pre.children().addClass(csscls('numbered-code'));
             for (var i = firstLineNumber; i < firstLineNumber + lineCount; i++) {
-                $('<li />').text(i).appendTo($lineNumbers);
+                var li = $('<li />').text(i).appendTo($lineNumbers);
+
+                // Add a span with a special class if we are supposed to highlight a line.
+                if (highlightedLine === i) {
+                    li.addClass(csscls('highlighted-line')).append('<span>&nbsp;</span>');
+                }
             }
         }
 
@@ -566,7 +553,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     $('<span />').addClass(csscls('type')).text(e.type).appendTo(li);
                 }
                 if (e.surrounding_lines) {
-                    var pre = createCodeBlock(e.surrounding_lines.join(""), 'php').addClass(csscls('file')).appendTo(li);
+                    var startLine = (e.line - 3) <= 0 ? 1 : e.line - 3;
+                    var pre = createCodeBlock(e.surrounding_lines.join(""), 'php', startLine, e.line).addClass(csscls('file')).appendTo(li);
                     if (!e.stack_trace_html) {
                         // This click event makes the var-dumper hard to use.
                         li.click(function () {
