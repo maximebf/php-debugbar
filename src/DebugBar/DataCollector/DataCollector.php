@@ -38,7 +38,7 @@ abstract class DataCollector implements DataCollectorInterface
             return '';
         }
 
-        if (file_exists($file)) {
+        if (@file_exists($file)) {
             $file = realpath($file);
         }
 
@@ -69,7 +69,7 @@ abstract class DataCollector implements DataCollectorInterface
             return null;
         }
 
-        if (file_exists($file)) {
+        if (@file_exists($file)) {
             $file = realpath($file);
         }
 
