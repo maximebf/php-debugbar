@@ -327,10 +327,18 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         });
                     }
                 }
-                if (value.file_name) {
-                    $('<span />').addClass(csscls('label-called-from')).attr('title', value.file_name)
-                        .text(value.file_name + ':' + value.file_line)
-                        .prependTo(li);
+                if (value.xdebug_link) {
+                    var header = $('<span />').addClass(csscls('filename')).text(value.xdebug_link.filename + ( value.xdebug_link.line ? "#" + value.xdebug_link.line : ''));
+                    if (value.xdebug_link) {
+                        if (value.xdebug_link.ajax) {
+                            $('<a title="' + value.xdebug_link.url + '"></a>').on('click', function () {
+                                $.ajax(value.xdebug_link.url);
+                            }).addClass(csscls('editor-link')).appendTo(header);
+                        } else {
+                            $('<a href="' + value.xdebug_link.url + '"></a>').addClass(csscls('editor-link')).appendTo(header);
+                        }
+                    }
+                    header.appendTo(li);
                 }
                 if (value.collector) {
                     $('<span />').addClass(csscls('collector')).text(value.collector).prependTo(li);

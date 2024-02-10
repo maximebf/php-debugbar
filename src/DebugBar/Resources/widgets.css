@@ -31,6 +31,30 @@ pre.phpdebugbar-widgets-code-block {
     text-align: right;
   }
 
+  li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-filename {
+    display: block;
+    font-style: italic;
+    float: right;
+    margin-left: 8px;
+    color: #888;
+  }
+
+  li.phpdebugbar-widgets-list-item a.phpdebugbar-widgets-editor-link:hover {
+    color: #aaaaaa;
+  }
+
+  a.phpdebugbar-widgets-editor-link:before {
+    font-family: PhpDebugbarFontAwesome;
+    margin-right: 4px;
+    font-size: 12px;
+    font-style: normal;
+  }
+
+  a.phpdebugbar-widgets-editor-link:before {
+    content: "\f08e";
+    margin-left: 4px;
+  }
+
 /* -------------------------------------- */
 
 ul.phpdebugbar-widgets-list {
@@ -160,17 +184,6 @@ dl.phpdebugbar-widgets-kvlist {
     cursor: pointer;
     min-height: 17px;
   }
-  .phpdebugbar-widgets-kvlist .phpdebugbar-widgets-editor-link {
-    margin-left: 8px;
-    color: #888;
-  }
-  .phpdebugbar-widgets-kvlist .phpdebugbar-widgets-editor-link:before {
-    content: "\f08e";
-    font-family: PhpDebugbarFontAwesome;
-    margin-left: 4px;
-    margin-right: 4px;
-    font-size: 12px;
-  }
 
 /* -------------------------------------- */
 
@@ -251,16 +264,6 @@ div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item {
     color: red;
   }
 
-  div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-filename {
-    display: block;
-    font-style: italic;
-    color: #555;
-  }
-
-  div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item a.phpdebugbar-widgets-editor-link:hover {
-    color: #aaaaaa;
-  }
-
   div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-type {
     display: block;
     position: absolute;
@@ -277,17 +280,9 @@ div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item {
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   }
 
-div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
-  font-family: PhpDebugbarFontAwesome;
-  margin-right: 4px;
-  font-size: 12px;
-  font-style: normal;
-}
-
-div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
-  content: "\f08e";
-  margin-left: 4px;
-}
+  div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-filename {
+    float: none;
+  }
 
 ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params {
     display: table;

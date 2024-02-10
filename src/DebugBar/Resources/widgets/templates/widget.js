@@ -19,17 +19,19 @@
                 $('<span />').addClass(csscls('name')).text(tpl.name).appendTo(li);
 
                 if (typeof tpl.xdebug_link !== 'undefined' && tpl.xdebug_link !== null) {
-                    if (tpl.xdebug_link.ajax) {
-                        $('<a title="' + tpl.xdebug_link.url + '"></a>').on('click', function (event) {
-                            event.stopPropagation();
-                            $.ajax(tpl.xdebug_link.url);
-                        }).addClass(csscls('editor-link')).appendTo(li);
-                    } else {
-                        $('<a href="' + tpl.xdebug_link.url + '"></a>').on('click', function (event) {
-                            event.stopPropagation();
-                        }).addClass(csscls('editor-link')).appendTo(li);
+                    var header = $('<span />').addClass(csscls('filename')).text(tpl.xdebug_link.filename + ( tpl.xdebug_link.line ? "#" + tpl.xdebug_link.line : ''));
+                    if (tpl.xdebug_link) {
+                        if (tpl.xdebug_link.ajax) {
+                            $('<a title="' + tpl.xdebug_link.url + '"></a>').on('click', function () {
+                                $.ajax(tpl.xdebug_link.url);
+                            }).addClass(csscls('editor-link')).appendTo(header);
+                        } else {
+                            $('<a href="' + tpl.xdebug_link.url + '"></a>').addClass(csscls('editor-link')).appendTo(header);
+                        }
                     }
+                    header.appendTo(li);
                 }
+
                 if (tpl.render_time_str) {
                     $('<span title="Render time" />').addClass(csscls('render-time')).text(tpl.render_time_str).appendTo(li);
                 }
