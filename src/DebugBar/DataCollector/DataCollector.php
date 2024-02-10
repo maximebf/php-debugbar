@@ -80,7 +80,10 @@ abstract class DataCollector implements DataCollectorInterface
             }
         }
 
-        $url = strtr($this->getXdebugLinkTemplate(), ['%f' => $file, '%l' => $line]);
+        $url = strtr($this->getXdebugLinkTemplate(), [
+            '%f' => rawurlencode(str_replace('\\', '/', $file)),
+            '%l' => rawurlencode((string) $line),
+        ]);
         if ($url) {
             return ['url' => $url, 'ajax' => $this->getXdebugShouldUseAjax()];
         }
@@ -109,11 +112,11 @@ abstract class DataCollector implements DataCollectorInterface
             'emacs' => 'emacs://open?url=file://%f&line=%l',
             'macvim' => 'mvim://open/?url=file://%f&line=%l',
             'phpstorm' => 'phpstorm://open?file=%f&line=%l',
-            'phpstorm-remote' => 'javascript:let r=new XMLHttpRequest;' .
-                'r.open("get","http://localhost:63342/api/file/%f:%l");r.send()',
+            'phpstorm-remote' => 'javascript:(()=>{let r=new XMLHttpRequest;' .
+                'r.open(\'get\',\'http://localhost:63342/api/file/%f:%l\');r.send();})()',
             'idea' => 'idea://open?file=%f&line=%l',
-            'idea-remote' => 'javascript:let r=new XMLHttpRequest;' .
-                'r.open("get","http://localhost:63342/api/file/?file=%f&line=%l");r.send()',
+            'idea-remote' => 'javascript:(()=>{let r=new XMLHttpRequest;' .
+                'r.open(\'get\',\'http://localhost:63342/api/file/?file=%f&line=%l\');r.send();})()',
             'vscode' => 'vscode://file/%f:%l',
             'vscode-insiders' => 'vscode-insiders://file/%f:%l',
             'vscode-remote' => 'vscode://vscode-remote/%f:%l',

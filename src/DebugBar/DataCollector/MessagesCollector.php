@@ -26,12 +26,21 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
 
     protected $aggregates = array();
 
+    /** @var bool */
+    protected $collectFile = false;
+
     /**
      * @param string $name
      */
     public function __construct($name = 'messages')
     {
         $this->name = $name;
+    }
+
+    /** @return void */
+    public function collectFileTrace($enabled = true)
+    {
+        $this->collectFile = $enabled;
     }
 
     /**
@@ -54,13 +63,35 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             }
             $isString = false;
         }
-        $this->messages[] = array(
+
+        $stackItem = [];
+        if ($this->collectFile) {
+            $stacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
+            $stackItem = $stacktrace[0];
+            foreach ($stacktrace as $trace) {
+                if (strpos($trace['file'], '/vendor/') !== false) {
+                    continue;
+                }
+
+                $stackItem = $trace;
+                break;
+            }
+        }
+
+        if (!empty($stackItem)) {
+            $stackItem = [
+                'file_name' => $stackItem['file'],
+                'file_line' => $stackItem['line'],
+            ];
+        }
+
+        $this->messages[] = array_merge(array(
             'message' => $messageText,
             'message_html' => $messageHtml,
             'is_string' => $isString,
             'label' => $label,
             'time' => microtime(true)
-        );
+        ), $stackItem);
     }
 
     /**
@@ -70,6 +101,10 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function aggregate(MessagesAggregateInterface $messages)
     {
+        if ($this->collectFile && method_exists($messages, 'collectFileTrace')) {
+            $messages->collectFileTrace();
+        }
+
         $this->aggregates[] = $messages;
     }
 
@@ -115,7 +150,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     /**
      * Interpolates context values into the message placeholders.
      *
-     * @param $message
+     * @param string $message
      * @param array $context
      * @return string
      */
@@ -124,9 +159,24 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
         // build a replacement array with braces around the context keys
         $replace = array();
         foreach ($context as $key => $val) {
+            $placeholder = '{' . $key . '}';
+            if (strpos($message, $placeholder) === false) {
+                continue;
+            }
             // check that the value can be cast to string
-            if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
-                $replace['{' . $key . '}'] = $val;
+            if (null === $val || is_scalar($val) || (is_object($val) && method_exists($val, "__toString"))) {
+                $replace[$placeholder] = $val;
+            } elseif ($val instanceof \DateTimeInterface) {
+                $replace[$placeholder] = $val->format("Y-m-d\TH:i:s.uP");
+            } elseif ($val instanceof \UnitEnum) {
+                $replace[$placeholder] = $val instanceof \BackedEnum ? $val->value : $val->name;
+            } elseif (is_object($val)) {
+                $replace[$placeholder] = '[object ' . $this->getDataFormatter()->formatClassName($val) . ']';
+            } elseif (is_array($val)) {
+                $json = @json_encode($val);
+                $replace[$placeholder] = false === $json ? 'null' : 'array' . $json;
+            } else {
+                $replace[$placeholder] = '['.gettype($val).']';
             }
         }
 

@@ -84,4 +84,23 @@ class DataFormatter implements DataFormatterInterface
         $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
         return $sign . round(pow(1024, $base - floor($base)), $precision) . $suffixes[(int) floor($base)];
     }
+
+    /**
+     * @param object $object
+     * @return string
+     */
+    public function formatClassName($object)
+    {
+        $class = \get_class($object);
+
+        if (false === ($pos = \strpos($class, "@anonymous\0"))) {
+            return $class;
+        }
+
+        if (false === ($parent = \get_parent_class($class))) {
+            return \substr($class, 0, $pos + 10);
+        }
+
+        return $parent . '@anonymous';
+    }
 }
