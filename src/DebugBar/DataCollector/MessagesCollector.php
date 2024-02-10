@@ -10,6 +10,7 @@
 
 namespace DebugBar\DataCollector;
 
+use DebugBar\DataFormatter\HasXdebugLinks;
 use Psr\Log\AbstractLogger;
 use DebugBar\DataFormatter\HasDataFormatter;
 
@@ -18,7 +19,7 @@ use DebugBar\DataFormatter\HasDataFormatter;
  */
 class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable, AssetProvider
 {
-    use HasDataFormatter;
+    use HasDataFormatter, HasXdebugLinks;
 
     protected $name;
 
@@ -78,20 +79,14 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             }
         }
 
-        if (!empty($stackItem)) {
-            $stackItem = [
-                'file_name' => $stackItem['file'],
-                'file_line' => $stackItem['line'],
-            ];
-        }
-
-        $this->messages[] = array_merge(array(
+        $this->messages[] = array(
             'message' => $messageText,
             'message_html' => $messageHtml,
             'is_string' => $isString,
             'label' => $label,
-            'time' => microtime(true)
-        ), $stackItem);
+            'time' => microtime(true),
+            'xdebug_link' => $stackItem ? $this->getXdebugLink($stackItem['file'], $stackItem['line']) : null,
+        );
     }
 
     /**
