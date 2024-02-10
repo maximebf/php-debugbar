@@ -20,11 +20,14 @@
 
                 if (typeof tpl.xdebug_link !== 'undefined' && tpl.xdebug_link !== null) {
                     if (tpl.xdebug_link.ajax) {
-                        $('<a title="' + tpl.xdebug_link.url + '"></a>').on('click', function () {
+                        $('<a title="' + tpl.xdebug_link.url + '"></a>').on('click', function (event) {
+                            event.stopPropagation();
                             $.ajax(tpl.xdebug_link.url);
                         }).addClass(csscls('editor-link')).appendTo(li);
                     } else {
-                        $('<a href="' + tpl.xdebug_link.url + '"></a>').addClass(csscls('editor-link')).appendTo(li);
+                        $('<a href="' + tpl.xdebug_link.url + '"></a>').on('click', function (event) {
+                            event.stopPropagation();
+                        }).addClass(csscls('editor-link')).appendTo(li);
                     }
                 }
                 if (tpl.render_time_str) {
@@ -38,6 +41,11 @@
                 }
                 if (typeof(tpl.type) != 'undefined' && tpl.type) {
                     $('<span title="Type" />').addClass(csscls('type')).text(tpl.type).appendTo(li);
+                }
+                if (typeof(tpl.editorLink) != 'undefined' && tpl.editorLink) {
+                    $('<a href="'+ tpl.editorLink +'" />').on('click', function (event) {
+                        event.stopPropagation();
+                    }).addClass(csscls('editor-link')).text('file').appendTo(li);
                 }
                 if (tpl.params && !$.isEmptyObject(tpl.params)) {
                     var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);

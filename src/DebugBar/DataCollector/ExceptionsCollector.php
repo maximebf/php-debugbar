@@ -86,6 +86,48 @@ class ExceptionsCollector extends DataCollector implements Renderable
     }
 
     /**
+     * Returns Throwable trace as an formated array
+     *
+     * @return array
+     */
+    public function formatTrace(array $trace)
+    {
+        if (! empty($this->xdebugReplacements)) {
+            $trace = array_map(function ($track) {
+                if (isset($track['file'])) {
+                    $track['file'] = $this->normalizeFilePath($track['file']);
+                }
+
+                return $track;
+            }, $trace);
+        }
+
+        return $trace;
+    }
+
+    /**
+     * Returns Throwable data as an string
+     *
+     * @param \Throwable $e
+     * @return string
+     */
+    public function formatTraceAsString($e)
+    {
+        if (! empty($this->xdebugReplacements)) {
+            return implode("\n", array_map(function ($track) {
+                $track = explode(' ', $track);
+                if (isset($track[1])) {
+                    $track[1] = $this->normalizeFilePath($track[1]);
+                }
+
+                return implode(' ', $track);
+            }, explode("\n", $e->getTraceAsString())));
+        }
+
+        return $e->getTraceAsString();
+    }
+
+    /**
      * Returns Throwable data as an array
      *
      * @param \Throwable $e
@@ -99,16 +141,22 @@ class ExceptionsCollector extends DataCollector implements Renderable
             $start = $e->getLine() - 4;
             $lines = array_slice($lines, $start < 0 ? 0 : $start, 7);
         } else {
-            $lines = array("Cannot open the file ($filePath) in which the exception occurred ");
+            $lines = array('Cannot open the file ('.$this->normalizeFilePath($filePath).') in which the exception occurred');
+        }
+
+        $traceHtml = null;
+        if ($this->isHtmlVarDumperUsed()) {
+            $traceHtml = $this->getVarDumper()->renderVar($this->formatTrace($e->getTrace()));
         }
 
         return array(
             'type' => get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
-            'file' => $filePath,
+            'file' => $this->normalizeFilePath($filePath),
             'line' => $e->getLine(),
-            'stack_trace' => $e->getTraceAsString(),
+            'stack_trace' => $traceHtml ? null : $this->formatTraceAsString($e),
+            'stack_trace_html' => $traceHtml,
             'surrounding_lines' => $lines,
             'xdebug_link' => $this->getXdebugLink($filePath, $e->getLine())
         );

@@ -11,27 +11,23 @@
 namespace DebugBar\DataCollector;
 
 use Psr\Log\AbstractLogger;
-use DebugBar\DataFormatter\DataFormatterInterface;
-use DebugBar\DataFormatter\DebugBarVarDumper;
+use DebugBar\DataFormatter\HasDataFormatter;
 
 /**
  * Provides a way to log messages
  */
 class MessagesCollector extends AbstractLogger implements DataCollectorInterface, MessagesAggregateInterface, Renderable, AssetProvider
 {
+    use HasDataFormatter;
+
     protected $name;
 
     protected $messages = array();
 
     protected $aggregates = array();
 
-    protected $dataFormater;
-
-    protected $varDumper;
-
-    // The HTML var dumper requires debug bar users to support the new inline assets, which not all
-    // may support yet - so return false by default for now.
-    protected $useHtmlVarDumper = false;
+    /** @var bool */
+    protected $collectFile = false;
 
     /**
      * @param string $name
@@ -41,77 +37,10 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
         $this->name = $name;
     }
 
-    /**
-     * Sets the data formater instance used by this collector
-     *
-     * @param DataFormatterInterface $formater
-     * @return $this
-     */
-    public function setDataFormatter(DataFormatterInterface $formater)
+    /** @return void */
+    public function collectFileTrace($enabled = true)
     {
-        $this->dataFormater = $formater;
-        return $this;
-    }
-
-    /**
-     * @return DataFormatterInterface
-     */
-    public function getDataFormatter()
-    {
-        if ($this->dataFormater === null) {
-            $this->dataFormater = DataCollector::getDefaultDataFormatter();
-        }
-        return $this->dataFormater;
-    }
-
-    /**
-     * Sets the variable dumper instance used by this collector
-     *
-     * @param DebugBarVarDumper $varDumper
-     * @return $this
-     */
-    public function setVarDumper(DebugBarVarDumper $varDumper)
-    {
-        $this->varDumper = $varDumper;
-        return $this;
-    }
-
-    /**
-     * Gets the variable dumper instance used by this collector
-     *
-     * @return DebugBarVarDumper
-     */
-    public function getVarDumper()
-    {
-        if ($this->varDumper === null) {
-            $this->varDumper = DataCollector::getDefaultVarDumper();
-        }
-        return $this->varDumper;
-    }
-
-    /**
-     * Sets a flag indicating whether the Symfony HtmlDumper will be used to dump variables for
-     * rich variable rendering.  Be sure to set this flag before logging any messages for the
-     * first time.
-     *
-     * @param bool $value
-     * @return $this
-     */
-    public function useHtmlVarDumper($value = true)
-    {
-        $this->useHtmlVarDumper = $value;
-        return $this;
-    }
-
-    /**
-     * Indicates whether the Symfony HtmlDumper will be used to dump variables for rich variable
-     * rendering.
-     *
-     * @return mixed
-     */
-    public function isHtmlVarDumperUsed()
-    {
-        return $this->useHtmlVarDumper;
+        $this->collectFile = $enabled;
     }
 
     /**
@@ -134,13 +63,35 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             }
             $isString = false;
         }
-        $this->messages[] = array(
+
+        $stackItem = [];
+        if ($this->collectFile) {
+            $stacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
+            $stackItem = $stacktrace[0];
+            foreach ($stacktrace as $trace) {
+                if (strpos($trace['file'], '/vendor/') !== false) {
+                    continue;
+                }
+
+                $stackItem = $trace;
+                break;
+            }
+        }
+
+        if (!empty($stackItem)) {
+            $stackItem = [
+                'file_name' => $stackItem['file'],
+                'file_line' => $stackItem['line'],
+            ];
+        }
+
+        $this->messages[] = array_merge(array(
             'message' => $messageText,
             'message_html' => $messageHtml,
             'is_string' => $isString,
             'label' => $label,
             'time' => microtime(true)
-        );
+        ), $stackItem);
     }
 
     /**
@@ -150,6 +101,10 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      */
     public function aggregate(MessagesAggregateInterface $messages)
     {
+        if ($this->collectFile && method_exists($messages, 'collectFileTrace')) {
+            $messages->collectFileTrace();
+        }
+
         $this->aggregates[] = $messages;
     }
 
@@ -183,9 +138,50 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
      * @param $message
      * @param array $context
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = array()): void
     {
+        // For string messages, interpolate the context following PSR-3
+        if (is_string($message)) {
+            $message = $this->interpolate($message, $context);
+        }
         $this->addMessage($message, $level);
+    }
+
+    /**
+     * Interpolates context values into the message placeholders.
+     *
+     * @param string $message
+     * @param array $context
+     * @return string
+     */
+    function interpolate($message, array $context = array())
+    {
+        // build a replacement array with braces around the context keys
+        $replace = array();
+        foreach ($context as $key => $val) {
+            $placeholder = '{' . $key . '}';
+            if (strpos($message, $placeholder) === false) {
+                continue;
+            }
+            // check that the value can be cast to string
+            if (null === $val || is_scalar($val) || (is_object($val) && method_exists($val, "__toString"))) {
+                $replace[$placeholder] = $val;
+            } elseif ($val instanceof \DateTimeInterface) {
+                $replace[$placeholder] = $val->format("Y-m-d\TH:i:s.uP");
+            } elseif ($val instanceof \UnitEnum) {
+                $replace[$placeholder] = $val instanceof \BackedEnum ? $val->value : $val->name;
+            } elseif (is_object($val)) {
+                $replace[$placeholder] = '[object ' . $this->getDataFormatter()->formatClassName($val) . ']';
+            } elseif (is_array($val)) {
+                $json = @json_encode($val);
+                $replace[$placeholder] = false === $json ? 'null' : 'array' . $json;
+            } else {
+                $replace[$placeholder] = '['.gettype($val).']';
+            }
+        }
+
+        // interpolate replacement values into the message and return
+        return strtr($message, $replace);
     }
 
     /**

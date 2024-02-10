@@ -64,15 +64,11 @@ Display exceptions
 
 ## PDO
 
-Logs SQL queries. You need to wrap your `PDO` object into a `DebugBar\DataCollector\PDO\TraceablePDO` object.
+Logs SQL queries.
 
-    $pdo = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
     $debugbar->addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));
 
 You can even log queries from multiple `PDO` connections:
-
-    $pdoRead  = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
-    $pdoWrite = new DebugBar\DataCollector\PDO\TraceablePDO(new PDO('sqlite::memory:'));
 
     $pdoCollector = new DebugBar\DataCollector\PDO\PDOCollector();
     $pdoCollector->addConnection($pdoRead, 'read-db');
@@ -119,7 +115,7 @@ Aggregates multiple collectors. Do not provide any widgets, you have to add your
 
     $debugbar->addCollector(new DebugBar\DataCollector\AggregatedCollector('all_messages', 'messages', 'time'));
     $debugbar['all_messages']->addCollector($debugbar['messages']);
-    $debugbar['all_messages']->addCollector(new MessagesCollector('mails'));
+    $debugbar['all_messages']->addCollector(new DebugBar\DataCollector\MessagesCollector('mails'));
     $debugbar['all_messages']['mails']->addMessage('sending mail');
 
     $renderer = $debugbar->getJavascriptRenderer();

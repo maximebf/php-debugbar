@@ -7,6 +7,7 @@ use DebugBar\DataCollector\PDO\PDOCollector;
 
 $pdo = new TraceablePDO(new PDO('sqlite::memory:'));
 $debugbar->addCollector(new PDOCollector($pdo));
+$debugbar['pdo']->setDurationBackground();
 
 $pdo->exec('create table users (name varchar)');
 $stmt = $pdo->prepare('insert into users (name) values (?)');
@@ -18,6 +19,6 @@ $stmt = $pdo->prepare('select * from users where name=?');
 $stmt->execute(array('foo'));
 $foo = $stmt->fetch();
 
-$pdo->exec('delete from titi');
+$pdo->exec('delete from users');
 
 render_demo_page();

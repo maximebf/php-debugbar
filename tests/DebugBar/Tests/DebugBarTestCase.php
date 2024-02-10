@@ -4,10 +4,13 @@ namespace DebugBar\Tests;
 
 use DebugBar\DebugBar;
 use DebugBar\RandomRequestIdGenerator;
+use PHPUnit\Framework\TestCase;
 
-abstract class DebugBarTestCase extends \PHPUnit_Framework_TestCase
+abstract class DebugBarTestCase extends TestCase
 {
-    public function setUp()
+    protected $debugbar;
+
+    public function setUp(): void
     {
         $this->debugbar = new DebugBar();
         $this->debugbar->setHttpDriver($http = new MockHttpDriver());

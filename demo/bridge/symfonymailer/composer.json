@@ -1,0 +1,6 @@
+{
+    "require": {
+        "symfony/event-dispatcher": "*",
+        "symfony/mailer": "*"
+    }
+}

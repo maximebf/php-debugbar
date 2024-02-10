@@ -477,6 +477,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$dragCapture = $('<div />').addClass(csscls('drag-capture')).appendTo(this.$el);
             this.$resizehdle = $('<div />').addClass(csscls('resize-handle')).appendTo(this.$el);
             this.$header = $('<div />').addClass(csscls('header')).appendTo(this.$el);
+            this.$headerBtn = $('<a />').addClass(csscls('restore-btn')).appendTo(this.$header);
+            this.$headerBtn.click(function() {
+                self.close();
+            });
             this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
             this.$headerRight = $('<div />').addClass(csscls('header-right')).appendTo(this.$header);
             var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
@@ -533,7 +537,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // select box for data sets
-            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).appendTo(this.$headerRight);
+            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).attr('name', 'datasets-switcher')
+                .appendTo(this.$headerRight);
             this.$datasets.change(function() {
                 self.dataChangeHandler(self.datasets[this.value]);
                 self.showTab();
@@ -944,6 +949,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var self = this;
             this.openHandler.load(id, function(data) {
                 self.addDataSet(data, id, suffix, show);
+                self.resize();
                 callback && callback(data);
             });
         },
@@ -1160,7 +1166,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var self = this;
             var proxied = window.fetch;
 
-            if (proxied === undefined && proxied.polyfill !== undefined) {
+            if (proxied !== undefined && proxied.polyfill !== undefined) {
                 return;
             }
 
@@ -1169,8 +1175,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 promise.then(function (response) {
                     self.handle(response);
-                }, function (e) {
-                    self.handle(response);
+                }).catch(function(reason) {
+                    // Fetch request failed or aborted via AbortController.abort().
+                    // Catch is required to not trigger React's error handler.
                 });
 
                 return promise;
@@ -1204,7 +1211,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var xhr = this;
                 this.addEventListener("readystatechange", function() {
                     var skipUrl = self.debugbar.openHandler ? self.debugbar.openHandler.get('url') : null;
-                    if (xhr.readyState == 4 && url.indexOf(skipUrl) !== 0) {
+                    var href = (typeof url === 'string') ? url : url.href;
+                    
+                    if (xhr.readyState == 4 && href.indexOf(skipUrl) !== 0) {
                         self.handle(xhr);
                     }
                 }, false);

@@ -11,17 +11,19 @@ pre.phpdebugbar-widgets-code-block {
   pre.phpdebugbar-widgets-code-block code.phpdebugbar-widgets-numbered-code {
     padding: 5px;
   }
-    pre.phpdebugbar-widgets-code-block code span.phpdebugbar-widgets-highlighted-line {
-      background: #800000;
-      color: #fff;
-      display: inline-block;
-      min-width: 100%;
-    }
-      pre.phpdebugbar-widgets-code-block code span.phpdebugbar-widgets-highlighted-line span {
-        background: none !important;
-        color: inherit !important;
-      }
+  pre.phpdebugbar-widgets-code-block ul li.phpdebugbar-widgets-highlighted-line {
+    font-weight: bolder;
+    text-decoration: underline;
+  }
+  pre.phpdebugbar-widgets-code-block ul li.phpdebugbar-widgets-highlighted-line span {
+    position: absolute;
+    background: #800000;
+    min-width: calc(100% - 85px);
+    margin-left: 10px;
+    opacity: 0.15;
+  }
   pre.phpdebugbar-widgets-code-block ul {
+    position: static;
     float: left;
     padding: 5px;
     background: #cacaca;
@@ -98,6 +100,18 @@ div.phpdebugbar-widgets-messages {
     width: 100%;
     background: #fff;
   }
+  div.phpdebugbar-widgets-messages li .phpdebugbar-widgets-label-called-from {
+    float: right;
+    color: #666;
+    padding-left: 5px;
+    border-bottom: 1px dotted #666;
+  }
+  div.phpdebugbar-widgets-messages li .phpdebugbar-widgets-label-called-from:before {
+    content: "\f08d";
+    font-family: PhpDebugbarFontAwesome;
+    margin-right: 4px;
+    font-size: 12px;
+  }
     div.phpdebugbar-widgets-messages div.phpdebugbar-widgets-toolbar input {
       border: 0;
       margin: 0;
@@ -145,6 +159,17 @@ dl.phpdebugbar-widgets-kvlist {
     border-top: 1px solid #eee;
     cursor: pointer;
     min-height: 17px;
+  }
+  .phpdebugbar-widgets-kvlist .phpdebugbar-widgets-editor-link {
+    margin-left: 8px;
+    color: #888;
+  }
+  .phpdebugbar-widgets-kvlist .phpdebugbar-widgets-editor-link:before {
+    content: "\f08e";
+    font-family: PhpDebugbarFontAwesome;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 12px;
   }
 
 /* -------------------------------------- */
@@ -232,6 +257,10 @@ div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item {
     color: #555;
   }
 
+  div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item a.phpdebugbar-widgets-editor-link:hover {
+    color: #aaaaaa;
+  }
+
   div.phpdebugbar-widgets-exceptions li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-type {
     display: block;
     position: absolute;
@@ -258,4 +287,10 @@ div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
 div.phpdebugbar-widgets-exceptions a.phpdebugbar-widgets-editor-link:before {
   content: "\f08e";
   margin-left: 4px;
+}
+
+ul.phpdebugbar-widgets-timeline table.phpdebugbar-widgets-params {
+    display: table;
+    border: 0;
+    width: 99%;
 }

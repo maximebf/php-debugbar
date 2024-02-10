@@ -39,6 +39,11 @@ class TimeDataCollector extends DataCollector implements Renderable
     protected $measures = array();
 
     /**
+     * @var bool
+     */
+    protected $memoryMeasure = false;
+
+    /**
      * @param float $requestStartTime
      */
     public function __construct($requestStartTime = null)
@@ -51,6 +56,15 @@ class TimeDataCollector extends DataCollector implements Renderable
             }
         }
         $this->requestStartTime = (float)$requestStartTime;
+        static::getDefaultDataFormatter(); // initializes formatter for lineal timeline
+    }
+
+    /**
+     * Starts memory measuring
+     */
+    public function showMemoryUsage()
+    {
+        $this->memoryMeasure = true;
     }
 
     /**
@@ -66,6 +80,7 @@ class TimeDataCollector extends DataCollector implements Renderable
         $this->startedMeasures[$name] = array(
             'label' => $label ?: $name,
             'start' => $start,
+            'memory' => $this->memoryMeasure ? memory_get_usage(false) : null,
             'collector' => $collector
         );
     }
@@ -94,6 +109,9 @@ class TimeDataCollector extends DataCollector implements Renderable
         if (!$this->hasStartedMeasure($name)) {
             throw new DebugBarException("Failed stopping measure '$name' because it hasn't been started");
         }
+        if (! is_null($this->startedMeasures[$name]['memory'])) {
+            $params['memoryUsage'] = memory_get_usage(false) - $this->startedMeasures[$name]['memory'];
+        }
         $this->addMeasure(
             $this->startedMeasures[$name]['label'],
             $this->startedMeasures[$name]['start'],
@@ -115,6 +133,11 @@ class TimeDataCollector extends DataCollector implements Renderable
      */
     public function addMeasure($label, $start, $end, $params = array(), $collector = null)
     {
+        if (isset($params['memoryUsage'])) {
+            $memory = $this->memoryMeasure ? $params['memoryUsage'] : 0;
+            unset($params['memoryUsage']);
+        }
+
         $this->measures[] = array(
             'label' => $label,
             'start' => $start,
@@ -123,6 +146,8 @@ class TimeDataCollector extends DataCollector implements Renderable
             'relative_end' => $end - $this->requestEndTime,
             'duration' => $end - $start,
             'duration_str' => $this->getDataFormatter()->formatDuration($end - $start),
+            'memory' => $memory ?? 0,
+            'memory_str' => $this->getDataFormatter()->formatBytes($memory ?? 0),
             'params' => $params,
             'collector' => $collector
         );
@@ -134,6 +159,7 @@ class TimeDataCollector extends DataCollector implements Renderable
      * @param string $label
      * @param \Closure $closure
      * @param string|null $collector
+     * @return mixed
      */
     public function measure($label, \Closure $closure, $collector = null)
     {
@@ -142,6 +168,7 @@ class TimeDataCollector extends DataCollector implements Renderable
         $result = $closure();
         $params = is_array($result) ? $result : array();
         $this->stopMeasure($name, $params);
+        return $result;
     }
 
     /**

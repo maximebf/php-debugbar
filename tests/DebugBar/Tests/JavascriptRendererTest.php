@@ -8,7 +8,10 @@ use DebugBar\StandardDebugBar;
 
 class JavascriptRendererTest extends DebugBarTestCase
 {
-    public function setUp()
+    /** @var JavascriptRenderer  */
+    protected $r;
+
+    public function setUp(): void
     {
         parent::setUp();
         $this->r = new JavascriptRenderer($this->debugbar);
@@ -83,7 +86,7 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->assertCount(count(array_unique($js)), $js);
 
         $html = $this->r->renderHead();
-        $this->assertContains('<script type="text/javascript" src="/foobar/foo.js"></script>', $html);
+        $this->assertStringContainsString('<script type="text/javascript" src="/foobar/foo.js"></script>', $html);
     }
 
     public function testGetAssets()
@@ -105,26 +108,26 @@ class JavascriptRendererTest extends DebugBarTestCase
 
         $html = $this->r->renderHead();
         // Check for file links
-        $this->assertContains('<link rel="stylesheet" type="text/css" href="/burl/debugbar.css">', $html);
-        $this->assertContains('<script type="text/javascript" src="/burl/debugbar.js"></script>', $html);
+        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/burl/debugbar.css">', $html);
+        $this->assertStringContainsString('<script type="text/javascript" src="/burl/debugbar.js"></script>', $html);
         // Check for inline assets
-        $this->assertContains('<style type="text/css">CssTest</style>', $html);
-        $this->assertContains('<script type="text/javascript">JsTest</script>', $html);
-        $this->assertContains('HeaderTest', $html);
+        $this->assertStringContainsString('<style type="text/css">CssTest</style>', $html);
+        $this->assertStringContainsString('<script type="text/javascript">JsTest</script>', $html);
+        $this->assertStringContainsString('HeaderTest', $html);
         // Check jQuery noConflict
-        $this->assertContains('jQuery.noConflict(true);', $html);
+        $this->assertStringContainsString('jQuery.noConflict(true);', $html);
 
         // Check for absence of jQuery noConflict
         $this->r->setEnableJqueryNoConflict(false);
         $html = $this->r->renderHead();
-        $this->assertNotContains('noConflict', $html);
+        $this->assertStringNotContainsString('noConflict', $html);
     }
 
     public function testRenderFullInitialization()
     {
         $this->debugbar->addCollector(new \DebugBar\DataCollector\MessagesCollector());
         $this->r->addControl('time', array('icon' => 'time', 'map' => 'time', 'default' => '"0s"'));
-        $expected = rtrim(file_get_contents(__DIR__ . '/full_init.html'));
+        $expected = str_replace("\r\n", "\n", rtrim(file_get_contents(__DIR__ . '/full_init.html')));
         $this->assertStringStartsWith($expected, $this->r->render());
     }
 
@@ -135,6 +138,13 @@ class JavascriptRendererTest extends DebugBarTestCase
         $this->r->setVariableName('foovar');
         $this->r->setAjaxHandlerClass(false);
         $this->assertStringStartsWith("<script type=\"text/javascript\">\nvar foovar = new Foobar();\nfoovar.addDataSet(", $this->r->render());
+    }
+
+    public function testRenderConstructorWithNonce()
+    {
+        $this->r->setInitialization(JavascriptRenderer::INITIALIZE_CONSTRUCTOR);
+        $this->r->setCspNonce('mynonce');
+        $this->assertStringStartsWith("<script type=\"text/javascript\" nonce=\"mynonce\">\nvar phpdebugbar = new PhpDebugBar.DebugBar();", $this->r->render());
     }
 
     public function testJQueryNoConflictAutoDisabling()
@@ -152,8 +162,8 @@ class JavascriptRendererTest extends DebugBarTestCase
 
     public function testCanDisableSpecificVendors()
     {
-        $this->assertContains('jquery.min.js', $this->r->renderHead());
+        $this->assertStringContainsString('jquery.min.js', $this->r->renderHead());
         $this->r->disableVendor('jquery');
-        $this->assertNotContains('jquery.min.js', $this->r->renderHead());
+        $this->assertStringNotContainsString('jquery.min.js', $this->r->renderHead());
     }
 }

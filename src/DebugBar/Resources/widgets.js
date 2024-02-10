@@ -54,13 +54,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return htmlize(code);
             }
             if (lang) {
-                return hljs.highlight(lang, code).value;
+                return hljs.highlight(code, {language: lang}).value;
             }
             return hljs.highlightAuto(code).value;
         }
 
         if (typeof(hljs) === 'object') {
-            code.each(function(i, e) { hljs.highlightBlock(e); });
+            code.each(function(i, e) { hljs.highlightElement(e); });
         }
         return code;
     };
@@ -81,29 +81,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
         // incorrectly positioned - most noticeable when line numbers are shown.
         var codeElement = $('<code />').text(code + '\n').appendTo(pre);
 
-        // Add a span with a special class if we are supposed to highlight a line.  highlight.js will
-        // still correctly format code even with existing markup in it.
-        if ($.isNumeric(highlightedLine)) {
-            if ($.isNumeric(firstLineNumber)) {
-                highlightedLine = highlightedLine - firstLineNumber + 1;
-            }
-            codeElement.html(function (index, html) {
-                var currentLine = 1;
-                return html.replace(/^.*$/gm, function(line) {
-                    if (currentLine++ == highlightedLine) {
-                        return '<span class="' + csscls('highlighted-line') + '">' + line + '</span>';
-                    } else {
-                        return line;
-                    }
-                });
-            });
-        }
-
         // Format the code
         if (lang) {
-            pre.addClass("language-" + lang);
+            codeElement.addClass("language-" + lang);
         }
-        highlight(pre);
+        highlight(codeElement).removeClass('hljs');
 
         // Show line numbers in a list
         if ($.isNumeric(firstLineNumber)) {
@@ -111,7 +93,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var $lineNumbers = $('<ul />').prependTo(pre);
             pre.children().addClass(csscls('numbered-code'));
             for (var i = firstLineNumber; i < firstLineNumber + lineCount; i++) {
-                $('<li />').text(i).appendTo($lineNumbers);
+                var li = $('<li />').text(i).appendTo($lineNumbers);
+
+                // Add a span with a special class if we are supposed to highlight a line.
+                if (highlightedLine === i) {
+                    li.addClass(csscls('highlighted-line')).append('<span>&nbsp;</span>');
+                }
             }
         }
 
@@ -216,11 +203,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * An extension of KVListWidget where the data represents a list
      * of variables
-     * 
+     *
      * Options:
      *  - data
      */
@@ -263,7 +250,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         className: csscls('kvlist htmlvarlist'),
 
         itemRenderer: function(dt, dd, key, value) {
-            $('<span />').attr('title', key).text(key).appendTo(dt);
+            $('<span />').attr('title', $('<i />').html(key || '').text()).html(key || '').appendTo(dt);
             dd.html(value);
         }
 
@@ -340,7 +327,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         });
                     }
                 }
-
+                if (value.file_name) {
+                    $('<span />').addClass(csscls('label-called-from')).attr('title', value.file_name)
+                        .text(value.file_name + ':' + value.file_line)
+                        .prependTo(li);
+                }
                 if (value.collector) {
                     $('<span />').addClass(csscls('collector')).text(value.collector).prependTo(li);
                 }
@@ -353,7 +344,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$list.$el.appendTo(this.$el);
             this.$toolbar = $('<div><i class="phpdebugbar-fa phpdebugbar-fa-search"></i></div>').addClass(csscls('toolbar')).appendTo(this.$el);
 
-            $('<input type="text" />')
+            $('<input type="text" name="search" aria-label="Search" placeholder="Search" />')
                 .on('change', function() { self.set('search', this.value); })
                 .appendTo(this.$toolbar);
 
@@ -433,10 +424,25 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var formatDuration = function(seconds) {
                     if (seconds < 0.001)
                         return (seconds * 1000000).toFixed() + 'μs';
-                    else if (seconds < 1)
+                    else if (seconds < 0.1)
                         return (seconds * 1000).toFixed(2) + 'ms';
+                    else if (seconds < 1)
+                        return (seconds * 1000).toFixed() + 'ms';
                     return (seconds).toFixed(2) +  's';
                 };
+
+                // ported from php DataFormatter
+                var formatBytes = function formatBytes(size) {
+                    if (size === 0 || size === null) {
+                        return '0B';
+                    }
+
+                    var sign = size < 0 ? '-' : '',
+                        size = Math.abs(size),
+                        base = Math.log(size) / Math.log(1024),
+                        suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
+                    return sign + (Math.round(Math.pow(1024, base - Math.floor(base)) * 100) / 100) + suffixes[Math.floor(base)];
+                }
 
                 this.$el.empty();
                 if (data.measures) {
@@ -446,10 +452,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         var measure = data.measures[i];
 
                         if(!aggregate[measure.label])
-                            aggregate[measure.label] = { count: 0, duration: 0 };
+                            aggregate[measure.label] = { count: 0, duration: 0, memory : 0 };
 
                         aggregate[measure.label]['count'] += 1;
                         aggregate[measure.label]['duration'] += measure.duration;
+                        aggregate[measure.label]['memory'] += (measure.memory || 0);
 
                         var m = $('<div />').addClass(csscls('measure')),
                             li = $('<li />'),
@@ -460,7 +467,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                             left: left + "%",
                             width: width + "%"
                         }));
-                        m.append($('<span />').addClass(csscls('label')).text(measure.label + " (" + measure.duration_str + ")"));
+                        m.append($('<span />').addClass(csscls('label'))
+                            .text(measure.label + " (" + measure.duration_str +(measure.memory ? '/' + measure.memory_str: '') + ")"));
 
                         if (measure.collector) {
                             $('<span />').addClass(csscls('collector')).text(measure.collector).appendTo(m);
@@ -468,7 +476,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                         m.appendTo(li);
                         this.$el.append(li);
-                        
+
                         if (measure.params && !$.isEmptyObject(measure.params)) {
                             var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
                             for (var key in measure.params) {
@@ -499,15 +507,17 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     });
 
                     // build table and add
-                    var aggregateTable = $('<table style="display: table; border: 0; width: 99%"></table>').addClass(csscls('params'));
+                    var aggregateTable = $('<table></table>').addClass(csscls('params'));
                     $.each(aggregate, function(i, aggregate) {
                         width = Math.min((aggregate.data.duration * 100 / data.duration).toFixed(2), 100);
 
-                        aggregateTable.append('<tr><td class="' + csscls('name') + '">' + aggregate.data.count + ' x ' + aggregate.label + ' (' + width + '%)</td><td class="' + csscls('value') + '">' +
+                        aggregateTable.append('<tr><td class="' + csscls('name') + '">' +
+                            aggregate.data.count + ' x ' + $('<i />').text(aggregate.label).html() + ' (' + width + '%)</td><td class="' + csscls('value') + '">' +
                             '<div class="' + csscls('measure') +'">' +
-                                '<span class="' + csscls('value') + '" style="width:' + width + '%"></span>' +
-                                '<span class="' + csscls('label') + '">' + formatDuration(aggregate.data.duration) + '</span>' +
+                                '<span class="' + csscls('value') + '"></span>' +
+                                '<span class="' + csscls('label') + '">' + formatDuration(aggregate.data.duration) + (aggregate.data.memory ? '/' + formatBytes(aggregate.data.memory) : '') + '</span>' +
                             '</div></td></tr>');
+                        aggregateTable.find('span.' + csscls('value') + ':last').css({width: width + "%" });
                     });
 
                     this.$el.append('<li/>').find('li:last').append(aggregateTable);
@@ -518,7 +528,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
     });
 
     // ------------------------------------------------------------------
-    
+
     /**
      * Widget for the displaying exceptions
      *
@@ -549,21 +559,28 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     $('<span />').addClass(csscls('type')).text(e.type).appendTo(li);
                 }
                 if (e.surrounding_lines) {
-                    var pre = createCodeBlock(e.surrounding_lines.join(""), 'php').addClass(csscls('file')).appendTo(li);
-                    li.click(function() {
-                        if (pre.is(':visible')) {
-                            pre.hide();
-                        } else {
-                            pre.show();
-                        }
-                    });
+                    var startLine = (e.line - 3) <= 0 ? 1 : e.line - 3;
+                    var pre = createCodeBlock(e.surrounding_lines.join(""), 'php', startLine, e.line).addClass(csscls('file')).appendTo(li);
+                    if (!e.stack_trace_html) {
+                        // This click event makes the var-dumper hard to use.
+                        li.click(function () {
+                            if (pre.is(':visible')) {
+                                pre.hide();
+                            } else {
+                                pre.show();
+                            }
+                        });
+                    }
                 }
-                if (e.stack_trace) {
-                  e.stack_trace.split("\n").forEach(function(trace) {
-                    var $traceLine = $('<div />');
-                    $('<span />').addClass(csscls('filename')).text(trace).appendTo($traceLine);
-                    $traceLine.appendTo(li);
-                  });
+                if (e.stack_trace_html) {
+                    var $trace = $('<span />').addClass(csscls('filename')).html(e.stack_trace_html);
+                    $trace.appendTo(li);
+                } else if (e.stack_trace) {
+                    e.stack_trace.split("\n").forEach(function (trace) {
+                        var $traceLine = $('<div />');
+                        $('<span />').addClass(csscls('filename')).text(trace).appendTo($traceLine);
+                        $traceLine.appendTo(li);
+                    });
                 }
             }});
             this.$list.$el.appendTo(this.$el);
@@ -578,6 +595,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
         }
 
     });
-    
+
 
 })(PhpDebugBar.$);
