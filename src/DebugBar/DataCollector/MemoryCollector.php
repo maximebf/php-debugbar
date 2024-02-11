@@ -23,6 +23,18 @@ class MemoryCollector extends DataCollector implements Renderable
 
     protected $peakUsage = 0;
 
+    protected $precision = 0;
+
+    /**
+     * Set the precision of the 'peak_usage_str' output.
+     *
+     * @param int $precision
+     */
+    public function setPrecision($precision)
+    {
+        $this->precision = $precision;
+    }
+
     /**
      * Returns whether total allocated memory page size is used instead of actual used memory size
      * by the application.  See $real_usage parameter on memory_get_peak_usage for details.
@@ -82,7 +94,7 @@ class MemoryCollector extends DataCollector implements Renderable
         $this->updatePeakUsage();
         return array(
             'peak_usage' => $this->getPeakUsage(),
-            'peak_usage_str' => $this->getDataFormatter()->formatBytes($this->getPeakUsage(), 0)
+            'peak_usage_str' => $this->getDataFormatter()->formatBytes($this->getPeakUsage(), $this->precision)
         );
     }
 
