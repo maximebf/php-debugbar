@@ -50,7 +50,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
      *
      * @param  bool $enabled
      */
-    public function setDurationBackground($enabled = true)
+    public function setDurationBackground($enabled)
     {
         $this->durationBackground = $enabled;
     }
