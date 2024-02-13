@@ -48,14 +48,14 @@ trait HasXdebugLinks
      * Get an Xdebug Link to a file
      *
      * @param string $file
-     * @param int    $line
+     * @param int|null $line
      *
      * @return array {
      * @var string   $url
      * @var bool     $ajax should be used to open the url instead of a normal links
      * }
      */
-    public function getXdebugLink($file, $line = 1)
+    public function getXdebugLink($file, $line = null)
     {
         if (empty($file)) {
             return null;
