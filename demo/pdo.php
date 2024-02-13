@@ -7,7 +7,7 @@ use DebugBar\DataCollector\PDO\PDOCollector;
 
 $pdo = new TraceablePDO(new PDO('sqlite::memory:'));
 $debugbar->addCollector(new PDOCollector($pdo));
-$debugbar['pdo']->setDurationBackground();
+$debugbar['pdo']->setDurationBackground(true);
 
 $pdo->exec('create table users (name varchar)');
 $stmt = $pdo->prepare('insert into users (name) values (?)');
