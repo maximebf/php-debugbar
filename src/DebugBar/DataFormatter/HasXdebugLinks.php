@@ -48,7 +48,7 @@ trait HasXdebugLinks
      * Get an Xdebug Link to a file
      *
      * @param string $file
-     * @param int    $line
+     * @param int|null $line
      *
      * @return array {
      * @var string   $url
@@ -74,7 +74,7 @@ trait HasXdebugLinks
 
         $url = strtr($this->getXdebugLinkTemplate(), [
             '%f' => rawurlencode(str_replace('\\', '/', $file)),
-            '%l' => rawurlencode((string) $line ?: ''),
+            '%l' => rawurlencode((string) $line ?: 1),
         ]);
         if ($url) {
             return [
