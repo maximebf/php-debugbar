@@ -55,7 +55,7 @@ trait HasXdebugLinks
      * @var bool     $ajax should be used to open the url instead of a normal links
      * }
      */
-    public function getXdebugLink($file, $line = null)
+    public function getXdebugLink($file, $line = 1)
     {
         if (empty($file)) {
             return null;
