@@ -42,7 +42,7 @@ class PhpInfoCollector extends DataCollector implements Renderable
         return array(
             "php_version" => array(
                 "icon" => "code",
-                "tooltip" => "Version",
+                "tooltip" => "PHP Version",
                 "map" => "php.version",
                 "default" => ""
             ),
