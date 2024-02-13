@@ -204,7 +204,7 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
      */
     public function getName()
     {
-        return 'database';
+        return 'pdo';
     }
 
     /**
@@ -212,17 +212,15 @@ class PDOCollector extends DataCollector implements Renderable, AssetProvider
      */
     public function getWidgets()
     {
-        $name = $this->getName();
-
         return array(
-            "$name" => array(
+            "database" => array(
                 "icon" => "database",
                 "widget" => "PhpDebugBar.Widgets.SQLQueriesWidget",
-                "map" => "$name",
+                "map" => "pdo",
                 "default" => "[]"
             ),
-            "$name:badge" => array(
-                "map" => "$name.nb_statements",
+            "database:badge" => array(
+                "map" => "pdo.nb_statements",
                 "default" => 0
             )
         );
