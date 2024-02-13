@@ -20,7 +20,7 @@ class RequestDataCollector extends DataCollector implements Renderable, AssetPro
      */
     public function collect()
     {
-        $vars = array('_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER');
+        $vars = array('_GET', '_POST', '_SESSION', '_COOKIE');
         $data = array();
 
         foreach ($vars as $var) {
