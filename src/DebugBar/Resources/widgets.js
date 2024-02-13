@@ -88,7 +88,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         highlight(codeElement).removeClass('hljs');
 
         // Show line numbers in a list
-        if ($.isNumeric(firstLineNumber)) {
+        if (!isNaN(parseFloat(firstLineNumber))) {
             var lineCount = code.split('\n').length;
             var $lineNumbers = $('<ul />').prependTo(pre);
             pre.children().addClass(csscls('numbered-code'));

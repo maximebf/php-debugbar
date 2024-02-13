@@ -186,7 +186,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @param {Function} cb
          */
         bindAttr: function(attr, cb) {
-            if ($.isArray(attr)) {
+            if (Array.isArray(attr)) {
                 for (var i = 0, c = attr.length; i < c; i++) {
                     this.bindAttr(attr[i], cb);
                 }
@@ -1212,7 +1212,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 this.addEventListener("readystatechange", function() {
                     var skipUrl = self.debugbar.openHandler ? self.debugbar.openHandler.get('url') : null;
                     var href = (typeof url === 'string') ? url : url.href;
-                    
+
                     if (xhr.readyState == 4 && href.indexOf(skipUrl) !== 0) {
                         self.handle(xhr);
                     }
