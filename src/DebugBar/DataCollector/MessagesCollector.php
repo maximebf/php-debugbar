@@ -85,7 +85,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             'is_string' => $isString,
             'label' => $label,
             'time' => microtime(true),
-            'xdebug_link' => $stackItem ? $this->getXdebugLink($stackItem['file'], $stackItem['line']) : null,
+            'xdebug_link' => $stackItem ? $this->getXdebugLink($stackItem['file'], $stackItem['line'] ?? null) : null,
         );
     }
 
