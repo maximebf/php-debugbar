@@ -70,7 +70,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             $stacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
             $stackItem = $stacktrace[0];
             foreach ($stacktrace as $trace) {
-                if (strpos($trace['file'], '/vendor/') !== false) {
+                if (!isset($trace['file']) || strpos($trace['file'], '/vendor/') !== false) {
                     continue;
                 }
 
@@ -85,7 +85,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             'is_string' => $isString,
             'label' => $label,
             'time' => microtime(true),
-            'xdebug_link' => $stackItem ? $this->getXdebugLink($stackItem['file'], $stackItem['line']) : null,
+            'xdebug_link' => $stackItem ? $this->getXdebugLink($stackItem['file'], $stackItem['line'] ?? null) : null,
         );
     }
 
