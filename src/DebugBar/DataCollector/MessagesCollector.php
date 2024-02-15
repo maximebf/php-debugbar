@@ -70,7 +70,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
             $stacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
             $stackItem = $stacktrace[0];
             foreach ($stacktrace as $trace) {
-                if (strpos($trace['file'], '/vendor/') !== false) {
+                if (!isset($trace['file']) || strpos($trace['file'], '/vendor/') !== false) {
                     continue;
                 }
 
