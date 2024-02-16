@@ -45,6 +45,22 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
     }
 
     /**
+     * @param string|null $messageHtml
+     * @param mixed $message
+     *
+     * @return string|null
+     */
+    protected function customizeMessageHtml($messageHtml, $message)
+    {
+        $pos = strpos((string) $messageHtml, 'sf-dump-expanded');
+        if ($pos !== false) {
+            $messageHtml = substr_replace($messageHtml, 'sf-dump-compact', $pos, 16);
+        }
+
+        return $messageHtml;
+    }
+
+    /**
      * Adds a message
      *
      * A message can be anything from an object to a string
@@ -81,7 +97,7 @@ class MessagesCollector extends AbstractLogger implements DataCollectorInterface
 
         $this->messages[] = array(
             'message' => $messageText,
-            'message_html' => $messageHtml,
+            'message_html' => $this->customizeMessageHtml($messageHtml, $message),
             'is_string' => $isString,
             'label' => $label,
             'time' => microtime(true),
