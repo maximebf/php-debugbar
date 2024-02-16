@@ -486,7 +486,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         this.$el.append(li);
 
                         if (measure.params && !$.isEmptyObject(measure.params)) {
-                            var table = $('<table><tr><th colspan="2">Params</th></tr></table>').addClass(csscls('params')).appendTo(li);
+                            var table = $('<table><tr><th colspan="2">Params</th></tr></table>').hide().addClass(csscls('params')).appendTo(li);
                             for (var key in measure.params) {
                                 if (typeof measure.params[key] !== 'function') {
                                     table.append('<tr><td class="' + csscls('name') + '">' + key + '</td><td class="' + csscls('value') +
