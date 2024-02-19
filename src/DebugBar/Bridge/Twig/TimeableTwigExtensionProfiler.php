@@ -11,16 +11,17 @@
 namespace DebugBar\Bridge\Twig;
 
 use DebugBar\DataCollector\TimeDataCollector;
-use Twig_Profiler_Profile;
+use Twig\Extension\ProfilerExtension;
+use Twig\Profiler\Profile;
 
 /**
  * Class TimeableTwigExtensionProfiler
  *
- * Extends Twig_Extension_Profiler to add rendering times to the TimeDataCollector
+ * Extends ProfilerExtension to add rendering times to the TimeDataCollector
  *
  * @package DebugBar\Bridge\Twig
  */
-class TimeableTwigExtensionProfiler extends \Twig_Extension_Profiler
+class TimeableTwigExtensionProfiler extends ProfilerExtension
 {
     /**
      * @var \DebugBar\DataCollector\TimeDataCollector
@@ -35,14 +36,14 @@ class TimeableTwigExtensionProfiler extends \Twig_Extension_Profiler
         $this->timeDataCollector = $timeDataCollector;
     }
 
-    public function __construct(\Twig_Profiler_Profile $profile, TimeDataCollector $timeDataCollector = null)
+    public function __construct(Profile $profile, TimeDataCollector $timeDataCollector = null)
     {
         parent::__construct($profile);
 
         $this->timeDataCollector = $timeDataCollector;
     }
 
-    public function enter(Twig_Profiler_Profile $profile)
+    public function enter(Profile $profile)
     {
         if ($this->timeDataCollector && $profile->isTemplate()) {
             $this->timeDataCollector->startMeasure($profile->getName(), 'template ' . $profile->getName());
@@ -50,7 +51,7 @@ class TimeableTwigExtensionProfiler extends \Twig_Extension_Profiler
         parent::enter($profile);
     }
 
-    public function leave(Twig_Profiler_Profile $profile)
+    public function leave(Profile $profile)
     {
         parent::leave($profile);
         if ($this->timeDataCollector && $profile->isTemplate()) {
