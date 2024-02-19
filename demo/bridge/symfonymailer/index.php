@@ -14,6 +14,8 @@ include __DIR__ . '/../../bootstrap.php';
 $debugbarRenderer->setBaseUrl('../../../src/DebugBar/Resources');
 
 $mailCollector = new SymfonyMailCollector();
+$mailCollector->showMessageDetail();
+$mailCollector->showMessageBody();
 $debugbar->addCollector($mailCollector);
 $logger = new MessagesCollector('mails');
 $debugbar['messages']->aggregate($logger);
@@ -41,7 +43,7 @@ $email = (new Email())
     //->replyTo('fabien@example.com')
     //->priority(Email::PRIORITY_HIGH)
     ->subject('Wonderful Subject')
-    ->text('Here is the message itself');
+    ->html('<div>Here is the message itself</div>');
 
 $mailer->send($email);
 
