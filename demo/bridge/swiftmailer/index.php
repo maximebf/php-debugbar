@@ -8,15 +8,17 @@ $debugbarRenderer->setBaseUrl('../../../src/DebugBar/Resources');
 use DebugBar\Bridge\SwiftMailer\SwiftLogCollector;
 use DebugBar\Bridge\SwiftMailer\SwiftMailCollector;
 
-$mailer = Swift_Mailer::newInstance(Swift_NullTransport::newInstance());
+$mailer = new Swift_Mailer(new Swift_NullTransport());
 
 $debugbar['messages']->aggregate(new SwiftLogCollector($mailer));
-$debugbar->addCollector(new SwiftMailCollector($mailer));
+$mailCollector = new SwiftMailCollector($mailer);
+$mailCollector->showMessageBody();
+$debugbar->addCollector($mailCollector);
 
-$message = Swift_Message::newInstance('Wonderful Subject')
+$message = (new Swift_Message('Wonderful Subject'))
   ->setFrom(array('john@doe.com' => 'John Doe'))
   ->setTo(array('receiver@domain.org', 'other@domain.org' => 'A name'))
-  ->setBody('Here is the message itself');
+  ->setBody('<div>Here is the message itself</div>');
 
 $mailer->send($message);
 

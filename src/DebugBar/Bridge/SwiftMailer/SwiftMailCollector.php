@@ -25,10 +25,18 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
 {
     protected $messagesLogger;
 
+    /** @var bool */
+    private $showBody = false;
+
     public function __construct(Swift_Mailer $mailer)
     {
         $this->messagesLogger = new Swift_Plugins_MessageLogger();
         $mailer->registerPlugin($this->messagesLogger);
+    }
+
+    public function showMessageBody()
+    {
+        $this->showBody = true;
     }
 
     public function collect()
@@ -38,7 +46,8 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
             $mails[] = array(
                 'to' => $this->formatTo($msg->getTo()),
                 'subject' => $msg->getSubject(),
-                'headers' => $msg->getHeaders()->toString()
+                'headers' => $msg->getHeaders()->toString(),
+                'body' => $this->showBody ? $msg->getBody() : null,
             );
         }
         return array(

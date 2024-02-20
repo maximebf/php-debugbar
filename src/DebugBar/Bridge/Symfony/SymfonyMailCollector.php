@@ -19,6 +19,9 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
     /** @var bool */
     private $showDetailed = false;
 
+    /** @var bool */
+    private $showBody = false;
+
     /** @param \Symfony\Component\Mailer\SentMessage $message */
     public function addSymfonyMessage($message)
     {
@@ -28,6 +31,11 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
     public function showMessageDetail()
     {
         $this->showDetailed = true;
+    }
+
+    public function showMessageBody()
+    {
+        $this->showBody = true;
     }
 
     public function collect()
@@ -43,6 +51,7 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
                 }, $message->getTo()),
                 'subject' => $message->getSubject(),
                 'headers' => ($this->showDetailed ? $message : $message->getHeaders())->toString(),
+                'body' => $this->showBody ? $message->getBody()->bodyToString() : null,
             );;
         }
 
