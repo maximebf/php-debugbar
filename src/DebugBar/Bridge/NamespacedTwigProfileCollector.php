@@ -79,9 +79,18 @@ class NamespacedTwigProfileCollector extends DataCollector implements Renderable
     public function __construct(Profile $profile, $loaderOrEnv = null)
     {
         $this->profile = $profile;
+        $this->setLoaderOrEnv($loaderOrEnv);
+    }
+
+    /**
+     * @param LoaderInterface|Environment $loaderOrEnv
+     */
+    public function setLoaderOrEnv($loaderOrEnv)
+    {
         if ($loaderOrEnv instanceof Environment) {
             $loaderOrEnv = $loaderOrEnv->getLoader();
         }
+
         $this->loader = $loaderOrEnv;
     }
 
