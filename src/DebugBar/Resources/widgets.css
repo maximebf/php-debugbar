@@ -82,22 +82,20 @@ div.phpdebugbar-widgets-messages {
   div.phpdebugbar-widgets-messages ul.phpdebugbar-widgets-list {
     padding-bottom: 20px;
   }
-  div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-warning:before {
+  div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value:before {
     font-family: PhpDebugbarFontAwesome;
-    content: "\f071";
     margin-right: 8px;
     font-size: 11px;
+  }
+  div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-warning:before {
+    content: "\f071";
     color: #ecb03d;
   }
   div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-error {
     color: red;
   }
   div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-error:before {
-    font-family: PhpDebugbarFontAwesome;
     content: "\f057";
-    margin-right: 8px;
-    font-size: 11px;
-    color: red;
   }
   div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item pre.sf-dump {
     display: inline;
