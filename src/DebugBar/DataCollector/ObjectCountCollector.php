@@ -59,7 +59,10 @@ class ObjectCountCollector extends DataCollector implements DataCollectorInterfa
             $reflector = class_exists($class) ? new \ReflectionClass($class) : null;
 
             if ($reflector && $link = $this->getXdebugLink($reflector->getFileName())) {
-                $data[$class . '<a href="' . $link['url'] . '" class="phpdebugbar-widgets-editor-link"></a>'] = $count;
+                $data[$class] = [
+                    'value' => $count,
+                    'xdebug_link' => $link,
+                ];
             } else {
                 $data[$class] = $count;
             }
