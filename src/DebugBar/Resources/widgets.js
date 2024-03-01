@@ -318,6 +318,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
                             prettyVal = null;
                         }
                         li.css('cursor', 'pointer').click(function () {
+                            if (window.getSelection().type == "Range") {
+                                return''
+                            }
                             if (val.hasClass(csscls('pretty'))) {
                                 val.text(m).removeClass(csscls('pretty'));
                             } else {
