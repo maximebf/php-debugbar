@@ -58,6 +58,9 @@
                         }
                     }
                     li.css('cursor', 'pointer').click(function() {
+                        if (window.getSelection().type == "Range") {
+                            return''
+                        }
                         if (table.is(':visible')) {
                             table.hide();
                         } else {
