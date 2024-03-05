@@ -511,6 +511,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
                                 }
                             }
                             li.css('cursor', 'pointer').click(function() {
+                                if (window.getSelection().type == "Range") {
+                                    return''
+                                }
                                 var table = $(this).find('table');
                                 if (table.is(':visible')) {
                                     table.hide();
