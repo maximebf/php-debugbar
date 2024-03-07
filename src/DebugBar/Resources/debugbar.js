@@ -370,14 +370,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return "#" + nb + suffix;
             }
 
-            var uri = data['__meta']['uri'], filename;
-            if (uri.length && uri.charAt(uri.length - 1) === '/') {
-                // URI ends in a trailing /: get the portion before then to avoid returning an empty string
-                filename = uri.substr(0, uri.length - 1); // strip trailing '/'
-                filename = filename.substr(filename.lastIndexOf('/') + 1); // get last path segment
-                filename += '/'; // add the trailing '/' back
-            } else {
-                filename = uri.substr(uri.lastIndexOf('/') + 1);
+            var uri = data['__meta']['uri'].split('/'), filename = uri.pop();
+
+            // URI ends in a trailing /, avoid returning an empty string
+            if (!filename) {
+                filename = (uri.pop() || '') + '/'; // add the trailing '/' back
+            }
+
+            // filename is a number, path could be like /action/{id}
+            if (uri.length && !isNaN(filename)) {
+                filename = uri.pop() + '/' + filename;
             }
 
             // truncate the filename in the label, if it's too long
