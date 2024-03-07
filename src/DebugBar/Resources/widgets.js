@@ -374,27 +374,43 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 .appendTo(this.$toolbar);
 
             this.bindAttr('data', function(data) {
-                this.set({ exclude: [], search: '' });
+                this.set({excludelabel: [], excludecollector: [], search: ''});
                 this.$toolbar.find(csscls('.filter')).remove();
 
-                var filters = [], self = this;
-                for (var i = 0; i < data.length; i++) {
-                    if (!data[i].label || $.inArray(data[i].label, filters) > -1) {
-                        continue;
+                var labels = [], collectors = [], self = this,
+                    createFilterItem = function (type, value) {
+                        $('<a />')
+                            .addClass(csscls('filter')).addClass(csscls(type))
+                            .text(value).attr('rel', value)
+                            .on('click', function() { self.onFilterClick(this, type); })
+                            .appendTo(self.$toolbar)
+                    };
+
+                data.forEach(function (item) {
+                    if (!labels.includes(item.label || 'none')) {
+                        labels.push(item.label || 'none');
                     }
-                    filters.push(data[i].label);
-                    $('<a />')
-                        .addClass(csscls('filter'))
-                        .text(data[i].label)
-                        .attr('rel', data[i].label)
-                        .on('click', function() { self.onFilterClick(this); })
-                        .appendTo(this.$toolbar);
+
+                    if (!collectors.includes(item.collector || 'none')) {
+                        collectors.push(item.collector || 'none');
+                    }
+                });
+
+                if (labels.length > 1) {
+                    labels.forEach(label => createFilterItem('label', label));
                 }
+
+                if (collectors.length === 1) {
+                    return;
+                }
+
+                $('<a />').addClass(csscls('filter')).css('visibility', 'hidden').appendTo(self.$toolbar);
+                collectors.forEach(collector => createFilterItem('collector', collector));
             });
 
-            this.bindAttr(['exclude', 'search'], function() {
-                var data = this.get('data'),
-                    exclude = this.get('exclude'),
+            this.bindAttr(['excludelabel', 'excludecollector', 'search'], function() {
+                var excludelabel = this.get('excludelabel') || [],
+                    excludecollector = this.get('excludecollector') || [],
                     search = this.get('search'),
                     caseless = false,
                     fdata = [];
@@ -403,27 +419,31 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     caseless = true;
                 }
 
-                for (var i = 0; i < data.length; i++) {
-                    var message = caseless ? data[i].message.toLowerCase() : data[i].message;
+                this.get('data').forEach(function (item) {
+                    var message = caseless ? item.message.toLowerCase() : item.message;
 
-                    if ((!data[i].label || $.inArray(data[i].label, exclude) === -1) && (!search || message.indexOf(search) > -1)) {
-                        fdata.push(data[i]);
+                    if (
+                        !excludelabel.includes(item.label || undefined) &&
+                        !excludecollector.includes(item.collector || undefined) &&
+                        (!search || message.indexOf(search) > -1)
+                    ) {
+                        fdata.push(item);
                     }
-                }
+                });
 
                 this.$list.set('data', fdata);
             });
         },
 
-        onFilterClick: function(el) {
+        onFilterClick: function(el, type) {
             $(el).toggleClass(csscls('excluded'));
 
-            var excludedLabels = [];
-            this.$toolbar.find(csscls('.filter') + csscls('.excluded')).each(function() {
-                excludedLabels.push(this.rel);
+            var excluded = [];
+            this.$toolbar.find(csscls('.filter') + csscls('.excluded') + csscls('.' + type)).each(function() {
+                excluded.push(this.rel === 'none' || !this.rel ? undefined : this.rel);
             });
 
-            this.set('exclude', excludedLabels);
+            this.set('exclude' + type, excluded);
         }
 
     });
