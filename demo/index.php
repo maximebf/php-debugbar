@@ -31,6 +31,10 @@ render_demo_page(function() {
     <li><a href="ajax.php" class="ajax">load ajax content</a></li>
     <li><a href="ajax_exception.php" class="ajax">load ajax content with exception</a></li>
 </ul>
+<h2>IFRAMES</h2>
+<ul>
+    <li><a href="iframes/index.php">load through iframes</a></li>
+</ul>
 <h2>Stack</h2>
 <ul>
     <li><a href="stack.php">perform a redirect</a></li>
