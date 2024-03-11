@@ -81,7 +81,7 @@ div.phpdebugbar-widgets-messages {
   height: 100%;
 }
   div.phpdebugbar-widgets-messages ul.phpdebugbar-widgets-list {
-    padding-bottom: 20px;
+    padding-bottom: 45px;
   }
   div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value:before {
     font-family: PhpDebugbarFontAwesome;
