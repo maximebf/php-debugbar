@@ -424,6 +424,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.activePanelName = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
+            this.hasParent = window.parent && window.parent !== window.top
+                && window.parent.phpdebugbar && window.parent.phpdebugbar != this;
             this.registerResizeHandler();
         },
 
@@ -433,7 +435,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         registerResizeHandler: function() {
-            if (typeof this.resize.bind == 'undefined') return;
+            if (typeof this.resize.bind == 'undefined' || this.hasParent) return;
 
             var f = this.resize.bind(this);
             this.respCSSSize = 0;
@@ -474,6 +476,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         render: function() {
+            if (this.hasParent) {
+                this.$el.hide();
+            }
+
             var self = this;
             this.$el.appendTo('body');
             this.$dragCapture = $('<div />').addClass(csscls('drag-capture')).appendTo(this.$el);
@@ -573,6 +579,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         restoreState: function() {
+            if (this.hasParent) return;
             // bar height
             var height = localStorage.getItem('phpdebugbar-height');
             this.setHeight(height || this.$body.height());
@@ -923,6 +930,15 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @return {String} Dataset's id
          */
         addDataSet: function(data, id, suffix, show) {
+            if (this.hasParent) {
+                if (!suffix || ('(iframe)').indexOf(suffix) < 0) {
+                    suffix = '(iframe)' + (suffix || '');
+                }
+                
+                window.parent.phpdebugbar.addDataSet(data, id, suffix, show);
+                return;
+            }
+
             var label = this.datesetTitleFormater.format(id, data, suffix);
             id = id || (getObjectSize(this.datasets) + 1);
             this.datasets[id] = data;
