@@ -24,14 +24,15 @@
                             var headers = !mail.headers ? '' : $('<pre style="border: 1px solid #ddd; padding: 5px;" />')
                                 .append($('<code />').text(mail.headers));
 
+                            var body = $('<pre style="border: 1px solid #ddd; padding: 5px;" />').text(mail.body)
+                            var html = null;
                             if (mail.html) {
-                                var body = $('<iframe width="100%" height="400px" sandbox="" referrerpolicy="no-referrer"/>').attr("srcdoc", mail.html)
-                            } else {
-                                var body = $('<pre style="border: 1px solid #ddd; padding: 5px;" />').text(mail.body)
+                                body = $('<details />').append($('<summary>Text version</summary>')).append(body);
+                                html = $('<iframe width="100%" height="400px" sandbox="" referrerpolicy="no-referrer"/>').attr("srcdoc", mail.html)
                             }
 
                             documentToWriteTo.open();
-                            documentToWriteTo.write(headers.prop('outerHTML') + body.prop('outerHTML'));
+                            documentToWriteTo.write(headers.prop('outerHTML') + body.prop('outerHTML') + (html ? html.prop('outerHTML') : ''));
                             documentToWriteTo.close();
                         }).addClass(csscls('editor-link')).appendTo(header);
 
