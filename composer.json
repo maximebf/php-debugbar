@@ -23,7 +23,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.5.20 <10.0",
-        "twig/twig": "^1.38|^2.7|^3.0"
+        "twig/twig": "^1.38|^2.7|^3.0",
+        "swiftmailer/swiftmailer": "^6.0"
     },
     "autoload": {
         "psr-4": {

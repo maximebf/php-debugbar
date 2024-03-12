@@ -49,7 +49,7 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
                 'subject' => $msg->getSubject(),
                 'headers' => $msg->getHeaders()->toString(),
                 'body' => $html,
-                'html' => $html,
+                'html' => null,
             );
         }
         return array(
