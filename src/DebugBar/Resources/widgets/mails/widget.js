@@ -16,7 +16,7 @@
             this.$list = new  PhpDebugBar.Widgets.ListWidget({ itemRenderer: function(li, mail) {
                     $('<span />').addClass(csscls('subject')).text(mail.subject).appendTo(li);
                     $('<span />').addClass(csscls('to')).text(mail.to).appendTo(li);
-                    if (mail.html || mail.html) {
+                    if (mail.body || mail.html) {
                         var header = $('<span />').addClass(csscls('filename')).text('');
                         $('<a title="Mail Preview">View Mail</a>').on('click', function () {
                             var popup = window.open('about:blank', 'Mail Preview', 'width=650,height=440,scrollbars=yes');
