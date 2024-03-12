@@ -29,14 +29,17 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
         $this->messages[] = $message->getOriginalMessage();
     }
 
+    /**
+     * @deprecated use showMessageBody()
+     */
     public function showMessageDetail()
     {
-        $this->showDetailed = true;
+        $this->showMessageBody(true);
     }
 
-    public function showMessageBody()
+    public function showMessageBody($show = true)
     {
-        $this->showBody = true;
+        $this->showBody = $show;
     }
 
     public function collect()
@@ -51,7 +54,7 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
                     return $address->toString();
                 }, $message->getTo()),
                 'subject' => $message->getSubject(),
-                'headers' => ($this->showDetailed ? $message : $message->getHeaders())->toString(),
+                'headers' => $message->getHeaders()->toString(),
                 'body' => null,
                 'html' => null,
             ];

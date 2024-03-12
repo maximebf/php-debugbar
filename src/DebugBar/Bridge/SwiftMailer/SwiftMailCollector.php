@@ -34,9 +34,9 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
         $mailer->registerPlugin($this->messagesLogger);
     }
 
-    public function showMessageBody()
+    public function showMessageBody($show = true)
     {
-        $this->showBody = true;
+        $this->showBody = $show;
     }
 
     public function collect()
