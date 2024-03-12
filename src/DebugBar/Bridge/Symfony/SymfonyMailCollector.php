@@ -5,6 +5,7 @@ namespace DebugBar\Bridge\Symfony;
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use Symfony\Component\Mime\Part\AbstractPart;
 
 /**
  * Collects data about sent mail events
@@ -44,15 +45,28 @@ class SymfonyMailCollector extends DataCollector implements Renderable, AssetPro
 
         foreach ($this->messages as $message) {
             /* @var \Symfony\Component\Mime\Message $message */
-            $mails[] = array(
+            $mail = [
                 'to' => array_map(function ($address) {
                     /* @var \Symfony\Component\Mime\Address $address */
                     return $address->toString();
                 }, $message->getTo()),
                 'subject' => $message->getSubject(),
                 'headers' => ($this->showDetailed ? $message : $message->getHeaders())->toString(),
-                'body' => $this->showBody ? $message->getBody()->bodyToString() : null,
-            );;
+                'body' => null,
+                'html' => null,
+            ];
+
+            if ($this->showBody) {
+                $body = $message->getBody();
+                if ($body instanceof AbstractPart) {
+                    $mail['html'] = $message->getHtmlBody();
+                    $mail['body'] = $message->getTextBody();
+                } else {
+                    $mail['body'] = $body->bodyToString();
+                }
+            }
+
+            $mails[] = $mail;
         }
 
         return array(
