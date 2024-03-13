@@ -43,6 +43,9 @@
                         var headers = $('<pre />').addClass(csscls('headers')).appendTo(li);
                         $('<code />').text(mail.headers).appendTo(headers);
                         li.click(function() {
+                            if (window.getSelection().type == "Range") {
+                                return''
+                            }
                             if (headers.is(':visible')) {
                                 headers.hide();
                             } else {

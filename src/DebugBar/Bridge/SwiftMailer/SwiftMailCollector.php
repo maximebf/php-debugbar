@@ -43,13 +43,15 @@ class SwiftMailCollector extends DataCollector implements Renderable, AssetProvi
     {
         $mails = array();
         foreach ($this->messagesLogger->getMessages() as $msg) {
-            $html = $this->showBody ? $msg->getBody() : null;
+            $body = $this->showBody ? $msg->getBody() : null;
+            $isHtml = strpos((string) $msg->getHeaders()->get('Content-Type'), 'html') !== false;
+
             $mails[] = array(
                 'to' => $this->formatTo($msg->getTo()),
                 'subject' => $msg->getSubject(),
                 'headers' => $msg->getHeaders()->toString(),
-                'body' => $html,
-                'html' => null,
+                'body' => !$isHtml ? $body : null,
+                'html' => $isHtml ? $body : null,
             );
         }
         return array(
