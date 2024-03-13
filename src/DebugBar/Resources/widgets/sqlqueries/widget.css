@@ -107,8 +107,8 @@ div.phpdebugbar-widgets-sqlqueries div.phpdebugbar-widgets-toolbar {
   display:none;
   position: fixed;
   bottom: 0;
-  width: 100%;
-  background: #fff;
+  width: calc(100% - 30px);
+  margin-bottom: 5px;
   z-index: 1;
 }
 
