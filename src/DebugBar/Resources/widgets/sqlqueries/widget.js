@@ -14,15 +14,7 @@
 
         onFilterClick: function(el) {
             $(el).toggleClass(csscls('excluded'));
-
-            var excludedLabels = [];
-            this.$toolbar.find(csscls('.filter') + csscls('.excluded')).each(function() {
-                excludedLabels.push(this.rel);
-            });
-
             this.$list.$el.find("li[connection=" + $(el).attr("rel") + "]").toggle();
-
-            this.set('exclude', excludedLabels);
         },
         onCopyToClipboard: function (el) {
             var code = $(el).parent('li').find('code').get(0);
@@ -179,6 +171,8 @@
                 if (data.length <= 0 || !data.statements) {
                     return false;
                 }
+                filters = [];
+                this.$toolbar.hide().find(csscls('.filter')).remove();
                 this.$list.set('data', data.statements);
                 this.$status.empty();
 
