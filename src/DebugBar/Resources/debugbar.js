@@ -544,13 +544,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 });
             });
 
-            // select box for data sets
-            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).attr('name', 'datasets-switcher')
-                .appendTo(this.$headerRight);
-            this.$datasets.change(function() {
-                self.dataChangeHandler(self.datasets[this.value]);
-                self.showTab();
-            });
         },
 
         /**
@@ -624,13 +617,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @param {Tab} tab Tab object
          * @return {Tab}
          */
-        addTab: function(name, tab) {
+        addTab: function(name, tab, position) {
             if (this.isControl(name)) {
                 throw new Error(name + ' already exists');
             }
 
             var self = this;
-            tab.$tab.appendTo(this.$headerLeft).click(function() {
+            tab.$tab.appendTo(position == 'right' ? this.$headerRight : this.$headerLeft).click(function() {
                 if (!self.isMinimized() && self.activePanelName == name) {
                     self.minimize();
                 } else {
@@ -934,7 +927,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (!suffix || ('(iframe)').indexOf(suffix) < 0) {
                     suffix = '(iframe)' + (suffix || '');
                 }
-                
+
                 window.parent.phpdebugbar.addDataSet(data, id, suffix, show);
                 return;
             }
@@ -943,10 +936,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             id = id || (getObjectSize(this.datasets) + 1);
             this.datasets[id] = data;
 
-            this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
-            if (this.$datasets.children().length > 1) {
-                this.$datasets.show();
-            }
+            var control = this.getControl('__datasets');
+            control.set('data', this.datasets);
+            control.set('badge', getObjectSize(this.datasets));
 
             if (typeof(show) == 'undefined' || show) {
                 this.showDataSet(id);
@@ -991,7 +983,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         showDataSet: function(id) {
             this.dataChangeHandler(this.datasets[id]);
-            this.$datasets.val(id);
         },
 
         /**

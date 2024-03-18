@@ -270,6 +270,26 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
     });
 
+    /**
+     * An extension of KVListWidget where the data represents incoming requsts
+     *
+     * Options:
+     *  - data
+     */
+    var DatasetListWidget = PhpDebugBar.Widgets.DatasetListWidget = KVListWidget.extend({
+
+        className: csscls('kvlist datasetlist'),
+
+        itemRenderer: function(dt, dd, key, value) {
+            dt.text(key);
+            dd.html(value.__meta.uri );
+            dd.on('click', function() {
+                window.phpdebugbar.showDataSet(key);
+            })
+        }
+
+    });
+
     // ------------------------------------------------------------------
 
     /**
