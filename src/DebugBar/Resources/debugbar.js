@@ -948,9 +948,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             id = id || (getObjectSize(this.datasets) + 1);
             this.datasets[id] = data;
 
-            this.datasetTab.$tab.show();
             this.datasetTab.set('data', data);
             this.datasetTab.set('badge', getObjectSize(this.datasets));
+            this.datasetTab.$tab.show();
 
             if (typeof(show) == 'undefined' || show) {
                 this.showDataSet(id);

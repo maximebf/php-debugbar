@@ -311,3 +311,30 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
   div.phpdebugbar-mini-design a.phpdebugbar-tab i {
     display:inline-block;
   }
+
+/* -------------------------------------- */
+
+  .phpdebugbar-widgets-dataset-history table {
+      width: 100%;
+      table-layout: fixed;
+  }
+    .phpdebugbar-widgets-dataset-history table th {
+        font-weight: bold;
+    }
+    .phpdebugbar-widgets-dataset-history table td, .phpdebugbar-widgets-dataset-history table th {
+        padding: 6px 3px;
+        border-bottom: 1px solid #ddd;
+    }
+    .phpdebugbar-widgets-dataset-history table td a{
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions {
+        text-align: center;
+        padding: 7px 0;
+    }
+    .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions a {
+        margin: 0 10px;
+    }

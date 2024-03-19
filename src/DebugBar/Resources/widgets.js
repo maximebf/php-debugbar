@@ -655,20 +655,38 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 options['itemRenderer'] = this.itemRenderer;
             }
             this.set(options);
+            this.$el.addClass(csscls('dataset-history'))
+
+            this.renderHead();
+        },
+
+        renderHead: function() {
+            this.$el.empty();
+            this.$actions = $('<div />').addClass(csscls('dataset-actions')).appendTo(this.$el);
+
+            var self = this;
+            this.$clearbtn = $('<a>Clear</a>')
+                .appendTo(this.$actions)
+                .on('click', function() {
+                    self.renderHead();
+                });
+
+            this.$table = $('<tbody />');
+            $('<table><thead><tr><th style="width: 175px;">Date</th><th style="width: 80px;">Method</th><th>URL</th></tr></thead></table>')
+                .append(this.$table)
+                .appendTo(this.$el);
         },
 
         render: function() {
             this.bindAttr(['itemRenderer', 'data'], function() {
                 if (!this.$table) {
-                    this.$el.empty();
-                    this.$table = $('<tbody />');
-                    $('<table><thead><tr><th style="width: 175px;">Date</th><th style="width: 80px;">Method</th><th>URL</th></tr></thead></table>').append(this.$table).appendTo(this.$el);
+
                 }
 
                 if (!this.has('data')) {
                     return;
                 }
-                
+
                 var data = this.get('data');
                 if (!data.__meta) {
                     return;
