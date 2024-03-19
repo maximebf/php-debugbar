@@ -670,7 +670,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$autoshow = $('<input type=checkbox>')
                 .on('click', function() {
                     if (window.phpdebugbar.ajaxHandler) {
-                        window.phpdebugbar.ajaxHandler.autoShow = $(this).is(':checked');
+                        window.phpdebugbar.ajaxHandler.setAutoShow($(this).is(':checked'));
                     }
                 });
 

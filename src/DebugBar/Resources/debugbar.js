@@ -1058,7 +1058,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
     var AjaxHandler = PhpDebugBar.AjaxHandler = function(debugbar, headerName, autoShow) {
         this.debugbar = debugbar;
         this.headerName = headerName || 'phpdebugbar';
-        this.autoShow = typeof(autoShow) == 'undefined' ? true : autoShow;
+        if (sessionStorage.getItem('phpdebugbar-ajaxhandler-autoshow') !== null) {
+            this.autoShow = JSON.parse(sessionStorage.getItem('phpdebugbar-ajaxhandler-autoshow'));
+        } else {
+            this.autoShow = typeof(autoShow) == 'undefined' ? true : autoShow;
+        }
     };
 
     $.extend(AjaxHandler.prototype, {
@@ -1097,6 +1101,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         isXHR: function(response) {
             return Object.prototype.toString.call(response) == '[object XMLHttpRequest]'
+        },
+
+        setAutoShow: function(autoshow) {
+            this.autoShow = autoshow;
+            sessionStorage.setItem('phpdebugbar-ajaxhandler-autoshow', JSON.stringify(autoshow));
         },
 
         /**
