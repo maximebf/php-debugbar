@@ -364,7 +364,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 suffix = '';
             }
 
-            var nb = getObjectSize(this.debugbar.datasets) + 1;
+            var nb = getObjectSize(this.debugbar.datasets) ;
 
             if (typeof(data['__meta']) === 'undefined') {
                 return "#" + nb + suffix;
@@ -947,7 +947,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return;
             }
 
-            id = id || (getObjectSize(this.datasets) + 1);
+            var nb = getObjectSize(this.datasets) + 1;
+            id = id || nb;
+            data.__meta['nb'] = nb;
+            data.__meta['suffix'] = suffix;
             this.datasets[id] = data;
 
             if (typeof(show) == 'undefined' || show) {

@@ -715,7 +715,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
 
             this.$table = $('<tbody />');
-            $('<table><thead><tr><th style="width: 175px;">Date</th><th style="width: 80px;">Method</th><th>URL</th><th width="40%">Data</th></tr></thead></table>')
+            $('<table><thead><tr>' +
+                '<th style="width: 20px;"></th>' +
+                '<th style="width: 175px;">Date</th>' +
+                '<th style="width: 80px;">Method</th>' +
+                '<th>URL</th><th width="40%">Data</th>' +
+                '</tr></thead></table>')
                 .append(this.$table)
                 .appendTo(this.$el);
 
@@ -778,9 +783,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var tr = $('<tr />')
                 .appendTo(widget.$table)
                 .attr('data-id', meta['id'])
+                .append('<td>#' + meta['nb'] + '</td>')
                 .append('<td>' + meta['datetime'] + '</td>')
                 .append('<td>' + meta['method'] + '</td>')
-                .append($('<td />').append(meta['uri']))
+                .append($('<td />').append(meta['uri'] + (meta['suffix'] ? ' ' + meta['suffix'] : '')))
                 .css('cursor', 'pointer')
                 .on('click', function() {
                     widget.get('debugbar').showDataSet(meta['id']);
