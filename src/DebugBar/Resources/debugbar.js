@@ -544,7 +544,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 });
             });
 
-            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"History", "widget": new PhpDebugBar.Widgets.DatasetWidget()});
+            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"Request history", "widget": new PhpDebugBar.Widgets.DatasetWidget()});
+            this.datasetTab.initialize();
             this.datasetTab.$tab.appendTo( this.$headerRight).hide();
             this.datasetTab.$tab.click(function() {
                 if (!self.isMinimized() && self.activePanelName == '__datasets') {
@@ -948,7 +949,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.datasets[id] = data;
 
             this.datasetTab.$tab.show();
-            this.datasetTab.set('data', this.datasets);
+            this.datasetTab.set('data', data);
             this.datasetTab.set('badge', getObjectSize(this.datasets));
 
             if (typeof(show) == 'undefined' || show) {
