@@ -324,6 +324,9 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
     .phpdebugbar-widgets-dataset-history table td, .phpdebugbar-widgets-dataset-history table th {
         padding: 6px 3px;
         border-bottom: 1px solid #ddd;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .phpdebugbar-widgets-dataset-history table td a{
         display: block;
