@@ -1068,8 +1068,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
     var AjaxHandler = PhpDebugBar.AjaxHandler = function(debugbar, headerName, autoShow) {
         this.debugbar = debugbar;
         this.headerName = headerName || 'phpdebugbar';
-        if (sessionStorage.getItem('phpdebugbar-ajaxhandler-autoshow') !== null) {
-            this.autoShow = JSON.parse(sessionStorage.getItem('phpdebugbar-ajaxhandler-autoshow'));
+        if (localStorage.getItem('phpdebugbar-ajaxhandler-autoshow') !== null) {
+            this.autoShow = localStorage.getItem('phpdebugbar-ajaxhandler-autoshow') == '1';
         } else {
             this.autoShow = typeof(autoShow) == 'undefined' ? true : autoShow;
         }
@@ -1115,7 +1115,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         setAutoShow: function(autoshow) {
             this.autoShow = autoshow;
-            sessionStorage.setItem('phpdebugbar-ajaxhandler-autoshow', JSON.stringify(autoshow));
+            localStorage.setItem('phpdebugbar-ajaxhandler-autoshow', autoshow ? '1' : '0');
         },
 
         /**
