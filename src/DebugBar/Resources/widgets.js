@@ -655,6 +655,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 options['itemRenderer'] = this.itemRenderer;
             }
             this.set(options);
+            this.set('autoshow', null);
             this.$el.addClass(csscls('dataset-history'))
 
             this.renderHead();
@@ -665,6 +666,19 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$actions = $('<div />').addClass(csscls('dataset-actions')).appendTo(this.$el);
 
             var self = this;
+
+            this.$autoshow = $('<input type=checkbox>')
+                .on('click', function() {
+                    if (window.phpdebugbar.ajaxHandler) {
+                        window.phpdebugbar.ajaxHandler.autoShow = $(this).is(':checked');
+                    }
+                });
+
+            $('<label>Autoshow</label>')
+                .append(this.$autoshow)
+                .appendTo(this.$actions)
+
+
             this.$clearbtn = $('<a>Clear</a>')
                 .appendTo(this.$actions)
                 .on('click', function() {
@@ -679,9 +693,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     self.set('search', null);
                     self.set('method', null);
                 });
-
-            this.$toolbar = $('<div><i class="phpdebugbar-fa phpdebugbar-fa-search"></i></div>').addClass(csscls('toolbar')).appendTo(this.$el);
-
 
             this.methodInput = $('<select name="method" style="width:100px"><option>(method)</option><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option></select>')
                 .on('change', function() { self.set('method', this.value)})
@@ -714,6 +725,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         render: function() {
             this.bindAttr(['data'], function() {
+                if (this.get('autoshow') === null && phpdebugbar.ajaxHandler) {
+                    this.set('autoshow', phpdebugbar.ajaxHandler.autoShow);
+                }
+                
                 if (!this.has('data')) {
                     return;
                 }
@@ -730,6 +745,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
             this.bindAttr(['itemRenderer', 'search', 'method'], function() {
                 this.renderDatasets();
+            })
+            this.bindAttr(['autoshow'], function() {
+                var autoshow = this.get('autoshow');
+                console.log('autoshow', autoshow);
+                this.$autoshow.prop('checked', autoshow);
             })
         },
 

@@ -341,3 +341,7 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
     .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions a {
         margin: 0 10px;
     }
+    .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions input {
+        appearance: checkbox !important;
+        margin: 5px;
+    }
