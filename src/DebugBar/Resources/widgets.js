@@ -668,44 +668,81 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$clearbtn = $('<a>Clear</a>')
                 .appendTo(this.$actions)
                 .on('click', function() {
-                    self.renderHead();
+                    self.$table.empty();
                 });
+
+            this.$showBtn = $('<a>Show all</a>')
+                .appendTo(this.$actions)
+                .on('click', function() {
+                    self.searchInput.val(null);
+                    self.methodInput.val(null);
+                    self.set('search', null);
+                    self.set('method', null);
+                });
+
+            this.$toolbar = $('<div><i class="phpdebugbar-fa phpdebugbar-fa-search"></i></div>').addClass(csscls('toolbar')).appendTo(this.$el);
+
+
+            this.methodInput = $('<select name="method" style="width:100px"><option>(method)</option><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option></select>')
+                .on('change', function() { self.set('method', this.value)})
+                .appendTo(this.$actions)
+
+            this.searchInput = $('<input type="text" name="search" aria-label="Search" placeholder="Search" />')
+                .on('input', function() { self.set('search', this.value); })
+                .appendTo(this.$actions);
+
 
             this.$table = $('<tbody />');
             $('<table><thead><tr><th style="width: 175px;">Date</th><th style="width: 80px;">Method</th><th>URL</th></tr></thead></table>')
                 .append(this.$table)
                 .appendTo(this.$el);
+
+
         },
 
-        render: function() {
-            this.bindAttr(['itemRenderer', 'data'], function() {
-                if (!this.$table) {
-
-                }
-
-                if (!this.has('data')) {
-                    return;
-                }
-
-                var data = this.get('data');
+        renderDatasets: function() {
+            this.$table.empty();
+            var self = this;
+            $.each(this.get('data'), function(key, data) {
                 if (!data.__meta) {
                     return;
                 }
 
-                var tr = $('<tr />').addClass(csscls('table-row')).appendTo(this.$table);
-                this.get('itemRenderer')(tr, data);
+                self.get('itemRenderer')(self, data);
             });
         },
 
+        render: function() {
+            this.bindAttr(['data'], function() {
+                if (!this.has('data')) {
+                    return;
+                }
+
+                // Render the latest item
+                var datasets = this.get('data');
+                var data = datasets[Object.keys(datasets)[Object.keys(datasets).length - 1]]
+                if (!data.__meta) {
+                    return;
+                }
+
+                console.log(this);
+                this.get('itemRenderer')(this, data);
+            });
+            this.bindAttr(['itemRenderer', 'search', 'method'], function() {
+                this.renderDatasets();
+            })
+        },
+
         /**
-         * Renders the content of a <li> element
+         * Renders the content of a dataset item
          *
-         * @param {jQuery} tr The <tr> element as a jQuery Object
          * @param {Object} value An item from the data array
          */
-        itemRenderer: function(tr, value) {
+        itemRenderer: function(widget, value) {
             var meta = value.__meta;
-            tr
+
+            console.log(widget);
+            var tr = $('<tr />').appendTo(widget.$table)
                 .append('<td>' + meta['datetime'] + '</td>')
                 .append('<td>' + meta['method'] + '</td>')
                 .append($('<td />').append(meta['uri']))
@@ -713,7 +750,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 .on('click', function() {
                     window.phpdebugbar.showDataSet(meta['id']);
                 })
+                .addClass(csscls('table-row'))
 
+            var search = widget.get('search');
+            var method = widget.get('method');
+            if ((search && meta['uri'].indexOf(search) == -1) || (method && meta['method'] !== method)) {
+                tr.hide();
+            }
         }
 
     });
