@@ -728,7 +728,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (this.get('autoshow') === null && phpdebugbar.ajaxHandler) {
                     this.set('autoshow', phpdebugbar.ajaxHandler.autoShow);
                 }
-                
+
                 if (!this.has('data')) {
                     return;
                 }
@@ -740,7 +740,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     return;
                 }
 
-                console.log(this);
                 this.get('itemRenderer')(this, data);
             });
             this.bindAttr(['itemRenderer', 'search', 'method'], function() {
@@ -748,7 +747,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
             })
             this.bindAttr(['autoshow'], function() {
                 var autoshow = this.get('autoshow');
-                console.log('autoshow', autoshow);
                 this.$autoshow.prop('checked', autoshow);
             })
         },
@@ -761,7 +759,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
         itemRenderer: function(widget, value) {
             var meta = value.__meta;
 
-            console.log(widget);
             var tr = $('<tr />').appendTo(widget.$table)
                 .append('<td>' + meta['datetime'] + '</td>')
                 .append('<td>' + meta['method'] + '</td>')
