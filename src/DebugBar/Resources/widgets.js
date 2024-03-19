@@ -667,6 +667,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
             this.set(options);
             this.set('autoshow', null);
+            this.set('sort', localStorage.getItem('debugbar-history-sort') || 'asc');
             this.$el.addClass(csscls('dataset-history'))
 
             this.renderHead();
@@ -715,12 +716,20 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
 
             this.$table = $('<tbody />');
-            $('<table><thead><tr>' +
-                '<th style="width: 20px;"></th>' +
-                '<th style="width: 175px;">Date</th>' +
-                '<th style="width: 80px;">Method</th>' +
-                '<th>URL</th><th width="40%">Data</th>' +
-                '</tr></thead></table>')
+
+            $('<table/>')
+                .append($('<thead/>')
+                    .append($('<tr/>')
+                        .append($('<th></th>').css('width', '20px'))
+                        .append($('<th>Date ↕</th>').css('width', '175px').click(function() {
+                            self.set('sort', self.get('sort') === 'asc' ? 'desc' : 'asc')
+                            localStorage.setItem('debugbar-history-sort', self.get('sort'))
+                            console.log('set sort', self.get('sort'))
+                        }))
+                        .append($('<th>Method</th>').css('width', '80px'))
+                        .append($('<th>URL</th>'))
+                        .append($('<th width="40%">Data</th>')))
+                )
                 .append(this.$table)
                 .appendTo(this.$el);
 
@@ -762,7 +771,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 this.$table.find('.' + csscls('active')).removeClass(csscls('active'));
                 this.$table.find('tr[data-id=' + this.get('debugbar').activeDatasetId+']').addClass(csscls('active'));
             });
-            this.bindAttr(['itemRenderer', 'search', 'method'], function() {
+            this.bindAttr(['itemRenderer', 'search', 'method', 'sort'], function() {
                 this.renderDatasets();
             })
             this.bindAttr(['autoshow'], function() {
@@ -780,9 +789,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var meta = data.__meta;
 
             var $badges = $('<td />');
-            var tr = $('<tr />')
-                .appendTo(widget.$table)
-                .attr('data-id', meta['id'])
+            var tr = $('<tr />');
+            console.log('sorting ' , widget.get('sort'));
+            if (widget.get('sort') === 'asc') {
+                tr.appendTo(widget.$table);
+            } else {
+                console.log('prepend');
+                tr.prependTo(widget.$table);
+            }
+
+            tr.attr('data-id', meta['id'])
                 .append('<td>#' + meta['nb'] + '</td>')
                 .append('<td>' + meta['datetime'] + '</td>')
                 .append('<td>' + meta['method'] + '</td>')
