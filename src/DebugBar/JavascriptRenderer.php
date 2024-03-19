@@ -11,7 +11,6 @@
 namespace DebugBar;
 
 use DebugBar\DataCollector\AssetProvider;
-use DebugBar\DataCollector\DatasetCollector;
 use DebugBar\DataCollector\Renderable;
 
 /**
@@ -1125,8 +1124,7 @@ class JavascriptRenderer
                 }
             }
         }
-
-        $controls = array_merge($widgets, $this->controls, (new DatasetCollector())->getWidgets());
+        $controls = array_merge($widgets, $this->controls);
 
         foreach (array_filter($controls) as $name => $options) {
             $opts = array_diff_key($options, array_flip($excludedOptions));
@@ -1135,13 +1133,12 @@ class JavascriptRenderer
                 if (!isset($opts['title'])) {
                     $opts['title'] = ucfirst(str_replace('_', ' ', $name));
                 }
-                $js .= sprintf("%s.addTab(\"%s\", new %s({%s%s}), \"%s\");\n",
+                $js .= sprintf("%s.addTab(\"%s\", new %s({%s%s}));\n",
                     $varname,
                     $name,
                     isset($options['tab']) ? $options['tab'] : 'PhpDebugBar.DebugBar.Tab',
                     substr(json_encode($opts, JSON_FORCE_OBJECT), 1, -1),
-                    isset($options['widget']) ? sprintf('%s"widget": new %s()', count($opts) ? ', ' : '', $options['widget']) : '',
-                    isset($options['position']) ? $options['position'] : 'left'
+                    isset($options['widget']) ? sprintf('%s"widget": new %s()', count($opts) ? ', ' : '', $options['widget']) : ''
                 );
             } elseif (isset($options['indicator']) || isset($options['icon'])) {
                 $js .= sprintf("%s.addIndicator(\"%s\", new %s(%s), \"%s\");\n",

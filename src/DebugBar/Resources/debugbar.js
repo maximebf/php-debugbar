@@ -455,7 +455,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var currentSize = this.$header.width();
-            var cssClass = "phpdebugbar-mini-design";
+            var cssClass = csscls("mini-design");
             var bool = this.$header.hasClass(cssClass);
 
             if (currentSize <= contentSize && !bool) {
@@ -490,7 +490,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 self.close();
             });
             this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
-            this.$headerRight = $('<div />').addClass(csscls('header-right')).appendTo(this.$header);
+            this.$headerRight = $('<div />').addClass(csscls('header-right'), csscls('mini-design')).appendTo(this.$header);
             var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
             this.recomputeBottomOffset();
 
@@ -544,6 +544,17 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 });
             });
 
+            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"History", "widget": new PhpDebugBar.Widgets.DatasetWidget()});
+            this.datasetTab.$tab.appendTo( this.$headerRight).hide();
+            this.datasetTab.$tab.click(function() {
+                if (!self.isMinimized() && self.activePanelName == '__datasets') {
+                    self.minimize();
+                } else {
+                    self.showTab('__datasets');
+                }
+            });
+            this.datasetTab.$el.appendTo(this.$body);
+            this.controls['__datasets'] = this.datasetTab;
         },
 
         /**
@@ -617,13 +628,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @param {Tab} tab Tab object
          * @return {Tab}
          */
-        addTab: function(name, tab, position) {
+        addTab: function(name, tab) {
             if (this.isControl(name)) {
                 throw new Error(name + ' already exists');
             }
 
             var self = this;
-            tab.$tab.appendTo(position == 'right' ? this.$headerRight : this.$headerLeft).click(function() {
+            tab.$tab.appendTo( this.$headerLeft).click(function() {
                 if (!self.isMinimized() && self.activePanelName == name) {
                     self.minimize();
                 } else {
@@ -936,9 +947,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             id = id || (getObjectSize(this.datasets) + 1);
             this.datasets[id] = data;
 
-            var control = this.getControl('__datasets');
-            control.set('data', this.datasets);
-            control.set('badge', getObjectSize(this.datasets));
+            this.datasetTab.$tab.show();
+            this.datasetTab.set('data', this.datasets);
+            this.datasetTab.set('badge', getObjectSize(this.datasets));
 
             if (typeof(show) == 'undefined' || show) {
                 this.showDataSet(id);

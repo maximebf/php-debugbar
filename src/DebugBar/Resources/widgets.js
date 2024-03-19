@@ -276,7 +276,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
      * Options:
      *  - data
      */
-    var DatasetListWidget = PhpDebugBar.Widgets.DatasetListWidget = KVListWidget.extend({
+    var DatasetWidget = PhpDebugBar.Widgets.DatasetWidget = KVListWidget.extend({
 
         className: csscls('kvlist datasetlist'),
 
