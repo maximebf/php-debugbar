@@ -422,6 +422,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.datasets = {};
             this.firstTabName = null;
             this.activePanelName = null;
+            this.activeDatasetId = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
             this.hasParent = window.parent && window.parent !== window.top
@@ -490,7 +491,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 self.close();
             });
             this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
-            this.$headerRight = $('<div />').addClass(csscls('header-right')).addClass(csscls('mini-design')).appendTo(this.$header);
+            this.$headerRight = $('<div />').addClass(csscls('header-right')).appendTo(this.$header);
             var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
             this.recomputeBottomOffset();
 
@@ -544,8 +545,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 });
             });
 
-            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"Request history", "widget": new PhpDebugBar.Widgets.DatasetWidget()});
-            this.datasetTab.initialize();
+            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"Request history", "widget": new PhpDebugBar.Widgets.DatasetWidget({
+                    'debugbar': this
+                })});
+            this.datasetTab.$tab.addClass(csscls('tab-history'));
             this.datasetTab.$tab.appendTo( this.$headerRight).hide();
             this.datasetTab.$tab.click(function() {
                 if (!self.isMinimized() && self.activePanelName == '__datasets') {
@@ -944,17 +947,17 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return;
             }
 
-            var label = this.datesetTitleFormater.format(id, data, suffix);
             id = id || (getObjectSize(this.datasets) + 1);
             this.datasets[id] = data;
+
+            if (typeof(show) == 'undefined' || show) {
+                this.showDataSet(id, suffix);
+            }
 
             this.datasetTab.set('data', this.datasets);
             this.datasetTab.set('badge', getObjectSize(this.datasets));
             this.datasetTab.$tab.show();
 
-            if (typeof(show) == 'undefined' || show) {
-                this.showDataSet(id);
-            }
             return id;
         },
 
@@ -993,8 +996,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          * @param {String} id
          */
-        showDataSet: function(id) {
+        showDataSet: function(id, suffix) {
             this.dataChangeHandler(this.datasets[id]);
+            this.activeDatasetId = id;
+
+            var label = this.datesetTitleFormater.format(id, this.datasets[id], suffix);
+            this.datasetTab.set('title', label);
         },
 
         /**

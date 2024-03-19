@@ -314,6 +314,13 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
 
 /* -------------------------------------- */
 
+  .phpdebugbar-tab-history .phpdebugbar-text {
+      display: inline-flex;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
   .phpdebugbar-widgets-dataset-history table {
       width: 100%;
       table-layout: fixed;
@@ -329,10 +336,25 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
         white-space: nowrap;
     }
     .phpdebugbar-widgets-dataset-history table td a{
-        display: block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .phpdebugbar-widgets-dataset-history table tr.phpdebugbar-widgets-active {
+        background: #ccc;
+        color: #444;
+    }
+    .phpdebugbar-widgets-dataset-history span.phpdebugbar-badge {
+        margin: 0 5px 0 2px;
+        font-size: 11px;
+        line-height: 14px;
+        padding: 0 6px;
+        background: #ccc;
+        border-radius: 4px;
+        color: #555;
+        font-weight: normal;
+        text-shadow: none;
+        vertical-align: middle;
     }
     .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions {
         text-align: center;

@@ -105,6 +105,17 @@ if (typeof(PhpDebugBar) == 'undefined') {
         return pre;
     };
 
+    var getDictValue = PhpDebugBar.utils.getDictValue = function(dict, key, default_value) {
+        var d = dict, parts = key.split('.');
+        for (var i = 0; i < parts.length; i++) {
+            if (!d[parts[i]]) {
+                return default_value;
+            }
+            d = d[parts[i]];
+        }
+        return d;
+    }
+
     // ------------------------------------------------------------------
     // Generic widgets
     // ------------------------------------------------------------------
@@ -669,8 +680,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.$autoshow = $('<input type=checkbox>')
                 .on('click', function() {
-                    if (window.phpdebugbar.ajaxHandler) {
-                        window.phpdebugbar.ajaxHandler.setAutoShow($(this).is(':checked'));
+                    if (self.get('debugbar').ajaxHandler) {
+                        self.get('debugbar').ajaxHandler.setAutoShow($(this).is(':checked'));
                     }
                 });
 
@@ -704,7 +715,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
 
             this.$table = $('<tbody />');
-            $('<table><thead><tr><th style="width: 175px;">Date</th><th style="width: 80px;">Method</th><th>URL</th></tr></thead></table>')
+            $('<table><thead><tr><th style="width: 175px;">Date</th><th style="width: 80px;">Method</th><th>URL</th><th width="40%">Data</th></tr></thead></table>')
                 .append(this.$table)
                 .appendTo(this.$el);
 
@@ -725,8 +736,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         render: function() {
             this.bindAttr(['data'], function() {
-                if (this.get('autoshow') === null && phpdebugbar.ajaxHandler) {
-                    this.set('autoshow', phpdebugbar.ajaxHandler.autoShow);
+                if (this.get('autoshow') === null && this.get('debugbar').ajaxHandler) {
+                    this.set('autoshow', this.get('debugbar').ajaxHandler.autoShow);
                 }
 
                 if (!this.has('data')) {
@@ -741,6 +752,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 }
 
                 this.get('itemRenderer')(this, data);
+
+                // Switch active tab
+                this.$table.find('.' + csscls('active')).removeClass(csscls('active'));
+                this.$table.find('tr[data-id=' + this.get('debugbar').activeDatasetId+']').addClass(csscls('active'));
             });
             this.bindAttr(['itemRenderer', 'search', 'method'], function() {
                 this.renderDatasets();
@@ -756,18 +771,50 @@ if (typeof(PhpDebugBar) == 'undefined') {
          *
          * @param {Object} value An item from the data array
          */
-        itemRenderer: function(widget, value) {
-            var meta = value.__meta;
+        itemRenderer: function(widget, data) {
+            var meta = data.__meta;
 
-            var tr = $('<tr />').appendTo(widget.$table)
+            var $badges = $('<td />');
+            var tr = $('<tr />')
+                .appendTo(widget.$table)
+                .attr('data-id', meta['id'])
                 .append('<td>' + meta['datetime'] + '</td>')
                 .append('<td>' + meta['method'] + '</td>')
                 .append($('<td />').append(meta['uri']))
                 .css('cursor', 'pointer')
                 .on('click', function() {
-                    window.phpdebugbar.showDataSet(meta['id']);
+                    widget.get('debugbar').showDataSet(meta['id']);
+                    widget.$table.find('.' + csscls('active')).removeClass(csscls('active'));
+                    tr.addClass(csscls('active'));
                 })
                 .addClass(csscls('table-row'))
+
+            var debugbar = widget.get('debugbar');
+            $.each(debugbar.dataMap, function(key, def) {
+                var d = getDictValue(data, def[0], def[1]);
+                if (key.indexOf(':') != -1) {
+                    key = key.split(':');
+                    if (key[1] === 'badge' && d > 0) {
+                        var control = debugbar.getControl(key[0]);
+                        var $a = $('<a>').attr('title', control.get('title'));
+                        if (control.$icon) {
+                            $a.append(debugbar.getControl(key[0]).$icon.clone());
+                        }
+                        if (control.$badge) {
+                            $a.append(debugbar.getControl(key[0]).$badge.clone().css('display', 'inline-block').text(d));
+                        }
+                        $a.appendTo($badges);
+                        $a.click(function() {
+                            debugbar.showTab(key[0]);
+                        })
+                    }
+                }
+            });
+            tr.append($badges);
+
+            if (debugbar.activeDatasetId === meta['id']) {
+                tr.addClass(csscls('active'));
+            }
 
             var search = widget.get('search');
             var method = widget.get('method');
