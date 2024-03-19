@@ -720,7 +720,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             $('<table/>')
                 .append($('<thead/>')
                     .append($('<tr/>')
-                        .append($('<th></th>').css('width', '20px'))
+                        .append($('<th></th>').css('width', '30px'))
                         .append($('<th>Date ↕</th>').css('width', '175px').click(function() {
                             self.set('sort', self.get('sort') === 'asc' ? 'desc' : 'asc')
                             localStorage.setItem('debugbar-history-sort', self.get('sort'))
