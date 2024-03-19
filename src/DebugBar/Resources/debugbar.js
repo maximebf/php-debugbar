@@ -490,7 +490,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 self.close();
             });
             this.$headerLeft = $('<div />').addClass(csscls('header-left')).appendTo(this.$header);
-            this.$headerRight = $('<div />').addClass(csscls('header-right'), csscls('mini-design')).appendTo(this.$header);
+            this.$headerRight = $('<div />').addClass(csscls('header-right')).addClass(csscls('mini-design')).appendTo(this.$header);
             var $body = this.$body = $('<div />').addClass(csscls('body')).appendTo(this.$el);
             this.recomputeBottomOffset();
 
