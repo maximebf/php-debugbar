@@ -337,6 +337,9 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
     .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions {
         text-align: center;
         padding: 7px 0;
+        position: sticky;
+        top: 0;
+        background: #fff;
     }
     .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions a {
         margin: 0 10px;
