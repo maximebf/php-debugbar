@@ -364,7 +364,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 suffix = '';
             }
 
-            var nb = getObjectSize(this.debugbar.datasets) + 1;
+            var nb = getObjectSize(this.debugbar.datasets) ;
 
             if (typeof(data['__meta']) === 'undefined') {
                 return "#" + nb + suffix;
@@ -422,6 +422,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.datasets = {};
             this.firstTabName = null;
             this.activePanelName = null;
+            this.activeDatasetId = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
             this.hasParent = window.parent && window.parent !== window.top
@@ -455,7 +456,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var currentSize = this.$header.width();
-            var cssClass = "phpdebugbar-mini-design";
+            var cssClass = csscls("mini-design");
             var bool = this.$header.hasClass(cssClass);
 
             if (currentSize <= contentSize && !bool) {
@@ -630,7 +631,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var self = this;
-            tab.$tab.appendTo(this.$headerLeft).click(function() {
+            tab.$tab.appendTo( this.$headerLeft).click(function() {
                 if (!self.isMinimized() && self.activePanelName == name) {
                     self.minimize();
                 } else {
@@ -939,18 +940,29 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 return;
             }
 
-            var label = this.datesetTitleFormater.format(id, data, suffix);
-            id = id || (getObjectSize(this.datasets) + 1);
+            var nb = getObjectSize(this.datasets) + 1;
+            id = id || nb;
+            data.__meta['nb'] = nb;
+            data.__meta['suffix'] = suffix;
             this.datasets[id] = data;
 
-            this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
-            if (this.$datasets.children().length > 1) {
-                this.$datasets.show();
-            }
+            var label = this.datesetTitleFormater.format(id, this.datasets[id], suffix);
 
             if (typeof(show) == 'undefined' || show) {
-                this.showDataSet(id);
+                this.showDataSet(id, label);
             }
+
+            if (this.datasetTab) {
+                this.datasetTab.set('data', this.datasets);
+                this.datasetTab.set('badge', getObjectSize(this.datasets));
+                this.datasetTab.$tab.show();
+            } else {
+                this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
+                if (this.$datasets.children().length > 1) {
+                    this.$datasets.show();
+                }
+            }
+
             return id;
         },
 
@@ -989,9 +1001,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          * @param {String} id
          */
-        showDataSet: function(id) {
+        showDataSet: function(id, label) {
             this.dataChangeHandler(this.datasets[id]);
-            this.$datasets.val(id);
+            this.activeDatasetId = id;
+
+            if (this.datasetTab) {
+                this.datasetTab.set('title', label);
+            }
         },
 
         /**
@@ -1037,7 +1053,24 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         getOpenHandler: function() {
             return this.openHandler;
-        }
+        },
+
+        enableAjaxHandlerTab: function() {
+            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"Request history", "widget": new PhpDebugBar.Widgets.DatasetWidget({
+                    'debugbar': this
+                })});
+            this.datasetTab.$tab.addClass(csscls('tab-history'));
+            this.datasetTab.$tab.insertAfter(this.$openbtn).hide();
+            this.datasetTab.$tab.click(() => {
+                if (!this.isMinimized() && self.activePanelName == '__datasets') {
+                    this.minimize();
+                } else {
+                    this.showTab('__datasets');
+                }
+            });
+            this.datasetTab.$el.appendTo(this.$body);
+            this.controls['__datasets'] = this.datasetTab;
+        },
 
     });
 
@@ -1057,6 +1090,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
         this.debugbar = debugbar;
         this.headerName = headerName || 'phpdebugbar';
         this.autoShow = typeof(autoShow) == 'undefined' ? true : autoShow;
+        if (localStorage.getItem('phpdebugbar-ajaxhandler-autoshow') !== null) {
+            this.autoShow = localStorage.getItem('phpdebugbar-ajaxhandler-autoshow') == '1';
+        }
     };
 
     $.extend(AjaxHandler.prototype, {
@@ -1095,6 +1131,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         isXHR: function(response) {
             return Object.prototype.toString.call(response) == '[object XMLHttpRequest]'
+        },
+
+        setAutoShow: function(autoshow) {
+            this.autoShow = autoshow;
+            localStorage.setItem('phpdebugbar-ajaxhandler-autoshow', autoshow ? '1' : '0');
         },
 
         /**

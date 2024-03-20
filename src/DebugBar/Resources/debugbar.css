@@ -311,3 +311,62 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
   div.phpdebugbar-mini-design a.phpdebugbar-tab i {
     display:inline-block;
   }
+
+/* -------------------------------------- */
+
+  .phpdebugbar-tab-history .phpdebugbar-text {
+      display: inline-flex;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+  .phpdebugbar-widgets-dataset-history table {
+      width: 100%;
+      table-layout: fixed;
+  }
+    .phpdebugbar-widgets-dataset-history table th {
+        font-weight: bold;
+    }
+    .phpdebugbar-widgets-dataset-history table td, .phpdebugbar-widgets-dataset-history table th {
+        padding: 6px 3px;
+        border-bottom: 1px solid #ddd;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .phpdebugbar-widgets-dataset-history table td a{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .phpdebugbar-widgets-dataset-history table tr.phpdebugbar-widgets-active {
+        background: #ccc;
+        color: #444;
+    }
+    .phpdebugbar-widgets-dataset-history span.phpdebugbar-badge {
+        margin: 0 5px 0 2px;
+        font-size: 11px;
+        line-height: 14px;
+        padding: 0 6px;
+        background: #ccc;
+        border-radius: 4px;
+        color: #555;
+        font-weight: normal;
+        text-shadow: none;
+        vertical-align: middle;
+    }
+    .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions {
+        text-align: center;
+        padding: 7px 0;
+        position: sticky;
+        top: 0;
+        background: #fff;
+    }
+    .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions a {
+        margin: 0 10px;
+    }
+    .phpdebugbar-widgets-dataset-history .phpdebugbar-widgets-dataset-actions input {
+        appearance: checkbox !important;
+        margin: 5px;
+    }
