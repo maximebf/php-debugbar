@@ -72,9 +72,9 @@ class JavascriptRenderer
 
     protected $ajaxHandlerBindToFetch = false;
 
-    protected $ajaxHandlerBindToJquery = true;
+    protected $ajaxHandlerBindToJquery = false;
 
-    protected $ajaxHandlerBindToXHR = false;
+    protected $ajaxHandlerBindToXHR = true;
 
     protected $ajaxHandlerAutoShow = true;
 
@@ -1085,10 +1085,8 @@ class JavascriptRenderer
             if ($this->ajaxHandlerBindToFetch) {
                 $js .= sprintf("%s.ajaxHandler.bindToFetch();\n", $this->variableName);
             }
-            if ($this->ajaxHandlerBindToXHR) {
+            if ($this->ajaxHandlerBindToXHR || $this->ajaxHandlerBindToJquery) {
                 $js .= sprintf("%s.ajaxHandler.bindToXHR();\n", $this->variableName);
-            } elseif ($this->ajaxHandlerBindToJquery) {
-                $js .= sprintf("if (jQuery) %s.ajaxHandler.bindToJquery(jQuery);\n", $this->variableName);
             }
         }
 

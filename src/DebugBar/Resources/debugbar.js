@@ -934,7 +934,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (!suffix || ('(iframe)').indexOf(suffix) < 0) {
                     suffix = '(iframe)' + (suffix || '');
                 }
-                
+
                 window.parent.phpdebugbar.addDataSet(data, id, suffix, show);
                 return;
             }
@@ -1203,10 +1203,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
-         * Attaches an event listener to jQuery.ajaxComplete()
-         *
-         * @this {AjaxHandler}
-         * @param {jQuery} jq Optional
+         * @deprecated use bindToXHR instead
          */
         bindToJquery: function(jq) {
             var self = this;

@@ -9,5 +9,5 @@ phpdebugbar.setDataMap({
 });
 phpdebugbar.restoreState();
 phpdebugbar.ajaxHandler = new PhpDebugBar.AjaxHandler(phpdebugbar, undefined, true);
-if (jQuery) phpdebugbar.ajaxHandler.bindToJquery(jQuery);
+phpdebugbar.ajaxHandler.bindToXHR();
 phpdebugbar.addDataSet(
