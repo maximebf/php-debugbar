@@ -451,8 +451,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
         resize: function() {
             var contentSize = this.respCSSSize;
             if (this.respCSSSize == 0) {
-                this.$header.find("> div > *:visible").each(function () {
-                    contentSize += $(this).outerWidth();
+                this.$header.find("> *:visible").each(function () {
+                    contentSize += $(this).outerWidth(true);
                 });
             }
 
@@ -1026,6 +1026,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     self.getControl(key).set('data', d);
                 }
             });
+            self.resize();
         },
 
         /**
@@ -1227,10 +1228,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
-         * Attaches an event listener to jQuery.ajaxComplete()
-         *
-         * @this {AjaxHandler}
-         * @param {jQuery} jq Optional
+         * @deprecated use bindToXHR instead
          */
         bindToJquery: function(jq) {
             var self = this;

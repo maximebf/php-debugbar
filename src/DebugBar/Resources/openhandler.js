@@ -188,13 +188,19 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         ajax: function(data, callback) {
-            $.ajax({
-                dataType: 'json',
-                url: this.get('url'),
-                data: data,
-                success: callback,
-                ignoreDebugBarAjaxHandler: true
-            });
+            var url = this.get('url');
+            if (data) {
+                url = url + '?' + new URLSearchParams(data);
+            }
+
+            fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+            })
+                .then((data) => data.json())
+                .then(callback);
         }
 
     });

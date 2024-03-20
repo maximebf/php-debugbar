@@ -72,9 +72,9 @@ class JavascriptRenderer
 
     protected $ajaxHandlerBindToFetch = false;
 
-    protected $ajaxHandlerBindToJquery = true;
+    protected $ajaxHandlerBindToJquery = false;
 
-    protected $ajaxHandlerBindToXHR = false;
+    protected $ajaxHandlerBindToXHR = true;
 
     protected $ajaxHandlerAutoShow = true;
 
@@ -509,6 +509,7 @@ class JavascriptRenderer
      * Sets whether to call bindToJquery() on the ajax handler
      *
      * @param boolean $bind
+     * @deprecated use setBindAjaxHandlerToXHR
      */
     public function setBindAjaxHandlerToJquery($bind = true)
     {
@@ -520,6 +521,7 @@ class JavascriptRenderer
      * Checks whether bindToJquery() will be called on the ajax handler
      *
      * @return boolean
+     * @deprecated use isAjaxHandlerBoundToXHR
      */
     public function isAjaxHandlerBoundToJquery()
     {
