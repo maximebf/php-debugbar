@@ -449,8 +449,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
         resize: function() {
             var contentSize = this.respCSSSize;
             if (this.respCSSSize == 0) {
-                this.$header.find("> div > *:visible").each(function () {
-                    contentSize += $(this).outerWidth();
+                this.$header.find("> *:visible").each(function () {
+                    contentSize += $(this).outerWidth(true);
                 });
             }
 
@@ -934,7 +934,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 if (!suffix || ('(iframe)').indexOf(suffix) < 0) {
                     suffix = '(iframe)' + (suffix || '');
                 }
-                
+
                 window.parent.phpdebugbar.addDataSet(data, id, suffix, show);
                 return;
             }
@@ -1011,6 +1011,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     self.getControl(key).set('data', d);
                 }
             });
+            self.resize();
         },
 
         /**
