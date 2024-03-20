@@ -357,14 +357,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @param {String} suffix
          * @return {String}
          */
-        format: function(id, data, suffix) {
+        format: function(id, data, suffix, nb) {
             if (suffix) {
                 suffix = ' ' + suffix;
             } else {
                 suffix = '';
             }
 
-            var nb = getObjectSize(this.debugbar.datasets) ;
+            var nb = nb || getObjectSize(this.debugbar.datasets) ;
 
             if (typeof(data['__meta']) === 'undefined') {
                 return "#" + nb + suffix;
@@ -595,6 +595,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     var tab = localStorage.getItem('phpdebugbar-tab');
                     if (this.isTab(tab)) {
                         this.showTab(tab);
+                    } else {
+                        this.showTab();
                     }
                 }
             }
@@ -631,7 +633,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var self = this;
-            tab.$tab.appendTo( this.$headerLeft).click(function() {
+            tab.$tab.appendTo(this.$headerLeft).click(function() {
                 if (!self.isMinimized() && self.activePanelName == name) {
                     self.minimize();
                 } else {
@@ -783,6 +785,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$el.removeClass(csscls('minimized'));
             localStorage.setItem('phpdebugbar-visible', '1');
             localStorage.setItem('phpdebugbar-tab', name);
+
             this.resize();
         },
 
@@ -946,7 +949,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             data.__meta['suffix'] = suffix;
             this.datasets[id] = data;
 
-            var label = this.datesetTitleFormater.format(id, this.datasets[id], suffix);
+            var label = this.datesetTitleFormater.format(id, this.datasets[id], suffix, nb);
 
             if (typeof(show) == 'undefined' || show) {
                 this.showDataSet(id, label);
