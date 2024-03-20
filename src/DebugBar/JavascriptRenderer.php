@@ -78,6 +78,8 @@ class JavascriptRenderer
 
     protected $ajaxHandlerAutoShow = true;
 
+    protected $ajaxHandlerEnableTab = false;
+
     protected $openHandlerClass = 'PhpDebugBar.OpenHandler';
 
     protected $openHandlerUrl;
@@ -178,6 +180,9 @@ class JavascriptRenderer
         }
         if (array_key_exists('ajax_handler_auto_show', $options)) {
             $this->setAjaxHandlerAutoShow($options['ajax_handler_auto_show']);
+        }
+        if (array_key_exists('ajax_handler_enable_tab', $options)) {
+            $this->setAjaxHandlerEnableTab($options['ajax_handler_enable_tab']);
         }
         if (array_key_exists('open_handler_classname', $options)) {
             $this->setOpenHandlerClass($options['open_handler_classname']);
@@ -570,6 +575,28 @@ class JavascriptRenderer
     {
         return $this->ajaxHandlerAutoShow;
     }
+
+    /**
+     * Sets whether new ajax debug data will be shown in a separate tab instead of dropdown.
+     *
+     * @param boolean $enabled
+     */
+    public function setAjaxHandlerEnableTab($enabled = true)
+    {
+        $this->ajaxHandlerEnableTab = $enabled;
+        return $this;
+    }
+
+    /**
+     * Check if the Ajax Handler History tab is enabled
+     *
+     * @return boolean
+     */
+    public function isAjaxHandlerTabEnabled()
+    {
+        return $this->ajaxHandlerEnableTab;
+    }
+
 
     /**
      * Sets the class name of the js open handler
@@ -1167,6 +1194,9 @@ class JavascriptRenderer
         // activate state restoration
         $js .= sprintf("%s.restoreState();\n", $varname);
 
+        if ($this->ajaxHandlerEnableTab) {
+            $js .= sprintf("%s.enableAjaxHandlerTab();\n", $varname);
+        }
         return $js;
     }
 

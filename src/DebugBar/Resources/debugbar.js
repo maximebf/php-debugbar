@@ -545,20 +545,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 });
             });
 
-            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"Request history", "widget": new PhpDebugBar.Widgets.DatasetWidget({
-                    'debugbar': this
-                })});
-            this.datasetTab.$tab.addClass(csscls('tab-history'));
-            this.datasetTab.$tab.appendTo( this.$headerRight).hide();
-            this.datasetTab.$tab.click(function() {
-                if (!self.isMinimized() && self.activePanelName == '__datasets') {
-                    self.minimize();
-                } else {
-                    self.showTab('__datasets');
-                }
+            // select box for data sets
+            this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).attr('name', 'datasets-switcher')
+                .appendTo(this.$headerRight);
+            this.$datasets.change(function() {
+                self.dataChangeHandler(self.datasets[this.value]);
+                self.showTab();
             });
-            this.datasetTab.$el.appendTo(this.$body);
-            this.controls['__datasets'] = this.datasetTab;
         },
 
         /**
@@ -953,13 +946,22 @@ if (typeof(PhpDebugBar) == 'undefined') {
             data.__meta['suffix'] = suffix;
             this.datasets[id] = data;
 
+            var label = this.datesetTitleFormater.format(id, this.datasets[id], suffix);
+
             if (typeof(show) == 'undefined' || show) {
-                this.showDataSet(id, suffix);
+                this.showDataSet(id, label);
             }
 
-            this.datasetTab.set('data', this.datasets);
-            this.datasetTab.set('badge', getObjectSize(this.datasets));
-            this.datasetTab.$tab.show();
+            if (this.datasetTab) {
+                this.datasetTab.set('data', this.datasets);
+                this.datasetTab.set('badge', getObjectSize(this.datasets));
+                this.datasetTab.$tab.show();
+            } else {
+                this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
+                if (this.$datasets.children().length > 1) {
+                    this.$datasets.show();
+                }
+            }
 
             return id;
         },
@@ -999,12 +1001,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          * @param {String} id
          */
-        showDataSet: function(id, suffix) {
+        showDataSet: function(id, label) {
             this.dataChangeHandler(this.datasets[id]);
             this.activeDatasetId = id;
 
-            var label = this.datesetTitleFormater.format(id, this.datasets[id], suffix);
-            this.datasetTab.set('title', label);
+            if (this.datasetTab) {
+                this.datasetTab.set('title', label);
+            }
         },
 
         /**
@@ -1050,7 +1053,24 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         getOpenHandler: function() {
             return this.openHandler;
-        }
+        },
+
+        enableAjaxHandlerTab: function() {
+            this.datasetTab = new PhpDebugBar.DebugBar.Tab({"icon":"history", "title":"Request history", "widget": new PhpDebugBar.Widgets.DatasetWidget({
+                    'debugbar': this
+                })});
+            this.datasetTab.$tab.addClass(csscls('tab-history'));
+            this.datasetTab.$tab.insertAfter(this.$openbtn).hide();
+            this.datasetTab.$tab.click(() => {
+                if (!this.isMinimized() && self.activePanelName == '__datasets') {
+                    this.minimize();
+                } else {
+                    this.showTab('__datasets');
+                }
+            });
+            this.datasetTab.$el.appendTo(this.$body);
+            this.controls['__datasets'] = this.datasetTab;
+        },
 
     });
 
@@ -1069,10 +1089,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
     var AjaxHandler = PhpDebugBar.AjaxHandler = function(debugbar, headerName, autoShow) {
         this.debugbar = debugbar;
         this.headerName = headerName || 'phpdebugbar';
+        this.autoShow = typeof(autoShow) == 'undefined' ? true : autoShow;
         if (localStorage.getItem('phpdebugbar-ajaxhandler-autoshow') !== null) {
             this.autoShow = localStorage.getItem('phpdebugbar-ajaxhandler-autoshow') == '1';
-        } else {
-            this.autoShow = typeof(autoShow) == 'undefined' ? true : autoShow;
         }
     };
 
