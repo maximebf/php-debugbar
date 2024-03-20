@@ -509,6 +509,7 @@ class JavascriptRenderer
      * Sets whether to call bindToJquery() on the ajax handler
      *
      * @param boolean $bind
+     * @deprecated use setBindAjaxHandlerToXHR
      */
     public function setBindAjaxHandlerToJquery($bind = true)
     {
@@ -520,6 +521,7 @@ class JavascriptRenderer
      * Checks whether bindToJquery() will be called on the ajax handler
      *
      * @return boolean
+     * @deprecated use isAjaxHandlerBoundToXHR
      */
     public function isAjaxHandlerBoundToJquery()
     {
@@ -1085,8 +1087,10 @@ class JavascriptRenderer
             if ($this->ajaxHandlerBindToFetch) {
                 $js .= sprintf("%s.ajaxHandler.bindToFetch();\n", $this->variableName);
             }
-            if ($this->ajaxHandlerBindToXHR || $this->ajaxHandlerBindToJquery) {
+            if ($this->ajaxHandlerBindToXHR) {
                 $js .= sprintf("%s.ajaxHandler.bindToXHR();\n", $this->variableName);
+            } elseif ($this->ajaxHandlerBindToJquery) {
+                $js .= sprintf("if (jQuery) %s.ajaxHandler.bindToJquery(jQuery);\n", $this->variableName);
             }
         }
 
