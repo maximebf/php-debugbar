@@ -59,6 +59,10 @@ div.phpdebugbar ol, div.phpdebugbar ul {
   list-style: none;
 }
 
+div.phpdebugbar ul li, div.phpdebugbar ol li, div.phpdebugbar dl li {
+  line-height: 1;
+}
+
 div.phpdebugbar table {
   border-collapse: collapse;
   border-spacing: 0;
