@@ -790,25 +790,33 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             var $badges = $('<td />');
             var tr = $('<tr />');
-            console.log('sorting ' , widget.get('sort'));
             if (widget.get('sort') === 'asc') {
                 tr.appendTo(widget.$table);
             } else {
-                console.log('prepend');
                 tr.prependTo(widget.$table);
             }
 
+            var clickHandler = function() {
+                var debugbar = widget.get('debugbar');
+                debugbar.showDataSet(meta['id']);
+                widget.$table.find('.' + csscls('active')).removeClass(csscls('active'));
+                tr.addClass(csscls('active'));
+
+                if ($(this).data('tab')) {
+                    debugbar.showTab($(this).data('tab'));
+                } else if (debugbar.previousPanelName) {
+                    debugbar.showTab(debugbar.previousPanelName);
+                } else {
+                    debugbar.showTab(debugbar.firstTabName);
+                }
+            }
+
             tr.attr('data-id', meta['id'])
-                .append('<td>#' + meta['nb'] + '</td>')
-                .append('<td>' + meta['datetime'] + '</td>')
-                .append('<td>' + meta['method'] + '</td>')
-                .append($('<td />').append(meta['uri'] + (meta['suffix'] ? ' ' + meta['suffix'] : '')))
+                .append($('<td>#' + meta['nb'] + '</td>').click(clickHandler))
+                .append($('<td>' + meta['datetime'] + '</td>').click(clickHandler))
+                .append($('<td>' + meta['method'] + '</td>').click(clickHandler))
+                .append($('<td />').append(meta['uri'] + (meta['suffix'] ? ' ' + meta['suffix'] : '')).click(clickHandler))
                 .css('cursor', 'pointer')
-                .on('click', function() {
-                    widget.get('debugbar').showDataSet(meta['id']);
-                    widget.$table.find('.' + csscls('active')).removeClass(csscls('active'));
-                    tr.addClass(csscls('active'));
-                })
                 .addClass(csscls('table-row'))
 
             var debugbar = widget.get('debugbar');
@@ -818,17 +826,14 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     key = key.split(':');
                     if (key[1] === 'badge' && d > 0) {
                         var control = debugbar.getControl(key[0]);
-                        var $a = $('<a>').attr('title', control.get('title'));
+                        var $a = $('<a>').attr('title', control.get('title')).data('tab', key[0]);
                         if (control.$icon) {
                             $a.append(debugbar.getControl(key[0]).$icon.clone());
                         }
                         if (control.$badge) {
                             $a.append(debugbar.getControl(key[0]).$badge.clone().css('display', 'inline-block').text(d));
                         }
-                        $a.appendTo($badges);
-                        $a.click(function() {
-                            debugbar.showTab(key[0]);
-                        })
+                        $a.appendTo($badges).click(clickHandler);
                     }
                 }
             });
