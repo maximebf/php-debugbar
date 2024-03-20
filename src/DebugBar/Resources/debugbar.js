@@ -1204,10 +1204,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
-         * Attaches an event listener to jQuery.ajaxComplete()
-         *
-         * @this {AjaxHandler}
-         * @param {jQuery} jq Optional
+         * @deprecated use bindToXHR instead
          */
         bindToJquery: function(jq) {
             var self = this;
