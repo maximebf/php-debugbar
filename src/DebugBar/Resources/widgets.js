@@ -804,10 +804,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 if ($(this).data('tab')) {
                     debugbar.showTab($(this).data('tab'));
-                } else if (debugbar.previousPanelName) {
-                    debugbar.showTab(debugbar.previousPanelName);
-                } else {
-                    debugbar.showTab(debugbar.firstTabName);
                 }
             }
 

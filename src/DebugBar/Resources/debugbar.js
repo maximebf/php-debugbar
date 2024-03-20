@@ -421,7 +421,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.dataMap = {};
             this.datasets = {};
             this.firstTabName = null;
-            this.previousPanelName = null;
             this.activePanelName = null;
             this.activeDatasetId = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
@@ -786,7 +785,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             this.controls[name].$tab.addClass(csscls('active'));
             this.controls[name].$el.addClass(csscls('active'));
-            this.previousPanelName = this.activePanelName;
             this.activePanelName = name;
 
             this.$el.removeClass(csscls('minimized'));
