@@ -595,7 +595,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     if (e.xdebug_link) {
                         if (e.xdebug_link.ajax) {
                             $('<a title="' + e.xdebug_link.url + '"></a>').on('click', function () {
-                                $.ajax(e.xdebug_link.url);
+                                fetch(e.xdebug_link.url);
                             }).addClass(csscls('editor-link')).appendTo(header);
                         } else {
                             $('<a href="' + e.xdebug_link.url + '"></a>').addClass(csscls('editor-link')).appendTo(header);
