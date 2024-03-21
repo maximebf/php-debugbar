@@ -798,7 +798,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             var clickHandler = function() {
                 var debugbar = widget.get('debugbar');
-                debugbar.showDataSet(meta['id']);
+                debugbar.showDataSet(meta.id, debugbar.datesetTitleFormater.format('', data, meta.suffix, meta.nb));
                 widget.$table.find('.' + csscls('active')).removeClass(csscls('active'));
                 tr.addClass(csscls('active'));
 
