@@ -425,8 +425,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.activeDatasetId = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
-            this.hasParent = window.parent && window.parent !== window.top
-                && window.parent.phpdebugbar && window.parent.phpdebugbar != this;
+            this.isIframe = window.self !== window.top;
             this.registerResizeHandler();
         },
 
@@ -436,7 +435,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         registerResizeHandler: function() {
-            if (typeof this.resize.bind == 'undefined' || this.hasParent) return;
+            if (typeof this.resize.bind == 'undefined' || this.isIframe) return;
 
             var f = this.resize.bind(this);
             this.respCSSSize = 0;
@@ -477,7 +476,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         render: function() {
-            if (this.hasParent) {
+            if (this.isIframe) {
                 this.$el.hide();
             }
 
@@ -580,7 +579,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         restoreState: function() {
-            if (this.hasParent) return;
+            if (this.isIframe) return;
             // bar height
             var height = localStorage.getItem('phpdebugbar-height');
             this.setHeight(height || this.$body.height());
@@ -934,12 +933,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @return {String} Dataset's id
          */
         addDataSet: function(data, id, suffix, show) {
-            if (this.hasParent) {
-                if (!suffix || ('(iframe)').indexOf(suffix) < 0) {
-                    suffix = '(iframe)' + (suffix || '');
-                }
-
-                window.parent.phpdebugbar.addDataSet(data, id, suffix, show);
+            if (this.isIframe) {
+                window.top.phpdebugbar.addDataSet(data, id, '(iframe)' + (suffix || ''), show);
                 return;
             }
 
