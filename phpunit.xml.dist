@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="tests/bootstrap.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         verbose="true"
->
-    <testsuites>
-        <testsuite name="DebugBar Test Suite">
-            <directory>./tests/DebugBar/</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./src/DebugBar/</directory>
-        </whitelist>
-    </filter>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" bootstrap="tests/bootstrap.php" colors="true" processIsolation="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" cacheDirectory=".phpunit.cache" backupStaticProperties="false">
+  <testsuites>
+    <testsuite name="DebugBar Test Suite">
+      <directory>./tests/DebugBar/</directory>
+    </testsuite>
+  </testsuites>
+  <extensions>
+    <extension class="Symfony\Component\Panther\ServerExtension"/>
+  </extensions>
+  <php>
+    <server name="PANTHER_WEB_SERVER_DIR" value="./"/>
+  </php>
+  <source>
+    <include>
+      <directory>./src/DebugBar/</directory>
+    </include>
+  </source>
 </phpunit>

@@ -105,3 +105,14 @@ $debugbar["messages"]->addMessage("hello world!");
  - `ExceptionsCollector` (*exceptions*)
 
 Learn more about DebugBar in the [docs](http://phpdebugbar.com/docs).
+
+
+## Demo
+
+To run the demo, clone this repository and start the Built-In PHP webserver from the root:
+
+```
+php -S localhost:8000
+```
+
+Then visit http://localhost:8000/demo
