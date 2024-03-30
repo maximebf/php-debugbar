@@ -81,7 +81,7 @@ trait HasXdebugLinks
                 'url' => $url,
                 'ajax' => $this->getXdebugShouldUseAjax(),
                 'filename' => basename($file),
-                'line' => (string) $line
+                'line' => (string) $line ?: '?'
             ];
         }
     }
