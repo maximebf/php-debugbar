@@ -27,9 +27,7 @@ class BasicBrowserTest extends PantherTestCase
         $crawler = $client->waitForVisibility('.phpdebugbar-widgets-messages .phpdebugbar-widgets-list');
 
         $messages = $crawler->filter('.phpdebugbar-widgets-messages .phpdebugbar-widgets-value')
-            ->each(function(WebDriverElement $node){
-                return $node->getText();
-            });
+            ->each(fn(WebDriverElement $node) => $node->getText());
 
         $this->assertEquals('hello', $messages[0]);
         $this->assertCount(4, $messages);
