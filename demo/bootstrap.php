@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/../tests/bootstrap.php';
+include __DIR__ . '/../vendor/autoload.php';
 
 // for stack data
 session_start();

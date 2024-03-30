@@ -3,3 +3,4 @@ composer.lock
 /demo/bridge/*/vendor
 /src/DebugBar/Resources/vendor
 .phpunit.result.cache
+/drivers
