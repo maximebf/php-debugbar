@@ -7,7 +7,6 @@
   </testsuites>
   <extensions>
     <extension class="Symfony\Component\Panther\ServerExtension"/>
-    <bootstrap class="Symfony\Component\Panther\ServerExtension"/>
   </extensions>
   <php>
     <server name="PANTHER_WEB_SERVER_DIR" value="./"/>
