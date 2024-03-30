@@ -46,7 +46,7 @@ class Propel2CollectorTest extends DebugBarTestCase
 
         $stub = $this->getMockBuilder('DebugBar\Bridge\Propel2Collector')
             ->disableOriginalConstructor()
-            ->setMethods(array('getDataFormatter', 'getHandler', 'getConfig'))
+            ->onlyMethods(array('getDataFormatter', 'getHandler', 'getConfig'))
             ->getMock();
 
         $this->dataFormatter = new DataFormatter();
