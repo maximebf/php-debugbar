@@ -19,7 +19,7 @@ class AggregatedCollectorTest extends DebugBarTestCase
         $this->c->addCollector($c = new MockCollector());
         $this->assertContains($c, $this->c->getCollectors());
         $this->assertEquals($c, $this->c['mock']);
-        $this->assertTrue(isset($this->c['mock']));
+        $this->assertArrayHasKey('mock', $this->c);
     }
 
     public function testCollect()

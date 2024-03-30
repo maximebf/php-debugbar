@@ -42,8 +42,8 @@ class DebugBarTest extends DebugBarTestCase
     {
         $this->debugbar->addCollector($c = new MockCollector());
         $this->assertEquals($c, $this->debugbar['mock']);
-        $this->assertTrue(isset($this->debugbar['mock']));
-        $this->assertFalse(isset($this->debugbar['foo']));
+        $this->assertArrayHasKey('mock', $this->debugbar);
+        $this->assertArrayNotHasKey('foo', $this->debugbar);
     }
 
     public function testStorage()
@@ -96,7 +96,7 @@ class DebugBarTest extends DebugBarTestCase
         $data = $this->debugbar->getStackedData();
         $this->assertArrayNotHasKey($ns, $http->session);
         $this->assertArrayHasKey($id, $data);
-        $this->assertEquals(1, count($data));
+        $this->assertCount(1, $data);
         $this->assertArrayHasKey('mock', $data[$id]);
         $this->assertEquals($c->collect(), $data[$id]['mock']);
     }
