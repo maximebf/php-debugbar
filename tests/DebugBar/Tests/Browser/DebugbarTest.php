@@ -1,16 +1,10 @@
 <?php
 
-namespace DebugBar\Tests;
+namespace DebugBar\Tests\Browser;
 
-use DebugBar\DebugBar;
-use DebugBar\DebugBarException;
-use DebugBar\Tests\DataCollector\MockCollector;
-use DebugBar\Tests\Storage\MockStorage;
-use DebugBar\RandomRequestIdGenerator;
 use Facebook\WebDriver\WebDriverElement;
-use Symfony\Component\Panther\PantherTestCase;
 
-class BasicBrowserTest extends AbstractBrowserTest
+class DebugbarTest extends AbstractBrowserTest
 {
     public function testDebugbarTab(): void
     {
@@ -20,7 +14,10 @@ class BasicBrowserTest extends AbstractBrowserTest
         // Wait for Debugbar to load
         $crawler = $client->waitFor('.phpdebugbar-body');
 
-        $client->click($this->getTabLink($crawler, 'messages'));
+        usleep(1000);
+        if (!$this->isTabActive($crawler, 'messages')) {
+            $client->click($this->getTabLink($crawler, 'messages'));
+        }
 
         $crawler = $client->waitForVisibility('.phpdebugbar-panel[data-collector=messages] .phpdebugbar-widgets-list');
 
@@ -44,8 +41,11 @@ class BasicBrowserTest extends AbstractBrowserTest
 
         // Wait for Debugbar to load
         $crawler = $client->waitFor('.phpdebugbar-body');
+        usleep(1000);
 
-        $client->click($this->getTabLink($crawler, 'messages'));
+        if (!$this->isTabActive($crawler, 'messages')) {
+            $client->click($this->getTabLink($crawler, 'messages'));
+        }
 
         $crawler = $client->waitForVisibility('.phpdebugbar-widgets-messages .phpdebugbar-widgets-list');
 

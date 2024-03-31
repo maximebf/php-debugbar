@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DebugBar\\": "tests/DebugBar/"
+            "DebugBar\\Tests\\": "tests/DebugBar/Tests"
         }
     },
     "suggest": {

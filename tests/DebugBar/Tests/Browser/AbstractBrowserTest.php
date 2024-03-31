@@ -1,13 +1,7 @@
 <?php
 
-namespace DebugBar\Tests;
+namespace DebugBar\Tests\Browser;
 
-use DebugBar\DebugBar;
-use DebugBar\DebugBarException;
-use DebugBar\Tests\DataCollector\MockCollector;
-use DebugBar\Tests\Storage\MockStorage;
-use DebugBar\RandomRequestIdGenerator;
-use Facebook\WebDriver\WebDriverElement;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\DomCrawler\Link;
 use Symfony\Component\Panther\PantherTestCase;
@@ -18,7 +12,7 @@ abstract class AbstractBrowserTest extends PantherTestCase
     {
         $node = $crawler->filter('a.phpdebugbar-tab[data-collector="'.$tab.'"]');
 
-        return strpos($node->attr('class'), 'phpdebugbar-active"') !== false;
+        return strpos($node->attr('class'), 'phpdebugbar-active') !== false;
     }
 
     public function getTabLink(Crawler $crawler, $tab): Link
