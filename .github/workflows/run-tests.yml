@@ -12,7 +12,7 @@ on:
 
 jobs:
   php-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
       COMPOSER_NO_INTERACTION: 1
@@ -38,4 +38,4 @@ jobs:
       run: composer update --prefer-dist --no-progress
 
     - name: Execute Unit Tests
-      run: vendor/bin/phpunit
+      run: vendor/bin/phpunit --testsuite=Unit
