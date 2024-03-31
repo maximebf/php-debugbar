@@ -20,7 +20,7 @@ class DebugbarTest extends AbstractBrowserTest
         // Wait for Debugbar to load
         $crawler = $client->waitFor('.phpdebugbar-body');
         usleep(1000);
-        
+
         if (!$this->isTabActive($crawler, 'monolog')) {
             $client->click($this->getTabLink($crawler, 'monolog'));
         }
