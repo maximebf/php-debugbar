@@ -639,6 +639,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     self.showTab(name);
                 }
             });
+            tab.$tab.attr('data-collector', name);
+            tab.$el.attr('data-collector', name);
             tab.$el.appendTo(this.$body);
 
             this.controls[name] = tab;

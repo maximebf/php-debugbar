@@ -115,4 +115,4 @@ To run the demo, clone this repository and start the Built-In PHP webserver from
 php -S localhost:8000
 ```
 
-Then visit http://localhost:8000/demo
+Then visit http://localhost:8000/demo/

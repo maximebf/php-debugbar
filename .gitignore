@@ -4,3 +4,4 @@ composer.lock
 /src/DebugBar/Resources/vendor
 .phpunit.result.cache
 /drivers
+.phpunit.cache/
