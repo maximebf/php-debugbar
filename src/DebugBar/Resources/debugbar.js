@@ -548,8 +548,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$datasets = $('<select />').addClass(csscls('datasets-switcher')).attr('name', 'datasets-switcher')
                 .appendTo(this.$headerRight);
             this.$datasets.change(function() {
-                self.dataChangeHandler(self.datasets[this.value]);
-                self.showTab();
+                self.showDataSet(this.value);
             });
         },
 
@@ -948,20 +947,22 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             var label = this.datesetTitleFormater.format(id, this.datasets[id], suffix, nb);
 
-            if (typeof(show) == 'undefined' || show) {
-                this.showDataSet(id, label);
-            }
-
             if (this.datasetTab) {
                 this.datasetTab.set('data', this.datasets);
                 this.datasetTab.set('badge', getObjectSize(this.datasets));
                 this.datasetTab.$tab.show();
-            } else {
-                this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
-                if (this.$datasets.children().length > 1) {
-                    this.$datasets.show();
-                }
             }
+
+            this.$datasets.append($('<option value="' + id + '">' + label + '</option>'));
+            if (this.$datasets.children().length > 1) {
+                this.$datasets.show();
+            }
+
+            if (typeof(show) == 'undefined' || show) {
+                this.showDataSet(id);
+            }
+
+            this.resize();
 
             return id;
         },
@@ -1001,12 +1002,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          * @param {String} id
          */
-        showDataSet: function(id, label) {
-            this.dataChangeHandler(this.datasets[id]);
+        showDataSet: function(id) {
             this.activeDatasetId = id;
+            this.dataChangeHandler(this.datasets[id]);
+
+            if (this.$datasets.val() !== id) {
+                this.$datasets.val(id);
+            }
 
             if (this.datasetTab) {
-                this.datasetTab.set('title', label);
+                this.datasetTab.get('widget').set('id', id);
             }
         },
 
@@ -1060,6 +1065,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     'debugbar': this
                 })});
             this.datasetTab.$tab.addClass(csscls('tab-history'));
+            this.datasetTab.$tab.attr('data-collector', '__datasets');
+            this.datasetTab.$el.attr('data-collector', '__datasets');
             this.datasetTab.$tab.insertAfter(this.$openbtn).hide();
             this.datasetTab.$tab.click(() => {
                 if (!this.isMinimized() && self.activePanelName == '__datasets') {

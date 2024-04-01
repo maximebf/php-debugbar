@@ -667,6 +667,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
             this.set(options);
             this.set('autoshow', null);
+            this.set('id', null);
             this.set('sort', localStorage.getItem('debugbar-history-sort') || 'asc');
             this.$el.addClass(csscls('dataset-history'))
 
@@ -724,7 +725,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
                         .append($('<th>Date ↕</th>').css('width', '175px').click(function() {
                             self.set('sort', self.get('sort') === 'asc' ? 'desc' : 'asc')
                             localStorage.setItem('debugbar-history-sort', self.get('sort'))
-                            console.log('set sort', self.get('sort'))
                         }))
                         .append($('<th>Method</th>').css('width', '80px'))
                         .append($('<th>URL</th>'))
@@ -749,7 +749,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         render: function() {
-            this.bindAttr(['data'], function() {
+            this.bindAttr('data', function() {
                 if (this.get('autoshow') === null && this.get('debugbar').ajaxHandler) {
                     this.set('autoshow', this.get('debugbar').ajaxHandler.autoShow);
                 }
@@ -766,17 +766,18 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 }
 
                 this.get('itemRenderer')(this, data);
-
-                // Switch active tab
-                this.$table.find('.' + csscls('active')).removeClass(csscls('active'));
-                this.$table.find('tr[data-id=' + this.get('debugbar').activeDatasetId+']').addClass(csscls('active'));
-            });
+           });
             this.bindAttr(['itemRenderer', 'search', 'method', 'sort'], function() {
                 this.renderDatasets();
             })
-            this.bindAttr(['autoshow'], function() {
+            this.bindAttr('autoshow', function() {
                 var autoshow = this.get('autoshow');
                 this.$autoshow.prop('checked', autoshow);
+            })
+            this.bindAttr('id', function() {
+                var id = this.get('id');
+                this.$table.find('.' + csscls('active')).removeClass(csscls('active'));
+                this.$table.find('tr[data-id=' + id+']').addClass(csscls('active'));
             })
         },
 

@@ -10,6 +10,7 @@ use DebugBar\StandardDebugBar;
 $debugbar = new StandardDebugBar();
 $debugbarRenderer = $debugbar->getJavascriptRenderer()
                              ->setBaseUrl('../src/DebugBar/Resources')
+                             ->setAjaxHandlerEnableTab(true)
                              ->setEnableJqueryNoConflict(false);
 
 //
@@ -29,9 +30,8 @@ function render_demo_page(Closure $callback = null)
         <script type="text/javascript">
             $(function() {
                 $('.ajax').click(function() {
-                    var container = $(this).parent().html('...');
                     $.get(this.href, function(data) {
-                        container.html(data);
+                        $('#ajax-result').html(data);
                     });
                     return false;
                 });

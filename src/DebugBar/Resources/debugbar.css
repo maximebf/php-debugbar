@@ -318,12 +318,11 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
 
 /* -------------------------------------- */
 
-  .phpdebugbar-tab-history .phpdebugbar-text {
-      display: inline-flex;
-      max-width: 200px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+  a.phpdebugbar-tab.phpdebugbar-tab-history .phpdebugbar-text {
+      display: none;
+  }
+  a.phpdebugbar-tab.phpdebugbar-tab-history i {
+    display:inline-block;
   }
   .phpdebugbar-widgets-dataset-history table {
       width: 100%;
