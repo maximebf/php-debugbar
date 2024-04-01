@@ -66,6 +66,21 @@ class DebugbarTest extends AbstractBrowserTest
 
         $client->waitForElementToContain('.phpdebugbar-datasets-switcher', 'ajax_exception.php');
         $client->waitForElementToContain('.phpdebugbar-panel[data-collector=exceptions] .phpdebugbar-widgets-message', 'Something failed!');
+
+        // Open network tab
+        $client->click($this->getTabLink($crawler, '__datasets'));
+        $client->waitForVisibility('.phpdebugbar-panel[data-collector=__datasets] .phpdebugbar-widgets-table-row');
+
+        $requests = $crawler->filter('.phpdebugbar-panel[data-collector=__datasets] .phpdebugbar-widgets-table-row')
+            ->each(function(WebDriverElement $node){
+                return $node->getText();
+            });
+        $this->assertStringContainsString('GET /demo/', $requests[0]);
+        $this->assertStringContainsString('GET /demo/ajax.php (ajax)', $requests[1]);
+        $this->assertStringContainsString('GET /demo/ajax_exception.php (ajax)', $requests[2]);
+
+
+
     }
 
 }

@@ -1065,6 +1065,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     'debugbar': this
                 })});
             this.datasetTab.$tab.addClass(csscls('tab-history'));
+            this.datasetTab.$tab.attr('data-collector', '__datasets');
+            this.datasetTab.$el.attr('data-collector', '__datasets');
             this.datasetTab.$tab.insertAfter(this.$openbtn).hide();
             this.datasetTab.$tab.click(() => {
                 if (!this.isMinimized() && self.activePanelName == '__datasets') {
