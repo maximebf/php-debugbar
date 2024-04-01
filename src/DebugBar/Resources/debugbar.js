@@ -949,7 +949,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             if (this.datasetTab) {
                 this.datasetTab.set('data', this.datasets);
-                this.datasetTab.set('badge', getObjectSize(this.datasets));
+                var datasetSize = getObjectSize(this.datasets);
+                this.datasetTab.set('badge', datasetSize > 1 ? datasetSize : null);
                 this.datasetTab.$tab.show();
             }
 
