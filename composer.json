@@ -37,6 +37,18 @@
             "DebugBar\\Tests\\": "tests/DebugBar/Tests"
         }
     },
+    "scripts": {
+        "demo": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -S localhost:8000"
+        ],
+        "unit-test": "@php vendor/bin/phpunit --testsuite=Unit",
+        "browser-test": "@php vendor/bin/phpunit --testsuite=Browser",
+        "browser-debug": [
+            "@putenv PANTHER_NO_HEADLESS=1",
+            "@php vendor/bin/phpunit --testsuite=Browser --debug"
+        ]
+    },
     "suggest": {
         "kriswallsmith/assetic": "The best way to manage assets",
         "monolog/monolog": "Log using Monolog",
