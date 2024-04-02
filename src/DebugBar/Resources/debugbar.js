@@ -512,19 +512,29 @@ if (typeof(PhpDebugBar) == 'undefined') {
             };
 
             // close button
-            this.$closebtn = $('<a />').addClass(csscls('close-btn')).appendTo(this.$headerRight);
+            this.$closebtn = $('<a/>').addClass(csscls('close-btn'))
+                .append($('<i />').attr('class', 'phpdebugbar-fa phpdebugbar-fa-times'))
+                .css('background', 'none')
+                .appendTo(this.$headerRight);
             this.$closebtn.click(function() {
                 self.close();
             });
 
             // minimize button
-            this.$minimizebtn = $('<a />').addClass(csscls('minimize-btn') ).appendTo(this.$headerRight);
+            this.$minimizebtn = $('<a/>').addClass(csscls('minimize-btn'))
+                .append($('<i />').attr('class', 'phpdebugbar-fa phpdebugbar-fa-chevron-down'))
+                .css('background', 'none')
+                .appendTo(this.$headerRight);
             this.$minimizebtn.click(function() {
                 self.minimize();
             });
 
             // maximize button
-            this.$maximizebtn = $('<a />').addClass(csscls('maximize-btn') ).appendTo(this.$headerRight);
+            this.$maximizebtn = $('<a/>')
+                .append($('<i />').attr('class', 'phpdebugbar-fa phpdebugbar-fa-chevron-up'))
+                .css('background', 'none')
+                .addClass(csscls('maximize-btn'))
+                .appendTo(this.$headerRight);
             this.$maximizebtn.click(function() {
                 self.restore();
             });
@@ -536,7 +546,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
             });
 
             // open button
-            this.$openbtn = $('<a />').addClass(csscls('open-btn')).appendTo(this.$headerRight).hide();
+            this.$openbtn = $('<a/>').addClass(csscls('open-btn'))
+                .append($('<i />').attr('class', 'phpdebugbar-fa phpdebugbar-fa-folder-open'))
+                .css('background', 'none')
+                .appendTo(this.$headerRight)
+                .hide();
             this.$openbtn.click(function() {
                 self.openHandler.show(function(id, dataset) {
                     self.addDataSet(dataset, id, "(opened)");
@@ -561,13 +575,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         setHeight: function(height) {
-          var min_h = 40;
-          var max_h = $(window).innerHeight() - this.$header.height() - 10;
-          height = Math.min(height, max_h);
-          height = Math.max(height, min_h);
-          this.$body.css('height', height);
-          localStorage.setItem('phpdebugbar-height', height);
-          this.recomputeBottomOffset();
+            var min_h = 40;
+            var max_h = $(window).innerHeight() - this.$header.height() - 10;
+            height = Math.min(height, max_h);
+            height = Math.max(height, min_h);
+            this.$body.css('height', height);
+            localStorage.setItem('phpdebugbar-height', height);
+            this.recomputeBottomOffset();
         },
 
         /**
