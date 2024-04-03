@@ -65,7 +65,7 @@ ul.phpdebugbar-widgets-list {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
   ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item {
-    padding: 3px 6px;
+    padding: 3px;
     border-bottom: 1px solid #eee;
     position: relative;
     overflow: hidden;
