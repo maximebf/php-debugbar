@@ -204,6 +204,7 @@ a.phpdebugbar-tab.phpdebugbar-active {
 a.phpdebugbar-close-btn, a.phpdebugbar-open-btn, a.phpdebugbar-restore-btn, a.phpdebugbar-minimize-btn , a.phpdebugbar-maximize-btn {
   width: 16px;
   height: 16px;
+  text-align: center;
 }
 
 a.phpdebugbar-maximize-btn { display: none}
