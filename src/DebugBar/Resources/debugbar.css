@@ -63,9 +63,10 @@ div.phpdebugbar ul li, div.phpdebugbar ol li, div.phpdebugbar dl li {
   line-height: 1;
 }
 
-div.phpdebugbar table {
+div.phpdebugbar table, .phpdebugbar-openhandler table {
   border-collapse: collapse;
   border-spacing: 0;
+  color: inherit;
 }
 
 div.phpdebugbar input[type='text'], div.phpdebugbar input[type='password'] {
