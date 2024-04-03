@@ -146,6 +146,7 @@ div.phpdebugbar-header > div > * {
   font-size: 14px;
   color: #555;
   text-decoration: none;
+  height: 16px;
 }
 div.phpdebugbar-header-left > * {
   float: left;
@@ -203,10 +204,6 @@ a.phpdebugbar-tab.phpdebugbar-active {
 a.phpdebugbar-close-btn, a.phpdebugbar-open-btn, a.phpdebugbar-restore-btn, a.phpdebugbar-minimize-btn , a.phpdebugbar-maximize-btn {
   width: 16px;
   height: 16px;
-}
-
-a.phpdebugbar-minimize-btn , a.phpdebugbar-maximize-btn {
-  padding-right: 0 !important;
 }
 
 a.phpdebugbar-maximize-btn { display: none}
@@ -301,6 +298,14 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
   }
 
 /* -------------------------------------- */
+
+  a.phpdebugbar-tab.phpdebugbar-tab-history {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   a.phpdebugbar-tab.phpdebugbar-tab-history .phpdebugbar-text {
       display: none;
