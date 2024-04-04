@@ -252,20 +252,21 @@ a.phpdebugbar-open-btn {
     display: none;
     position: absolute;
     top: -30px;
-    background: #efefef;
-    opacity: .7;
+    background: #efefef70;
     border: 1px solid #ccc;
     color: #555;
     font-size: 11px;
     padding: 2px 6px;
     z-index: 1000;
     text-align: center;
-    text-wrap: nowrap;
+    white-space: nowrap;
     right: 0;
     line-height: 1.5;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
   .phpdebugbar-indicator:hover span.phpdebugbar-tooltip:not(.phpdebugbar-disabled) {
-    display: block;
+    display: inline-block;
   }
 
 select.phpdebugbar-datasets-switcher {
@@ -311,15 +312,18 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
     display: block;
     position: absolute;
     top: -30px;
-    background: #efefef;
-    opacity: .7;
+    background: #efefef70;
+    opacity: 1;
     border: 1px solid #ccc;
     color: #555;
     font-size: 11px;
-    padding: 2px 3px;
+    padding: 2px 6px;
     z-index: 1000;
     text-align: center;
     right: 0;
+    line-height: 1.5;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
   div.phpdebugbar-mini-design a.phpdebugbar-tab i {
     display:inline-block;
@@ -337,6 +341,7 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
 
   a.phpdebugbar-tab.phpdebugbar-tab-history .phpdebugbar-text {
       display: none;
+      white-space: nowrap;
   }
   a.phpdebugbar-tab.phpdebugbar-tab-history i {
     display:inline-block;
