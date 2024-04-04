@@ -266,7 +266,7 @@ a.phpdebugbar-open-btn {
     -webkit-backdrop-filter: blur(5px);
   }
   .phpdebugbar-indicator:hover span.phpdebugbar-tooltip:not(.phpdebugbar-disabled) {
-    display: inline-block;
+    display: block;
   }
 
 select.phpdebugbar-datasets-switcher {
@@ -326,7 +326,7 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
     -webkit-backdrop-filter: blur(5px);
   }
   div.phpdebugbar-mini-design a.phpdebugbar-tab i {
-    display: block;
+    display:inline-block;
   }
 
 /* -------------------------------------- */
