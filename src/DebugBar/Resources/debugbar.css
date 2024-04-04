@@ -143,7 +143,7 @@ div.phpdebugbar-header-right {
   float: right;
 }
 div.phpdebugbar-header > div > * {
-  padding: 5px 5px;
+  padding: 5px;
   font-size: 14px;
   height: 16px;
   color: #555;
@@ -170,7 +170,7 @@ div.phpdebugbar-header-right > select {
 
 span.phpdebugbar-indicator,
 a.phpdebugbar-indicator,
-a.phpdebugbar-close-btn {
+{
   border-right: 1px solid #ddd;
 }
 
