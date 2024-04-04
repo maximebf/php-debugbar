@@ -122,7 +122,7 @@ div.phpdebugbar-closed, div.phpdebugbar-minimized{
 /* -------------------------------------- */
 
 a.phpdebugbar-restore-btn {
-    background: #efefef url(data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2020%2020%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20fill%3D%22%23000%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22M6.039%208.342c.463%200%20.772.084.927.251.154.168.191.455.11.862-.084.424-.247.727-.487.908-.241.182-.608.272-1.1.272h-.743l.456-2.293h.837zm-2.975%204.615h1.22l.29-1.457H5.62c.461%200%20.84-.047%201.139-.142.298-.095.569-.254.812-.477.205-.184.37-.387.497-.608.127-.222.217-.466.27-.734.13-.65.032-1.155-.292-1.518-.324-.362-.84-.543-1.545-.543H4.153l-1.089%205.479zM9.235%206.02h1.21l-.289%201.458h1.079c.679%200%201.147.115%201.405.347.258.231.335.607.232%201.125l-.507%202.55h-1.23l.481-2.424c.055-.276.035-.464-.06-.565-.095-.1-.298-.15-.608-.15H9.98L9.356%2011.5h-1.21l1.089-5.48M15.566%208.342c.464%200%20.773.084.928.251.154.168.19.455.11.862-.084.424-.247.727-.488.908-.24.182-.607.272-1.1.272h-.742l.456-2.293h.836zm-2.974%204.615h1.22l.29-1.457h1.046c.461%200%20.84-.047%201.139-.142.298-.095.569-.254.812-.477.205-.184.37-.387.497-.608.127-.222.217-.466.27-.734.129-.65.032-1.155-.292-1.518-.324-.362-.84-.543-1.545-.543H13.68l-1.089%205.479z%22%20fill%3D%22%23FFF%22%2F%3E%3C%2Fsvg%3E)  no-repeat 5px 4px / 20px 20px;
+    background: #efefef url(data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2020%2020%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20fill%3D%22%23000%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22M6.039%208.342c.463%200%20.772.084.927.251.154.168.191.455.11.862-.084.424-.247.727-.487.908-.241.182-.608.272-1.1.272h-.743l.456-2.293h.837zm-2.975%204.615h1.22l.29-1.457H5.62c.461%200%20.84-.047%201.139-.142.298-.095.569-.254.812-.477.205-.184.37-.387.497-.608.127-.222.217-.466.27-.734.13-.65.032-1.155-.292-1.518-.324-.362-.84-.543-1.545-.543H4.153l-1.089%205.479zM9.235%206.02h1.21l-.289%201.458h1.079c.679%200%201.147.115%201.405.347.258.231.335.607.232%201.125l-.507%202.55h-1.23l.481-2.424c.055-.276.035-.464-.06-.565-.095-.1-.298-.15-.608-.15H9.98L9.356%2011.5h-1.21l1.089-5.48M15.566%208.342c.464%200%20.773.084.928.251.154.168.19.455.11.862-.084.424-.247.727-.488.908-.24.182-.607.272-1.1.272h-.742l.456-2.293h.836zm-2.974%204.615h1.22l.29-1.457h1.046c.461%200%20.84-.047%201.139-.142.298-.095.569-.254.812-.477.205-.184.37-.387.497-.608.127-.222.217-.466.27-.734.129-.65.032-1.155-.292-1.518-.324-.362-.84-.543-1.545-.543H13.68l-1.089%205.479z%22%20fill%3D%22%23FFF%22%2F%3E%3C%2Fsvg%3E)  no-repeat center / 20px 20px;
 }
 div.phpdebugbar-header {
   min-height: 26px;
@@ -145,8 +145,15 @@ div.phpdebugbar-header-right {
 div.phpdebugbar-header > div > * {
   padding: 5px 5px;
   font-size: 14px;
+  height: 16px;
   color: #555;
   text-decoration: none;
+}
+div.phpdebugbar-header-left > *,
+div.phpdebugbar-header-right > * {
+  line-height: 0;
+  display: flex;
+  align-items: center;
 }
 div.phpdebugbar-header-left > * {
   float: left;
@@ -188,7 +195,10 @@ a.phpdebugbar-tab.phpdebugbar-active {
     color: #555;
     font-weight: normal;
     text-shadow: none;
-    vertical-align: middle;
+  }
+  a.phpdebugbar-tab.phpdebugbar-active  span.phpdebugbar-badge {
+    background: #555;
+    color: #fff;
   }
   a.phpdebugbar-tab i {
     display: none;
@@ -242,16 +252,18 @@ a.phpdebugbar-open-btn {
     display: none;
     position: absolute;
     top: -30px;
-    background: #efefef;
-    opacity: .7;
+    background: #efefef70;
     border: 1px solid #ccc;
     color: #555;
     font-size: 11px;
-    padding: 2px 3px;
+    padding: 2px 6px;
     z-index: 1000;
     text-align: center;
-    width: 200%;
+    white-space: nowrap;
     right: 0;
+    line-height: 1.5;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
   .phpdebugbar-indicator:hover span.phpdebugbar-tooltip:not(.phpdebugbar-disabled) {
     display: block;
@@ -300,15 +312,18 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
     display: block;
     position: absolute;
     top: -30px;
-    background: #efefef;
-    opacity: .7;
+    background: #efefef70;
+    opacity: 1;
     border: 1px solid #ccc;
     color: #555;
     font-size: 11px;
-    padding: 2px 3px;
+    padding: 2px 6px;
     z-index: 1000;
     text-align: center;
     right: 0;
+    line-height: 1.5;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
   div.phpdebugbar-mini-design a.phpdebugbar-tab i {
     display:inline-block;
@@ -326,6 +341,7 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
 
   a.phpdebugbar-tab.phpdebugbar-tab-history .phpdebugbar-text {
       display: none;
+      white-space: nowrap;
   }
   a.phpdebugbar-tab.phpdebugbar-tab-history i {
     display:inline-block;
