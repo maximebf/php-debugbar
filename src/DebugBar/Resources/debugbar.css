@@ -326,7 +326,7 @@ div.phpdebugbar-mini-design a.phpdebugbar-tab {
     -webkit-backdrop-filter: blur(5px);
   }
   div.phpdebugbar-mini-design a.phpdebugbar-tab i {
-    display:inline-block;
+    display: block;
   }
 
 /* -------------------------------------- */
