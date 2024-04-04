@@ -197,7 +197,7 @@ a.phpdebugbar-tab.phpdebugbar-active {
     text-shadow: none;
   }
   a.phpdebugbar-tab.phpdebugbar-active  span.phpdebugbar-badge {
-    background: #000;
+    background: #555;
     color: #fff;
   }
   a.phpdebugbar-tab i {
