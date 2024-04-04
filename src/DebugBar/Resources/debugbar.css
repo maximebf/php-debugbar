@@ -189,9 +189,9 @@ a.phpdebugbar-tab.phpdebugbar-active {
     margin-left: 5px;
     font-size: 11px;
     line-height: 14px;
-    padding: 2px 6px;
+    padding: 0px 6px;
     background: #ccc;
-    border-radius: 100vh;
+    border-radius: 4px;
     color: #555;
     font-weight: normal;
     text-shadow: none;
