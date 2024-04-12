@@ -425,7 +425,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.activeDatasetId = null;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
-            this.isIframe = window.self !== window.top;
+            try {
+                this.isIframe = window.self !== window.top && window.top.phpdebugbar;
+            } catch (error) {}
             this.registerResizeHandler();
         },
 
