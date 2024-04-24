@@ -388,7 +388,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 filename = filename.substr(0, maxLength) + '...';
             }
 
-            var label = "#" + nb + " " + filename + suffix + ' (' + data['__meta']['datetime'].split(' ')[1] + ')';
+            var label = "#" + nb + " " + decodeURIComponent(filename) + suffix + ' (' + data['__meta']['datetime'].split(' ')[1] + ')';
             return label;
         }
 

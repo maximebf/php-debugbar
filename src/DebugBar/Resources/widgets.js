@@ -812,7 +812,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 .append($('<td>#' + meta['nb'] + '</td>').click(clickHandler))
                 .append($('<td>' + meta['datetime'] + '</td>').click(clickHandler))
                 .append($('<td>' + meta['method'] + '</td>').click(clickHandler))
-                .append($('<td />').append(meta['uri'] + (meta['suffix'] ? ' ' + meta['suffix'] : '')).click(clickHandler))
+                .append($('<td />').append(decodeURIComponent(meta['uri']) + (meta['suffix'] ? ' ' + meta['suffix'] : '')).click(clickHandler))
                 .css('cursor', 'pointer')
                 .addClass(csscls('table-row'))
 

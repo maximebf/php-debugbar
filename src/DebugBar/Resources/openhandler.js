@@ -123,7 +123,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                     });
 
                 var uri = $('<a />')
-                    .text(meta['uri'])
+                    .text(decodeURIComponent(meta['uri']))
                     .on('click', function(e) {
                         self.hide();
                         self.load(meta['id'], function(data) {
