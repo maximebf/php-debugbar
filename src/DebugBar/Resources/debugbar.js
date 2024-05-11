@@ -934,6 +934,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @return {String} Dataset's id
          */
         addDataSet: function(data, id, suffix, show) {
+            if (!data || !data.__meta) return;
             if (this.isIframe) {
                 window.top.phpdebugbar.addDataSet(data, id, '(iframe)' + (suffix || ''), show);
                 return;
