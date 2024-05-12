@@ -60,7 +60,7 @@ div.phpdebugbar ol, div.phpdebugbar ul {
 }
 
 div.phpdebugbar ul li, div.phpdebugbar ol li, div.phpdebugbar dl li {
-  line-height: 1;
+  line-height: normal;
 }
 
 div.phpdebugbar table, .phpdebugbar-openhandler table {
