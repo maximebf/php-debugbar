@@ -427,7 +427,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
             try {
                 this.isIframe = window.self !== window.top && window.top.phpdebugbar;
-            } catch (error) {}
+            } catch (error) {
+                this.isIframe = false;
+            }
             this.registerResizeHandler();
         },
 
