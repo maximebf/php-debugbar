@@ -120,4 +120,4 @@ Then visit http://localhost:8000/demo/
 ## Testing
 
 To test, run `php vendor/bin/phpunit`. 
-To debug Browser tests, you can run `PANTHER_NO_HEADLESS=1 vendor/bin/phpunit --debug`
+To debug Browser tests, you can run `PANTHER_NO_HEADLESS=1 vendor/bin/phpunit --debug`. Run `vendor/bin/bdi detect drivers` to download the latest drivers.
