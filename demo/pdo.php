@@ -19,6 +19,10 @@ $stmt = $pdo->prepare('select * from users where name=?');
 $stmt->execute(array('foo'));
 $foo = $stmt->fetch();
 
+$stmt = $pdo->prepare('select * from users where name=?');
+$stmt->execute(array('<script>alert();</script>'));
+$foo = $stmt->fetch();
+
 $pdo->exec('delete from users');
 
 render_demo_page();
