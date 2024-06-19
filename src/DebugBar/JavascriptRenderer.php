@@ -1212,7 +1212,7 @@ class JavascriptRenderer
     {
         $js = sprintf("%s.addDataSet(%s, \"%s\"%s);\n",
             $this->variableName,
-            json_encode($data),
+            json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_INVALID_UTF8_IGNORE),
             $requestId,
             $suffix ? ", " . json_encode($suffix) : ''
         );
