@@ -903,15 +903,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         draggingRestoreButtonEvent: function(e) {
             var self = this;
+            if (! self.isClosed()) return;
+
             // Track initial mouse position and element position
             var initialMouseX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
             var initialPosX = self.$el.position().left;
 
             function doDrag(e) {
-                if (! self.isClosed()) {
-                    self.$el.css('left', '');
-                    return;
-                }
                 // Calculate the change in mouse position
                 var clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
                 var deltaX = clientX - initialMouseX;
@@ -928,8 +926,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             function stopDragging() {
                 // Unbind the move and up/end events
-                $(document).off('mousemove.drag touchmove.drag');
-                $(document).off('mouseup.drag touchend.drag');
+                $(document).off('mousemove.drag touchmove.drag', doDrag);
+                $(document).off('mouseup.drag touchend.drag', stopDragging);
 
                 // Save the new position to local storage
                 var finalPosX = self.$el.position().left;
