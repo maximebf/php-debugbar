@@ -491,7 +491,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
             }
 
             var self = this;
-            this.$el.css('display', 'block');
             this.$el.appendTo('body');
             this.$dragCapture = $('<div />').addClass(csscls('drag-capture')).appendTo(this.$el);
             this.$resizehdle = $('<div />').addClass(csscls('resize-handle')).appendTo(this.$el);
