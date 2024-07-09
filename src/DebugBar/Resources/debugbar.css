@@ -1,4 +1,7 @@
 /* Hide debugbar when printing a page */
+div.phpdebugbar {
+  display: none;
+}
 @media print {
   div.phpdebugbar {
     display: none;
