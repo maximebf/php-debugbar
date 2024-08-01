@@ -1,6 +1,6 @@
 # PHP Debug Bar
 
-[![Latest Stable Version](https://poser.pugx.org/maximebf/debugbar/v/stable.png)](https://packagist.org/packages/maximebf/debugbar) [![Total Downloads](https://poser.pugx.org/maximebf/debugbar/downloads.svg)](https://packagist.org/packages/maximebf/debugbar) [![License](https://poser.pugx.org/maximebf/debugbar/license.svg)](https://packagist.org/packages/maximebf/debugbar) [![Tests](https://github.com/maximebf/php-debugbar/actions/workflows/run-tests.yml/badge.svg)](https://github.com/maximebf/php-debugbar/actions/workflows/run-tests.yml)
+[![Latest Stable Version](https://img.shields.io/packagist/v/maximebf/debugbar?label=Stable)](https://packagist.org/packages/maximebf/debugbar) [![Total Downloads](https://img.shields.io/packagist/dt/maximebf/debugbar?label=Downloads)](https://packagist.org/packages/maximebf/debugbar) [![License](https://img.shields.io/badge/Licence-MIT-4d9283)](https://packagist.org/packages/maximebf/debugbar) [![Tests](https://github.com/maximebf/php-debugbar/actions/workflows/run-tests.yml/badge.svg)](https://github.com/maximebf/php-debugbar/actions/workflows/run-tests.yml)
 
 Displays a debug bar in the browser with information from php.
 No more `var_dump()` in your code!
