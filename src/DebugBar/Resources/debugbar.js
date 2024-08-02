@@ -472,6 +472,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             // Reset height to ensure bar is still visible
             this.setHeight(this.$body.height());
+            if (this.isClosed()) {
+                var restorePos = localStorage.getItem('phpdebugbar-restore-position') || 0;
+                if (restorePos) {
+                    this.$el.css('left', this.recomputeRestorePositionX(~~restorePos) + 'px');
+                }
+            }
         },
 
         /**
@@ -537,6 +543,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$restorebtn = $('<a />').addClass(csscls('restore-btn')).hide().appendTo(this.$el);
             this.$restorebtn.click(function() {
                 self.restore();
+            });
+
+            // dragging of restore button
+            this.$restorebtn.on('mousedown touchstart', function (e) {
+                self.draggingRestoreButtonEvent(e);
+                e.preventDefault();
             });
 
             // open button
@@ -829,6 +841,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$restorebtn.show();
             localStorage.setItem('phpdebugbar-open', '0');
             this.$el.addClass(csscls('closed'));
+            var restorePos = localStorage.getItem('phpdebugbar-restore-position') || 0;
+            if (restorePos) {
+                this.$el.css('left', this.recomputeRestorePositionX(~~restorePos) + 'px');
+            }
             this.recomputeBottomOffset();
         },
 
@@ -847,6 +863,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         restore: function() {
+            if (this.$el.hasClass(csscls('dragging'))){
+                this.$el.removeClass(csscls('dragging'));
+                return;
+            }
             this.$resizehdle.show();
             this.$header.show();
             this.$restorebtn.hide();
@@ -858,6 +878,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 this.showTab();
             }
             this.$el.removeClass(csscls('closed'));
+            this.$el.css('left', '');
             this.resize();
         },
 
@@ -874,6 +895,67 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var offset = parseInt(this.$el.height()) + (this.options.bodyMarginBottomHeight || 0);
                 $('body').css('margin-bottom', offset);
             }
+        },
+
+        /**
+         * allows you to move the revert button so that other components of the page can be displayed
+         */
+        draggingRestoreButtonEvent: function(e) {
+            var self = this;
+            if (! self.isClosed()) return;
+
+            // Track initial mouse position and element position
+            var initialMouseX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            var initialPosX = self.$el.position().left;
+
+            function doDrag(e) {
+                // Calculate the change in mouse position
+                var clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+                var deltaX = clientX - initialMouseX;
+
+                // Update the position of the element
+                var newPosX = initialPosX + deltaX;
+
+                // Ensure the new position is within screen boundaries
+                newPosX = self.recomputeRestorePositionX(newPosX);
+
+                self.$el.css('left', newPosX + 'px');
+                self.$el.addClass(csscls('dragging'));
+            }
+
+            function stopDragging() {
+                // Unbind the move and up/end events
+                $(document).off('mousemove.drag touchmove.drag', doDrag);
+                $(document).off('mouseup.drag touchend.drag', stopDragging);
+
+                // Save the new position to local storage
+                var finalPosX = self.$el.position().left;
+                localStorage.setItem('phpdebugbar-restore-position', finalPosX);
+                setTimeout(function () { self.$el.removeClass(csscls('dragging')); }, 500);
+            }
+
+            // Bind the move and up/end events
+            $(document).on('mousemove.drag touchmove.drag', doDrag);
+            $(document).on('mouseup.drag touchend.drag', stopDragging);
+        },
+
+        /**
+         * Recomputes the left css property of the restore btn for dragging
+         * restore button always has to be visible and not be left off the screen
+         */
+        recomputeRestorePositionX: function (posX) {
+            if (! this.isClosed()) return;
+
+            var screenWidth = $(window).width()
+            var elementWidth = this.$restorebtn.outerWidth();
+
+            if (posX <= 0) {
+                posX = 0;
+            } else if (posX + elementWidth > screenWidth) {
+                posX = screenWidth - elementWidth;
+            }
+
+            return posX;
         },
 
         /**
