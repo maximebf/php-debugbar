@@ -83,7 +83,7 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
     public function getParameters($query) : array
     {
         $params = [];
-        foreach ($query['params'] as $name => $param) {
+        foreach ($query['params'] ?? [] as $name => $param) {
             $params[$name] = htmlentities($param?:"", ENT_QUOTES, 'UTF-8', false);
         }
         return $params;
