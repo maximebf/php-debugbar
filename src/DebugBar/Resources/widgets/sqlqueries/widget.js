@@ -128,13 +128,13 @@
                 }
                 if (typeof(stmt.xdebug_link) !== 'undefined' && stmt.xdebug_link) {
                     var header = $('<span title="Filename" />').addClass(csscls('filename')).text(stmt.xdebug_link.filename + ( stmt.xdebug_link.line ? "#" + stmt.xdebug_link.line : ''));
-                    if (stmt.xdebug_link.ajax) {
-                        $('<a title="' + stmt.xdebug_link.url + '"></a>').on('click', function () {
+                    $('<a href="' + stmt.xdebug_link.url + '"></a>').on('click', function () {
+                        event.stopPropagation();
+                        if (stmt.xdebug_link.ajax) {                            
                             fetch(stmt.xdebug_link.url);
-                        }).addClass(csscls('editor-link')).appendTo(header);
-                    } else {
-                        $('<a href="' + stmt.xdebug_link.url + '"></a>').addClass(csscls('editor-link')).appendTo(header);
-                    }
+                            event.preventDefault();
+                        }
+                    }).addClass(csscls('editor-link')).appendTo(header);
                     header.appendTo(li);
                 }
                 var table = $('<table></table>').addClass(csscls('params'));
