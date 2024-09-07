@@ -10,6 +10,8 @@
 
 namespace DebugBar;
 
+use DebugBar\DataCollector\Actionable;
+
 /**
  * Handler to list and open saved dataset
  */
@@ -47,7 +49,7 @@ class OpenHandler
         $op = 'find';
         if (isset($request['op'])) {
             $op = $request['op'];
-            if (!in_array($op, array('find', 'get', 'clear'))) {
+            if (!in_array($op, array('find', 'get', 'clear', 'execute'))) {
                 throw new DebugBarException("Invalid operation '{$request['op']}'");
             }
         }
@@ -113,5 +115,36 @@ class OpenHandler
     {
         $this->debugBar->getStorage()->clear();
         return array('success' => true);
+    }
+
+    /**
+     * Execute an action
+     * @param $request
+     * @return mixed
+     * @throws DebugBarException
+     */
+    protected function execute($request)
+    {
+        if (!isset($request['collector']) || !isset($request['action']) || !isset($request['signature'])) {
+            throw new DebugBarException("Missing 'collector' and/or 'action' parameter in 'execute' operation");
+        }
+
+        // Get the signature and remove if before checking the payload.
+        $signature = $request['signature'];
+        unset ($request['signature']);
+        if (!hash_equals($this->debugBar->getHashSignature($request), $signature)) {
+            throw new DebugBarException("Signature does not match in 'execute' operation");
+        }
+
+        if (!$this->debugBar->hasCollector($request['collector'])) {
+            throw new DebugBarException("Collector {$request['collector']} not found in 'execute' operation");
+        }
+
+        $collector = $this->debugBar->getCollector($request['collector']);
+        if (!$collector instanceof Actionable) {
+            throw new DebugBarException("Collector {$request['collector']} found in 'execute' operation does not implement the Actionable interface");
+        }
+
+        return $collector->executionAction($request['action'], $request['payload'] ?? null);
     }
 }
