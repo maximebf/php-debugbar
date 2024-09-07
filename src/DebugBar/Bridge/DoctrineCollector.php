@@ -82,19 +82,16 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
      */
     public function getParameters($query) : array
     {
-        $params = [];
-        foreach ($query['params'] ?? [] as $name => $param) {
-            if (is_string($param) || is_numeric($param)) {
-                $params[$name] = htmlentities($param, ENT_QUOTES, 'UTF-8', false);
-            } elseif ($param instanceof \DateTimeInterface) {
-                $params[$name] = $param->format('Y-m-d H:i:s');
+        return array_map(function ($param) {
+            if (is_string($param)) {
+                return htmlentities($param, ENT_QUOTES, 'UTF-8', false);
             } elseif (is_array($param)) {
-                $params[$name] = implode(', ', $param);
-            } else {
-                $params[$name] = $param ?: '';
+                return implode(', ', $param);
+            } elseif ($param instanceof \DateTimeInterface) {
+                return $param->format('Y-m-d H:i:s');
             }
-        }
-        return $params;
+            return $param ?: '';
+        }, $query['params'] ?? []);
     }
 
     /**
