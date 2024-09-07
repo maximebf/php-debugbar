@@ -898,6 +898,87 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
+        * Adjusts the borders of the restore button based on its horizontal position.
+        * 
+        * This function updates the left and right borders of the restore button 
+        * according to its position relative to the viewport edges:
+        * 
+        * - If the button's position is at or past the left edge of the viewport,
+        *   the left border is set to 'transparent' to avoid display issues.
+        * - If the button's position plus its width extends beyond the right edge
+        *   of the viewport, the right border is also set to 'transparent'.
+        * - Otherwise, both borders are set to '1px solid #ddd' for visibility.
+        * 
+        * @param {number} posX - The current horizontal position of the restore button.
+        */
+          applyBorders: function (posX) {
+            var screenWidth = $(window).width(); // Width of the viewport
+            var elementWidth = this.$el.outerWidth(); // Width of the restore button
+
+            // Determine the border style based on button position
+            var borderLeft = (posX <= 0) ? '1px solid transparent' : '1px solid #ddd';
+            var borderRight = (posX + elementWidth >= screenWidth) ? '1px solid transparent' : '1px solid #ddd';
+
+            // Apply the calculated borders to the restore button
+            this.$restorebtn.css('border-left', borderLeft);
+            this.$restorebtn.css('border-right', borderRight);
+        },
+
+        /**
+         * Saves the current border styles of the restore button to local storage.
+         * 
+         * This function calculates the left and right border styles of the restore button
+         * based on its horizontal position within the viewport, then stores these styles
+         * in local storage for later retrieval:
+         * 
+         * - If the button's horizontal position (`posX`) is at or past the left edge
+         *   of the viewport, the left border is set to 'transparent' to avoid display issues.
+         * - If the button's position plus its width extends beyond the right edge of the
+         *   viewport, the right border is also set to 'transparent'.
+         * - Otherwise, both borders are set to '1px solid #ddd' for visibility.
+         * 
+         * These border styles are stored in local storage to maintain the button's appearance
+         * across page reloads and sessions.
+         * 
+         * @param {number} posX - The current horizontal position of the restore button.
+         */
+        saveBorders: function (posX) {
+            var screenWidth = $(window).width(); // Width of the viewport
+            var elementWidth = this.$el.outerWidth(); // Width of the restore button
+
+            // Determine the border style based on button position
+            var borderLeft = (posX <= 0) ? '1px solid transparent' : '1px solid #ddd';
+            var borderRight = (posX + elementWidth >= screenWidth) ? '1px solid transparent' : '1px solid #ddd';
+
+            // Save the calculated borders to local storage
+            localStorage.setItem('phpdebugbar-border-left', borderLeft);
+            localStorage.setItem('phpdebugbar-border-right', borderRight);
+        },
+
+        /**
+         * Restores the border styles of the restore button from local storage.
+         * 
+         * This function retrieves previously saved border styles for the restore button
+         * from local storage and applies them to ensure the button's appearance is consistent
+         * with its last known state:
+         * 
+         * - The left and right border styles are fetched from local storage. If no saved 
+         *   styles are found, default to '1px solid #ddd'.
+         * 
+         * This helps maintain the button's appearance across page reloads and sessions,
+         * providing a consistent user experience.
+         */
+        restoreBorders: function () {
+            // Retrieve the saved border styles from local storage, with a default value if not found
+            var borderLeft = localStorage.getItem('phpdebugbar-border-left') || '1px solid #ddd';
+            var borderRight = localStorage.getItem('phpdebugbar-border-right') || '1px solid #ddd';
+
+            // Apply the retrieved border styles to the restore button
+            this.$restorebtn.css('border-left', borderLeft);
+            this.$restorebtn.css('border-right', borderRight);
+        },
+
+        /**
          * allows you to move the revert button so that other components of the page can be displayed
          */
         draggingRestoreButtonEvent: function(e) {
@@ -930,7 +1011,13 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 // Save the new position to local storage
                 var finalPosX = self.$el.position().left;
+
                 localStorage.setItem('phpdebugbar-restore-position', finalPosX);
+                self.saveBorders(finalPosX); // Save the borders
+
+                // Apply the borders
+                self.applyBorders(finalPosX);
+                
                 setTimeout(function () { self.$el.removeClass(csscls('dragging')); }, 500);
             }
 
@@ -954,6 +1041,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             } else if (posX + elementWidth > screenWidth) {
                 posX = screenWidth - elementWidth;
             }
+
+            // Restore the borders
+            this.restoreBorders();
 
             return posX;
         },
