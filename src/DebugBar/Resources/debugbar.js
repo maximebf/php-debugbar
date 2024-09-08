@@ -255,8 +255,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         className: csscls('panel'),
 
         render: function() {
-            this.$tab = $('<a />').addClass(csscls('tab'));
-
+            this.$tab = $('<a />').addClass(csscls('tab')).hide();
             this.$icon = $('<i />').appendTo(this.$tab);
             this.bindAttr('icon', function(icon) {
                 if (icon) {
@@ -285,6 +284,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.bindAttr('data', function(data) {
                 if (this.has('widget')) {
                     this.get('widget').set('data', data);
+                    if (!$.isEmptyObject(data)) {
+                        this.$tab.show();
+                    }
                 }
             })
         }
