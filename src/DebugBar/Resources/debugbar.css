@@ -169,7 +169,7 @@ div.phpdebugbar-header-right > select {
 /* -------------------------------------- */
 
 span.phpdebugbar-indicator,
-a.phpdebugbar-indicator,
+a.phpdebugbar-indicator
 {
   border-right: 1px solid #ddd;
 }
