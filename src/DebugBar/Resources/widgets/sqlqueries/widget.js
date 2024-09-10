@@ -20,11 +20,12 @@
             var code = $(el).parent('li').find('code').get(0);
             var copy = function () {
                 try {
-                    document.execCommand('copy');
-                    $(el).addClass(csscls('copy-clipboard-check'));
-                    setTimeout(function(){
-                        $(el).removeClass(csscls('copy-clipboard-check'));
-                    }, 2000)
+                    if (document.execCommand('copy')) {
+                        $(el).addClass(csscls('copy-clipboard-check'));
+                        setTimeout(function(){
+                            $(el).removeClass(csscls('copy-clipboard-check'));
+                        }, 2000)
+                    }
                 } catch (err) {
                     console.log('Oops, unable to copy');
                 }
