@@ -256,7 +256,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
         render: function() {
             this.$tab = $('<a />').addClass(csscls('tab'));
-
             this.$icon = $('<i />').appendTo(this.$tab);
             this.bindAttr('icon', function(icon) {
                 if (icon) {
@@ -285,6 +284,9 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.bindAttr('data', function(data) {
                 if (this.has('widget')) {
                     this.get('widget').set('data', data);
+                    if (!$.isEmptyObject(data)) {
+                        this.$tab.show();
+                    }
                 }
             })
         }
@@ -423,6 +425,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.firstTabName = null;
             this.activePanelName = null;
             this.activeDatasetId = null;
+            this.hideEmptyTabs = false;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
             try {
@@ -641,7 +644,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 } else {
                     self.showTab(name);
                 }
-            });
+            })
+            if (this.hideEmptyTabs) {
+                tab.$tab.hide();
+            }
             tab.$tab.attr('data-collector', name);
             tab.$el.attr('data-collector', name);
             tab.$el.appendTo(this.$body);
@@ -1054,6 +1060,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
             } else {
                 this.$openbtn.hide();
             }
+        },
+
+        setHideEmptyTabs: function(hideEmpty) {
+            this.hideEmptyTabs = hideEmpty;
         },
 
         /**
