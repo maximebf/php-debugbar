@@ -62,7 +62,7 @@ class JavascriptRenderer
 
     protected $useRequireJs = false;
 
-    protected $hideEmptyTabs = false;
+    protected $hideEmptyTabs = null;
 
     protected $initialization;
 
