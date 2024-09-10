@@ -21,7 +21,10 @@
             var copy = function () {
                 try {
                     document.execCommand('copy');
-                    alert('Query copied to the clipboard');
+                    $(el).addClass(csscls('copy-clipboard-check'));
+                    setTimeout(function(){
+                        $(el).removeClass(csscls('copy-clipboard-check'));
+                    }, 2000)
                 } catch (err) {
                     console.log('Oops, unable to copy');
                 }
@@ -116,7 +119,7 @@
                     li.addClass(csscls('error'));
                     li.append($('<span />').addClass(csscls('error')).text("[" + stmt.error_code + "] " + stmt.error_message));
                 }
-                if ((!stmt.type || stmt.type === 'query') && stmt.show_copy !== false) {
+                if ((!stmt.type || stmt.type === 'query')) {
                     $('<span title="Copy to clipboard" />')
                         .addClass(csscls('copy-clipboard'))
                         .css('cursor', 'pointer')
