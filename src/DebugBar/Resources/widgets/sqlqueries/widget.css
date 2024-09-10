@@ -57,7 +57,6 @@ div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-stmt-id:before {
 }
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-copy-clipboard:before {
   content: "\f0c5";
-  line-height: 1.5;
 }
 div.phpdebugbar-widgets-sqlqueries span.phpdebugbar-widgets-copy-clipboard-check:before {
   content: "\f46c";
