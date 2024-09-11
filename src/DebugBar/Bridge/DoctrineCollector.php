@@ -87,6 +87,8 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
                 return htmlentities($param, ENT_QUOTES, 'UTF-8', false);
             } elseif (is_array($param)) {
                 return implode(', ', $param);
+            } elseif (is_numeric($param)) {
+                return strval($param);
             } elseif ($param instanceof \DateTimeInterface) {
                 return $param->format('Y-m-d H:i:s');
             }
