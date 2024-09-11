@@ -60,7 +60,7 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
         foreach ($this->debugStack->queries as $q) {
             $queries[] = array(
                 'sql' => $q['sql'],
-                'params' => (object) $this->getParameters($q),
+                'params' => (object) $this->getParameters($q['params'] ?? []),
                 'duration' => $q['executionMS'],
                 'duration_str' => $this->formatDuration($q['executionMS'])
             );
@@ -80,7 +80,7 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
      *
      * @return array
      */
-    public function getParameters($query) : array
+    public function getParameters($params) : array
     {
         return array_map(function ($param) {
             if (is_string($param)) {
@@ -95,7 +95,7 @@ class DoctrineCollector extends DataCollector implements Renderable, AssetProvid
                 return json_encode($param);
             }
             return $param ?: '';
-        }, $query['params'] ?? []);
+        }, $params);
     }
 
     /**
