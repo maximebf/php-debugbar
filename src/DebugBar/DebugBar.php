@@ -48,6 +48,8 @@ class DebugBar implements ArrayAccess
 
     protected $stackAlwaysUseSessionStorage = false;
 
+    protected $hashKey;
+
     /**
      * Adds a data collector
      *
@@ -466,6 +468,22 @@ class DebugBar implements ArrayAccess
             $this->jsRenderer = new JavascriptRenderer($this, $baseUrl, $basePath);
         }
         return $this->jsRenderer;
+    }
+
+    public function setHashKey($key)
+    {
+        $this->hashKey = $key;
+    }
+
+    public function getHashSignature($data)
+    {
+        if ($this->hashKey === null) {
+            throw new DebugBarException('HashKey must be set before running actions');
+        }
+
+        $data = json_encode($data);
+
+        return hash_hmac('sha256', $data, $this->hashKey);
     }
 
     // --------------------------------------------
