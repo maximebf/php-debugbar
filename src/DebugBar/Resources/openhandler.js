@@ -190,7 +190,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
         ajax: function(data, callback) {
             var url = this.get('url');
             if (data) {
-                url = url + '?' + new URLSearchParams(data);
+                url = url + ( url.includes('?') ? '&' : '?' ) + new URLSearchParams(data);
             }
 
             fetch(url, {
