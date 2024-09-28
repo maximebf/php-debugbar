@@ -275,10 +275,12 @@ a.phpdebugbar-open-btn {
   }
   .phpdebugbar-indicator span.phpdebugbar-tooltip dl dt {
     font-weight: bold;
+    text-align: left;
   }
   .phpdebugbar-indicator span.phpdebugbar-tooltip dl dd {
     margin: 0;
     grid-column-start: 2;
+    text-align: left;
   }
 
 select.phpdebugbar-datasets-switcher {
