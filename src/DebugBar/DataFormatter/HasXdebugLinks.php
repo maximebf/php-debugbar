@@ -125,6 +125,7 @@ trait HasXdebugLinks
             'atom' => 'atom://core/open/file?filename=%f&line=%l',
             'espresso' => 'x-espresso://open?filepath=%f&lines=%l',
             'netbeans' => 'netbeans://open/?f=%f:%l',
+            'cursor' => 'cursor://file/%f:%l',
         );
 
         if (is_string($editor) && isset($editorLinkTemplates[$editor])) {
