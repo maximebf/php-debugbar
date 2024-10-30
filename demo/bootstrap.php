@@ -20,7 +20,7 @@ $debugbarRenderer = $debugbar->getJavascriptRenderer()
 // $debugbar->setStorage(new DebugBar\Storage\RedisStorage(new Predis\Client()));
 // $debugbarRenderer->setOpenHandlerUrl('open.php');
 
-function render_demo_page(Closure $callback = null)
+function render_demo_page(?Closure $callback = null)
 {
     global $debugbarRenderer;
 ?>
