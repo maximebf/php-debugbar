@@ -39,7 +39,7 @@ class TraceableTwigEnvironment extends Twig_Environment
      * @param Twig_Environment $twig
      * @param TimeDataCollector $timeDataCollector
      */
-    public function __construct(Twig_Environment $twig, TimeDataCollector $timeDataCollector = null)
+    public function __construct(Twig_Environment $twig, ?TimeDataCollector $timeDataCollector = null)
     {
         $this->twig = $twig;
         $this->timeDataCollector = $timeDataCollector;
