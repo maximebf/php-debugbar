@@ -328,7 +328,16 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$tooltip = $('<span />').addClass(csscls('tooltip disabled')).appendTo(this.$el);
             this.bindAttr('tooltip', function(tooltip) {
                 if (tooltip) {
-                    this.$tooltip.text(tooltip).removeClass(csscls('disabled'));
+                    var dl = $('<dl />');
+                    if (Array.isArray(tooltip) || typeof tooltip === 'object') {
+                        $.each(tooltip, function(key, value) {
+                            $('<dt />').text(key).appendTo(dl);
+                            $('<dd />').text(value).appendTo(dl);
+                        });
+                        this.$tooltip.html(dl).removeClass(csscls('disabled'));
+                    } else {
+                        this.$tooltip.text(tooltip).removeClass(csscls('disabled'));
+                    }
                 } else {
                     this.$tooltip.addClass(csscls('disabled'));
                 }
@@ -665,7 +674,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          * @param {String} name Internal name
          * @param {String} icon
-         * @param {String} tooltip
+         * @param {String|Object} tooltip
          * @param {String} position "right" or "left", default is "right"
          * @return {Indicator}
          */
