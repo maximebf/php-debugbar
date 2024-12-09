@@ -59,7 +59,9 @@ Integrations with other frameworks:
 The best way to install DebugBar is using [Composer](http://getcomposer.org)
 with the following command:
 
-```composer require maximebf/debugbar --dev```
+```bash
+composer require maximebf/debugbar --dev
+```
 
 ## Quick start
 
