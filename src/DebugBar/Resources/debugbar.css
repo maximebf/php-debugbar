@@ -251,7 +251,7 @@ a.phpdebugbar-open-btn {
   .phpdebugbar-indicator span.phpdebugbar-tooltip {
     display: none;
     position: absolute;
-    top: -30px;
+    bottom: 30px;
     background: #efefef70;
     border: 1px solid #ccc;
     color: #555;
@@ -267,6 +267,20 @@ a.phpdebugbar-open-btn {
   }
   .phpdebugbar-indicator:hover span.phpdebugbar-tooltip:not(.phpdebugbar-disabled) {
     display: block;
+  }
+  .phpdebugbar-indicator span.phpdebugbar-tooltip dl {
+    display: grid;
+    grid-gap: 4px 10px;
+    grid-template-columns: max-content;
+  }
+  .phpdebugbar-indicator span.phpdebugbar-tooltip dl dt {
+    font-weight: bold;
+    text-align: left;
+  }
+  .phpdebugbar-indicator span.phpdebugbar-tooltip dl dd {
+    margin: 0;
+    grid-column-start: 2;
+    text-align: left;
   }
 
 select.phpdebugbar-datasets-switcher {
