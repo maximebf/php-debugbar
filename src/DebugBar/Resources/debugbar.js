@@ -435,6 +435,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.activePanelName = null;
             this.activeDatasetId = null;
             this.hideEmptyTabs = false;
+            this.restorePosition = localStorage.getItem('phpdebugbar-restore-position');
+            this.restoreOffset = localStorage.getItem('phpdebugbar-restore-offset') || 0;
             this.datesetTitleFormater = new DatasetTitleFormater(this);
             this.options.bodyMarginBottomHeight = parseInt($('body').css('margin-bottom'));
             try {
@@ -485,8 +487,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             // Reset height to ensure bar is still visible
             this.setHeight(this.$body.height());
             if (this.isClosed()) {
-                var restorePos = localStorage.getItem('phpdebugbar-restore-position') || 0;
-                if (restorePos) {
+                if (this.restorePosition) {
                     this.resizeRestoreButton();
                 }
             }
@@ -833,6 +834,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             localStorage.setItem('phpdebugbar-visible', '0');
             this.$el.addClass(csscls('minimized'));
             this.resize();
+            this.resizeRestoreButton();
         },
 
         /**
@@ -856,8 +858,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$restorebtn.show();
             localStorage.setItem('phpdebugbar-open', '0');
             this.$el.addClass(csscls('closed'));
-            var restorePos = localStorage.getItem('phpdebugbar-restore-position') || 0;
-            if (restorePos) {
+            if (this.restorePosition) {
                 this.resizeRestoreButton();
             }
             this.recomputeBottomOffset();
@@ -913,41 +914,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
         },
 
         /**
-        * Adjusts the borders of the restore button based on its horizontal position.
-        *
-        * This function updates the left and right borders of the restore button
-        * according to its position relative to the viewport edges:
-        *
-        * - If the button's position is at or past the left edge of the viewport,
-        *   the left border is set to 'transparent' to avoid display issues.
-        * - If the button's position plus its width extends beyond the right edge
-        *   of the viewport, the right border is also set to 'transparent'.
-        * - Otherwise, both borders are set to '1px solid #ddd' for visibility.
-        *
-        * @param {number} posX - The current horizontal position of the restore button.
-        */
-        applyBorders: function (posX, addSnapSize = false) {
-            var screenWidth = $(window).width(); // Width of the viewport
-
-            if(addSnapSize){
-                var snapSize = this.$el.outerWidth() // Snap size constant
-
-                // Check if dragged to end/right and adjust position
-                if (posX + snapSize === screenWidth) {
-                    posX += snapSize; // Adjust position to include snap size
-                }
-            }
-
-            // Determine the border style based on button position
-            var borderLeft = (posX <= 0) ? '1px solid transparent' : '1px solid #ddd';
-            var borderRight = (posX >= screenWidth) ? '1px solid transparent' : '1px solid #ddd';
-
-            // Apply the calculated borders to the restore button
-            this.$restorebtn.css('border-left', borderLeft);
-            this.$restorebtn.css('border-right', borderRight);
-        },
-
-        /**
          * allows you to move the revert button so that other components of the page can be displayed
          */
         draggingRestoreButtonEvent: function(e) {
@@ -957,11 +923,18 @@ if (typeof(PhpDebugBar) == 'undefined') {
             // Track initial mouse position and element position
             var initialMouseX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
             var initialPosX = self.$el.position().left;
+            var moved = false;
+
 
             function doDrag(e) {
                 // Calculate the change in mouse position
                 var clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
                 var deltaX = clientX - initialMouseX;
+
+                // When not changed, don't
+                if (deltaX !== 0) {
+                    moved = true;
+                }
 
                 // Update the position of the element
                 var newPosX = initialPosX + deltaX;
@@ -969,10 +942,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 // Ensure the new position is within screen boundaries
                 newPosX = self.recomputeRestorePositionX(newPosX);
 
-                // Apply the borders
-                self.applyBorders(newPosX, true);
-
                 self.$el.css('left', newPosX + 'px');
+                self.$el.css('right', 'auto');
                 self.$el.addClass(csscls('dragging'));
             }
 
@@ -981,21 +952,35 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 $(document).off('mousemove.drag touchmove.drag', doDrag);
                 $(document).off('mouseup.drag touchend.drag', stopDragging);
 
+                // Check if this was actually a drag instead of a click
+                if (!moved) {
+                    return;
+                }
+
                 // Save the new position as a percentage of screen width
                 var finalPosX = self.$el.position().left;
                 var screenWidth = $(window).width();
-                var snapSize = self.$el.outerWidth() // Snap size constant
-
-                // Check if dragged to end/right and adjust position
-                if (finalPosX + snapSize === screenWidth) {
-                    finalPosX += snapSize; // Adjust position to include snap size
-                }
 
                 var positionPercentage = (finalPosX / screenWidth) * 100; // Store as percentage
 
-                localStorage.setItem('phpdebugbar-restore-position', positionPercentage);
+                if (positionPercentage < 10) {
+                    self.restorePosition = 'bottomLeft';
+                    self.restoreOffset = finalPosX;
+                } else if (positionPercentage > 90) {
+                    self.restorePosition = 'bottomRight';
+                    self.restoreOffset = screenWidth - finalPosX;
+                } else {
+                    self.restorePosition = 'bottomPercentage';
+                    self.restoreOffset = positionPercentage;
+                }
 
-                setTimeout(function () { self.$el.removeClass(csscls('dragging')); }, 500);
+                localStorage.setItem('phpdebugbar-restore-position',  self.restorePosition);
+                localStorage.setItem('phpdebugbar-restore-offset', self.restoreOffset);
+
+                setTimeout(function () {
+                    self.resizeRestoreButton();
+                    self.$el.removeClass(csscls('dragging'));
+                }, 500);
             }
 
             // Bind the move and up/end events
@@ -1031,26 +1016,48 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             var self = this;
 
-            // Get the saved position percentage
-            var positionPercentage = parseFloat(localStorage.getItem('phpdebugbar-restore-position'));
+            // Get the saved position and offset/percentage
+            var position = this.restorePosition;
+            var positionOffset = parseFloat(this.restoreOffset);
 
-            if (isNaN(positionPercentage)) return;
+            if (isNaN(positionOffset) || !position){
+                return;
+            }
 
             // Recalculate the position based on the new screen width
             var screenWidth = $(window).width();
 
             var elementWidth = this.$restorebtn.outerWidth();
 
-            // Calculate the new position in pixels
-            var newPosX = (positionPercentage / 100) * screenWidth;
+            var newPosX = positionOffset;
+            if (position === 'bottomPercentage') {
+                // Calculate the new position in pixels
+                newPosX = (positionOffset / 100) * screenWidth;
 
-            // Restore the borders
-            this.applyBorders(newPosX);
+            } else if (position === 'bottomRight') {
+                newPosX = newPosX - self.$el.outerWidth()
+            }
 
             // Ensure the new position is within screen boundaries
             newPosX = Math.max(0, Math.min(newPosX, screenWidth - elementWidth));
 
-            self.$el.css('left', newPosX + 'px');
+            if (position === 'bottomRight') {
+                // Set the offset
+                self.$el.css('left', 'auto');
+                self.$el.css('right', newPosX + 'px');
+
+                // Apply the calculated borders to the restore button
+                this.$restorebtn.css('border-left', '1px solid #ddd');
+                this.$restorebtn.css('border-right', newPosX > 0 ? '1px solid #ddd' : '1px solid transparent');
+            } else {
+                // Set the offset
+                self.$el.css('left', newPosX + 'px');
+                self.$el.css('right', 'auto');
+
+                // Restore the borders
+                this.$restorebtn.css('border-right', '1px solid #ddd');
+                this.$restorebtn.css('border-left', newPosX > 0 ? '1px solid #ddd' : '1px solid transparent');
+            }
         },
 
         /**
