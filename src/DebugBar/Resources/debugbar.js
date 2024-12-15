@@ -486,10 +486,8 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             // Reset height to ensure bar is still visible
             this.setHeight(this.$body.height());
-            if (this.isClosed()) {
-                if (this.restorePosition) {
-                    this.resizeRestoreButton();
-                }
+            if (this.restorePosition) {
+                this.resizeRestoreButton();
             }
         },
 
@@ -834,7 +832,6 @@ if (typeof(PhpDebugBar) == 'undefined') {
             localStorage.setItem('phpdebugbar-visible', '0');
             this.$el.addClass(csscls('minimized'));
             this.resize();
-            this.resizeRestoreButton();
         },
 
         /**
@@ -924,6 +921,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             var initialMouseX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
             var initialPosX = self.$el.position().left;
             var moved = false;
+            var target = e.target;
 
 
             function doDrag(e) {
@@ -954,6 +952,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
                 // Check if this was actually a drag instead of a click
                 if (!moved) {
+                    $(target).trigger('click');
                     return;
                 }
 
@@ -1013,7 +1012,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
          */
         resizeRestoreButton: function() {
             if (!this.isClosed()) return;
-
+            
             var self = this;
 
             // Get the saved position and offset/percentage
@@ -1035,7 +1034,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 newPosX = (positionOffset / 100) * screenWidth;
 
             } else if (position === 'bottomRight') {
-                newPosX = newPosX - self.$el.outerWidth()
+                newPosX = newPosX - elementWidth
             }
 
             // Ensure the new position is within screen boundaries
