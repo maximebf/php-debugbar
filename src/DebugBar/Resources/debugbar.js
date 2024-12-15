@@ -484,6 +484,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
 
             // Reset height to ensure bar is still visible
             this.setHeight(this.$body.height());
+            if (this.isClosed()) {
+                var restorePos = localStorage.getItem('phpdebugbar-restore-position') || 0;
+                if (restorePos) {
+                    this.resizeRestoreButton();
+                }
+            }
         },
 
         /**
@@ -549,6 +555,12 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$restorebtn = $('<a />').addClass(csscls('restore-btn')).hide().appendTo(this.$el);
             this.$restorebtn.click(function() {
                 self.restore();
+            });
+
+            // dragging of restore button
+            this.$restorebtn.on('mousedown touchstart', function (e) {
+                self.draggingRestoreButtonEvent(e);
+                e.preventDefault();
             });
 
             // open button
@@ -844,6 +856,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
             this.$restorebtn.show();
             localStorage.setItem('phpdebugbar-open', '0');
             this.$el.addClass(csscls('closed'));
+            var restorePos = localStorage.getItem('phpdebugbar-restore-position') || 0;
+            if (restorePos) {
+                this.resizeRestoreButton();
+            }
             this.recomputeBottomOffset();
         },
 
@@ -862,6 +878,10 @@ if (typeof(PhpDebugBar) == 'undefined') {
          * @this {DebugBar}
          */
         restore: function() {
+            if (this.$el.hasClass(csscls('dragging'))){
+                this.$el.removeClass(csscls('dragging'));
+                return;
+            }
             this.$resizehdle.show();
             this.$header.show();
             this.$restorebtn.hide();
@@ -873,6 +893,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 this.showTab();
             }
             this.$el.removeClass(csscls('closed'));
+            this.$el.css('left', '');
             this.resize();
         },
 
@@ -889,6 +910,147 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var offset = parseInt(this.$el.height()) + (this.options.bodyMarginBottomHeight || 0);
                 $('body').css('margin-bottom', offset);
             }
+        },
+
+        /**
+        * Adjusts the borders of the restore button based on its horizontal position.
+        *
+        * This function updates the left and right borders of the restore button
+        * according to its position relative to the viewport edges:
+        *
+        * - If the button's position is at or past the left edge of the viewport,
+        *   the left border is set to 'transparent' to avoid display issues.
+        * - If the button's position plus its width extends beyond the right edge
+        *   of the viewport, the right border is also set to 'transparent'.
+        * - Otherwise, both borders are set to '1px solid #ddd' for visibility.
+        *
+        * @param {number} posX - The current horizontal position of the restore button.
+        */
+        applyBorders: function (posX, addSnapSize = false) {
+            var screenWidth = $(window).width(); // Width of the viewport
+
+            if(addSnapSize){
+                var snapSize = this.$el.outerWidth() // Snap size constant
+
+                // Check if dragged to end/right and adjust position
+                if (posX + snapSize === screenWidth) {
+                    posX += snapSize; // Adjust position to include snap size
+                }
+            }
+
+            // Determine the border style based on button position
+            var borderLeft = (posX <= 0) ? '1px solid transparent' : '1px solid #ddd';
+            var borderRight = (posX >= screenWidth) ? '1px solid transparent' : '1px solid #ddd';
+
+            // Apply the calculated borders to the restore button
+            this.$restorebtn.css('border-left', borderLeft);
+            this.$restorebtn.css('border-right', borderRight);
+        },
+
+        /**
+         * allows you to move the revert button so that other components of the page can be displayed
+         */
+        draggingRestoreButtonEvent: function(e) {
+            var self = this;
+            if (!self.isClosed()) return;
+
+            // Track initial mouse position and element position
+            var initialMouseX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            var initialPosX = self.$el.position().left;
+
+            function doDrag(e) {
+                // Calculate the change in mouse position
+                var clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+                var deltaX = clientX - initialMouseX;
+
+                // Update the position of the element
+                var newPosX = initialPosX + deltaX;
+
+                // Ensure the new position is within screen boundaries
+                newPosX = self.recomputeRestorePositionX(newPosX);
+
+                // Apply the borders
+                self.applyBorders(newPosX, true);
+
+                self.$el.css('left', newPosX + 'px');
+                self.$el.addClass(csscls('dragging'));
+            }
+
+            function stopDragging() {
+                // Unbind the move and up/end events
+                $(document).off('mousemove.drag touchmove.drag', doDrag);
+                $(document).off('mouseup.drag touchend.drag', stopDragging);
+
+                // Save the new position as a percentage of screen width
+                var finalPosX = self.$el.position().left;
+                var screenWidth = $(window).width();
+                var snapSize = self.$el.outerWidth() // Snap size constant
+
+                // Check if dragged to end/right and adjust position
+                if (finalPosX + snapSize === screenWidth) {
+                    finalPosX += snapSize; // Adjust position to include snap size
+                }
+
+                var positionPercentage = (finalPosX / screenWidth) * 100; // Store as percentage
+
+                localStorage.setItem('phpdebugbar-restore-position', positionPercentage);
+
+                setTimeout(function () { self.$el.removeClass(csscls('dragging')); }, 500);
+            }
+
+            // Bind the move and up/end events
+            $(document).on('mousemove.drag touchmove.drag', doDrag);
+            $(document).on('mouseup.drag touchend.drag', stopDragging);
+        },
+
+        /**
+         * Recomputes the left css property of the restore btn for dragging
+         * restore button always has to be visible and not be left off the screen
+         */
+        recomputeRestorePositionX: function (posX) {
+            if (!this.isClosed()) return;
+
+            var screenWidth = $(window).width();
+            var elementWidth = this.$restorebtn.outerWidth();
+
+            // adjust position to ensure it doesn't go out of bounds
+            if (posX < 0) {
+                posX = 0;
+            } else if (posX + elementWidth > screenWidth) {
+                posX = screenWidth - elementWidth; // ensure it doesn't overflow
+            }
+
+            return posX;
+        },
+
+        /**
+         * Adjust the restore button's position when the window is resized
+         */
+        resizeRestoreButton: function() {
+            if (!this.isClosed()) return;
+
+            var self = this;
+
+            // Get the saved position percentage
+            var positionPercentage = parseFloat(localStorage.getItem('phpdebugbar-restore-position'));
+
+            if (isNaN(positionPercentage)) return;
+
+            // Recalculate the position based on the new screen width
+            var screenWidth = $(window).width();
+
+            var elementWidth = this.$restorebtn.outerWidth();
+
+            // Calculate the new position in pixels
+            var newPosX = (positionPercentage / 100) * screenWidth;
+
+            // Restore the borders
+            this.applyBorders(newPosX);
+
+            // Ensure the new position is within screen boundaries
+            newPosX = Math.max(0, Math.min(newPosX, screenWidth - elementWidth));
+
+            self.$el.css('left', newPosX + 'px');
         },
 
         /**
