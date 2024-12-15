@@ -53,7 +53,7 @@ if (typeof(PhpDebugBar) == 'undefined') {
             if (typeof(hljs) === 'undefined') {
                 return htmlize(code);
             }
-            if (lang) {
+            if (lang && hljs.getLanguage(lang)) {
                 return hljs.highlight(code, {language: lang}).value;
             }
             return hljs.highlightAuto(code).value;
