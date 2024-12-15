@@ -961,11 +961,11 @@ if (typeof(PhpDebugBar) == 'undefined') {
                 var screenWidth = $(window).width();
 
                 var positionPercentage = (finalPosX / screenWidth) * 100; // Store as percentage
-
-                if (positionPercentage < 10) {
+                
+                if (positionPercentage < 20) {
                     self.restorePosition = 'bottomLeft';
                     self.restoreOffset = finalPosX;
-                } else if (positionPercentage > 90) {
+                } else if (positionPercentage > 80) {
                     self.restorePosition = 'bottomRight';
                     self.restoreOffset = screenWidth - finalPosX;
                 } else {
